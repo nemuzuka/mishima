@@ -14,7 +14,6 @@ import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
-
 import net.sf.json.JSONSerializer;
 
 import org.apache.commons.lang.ObjectUtils;
@@ -82,11 +81,7 @@ public abstract class JsonController extends Controller {
 
 		//TokenCheckが指定されていれば実行
 		Navigation navigation;
-		try {
-			navigation = executeTokenCheck(clazz);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		navigation = executeTokenCheck(clazz);
 
 		if(navigation == null) {
 			//validationが指定されていれば実行
@@ -149,9 +144,8 @@ public abstract class JsonController extends Controller {
 	 * JSON形式でエラーを返却します。
 	 * リクエストパラメータに設定されているエラーメッセージをJSONオブジェクトに設定します。
 	 * @return null
-	 * @throws Exception 例外
 	 */
-	protected Navigation jsonError() throws Exception {
+	public Navigation jsonError() {
 		JsonResult result = new JsonResult();
 		for(Map.Entry<String, String> target : errors.entrySet()) {
 			result.getErrorMsg().add(target.getValue());
@@ -164,7 +158,11 @@ public abstract class JsonController extends Controller {
 			//Tokenエラー
 			result.setResult(JsonResult.TOKEN_ERROR);
 		}
-		return writeJsonObj(result);
+		try {
+			return writeJsonObj(result);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	
@@ -175,13 +173,13 @@ public abstract class JsonController extends Controller {
 	 * @param methodName メソッド名
 	 * @return 呼び出したメソッドの戻り値
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	private Object invoke(Class clazz, String methodName) {
 
 		//validateメソッドの呼び出し
 		Method method = null;
 		try {
-			method = clazz.getDeclaredMethod(methodName, (Class[])null);
+			method = getDeclaredMethod(clazz, methodName, (Class[])null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -189,6 +187,7 @@ public abstract class JsonController extends Controller {
 		//validateメソッド呼び出し
 		Object obj = null;
 		try {
+			method.setAccessible(true);
 			obj = method.invoke(this, (Object[])null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -234,12 +233,12 @@ public abstract class JsonController extends Controller {
 	 * @param clazz 対象クラス
 	 * @return Navigation(エラーが無い or validatationが無い場合はnull)
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	private Navigation executeValidation(Class clazz) {
 		//executeメソッドにValidatetionアノテーションが付与されている場合
 		Method target = null;
 		try {
-			target = clazz.getDeclaredMethod("execute", (Class[])null);
+			target = getDeclaredMethod(clazz, "execute", (Class[])null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -281,14 +280,13 @@ public abstract class JsonController extends Controller {
 	 * 合致しない場合、戻り値を
 	 * @param clazz 対象クラス
 	 * @return エラーの場合、遷移先。エラーが無い or 付与されていない場合、null
-	 * @throws Exception 例外
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private Navigation executeTokenCheck(Class clazz) throws Exception {
+	@SuppressWarnings({ "rawtypes" })
+	private Navigation executeTokenCheck(Class clazz) {
 		//executeメソッドにTokenCheckアノテーションが付与されている場合
 		Method target = null;
 		try {
-			target = clazz.getDeclaredMethod("execute", (Class[])null);
+			target = getDeclaredMethod(clazz, "execute", (Class[])null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -320,5 +318,31 @@ public abstract class JsonController extends Controller {
 	private void setTransaction() {
 		TransactionEntity transactionEntity = new TransactionEntity();
 		GlobalTransaction.transaction.set(transactionEntity);
+	}
+	
+	/**
+	 * Method取得.
+	 * メソッドを取得します。
+	 * 存在しない場合、親クラスに対して検索します。
+	 * @param clazz 対象Class
+	 * @param methodName メソッド名
+	 * @param paramClass パラメータクラス配列
+	 * @return メソッド
+	 * @throws NoSuchMethodException 親クラスまでさかのぼっても見つからなかった
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private Method getDeclaredMethod(Class clazz, String methodName, 
+			Class[] paramClass) throws NoSuchMethodException {
+		Method target = null;
+		try {
+			target = clazz.getDeclaredMethod(methodName, paramClass);
+		} catch(NoSuchMethodException e) {
+			Class superClazz = clazz.getSuperclass();
+			if(superClazz == null) {
+				throw e;
+			}
+			return getDeclaredMethod(superClazz, methodName, paramClass);
+		}
+		return target;
 	}
 }

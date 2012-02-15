@@ -7,19 +7,46 @@ import static org.junit.Assert.assertThat;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
 
 import org.junit.Test;
 import org.slim3.tester.ControllerTestCase;
 
 public class SampleControllerTest extends ControllerTestCase {
 
+	/**
+	 * 通常テスト.
+	 * validateあり。エラー無し。
+	 */
 	@Test
 	public void test() throws NullPointerException, IllegalArgumentException, IOException, ServletException {
+		tester.response.flushBuffer();
+		HttpServletRequest request = tester.request;
+		request.setAttribute("dummy", "123");
 		tester.start("/sample");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
-		assertThat(tester.response.getOutputAsString(), is("{\"errorMsg\":[],\"infoMsg\":[],\"result\":null,\"status\":0}"));
+		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
+		assertThat(actual.toString(), is("{\"errorMsg\":[],\"infoMsg\":[],\"result\":null,\"status\":0}"));
+	}
+
+	/**
+	 * 通常テスト.
+	 * validateあり。エラーあり。
+	 */
+	@Test
+	public void validateErrorTest() throws NullPointerException, IllegalArgumentException, IOException, ServletException {
+		tester.response.flushBuffer();
+		HttpServletRequest request = tester.request;
+		request.setAttribute("dummy", "a");
+		tester.start("/sample");
+		assertThat(tester.response.getStatus(),
+				is(equalTo(HttpServletResponse.SC_OK)));
+		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
+		assertThat(actual.toString(), is("{\"errorMsg\":[\"ダミーは整数でなければいけません。\"],\"infoMsg\":[],\"result\":-1,\"status\":0}"));
 	}
 
 }
