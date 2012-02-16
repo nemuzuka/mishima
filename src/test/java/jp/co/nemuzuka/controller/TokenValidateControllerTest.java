@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.co.nemuzuka.form.TestForm;
 import net.sf.json.JSONObject;
 
 import org.junit.Test;
@@ -29,11 +30,17 @@ public class TokenValidateControllerTest extends ControllerTestCase {
 		session.setAttribute("jp.co.nemuzuka.token", "123");
 		request.setAttribute("jp.co.nemuzuka.token", "123");
 		request.setAttribute("dummy", "123");
+		request.setAttribute("memo", "メモです。");
 		tester.start("/tokenValidate");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
 		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
 		assertThat(actual.toString(), is("{\"errorMsg\":[],\"infoMsg\":[],\"result\":null,\"status\":0}"));
+		
+		TokenValidateController controller = tester.getController();
+		TestForm testForm = controller.testForm;
+		assertThat(testForm.getDummy(), is("123"));
+		assertThat(testForm.getMemo(), is("メモです。"));
 	}
 
 	/**

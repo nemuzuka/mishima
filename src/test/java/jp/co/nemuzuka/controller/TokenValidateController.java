@@ -1,9 +1,11 @@
 package jp.co.nemuzuka.controller;
 
+import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
+import jp.co.nemuzuka.form.TestForm;
 
 import org.slim3.controller.validator.Validators;
 
@@ -14,6 +16,10 @@ import org.slim3.controller.validator.Validators;
  */
 public class TokenValidateController extends JsonController {
 
+	/** ActionForm. */
+	@ActionForm
+	protected TestForm testForm;
+	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
