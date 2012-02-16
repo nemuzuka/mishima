@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
@@ -36,6 +37,8 @@ public abstract class JsonController extends Controller {
 	private String TOKEN_KEY = "jp.co.nemuzuka.token";
 	/** tokenエラー存在有無格納キー. */
 	private String TOKEN_ERR_KEY = "jp.co.nemuzuka.token.err";
+	/** サーバエラー存在有無格納キー. */
+	private String SEVERE_ERR_KEY = "jp.co.nemuzuka.severe.err";
 	
 	/** logger. */
 	protected final Logger logger = Logger.getLogger(getClass().getName());
@@ -50,6 +53,7 @@ public abstract class JsonController extends Controller {
 	
 	/**
 	 * メイン処理.
+	 * 正常終了時、commitしてThreadLocalから削除します。
 	 * @see org.slim3.controller.Controller#run()
 	 */
 	@Override
@@ -58,6 +62,9 @@ public abstract class JsonController extends Controller {
 		if (obj == null) {
 			throw new AssertionError("execute() must not be null.");
 		}
+		TransactionEntity entity = GlobalTransaction.transaction.get();
+		entity.commit();
+		GlobalTransaction.transaction.remove();
 		return writeJsonObj(obj);
 	}
 
@@ -98,31 +105,28 @@ public abstract class JsonController extends Controller {
 
 	/**
 	 * エラー時処理.
-	 * グローバルトランザクションをrollback.
-	 * Commit不要状態にします。
 	 * @see org.slim3.controller.Controller#handleError(java.lang.Throwable)
 	 */
 	@Override
 	protected Navigation handleError(Throwable error) throws Throwable {
-		
-		TransactionEntity entity = GlobalTransaction.transaction.get();
-		entity.rollback();
-		return super.handleError(error);
+		logger.log(Level.SEVERE, error.getMessage(), error);
+		errors.put("message", ApplicationMessage.get("errors.severe"));
+		requestScope(SEVERE_ERR_KEY, "1");
+		return jsonError();
 	}
 	
 	/**
 	 * 終了時処理.
-	 * ・Commitを発行します（ロールバック済の場合、何もしません）。
-	 * ・ThreadLocalの中身を空に設定します。
+	 * ThreadLocalに存在する場合、ロールバックして空にします。
 	 * @see org.slim3.controller.Controller#tearDown()
 	 */
 	@Override
 	protected void tearDown() {
 		TransactionEntity entity = GlobalTransaction.transaction.get();
-		if(entity.isRollback() == false) {
-			entity.commit();
+		if(entity != null) {
+			entity.rollback();
+			GlobalTransaction.transaction.remove();
 		}
-		GlobalTransaction.transaction.remove();
 	};
 	
 	/**
@@ -151,12 +155,16 @@ public abstract class JsonController extends Controller {
 			result.getErrorMsg().add(target.getValue());
 		}
 		String jsonError = requestScope(TOKEN_ERR_KEY);
-		if(StringUtils.isEmpty(jsonError)) {
-			//通常のエラー
-			result.setResult(JsonResult.STATUS_NG);
-		} else {
+		String severeError = requestScope(SEVERE_ERR_KEY);
+		if(StringUtils.isNotEmpty(jsonError)) {
 			//Tokenエラー
 			result.setResult(JsonResult.TOKEN_ERROR);
+		} else if(StringUtils.isNotEmpty(severeError)) {
+			//サーバーエラー
+			result.setResult(JsonResult.SEVERE_ERROR);
+		} else {
+			//通常のエラー
+			result.setResult(JsonResult.STATUS_NG);
 		}
 		try {
 			return writeJsonObj(result);
@@ -243,21 +251,19 @@ public abstract class JsonController extends Controller {
 			throw new RuntimeException(e);
 		}
 
-		if(target != null) {
-			Validation validation = target.getAnnotation(Validation.class);
-			if(validation != null) {
+		Validation validation = target.getAnnotation(Validation.class);
+		if(validation != null) {
 
-				Validators validators = (Validators)invoke(clazz, validation.method());
+			Validators validators = (Validators)invoke(clazz, validation.method());
 
-				//validate実行
-				boolean bret = validators.validate();
+			//validate実行
+			boolean bret = validators.validate();
 
-				//エラーが存在する場合
-				if(bret == false) {
-					//inputのメソッドで呼び出された定義を呼び出すようにする
-					Navigation navigation = (Navigation)invoke(getClass(), validation.input());
-					return navigation;
-				}
+			//エラーが存在する場合
+			if(bret == false) {
+				//inputのメソッドで呼び出された定義を呼び出すようにする
+				Navigation navigation = (Navigation)invoke(getClass(), validation.input());
+				return navigation;
 			}
 		}
 		return null;
@@ -291,20 +297,18 @@ public abstract class JsonController extends Controller {
 			throw new RuntimeException(e);
 		}
 
-		if(target != null) {
-			TokenCheck tokenCheck = target.getAnnotation(TokenCheck.class);
-			if(tokenCheck != null) {
+		TokenCheck tokenCheck = target.getAnnotation(TokenCheck.class);
+		if(tokenCheck != null) {
 
-				//SessionのTokenとリクエストパラメータのTokenが合致しているかチェック
-				String reqToken = asString(TOKEN_KEY);
-				String sessionToken = sessionScope(TOKEN_KEY);
-				removeSessionScope(TOKEN_KEY);
-				if(ObjectUtils.equals(reqToken, sessionToken) == false) {
-					//requestスコープにエラーメッセージを設定し、JSONエラー時のメソッドを呼び出す
-					errors.put("message", ApplicationMessage.get("errors.token"));
-					requestScope(TOKEN_ERR_KEY, "1");
-					return jsonError();
-				}
+			//SessionのTokenとリクエストパラメータのTokenが合致しているかチェック
+			String reqToken = asString(TOKEN_KEY);
+			String sessionToken = sessionScope(TOKEN_KEY);
+			removeSessionScope(TOKEN_KEY);
+			if(ObjectUtils.equals(reqToken, sessionToken) == false) {
+				//requestスコープにエラーメッセージを設定し、JSONエラー時のメソッドを呼び出す
+				errors.put("message", ApplicationMessage.get("errors.token"));
+				requestScope(TOKEN_ERR_KEY, "1");
+				return jsonError();
 			}
 		}
 		return null;

@@ -9,23 +9,26 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
 import org.junit.Test;
 import org.slim3.tester.ControllerTestCase;
 
-public class SampleControllerTest extends ControllerTestCase {
+public class TokenSampleControllerTest extends ControllerTestCase {
 
 	/**
 	 * 通常テスト.
-	 * validateあり。エラー無し。
+	 * TokenCheckあり。エラー無し。
 	 */
 	@Test
 	public void test() throws NullPointerException, IllegalArgumentException, IOException, ServletException {
 		HttpServletRequest request = tester.request;
-		request.setAttribute("dummy", "123");
-		tester.start("/sample");
+		HttpSession session = request.getSession();
+		session.setAttribute("jp.co.nemuzuka.token", "123");
+		request.setAttribute("jp.co.nemuzuka.token", "123");
+		tester.start("/tokenSample");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
 		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
@@ -34,17 +37,19 @@ public class SampleControllerTest extends ControllerTestCase {
 
 	/**
 	 * 通常テスト.
-	 * validateあり。エラーあり。
+	 * TokenCheckあり。エラーあり。
 	 */
 	@Test
 	public void validateErrorTest() throws NullPointerException, IllegalArgumentException, IOException, ServletException {
 		HttpServletRequest request = tester.request;
-		request.setAttribute("dummy", "a");
-		tester.start("/sample");
+		HttpSession session = request.getSession();
+		session.setAttribute("jp.co.nemuzuka.token", "123");
+		request.setAttribute("jp.co.nemuzuka.token", "1234");
+		tester.start("/tokenSample");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
 		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
-		assertThat(actual.toString(), is("{\"errorMsg\":[\"ダミーは整数でなければいけません。\"],\"infoMsg\":[],\"result\":-1,\"status\":0}"));
+		assertThat(actual.toString(), is("{\"errorMsg\":[\"ブラウザの戻るボタンが押された可能性があります。もう一度操作してください。\"],\"infoMsg\":[],\"result\":-2,\"status\":0}"));
 	}
 
 	/* (非 Javadoc)

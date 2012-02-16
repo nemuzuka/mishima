@@ -11,15 +11,12 @@ import com.google.appengine.api.datastore.Transaction;
 public class TransactionEntity {
 	/** グローバルトランザクション. */
 	private Transaction transaction;
-	/** ロールバック有無. */
-	private boolean rollback;
 	
 	/**
 	 * コンストラクタ.
 	 */
 	public TransactionEntity() {
 		transaction = Datastore.beginTransaction();
-		rollback = false;
 	}
 	
 	/**
@@ -34,7 +31,6 @@ public class TransactionEntity {
 	 */
 	public void rollback() {
 		transaction.rollback();
-		rollback = true;
 	}
 	
 	/**
@@ -48,17 +44,5 @@ public class TransactionEntity {
 	 */
 	public void setTransaction(Transaction transaction) {
 		this.transaction = transaction;
-	}
-	/**
-	 * @return rollback
-	 */
-	public boolean isRollback() {
-		return rollback;
-	}
-	/**
-	 * @param rollback セットする rollback
-	 */
-	public void setRollback(boolean rollback) {
-		this.rollback = rollback;
 	}
 }

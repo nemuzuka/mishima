@@ -12,6 +12,8 @@ public class JsonResult implements Serializable {
 	public static Integer STATUS_NG = -1;
 	/** Tokenエラー. */
 	public static Integer TOKEN_ERROR = -2;
+	/** サーバーエラー. */
+	public static Integer SEVERE_ERROR = -3;
 	
 	/**
 	 * serialVersionUID.

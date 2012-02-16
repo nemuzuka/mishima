@@ -9,13 +9,14 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
 import org.junit.Test;
 import org.slim3.tester.ControllerTestCase;
 
-public class SampleControllerTest extends ControllerTestCase {
+public class TokenValidateControllerTest extends ControllerTestCase {
 
 	/**
 	 * 通常テスト.
@@ -24,8 +25,11 @@ public class SampleControllerTest extends ControllerTestCase {
 	@Test
 	public void test() throws NullPointerException, IllegalArgumentException, IOException, ServletException {
 		HttpServletRequest request = tester.request;
+		HttpSession session = request.getSession();
+		session.setAttribute("jp.co.nemuzuka.token", "123");
+		request.setAttribute("jp.co.nemuzuka.token", "123");
 		request.setAttribute("dummy", "123");
-		tester.start("/sample");
+		tester.start("/tokenValidate");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
 		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
@@ -39,8 +43,11 @@ public class SampleControllerTest extends ControllerTestCase {
 	@Test
 	public void validateErrorTest() throws NullPointerException, IllegalArgumentException, IOException, ServletException {
 		HttpServletRequest request = tester.request;
+		HttpSession session = request.getSession();
+		session.setAttribute("jp.co.nemuzuka.token", "123");
+		request.setAttribute("jp.co.nemuzuka.token", "123");
 		request.setAttribute("dummy", "a");
-		tester.start("/sample");
+		tester.start("/tokenValidate");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
 		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
