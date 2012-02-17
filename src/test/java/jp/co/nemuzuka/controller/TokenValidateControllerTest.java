@@ -2,6 +2,7 @@ package jp.co.nemuzuka.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import jp.co.nemuzuka.form.TestForm;
-import net.sf.json.JSONObject;
 
 import org.junit.Test;
 import org.slim3.tester.ControllerTestCase;
@@ -34,13 +34,16 @@ public class TokenValidateControllerTest extends ControllerTestCase {
 		tester.start("/tokenValidate");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
-		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
+		String actual = tester.response.getOutputAsString();
 		assertThat(actual.toString(), is("{\"errorMsg\":[],\"infoMsg\":[],\"result\":null,\"status\":0}"));
 		
 		TokenValidateController controller = tester.getController();
 		TestForm testForm = controller.testForm;
 		assertThat(testForm.getDummy(), is("123"));
 		assertThat(testForm.getMemo(), is("メモです。"));
+		
+		testForm = controller.testForm2;
+		assertThat(testForm, is(nullValue()));
 	}
 
 	/**
@@ -57,8 +60,8 @@ public class TokenValidateControllerTest extends ControllerTestCase {
 		tester.start("/tokenValidate");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
-		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
-		assertThat(actual.toString(), is("{\"errorMsg\":[\"ダミーは整数でなければいけません。\"],\"infoMsg\":[],\"result\":-1,\"status\":0}"));
+		String actual = tester.response.getOutputAsString();
+		assertThat(actual.toString(), is("{\"errorMsg\":[\"ダミーは整数でなければいけません。\"],\"infoMsg\":[],\"result\":null,\"status\":-1}"));
 	}
 
 	/* (非 Javadoc)

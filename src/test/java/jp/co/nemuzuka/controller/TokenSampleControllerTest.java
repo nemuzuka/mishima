@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.sf.json.JSONObject;
-
 import org.junit.Test;
 import org.slim3.tester.ControllerTestCase;
 
@@ -31,7 +29,7 @@ public class TokenSampleControllerTest extends ControllerTestCase {
 		tester.start("/tokenSample");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
-		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
+		String actual = tester.response.getOutputAsString();
 		assertThat(actual.toString(), is("{\"errorMsg\":[],\"infoMsg\":[],\"result\":null,\"status\":0}"));
 	}
 
@@ -48,8 +46,8 @@ public class TokenSampleControllerTest extends ControllerTestCase {
 		tester.start("/tokenSample");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
-		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
-		assertThat(actual.toString(), is("{\"errorMsg\":[\"ブラウザの戻るボタンが押された可能性があります。もう一度操作してください。\"],\"infoMsg\":[],\"result\":-2,\"status\":0}"));
+		String actual = tester.response.getOutputAsString();
+		assertThat(actual.toString(), is("{\"errorMsg\":[\"ブラウザの戻るボタンが押された可能性があります。もう一度操作してください。\"],\"infoMsg\":[],\"result\":null,\"status\":-2}"));
 	}
 
 	/* (非 Javadoc)

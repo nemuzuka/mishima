@@ -10,8 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
 import org.junit.Test;
 import org.slim3.tester.ControllerTestCase;
 
@@ -28,7 +26,7 @@ public class SampleControllerTest extends ControllerTestCase {
 		tester.start("/sample");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
-		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
+		String actual = tester.response.getOutputAsString();
 		assertThat(actual.toString(), is("{\"errorMsg\":[],\"infoMsg\":[],\"result\":null,\"status\":0}"));
 	}
 
@@ -43,8 +41,8 @@ public class SampleControllerTest extends ControllerTestCase {
 		tester.start("/sample");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
-		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
-		assertThat(actual.toString(), is("{\"errorMsg\":[\"ダミーは整数でなければいけません。\"],\"infoMsg\":[],\"result\":-1,\"status\":0}"));
+		String actual = tester.response.getOutputAsString();
+		assertThat(actual.toString(), is("{\"errorMsg\":[\"ダミーは整数でなければいけません。\"],\"infoMsg\":[],\"result\":null,\"status\":-1}"));
 	}
 
 	/* (非 Javadoc)

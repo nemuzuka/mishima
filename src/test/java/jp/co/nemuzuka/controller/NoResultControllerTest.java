@@ -9,8 +9,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
 import org.junit.Test;
 import org.slim3.tester.ControllerTestCase;
 
@@ -24,8 +22,8 @@ public class NoResultControllerTest extends ControllerTestCase {
 		tester.start("/noResult");
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
-		JSONObject actual = JSONObject.fromObject(tester.response.getOutputAsString());
-		assertThat(actual.toString(), is("{\"errorMsg\":[\"サーバでエラーが発生しました。\"],\"infoMsg\":[],\"result\":-3,\"status\":0}"));
+		String actual = tester.response.getOutputAsString();
+		assertThat(actual.toString(), is("{\"errorMsg\":[\"サーバでエラーが発生しました。\"],\"infoMsg\":[],\"result\":null,\"status\":-3}"));
 	}
 	
 	/* (非 Javadoc)

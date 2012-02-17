@@ -5,6 +5,10 @@ import org.slim3.datastore.Model;
 
 import com.google.appengine.api.datastore.Key;
 
+/**
+ * データストアテスト用のModel.
+ * @author kazumune
+ */
 @Model
 public class Slim3Model {
 

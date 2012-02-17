@@ -15,7 +15,7 @@ import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
-import net.sf.json.JSONSerializer;
+import net.arnx.jsonic.JSON;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -39,6 +39,8 @@ public abstract class JsonController extends Controller {
 	private String TOKEN_ERR_KEY = "jp.co.nemuzuka.token.err";
 	/** サーバエラー存在有無格納キー. */
 	private String SEVERE_ERR_KEY = "jp.co.nemuzuka.severe.err";
+	/** 前処理エラー存在有無格納キー. */
+	private String SETUP_ERROR = "jp.co.nemuzuka.setup.error";
 	
 	/** logger. */
 	protected final Logger logger = Logger.getLogger(getClass().getName());
@@ -58,6 +60,13 @@ public abstract class JsonController extends Controller {
 	 */
 	@Override
 	protected Navigation run() throws Exception {
+		
+		//前処理でエラーが発生した場合、処理は行わない
+		String setUpError = requestScope(SETUP_ERROR);
+		if(StringUtils.isNotEmpty(setUpError)) {
+			return null;
+		}
+		
 		Object obj = execute();
 		if (obj == null) {
 			throw new AssertionError("execute() must not be null.");
@@ -87,18 +96,18 @@ public abstract class JsonController extends Controller {
 		setActionForm(clazz);
 
 		//TokenCheckが指定されていれば実行
-		Navigation navigation;
-		navigation = executeTokenCheck(clazz);
+		boolean status = executeTokenCheck(clazz);
 
-		if(navigation == null) {
+		if(status) {
 			//validationが指定されていれば実行
-			navigation = executeValidation(clazz);
-			if(navigation != null) {
-				//正常終了していない場合、処理終了
-				return navigation;
+			status = executeValidation(clazz);
+			if(status == false) {
+				return null;
 			}
 			//グローバルトランザクションの設定を行う
 			setTransaction();
+		} else {
+			requestScope(SETUP_ERROR, "1");
 		}
 		return null;
 	}
@@ -139,7 +148,7 @@ public abstract class JsonController extends Controller {
 	protected Navigation writeJsonObj(Object obj) throws IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
-		JSONSerializer.toJSON(obj).write(response.getWriter());
+		response.getWriter().write(JSON.encode(obj));
 		response.flushBuffer();
 		return null;
 	}
@@ -158,15 +167,17 @@ public abstract class JsonController extends Controller {
 		String severeError = requestScope(SEVERE_ERR_KEY);
 		if(StringUtils.isNotEmpty(jsonError)) {
 			//Tokenエラー
-			result.setResult(JsonResult.TOKEN_ERROR);
+			result.setStatus(JsonResult.TOKEN_ERROR);
 		} else if(StringUtils.isNotEmpty(severeError)) {
 			//サーバーエラー
-			result.setResult(JsonResult.SEVERE_ERROR);
+			result.setStatus(JsonResult.SEVERE_ERROR);
 		} else {
 			//通常のエラー
-			result.setResult(JsonResult.STATUS_NG);
+			result.setStatus(JsonResult.STATUS_NG);
 		}
 		try {
+			//エラーが存在する旨、設定
+			requestScope(SETUP_ERROR, "1");
 			return writeJsonObj(result);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -239,10 +250,10 @@ public abstract class JsonController extends Controller {
 	 * validation実行.
 	 * メイン処理に「@Validation」が付与されれている場合、メソッドを呼び出し、validateを実行します。
 	 * @param clazz 対象クラス
-	 * @return Navigation(エラーが無い or validatationが無い場合はnull)
+	 * @return エラーが無い or validatationが無い場合はtrue/エラーが存在する場合、false
 	 */
 	@SuppressWarnings({ "rawtypes" })
-	private Navigation executeValidation(Class clazz) {
+	private boolean executeValidation(Class clazz) {
 		//executeメソッドにValidatetionアノテーションが付与されている場合
 		Method target = null;
 		try {
@@ -262,11 +273,11 @@ public abstract class JsonController extends Controller {
 			//エラーが存在する場合
 			if(bret == false) {
 				//inputのメソッドで呼び出された定義を呼び出すようにする
-				Navigation navigation = (Navigation)invoke(getClass(), validation.input());
-				return navigation;
+				invoke(getClass(), validation.input());
+				return false;
 			}
 		}
-		return null;
+		return true;
 	}
 
 	/**
@@ -285,10 +296,10 @@ public abstract class JsonController extends Controller {
 	 * メイン処理に「@TokenCheck」が付与されれている場合、tokenチェックを行います。
 	 * 合致しない場合、戻り値を
 	 * @param clazz 対象クラス
-	 * @return エラーの場合、遷移先。エラーが無い or 付与されていない場合、null
+	 * @return エラーが無い or 付与されていない場合、true/エラーが存在する場合、false
 	 */
 	@SuppressWarnings({ "rawtypes" })
-	private Navigation executeTokenCheck(Class clazz) {
+	private boolean executeTokenCheck(Class clazz) {
 		//executeメソッドにTokenCheckアノテーションが付与されている場合
 		Method target = null;
 		try {
@@ -308,10 +319,11 @@ public abstract class JsonController extends Controller {
 				//requestスコープにエラーメッセージを設定し、JSONエラー時のメソッドを呼び出す
 				errors.put("message", ApplicationMessage.get("errors.token"));
 				requestScope(TOKEN_ERR_KEY, "1");
-				return jsonError();
+				jsonError();
+				return false;
 			}
 		}
-		return null;
+		return true;
 	}
 
 

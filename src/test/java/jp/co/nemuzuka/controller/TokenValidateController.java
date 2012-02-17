@@ -20,6 +20,9 @@ public class TokenValidateController extends JsonController {
 	@ActionForm
 	protected TestForm testForm;
 	
+	/** アノテーションが無いので、自動ではインスタンス化されない. */
+	protected TestForm testForm2 = null;
+	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
