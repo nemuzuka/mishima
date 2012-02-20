@@ -2,14 +2,11 @@ package jp.co.nemuzuka.core.controller;
 
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
@@ -18,23 +15,17 @@ import jp.co.nemuzuka.core.entity.TransactionEntity;
 import net.arnx.jsonic.JSON;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 import org.slim3.util.ApplicationMessage;
-import org.slim3.util.BeanUtil;
 
 /**
  * JSONでレスポンスを返す場合のController基底クラス.
  * @author kazumune
  */
-public abstract class JsonController extends Controller {
+public abstract class JsonController extends AbsController {
 
-	/** token格納キー. */
-	//Sessionも、リクエストパラメータもこの項目であることが前提です。
-	private String TOKEN_KEY = "jp.co.nemuzuka.token";
 	/** tokenエラー存在有無格納キー. */
 	private String TOKEN_ERR_KEY = "jp.co.nemuzuka.token.err";
 	/** サーバエラー存在有無格納キー. */
@@ -183,68 +174,6 @@ public abstract class JsonController extends Controller {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
-	/**
-	 * メソッド呼び出し.
-	 * 引数なしでメソッドを呼び出します。
-	 * @param clazz クラス
-	 * @param methodName メソッド名
-	 * @return 呼び出したメソッドの戻り値
-	 */
-	@SuppressWarnings({ "rawtypes" })
-	private Object invoke(Class clazz, String methodName) {
-
-		//validateメソッドの呼び出し
-		Method method = null;
-		try {
-			method = getDeclaredMethod(clazz, methodName, (Class[])null);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-		//validateメソッド呼び出し
-		Object obj = null;
-		try {
-			method.setAccessible(true);
-			obj = method.invoke(this, (Object[])null);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return obj;
-	}
-
-	/**
-	 * ActionForm設定.
-	 * 「@ActionForm」と定義されているものに対して、
-	 * インスタンス生成し、値をリクエストパラメータよりコピーします。
-	 * @param clazz 対象クラス
-	 */
-	@SuppressWarnings("rawtypes")
-	private void setActionForm(Class clazz) {
-
-		//@ActionFormと定義されているものに対して、インスタンス生成し、コピーする
-		Field[] fields = clazz.getDeclaredFields();
-		for(Field target : fields) {
-			Annotation[] annos = target.getAnnotations();
-			for(Annotation targetAnno :annos) {
-				if(targetAnno instanceof ActionForm) {
-
-					//インスタンス生成
-					Object obj = null;
-					try {
-						target.setAccessible(true);
-						obj = target.getType().newInstance();
-						BeanUtil.copy(request, obj);
-						target.set(this, obj);
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
-				}
-			}
-		}
-	}
-
 
 	/**
 	 * validation実行.
@@ -278,17 +207,6 @@ public abstract class JsonController extends Controller {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Token設定.
-	 * SessionにTokenを設定します。
-	 * @return 設定Token文字列
-	 */
-	protected String setToken() {
-		String token = RandomStringUtils.randomAlphanumeric(32);
-		sessionScope(TOKEN_KEY, token);
-		return token;
 	}
 	
 	/**
@@ -334,31 +252,5 @@ public abstract class JsonController extends Controller {
 	private void setTransaction() {
 		TransactionEntity transactionEntity = new TransactionEntity();
 		GlobalTransaction.transaction.set(transactionEntity);
-	}
-	
-	/**
-	 * Method取得.
-	 * メソッドを取得します。
-	 * 存在しない場合、親クラスに対して検索します。
-	 * @param clazz 対象Class
-	 * @param methodName メソッド名
-	 * @param paramClass パラメータクラス配列
-	 * @return メソッド
-	 * @throws NoSuchMethodException 親クラスまでさかのぼっても見つからなかった
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private Method getDeclaredMethod(Class clazz, String methodName, 
-			Class[] paramClass) throws NoSuchMethodException {
-		Method target = null;
-		try {
-			target = clazz.getDeclaredMethod(methodName, paramClass);
-		} catch(NoSuchMethodException e) {
-			Class superClazz = clazz.getSuperclass();
-			if(superClazz == null) {
-				throw e;
-			}
-			return getDeclaredMethod(superClazz, methodName, paramClass);
-		}
-		return target;
 	}
 }

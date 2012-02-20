@@ -25,13 +25,4 @@ public class NoResultControllerTest extends ControllerTestCase {
 		String actual = tester.response.getOutputAsString();
 		assertThat(actual.toString(), is("{\"errorMsg\":[\"サーバでエラーが発生しました。\"],\"infoMsg\":[],\"result\":null,\"status\":-3}"));
 	}
-	
-	/* (非 Javadoc)
-	 * @see org.slim3.tester.ControllerTestCase#setUp()
-	 */
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-		tester.response.flushBuffer();
-	}
 }

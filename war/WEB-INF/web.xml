@@ -88,4 +88,15 @@
             <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>
+    
+    <!-- 全てのリクエストにはGoogleのログインが必要 -->
+    <security-constraint>
+        <web-resource-collection>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+
 </web-app>

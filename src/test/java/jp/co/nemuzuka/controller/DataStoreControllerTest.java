@@ -64,13 +64,4 @@ public class DataStoreControllerTest extends ControllerTestCase {
 		actualList = Slim3Service.queryAll();
 		assertThat(actualList.size(), is(0));
 	}
-	
-	/* (非 Javadoc)
-	 * @see org.slim3.tester.ControllerTestCase#setUp()
-	 */
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-		tester.response.flushBuffer();
-	}
 }

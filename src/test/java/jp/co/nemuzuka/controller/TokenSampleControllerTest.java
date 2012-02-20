@@ -49,13 +49,4 @@ public class TokenSampleControllerTest extends ControllerTestCase {
 		String actual = tester.response.getOutputAsString();
 		assertThat(actual.toString(), is("{\"errorMsg\":[\"ブラウザの戻るボタンが押された可能性があります。もう一度操作してください。\"],\"infoMsg\":[],\"result\":null,\"status\":-2}"));
 	}
-
-	/* (非 Javadoc)
-	 * @see org.slim3.tester.ControllerTestCase#setUp()
-	 */
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-		tester.response.flushBuffer();
-	}
 }
