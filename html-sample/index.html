@@ -15,6 +15,10 @@
 <link href="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
 -->
 
+<script type="text/javascript" src="./js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+
+
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,5 +90,32 @@
     </div>
   </div>
 </div>
+
+<!-- モーダルダイアログ的なもの -->
+<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Launch demo modal</a>
+<div id="myModal" class="modal hide fade">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal" >&times;</a>
+    <h3>Modal Heading</h3>
+  </div>
+  <!-- style="overflow: scroll; width: 100px; height: 100px;" -->
+  <div class="modal-body">
+    <h4>Text in a modal</h4>
+    <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem.</p>
+
+    <h4>Popover in a modal</h4>
+    <p>This <a href="#" class="btn popover-test" title="A Title" data-content="And here's some amazing content. It's very engaging. right?">button</a> should trigger a popover on hover.</p>
+
+    <h4>Tooltips in a modal</h4>
+    <p><a href="#" class="tooltip-test" title="Tooltip">This link</a> and <a href="#" class="tooltip-test" title="Tooltip">that link</a> should have tooltips on hover.</p>
+
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary">Save changes</a>
+    <a href="#" class="btn" data-dismiss="modal" >Close</a>
+  </div>
+</div>
+<!-- モーダルダイアログ的なもの -->
+
 </body>
 </html>
