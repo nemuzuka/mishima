@@ -24,6 +24,16 @@
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
+
+<script type="text/javascript">
+$(function(){
+  $("#personal_settings").click(function(){
+    $("#personalSettingsDialog").modal("show");
+  });
+});
+</script>
+
+
 </head>
 
 <body data-spy="scroll" data-target=".subnav" data-offset="50" data-twttr-rendered="true">
@@ -40,7 +50,7 @@
           </li>
           <li class="divider-vertical"></li>
           <li class="">
-            <a href="http://twitter.github.com/bootstrap/download.html">個人設定</a>
+            <a href="#" id="personal_settings">個人設定</a>
           </li>
           <li class="" style="line-height: 40px;">
             <select>
@@ -91,8 +101,31 @@
   </div>
 </div>
 
+<!-- 個人設定ダイアログ -->
+<div id="personalSettingsDialog" class="modal hide">
+  <div class="modal-header">
+    <!-- 右上の☓ボタン -->
+    <a class="close" data-dismiss="modal" >&times;</a>
+    <h3>個人設定</h3>
+  </div>
+  <div class="modal-body form-horizontal">
+    <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="personalSettingsDialog-name">氏名</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" id="personalSettingsDialog-name" />
+      </div>
+    </div>
+    </fieldset>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" id="personalSettingsDialog-update">変更する</a>
+    <a href="#" class="btn" data-dismiss="modal" id="personalSettingsDialog-close">閉じる</a>
+  </div>
+</div>
+
+
 <!-- モーダルダイアログ的なもの -->
-<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Launch demo modal</a>
 <div id="myModal" class="modal hide fade">
   <div class="modal-header">
     <a class="close" data-dismiss="modal" >&times;</a>
