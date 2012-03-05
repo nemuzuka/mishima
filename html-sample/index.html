@@ -49,54 +49,81 @@ $(function(){
             【プロジェクト名】
           </li>
           <li class="divider-vertical"></li>
-          <li class="">
-            <a href="#" id="personal_settings">個人設定</a>
-          </li>
           <li class="" style="line-height: 40px;">
-            <select>
+            <select id="targetProjects">
               <option>--プロジェクトを選択--</option>
               <option>XXXプロジェクト</option>
               <option>YYYプロジェクト</option>
             </select>
           </li>
+          <li class="">
+            <a href="#" id="personal_settings">個人設定</a>
+          </li>
+          <li class="">
+            <a href="#" id="logout">logout</a>
+          </li>
         </ul>
       </div>
     </div>
   </div>
+  <!-- 各機能に対するメニューバー(2段目) -->
   <div class="navbar-inner">
     <div class="container">
       <div class="nav-collapse">
         <ul class="nav">
           <li class="active">
-            <a href="http://twitter.github.com/bootstrap/index.html">ダッシュボード</a>
+            <a href="#">ダッシュボード</a>
           </li>
           <li class="">
-            <a href="http://twitter.github.com/bootstrap/scaffolding.html">チケット</a>
+            <a href="#">チケット</a>
           </li>
           <li class="divider-vertical"></li>
           <li class="">
-            <a href="http://twitter.github.com/bootstrap/download.html">メンバー管理</a>
+            <a href="#">プロジェクト設定</a>
           </li>
           <li class="">
-            <a href="http://twitter.github.com/bootstrap/examples.html">プロジェクト管理</a>
+            <a href="#">メンバー管理</a>
           </li>
           <li class="">
-            <a href="http://twitter.github.com/bootstrap/examples.html">プロジェクト設定</a>
+            <a href="#">プロジェクト管理</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Contents -->
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span2">
-      <!--Sidebar content-->
-      aaa
+    <div class="span3">
+      <!--サイドコンテンツ-->
+      <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+          <li class="nav-header">Sidebar</li>
+          <li class="active"><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li class="nav-header">Sidebar</li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li class="nav-header">Sidebar</li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+        </ul>      
+      </div>
     </div>
-    <div class="span10">
-      <!--Body content-->
-      bbb
+    <div class="span9">
+      <!--メインコンテンツ-->
+      <div class="well">
+        bbb
+      </div>
     </div>
   </div>
 </div>

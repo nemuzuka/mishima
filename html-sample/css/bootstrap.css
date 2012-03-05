@@ -3505,3 +3505,6 @@ text-overflow: ellipsis;
 -o-text-overflow: ellipsis;
 }
 
+.sidebar-nav {
+padding: 9px 0;
+}
