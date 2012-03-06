@@ -2,13 +2,9 @@ package jp.co.nemuzuka.model;
 
 import java.util.Date;
 
-import jp.co.nemuzuka.common.Authority;
-import jp.co.nemuzuka.meta.MemberModelMeta;
-
 import org.slim3.datastore.Attribute;
 import org.slim3.datastore.CreationDate;
 import org.slim3.datastore.CreationUser;
-import org.slim3.datastore.Datastore;
 import org.slim3.datastore.Model;
 import org.slim3.datastore.ModificationDate;
 import org.slim3.datastore.ModificationUser;
@@ -17,30 +13,27 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
 
 /**
- * アプリケーションに登録されているユーザを管理するModel.
+ * プロジェクトを管理するModel.
  * @author kazumune
  */
 @Model(schemaVersion = 1)
-public class MemberModel extends AbsModel {
+public class ProjectModel extends AbsModel {
 
-	/** メンバーKey. */
-	//mailアドレスから生成
+	/** プロジェクトKey. */
+	//自動採番
 	@Attribute(primaryKey=true)
 	private Key key;
 
-	/** メールアドレス. */
-	private String mail;
+	/** プロジェクト名. */
+	private String projectName;
 	
-	/** 氏名. */
-	private String name;
+	/** プロジェクト識別子. */
+	//被っても特に問題はない
+	private String projectId;
 	
-	/** 
-	 * 権限. 
-	 * 管理者：システムにユーザを追加できる
-	 * 一般
-	 */
-	private Authority authority;
-	
+	/** プロジェクト概要. */
+	private String projectSummary;
+		
 	//共通的に使用する
 	/** 登録日時. */
 	@Attribute(listener = CreationDate.class)
@@ -63,17 +56,6 @@ public class MemberModel extends AbsModel {
 	Long version;
 
 	/**
-	 * Key生成.
-	 * 引数のメールアドレスでKeyを生成します。
-	 * @param mail メールアドレス
-	 * @return 生成Key
-	 */
-	public Key createKey(String mail) {
-		key = Datastore.createKey(MemberModelMeta.class, mail);
-		return key;
-	}
-	
-	/**
 	 * @return key
 	 */
 	public Key getKey() {
@@ -88,59 +70,45 @@ public class MemberModel extends AbsModel {
 	}
 
 	/**
-	 * @return mail
+	 * @return projectName
 	 */
-	public String getMail() {
-		return mail;
+	public String getProjectName() {
+		return projectName;
 	}
 
 	/**
-	 * @param mail セットする mail
+	 * @param projectName セットする projectName
 	 */
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 
 	/**
-	 * @return name
+	 * @return projectId
 	 */
-	public String getName() {
-		return name;
+	public String getProjectId() {
+		return projectId;
 	}
 
 	/**
-	 * @param name セットする name
+	 * @param projectId セットする projectId
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 
 	/**
-	 * @return authority
+	 * @return projectSummary
 	 */
-	public Authority getAuthority() {
-		return authority;
+	public String getProjectSummary() {
+		return projectSummary;
 	}
 
 	/**
-	 * @param authority セットする authority
+	 * @param projectSummary セットする projectSummary
 	 */
-	public void setAuthority(Authority authority) {
-		this.authority = authority;
-	}
-
-	/**
-	 * @return version
-	 */
-	public Long getVersion() {
-		return version;
-	}
-
-	/**
-	 * @param version セットする version
-	 */
-	public void setVersion(Long version) {
-		this.version = version;
+	public void setProjectSummary(String projectSummary) {
+		this.projectSummary = projectSummary;
 	}
 
 	/**
@@ -198,4 +166,19 @@ public class MemberModel extends AbsModel {
 	public void setUpdateUser(User updateUser) {
 		this.updateUser = updateUser;
 	}
+
+	/**
+	 * @return version
+	 */
+	public Long getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version セットする version
+	 */
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
 }
