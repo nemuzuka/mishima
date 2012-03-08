@@ -22,6 +22,29 @@ import com.google.appengine.api.users.UserServiceFactory;
 public abstract class HtmlController extends AbsController {
 	
 	/**
+	 * メイン処理.
+	 * @return 遷移先Navigation
+	 * @throws Exception 例外
+	 */
+	abstract protected Navigation execute() throws Exception;
+
+	/**
+	 * メイン処理.
+	 * 正常終了時、commitしてThreadLocalから削除します。
+	 * @see org.slim3.controller.Controller#run()
+	 */
+	@Override
+	protected Navigation run() throws Exception {
+		//グローバルトランザクションの設定を行う
+		setTransaction();
+		Navigation navigation = execute();
+		
+		//commit
+		executeCommit();
+		return navigation;
+	}
+	
+	/**
 	 * 前処理.
 	 * ・ActionFormの設定
 	 * ・validation
@@ -81,7 +104,7 @@ public abstract class HtmlController extends AbsController {
 		//executeメソッドにValidatetionアノテーションが付与されている場合
 		Method target = null;
 		try {
-			target = getDeclaredMethod(clazz, "run", (Class[])null);
+			target = getDeclaredMethod(clazz, "execute", (Class[])null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

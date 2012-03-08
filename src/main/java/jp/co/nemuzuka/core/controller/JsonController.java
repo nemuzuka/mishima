@@ -9,9 +9,7 @@ import java.util.logging.Logger;
 
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
-import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.JsonResult;
-import jp.co.nemuzuka.core.entity.TransactionEntity;
 import net.arnx.jsonic.JSON;
 
 import org.apache.commons.lang.ObjectUtils;
@@ -62,9 +60,8 @@ public abstract class JsonController extends AbsController {
 		if (obj == null) {
 			throw new AssertionError("execute() must not be null.");
 		}
-		TransactionEntity entity = GlobalTransaction.transaction.get();
-		entity.commit();
-		GlobalTransaction.transaction.remove();
+		
+		executeCommit();
 		return writeJsonObj(obj);
 	}
 
@@ -114,20 +111,6 @@ public abstract class JsonController extends AbsController {
 		requestScope(SEVERE_ERR_KEY, "1");
 		return jsonError();
 	}
-	
-	/**
-	 * 終了時処理.
-	 * ThreadLocalに存在する場合、ロールバックして空にします。
-	 * @see org.slim3.controller.Controller#tearDown()
-	 */
-	@Override
-	protected void tearDown() {
-		TransactionEntity entity = GlobalTransaction.transaction.get();
-		if(entity != null) {
-			entity.rollback();
-			GlobalTransaction.transaction.remove();
-		}
-	};
 	
 	/**
 	 * JSONオブジェクト書き込み.
@@ -242,15 +225,5 @@ public abstract class JsonController extends AbsController {
 			}
 		}
 		return true;
-	}
-
-
-	/**
-	 * グローバルトランザクション設定.
-	 * ThreadLocalに開始状態のトランザクションを設定します。
-	 */
-	private void setTransaction() {
-		TransactionEntity transactionEntity = new TransactionEntity();
-		GlobalTransaction.transaction.set(transactionEntity);
 	}
 }

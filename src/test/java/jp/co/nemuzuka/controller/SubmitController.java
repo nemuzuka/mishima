@@ -36,7 +36,7 @@ public class SubmitController extends HtmlController {
 	 */
 	@Validation(method="validate",input="error")
 	@Override
-	protected Navigation run() throws Exception {
+	protected Navigation execute() throws Exception {
 		return forward("index.jsp");
 	}
 	

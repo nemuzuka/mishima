@@ -17,7 +17,7 @@ public class Submit2Controller extends HtmlController {
 	 * @throws Exception 例外
 	 */
 	@Override
-	protected Navigation run() throws Exception {
+	protected Navigation execute() throws Exception {
 		return forward("index.jsp");
 	}
 }
