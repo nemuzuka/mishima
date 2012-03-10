@@ -1,7 +1,6 @@
 package jp.co.nemuzuka.model;
 
 import jp.co.nemuzuka.common.Authority;
-import jp.co.nemuzuka.meta.MemberModelMeta;
 
 import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Datastore;
@@ -43,7 +42,7 @@ public class MemberModel extends AbsModel {
 	 */
 	public Key createKey(String mail) {
 		this.mail = mail;
-		key = Datastore.createKey(MemberModelMeta.class, mail);
+		key = Datastore.createKey(MemberModel.class, mail);
 		return key;
 	}
 

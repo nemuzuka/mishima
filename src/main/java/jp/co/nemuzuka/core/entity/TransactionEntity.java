@@ -16,7 +16,7 @@ public class TransactionEntity {
 	 * コンストラクタ.
 	 */
 	public TransactionEntity() {
-		transaction = Datastore.beginTransaction();
+		begin();
 	}
 	
 	/**
@@ -31,6 +31,13 @@ public class TransactionEntity {
 	 */
 	public void rollback() {
 		transaction.rollback();
+	}
+	
+	/**
+	 * トランザクションbegin.
+	 */
+	public void begin() {
+		transaction = Datastore.beginTransaction();
 	}
 	
 	/**

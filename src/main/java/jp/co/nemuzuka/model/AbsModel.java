@@ -46,6 +46,12 @@ public abstract class AbsModel {
 	public abstract Key getKey();
 
 	/**
+	 * Key情報の設定.
+	 * @param key 設定対象
+	 */
+	public abstract void setKey(Key key);
+	
+	/**
 	 * Keyの文字列情報取得.
 	 * @return 文字列化したKey
 	 */
