@@ -80,10 +80,7 @@ public class MemberServiceImpl implements MemberService {
 	private List<MemberModel> createViewData(List<MemberModel> list) {
 		
 		for(MemberModel target : list) {
-			target.setCreatedAt(null);
-			target.setCreateUser(null);
-			target.setUpdatedAt(null);
-			target.setUpdateUser(null);
+			target.clearData();
 		}
 		return list;
 	}

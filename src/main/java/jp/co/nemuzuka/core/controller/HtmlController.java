@@ -1,6 +1,7 @@
 package jp.co.nemuzuka.core.controller;
 
 import java.lang.reflect.Method;
+import java.util.ConcurrentModificationException;
 
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.model.MemberModel;
@@ -37,10 +38,19 @@ public abstract class HtmlController extends AbsController {
 	protected Navigation run() throws Exception {
 		//グローバルトランザクションの設定を行う
 		setTransaction();
-		Navigation navigation = execute();
 		
-		//commit
-		executeCommit();
+		Navigation navigation = null;
+		try {
+			navigation = execute();
+			//commit
+			executeCommit();
+		} catch (ConcurrentModificationException e) {
+			//今回の思想では、こちらのケースで排他エラーになるような処理は無いので、
+			//強制的にエラー画面を表示させることとする
+			//ここに来たら設計バグ
+			super.tearDown();
+			navigation = forward("/error/noregist/");
+		}
 		return navigation;
 	}
 	

@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.dao;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
@@ -43,7 +44,6 @@ public abstract class AbsDao {
 	
 	/**
 	 * get処理.
-	 * @param modelClass 対象クラス.
 	 * @param key Key情報
 	 * @return 該当データ。存在しなければnull
 	 */
@@ -54,6 +54,25 @@ public abstract class AbsDao {
 					GlobalTransaction.transaction.get().getTransaction(),
 					getModelClass(), key);
 		} catch(EntityNotFoundRuntimeException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * get処理(version情報あり).
+	 * @param key Key情報
+	 * @param version version
+	 * @return 該当データ。存在しない or versionが違う場合null
+	 */
+	@SuppressWarnings("unchecked")
+	public <M> M get(Key key, Long version) {
+		try {
+			return (M) Datastore.get(
+					GlobalTransaction.transaction.get().getTransaction(),
+					getModelClass(), key, version);
+		} catch(EntityNotFoundRuntimeException e) {
+			return null;
+		} catch(ConcurrentModificationException e) {
 			return null;
 		}
 	}

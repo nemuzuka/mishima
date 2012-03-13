@@ -3,6 +3,7 @@ package jp.co.nemuzuka.core.controller;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ConcurrentModificationException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,12 +57,21 @@ public abstract class JsonController extends AbsController {
 			return null;
 		}
 		
-		Object obj = execute();
-		if (obj == null) {
-			throw new AssertionError("execute() must not be null.");
+		Object obj = null;
+		try {
+			obj = execute();
+			if (obj == null) {
+				throw new AssertionError("execute() must not be null.");
+			}
+			executeCommit();
+		} catch (ConcurrentModificationException e) {
+			//排他エラーが発生した場合、その情報をJsonオブジェクトに設定して返却
+			super.tearDown();
+			JsonResult result = new JsonResult();
+			result.setStatus(JsonResult.VERSION_ERR);
+			result.getErrorMsg().add(ApplicationMessage.get("errors.version"));
+			obj = result;
 		}
-		
-		executeCommit();
 		return writeJsonObj(obj);
 	}
 

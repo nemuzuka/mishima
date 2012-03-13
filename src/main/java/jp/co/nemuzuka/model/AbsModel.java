@@ -52,6 +52,18 @@ public abstract class AbsModel {
 	public abstract void setKey(Key key);
 	
 	/**
+	 * 不要データ削除.
+	 * 登録/更新、日時、対象者をnullに置き換えます。
+	 * 一覧を表示する際にトラフィックを減らすために使用します。
+	 */
+	public void clearData() {
+		createdAt = null;
+		createUser = null;
+		updatedAt = null;
+		updateUser = null;
+	}
+	
+	/**
 	 * Keyの文字列情報取得.
 	 * @return 文字列化したKey
 	 */
