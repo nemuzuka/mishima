@@ -41,7 +41,7 @@ public enum Authority {
 	 * @param code コード値
 	 * @return 該当データ(存在しない場合、null)
 	 */
-	public Authority fromCode(String code) {
+	public static Authority fromCode(String code) {
 		return map.get(code);
 	}
 	

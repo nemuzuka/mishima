@@ -43,6 +43,15 @@ public abstract class AbsDao {
 	}
 	
 	/**
+	 * delete処理.
+	 * @param keys 削除対象Key
+	 */
+	public void delete(Key... keys) {
+		Datastore.delete(
+				GlobalTransaction.transaction.get().getTransaction(), keys);
+	}
+	
+	/**
 	 * get処理.
 	 * @param key Key情報
 	 * @return 該当データ。存在しなければnull

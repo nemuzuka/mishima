@@ -2,6 +2,7 @@ package jp.co.nemuzuka.service;
 
 import java.util.List;
 
+import jp.co.nemuzuka.form.MemberForm;
 import jp.co.nemuzuka.model.MemberModel;
 
 /**
@@ -20,15 +21,22 @@ public interface MemberService {
 	/**
 	 * 詳細情報取得.
 	 * @param  keyString キー文字列
-	 * @return 該当レコードがあればインスタンス。該当レコードがなければnull
+	 * @return 該当レコードがあれば更新用Form。該当レコードがなければ新規用Form
 	 */
-	MemberModel get(String keyString);
+	MemberForm get(String keyString);
 	
 	/**
 	 * put処理.
-	 * @param model put対象Model
+	 * @param form put対象Form
 	 */
-	void put(MemberModel model);
+	void put(MemberForm form);
+	
+	/**
+	 * delete処理.
+	 * keyとバージョンNoが合致するデータを削除します。
+	 * @param form delete対象Form
+	 */
+	void delete(MemberForm form);
 	
 	/**
 	 * 該当レコード取得.
