@@ -6,9 +6,6 @@ import jp.co.nemuzuka.service.impl.MemberServiceImpl;
 
 import org.slim3.controller.Navigation;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-
 /**
  * メインController.
  * アプリケーション管理者の場合、MemberModelが登録されているか確認し、
@@ -25,15 +22,11 @@ public class IndexController extends HtmlController {
 	@Override
 	protected Navigation execute() throws Exception {
 		
-		UserService service = UserServiceFactory.getUserService();
-		if(service.isUserAdmin()) {
+		if(userService.isUserAdmin()) {
 			//アプリケーション管理者の場合、MemberModelに登録されているかチェック
-			memberService.checkAndCreateAdminMember(service.getCurrentUser().getEmail());
+			memberService.checkAndCreateAdminMember(userService.getCurrentUser().getEmail());
 		}
-		
-		
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return forward("index.jsp");
 	}
 
 }

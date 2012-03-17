@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.co.nemuzuka.common.Authority;
+import jp.co.nemuzuka.common.UniqueKey;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.dao.MemberDao;
+import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import jp.co.nemuzuka.form.MemberForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.service.MemberService;
@@ -66,7 +68,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<MemberModel> getList(String name) {
 		List<MemberModel> list = memberDao.getList(name);
-		return createViewData(list);
+		return list;
 	}
 
 	/* (非 Javadoc)
@@ -83,6 +85,10 @@ public class MemberServiceImpl implements MemberService {
 			//versionとKeyで情報を取得
 			model = memberDao.get(key, version);
 		} else {
+			//新規の場合、入力されたKey項目相当が存在するかチェック
+			if (Datastore.putUniqueValue(UniqueKey.member.name(), form.mail)) {
+				throw new AlreadyExistKeyException();
+			}
 			model = new MemberModel();
 		}
 		
@@ -110,23 +116,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<MemberModel> getAllList() {
 		List<MemberModel> list = memberDao.getAllList();
-		return createViewData(list);
-	}
-	
-	/**
-	 * 表示用データ作成.
-	 * 不要なデータを削除します。
-	 * @param list 対象List
-	 * @return 設定後List
-	 */
-	private List<MemberModel> createViewData(List<MemberModel> list) {
-		
-		for(MemberModel target : list) {
-			target.clearData();
-		}
 		return list;
 	}
-
+	
 	/**
 	 * ユーザ権限LabelValueBean生成.
 	 * @return 生成ユーザ権限LabelValueBeanのList

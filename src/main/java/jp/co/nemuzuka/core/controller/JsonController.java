@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.entity.JsonResult;
+import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import net.arnx.jsonic.JSON;
 
 import org.apache.commons.lang.ObjectUtils;
@@ -59,6 +60,7 @@ public abstract class JsonController extends AbsController {
 		
 		Object obj = null;
 		try {
+			setUserService();
 			obj = execute();
 			if (obj == null) {
 				throw new AssertionError("execute() must not be null.");
@@ -70,6 +72,13 @@ public abstract class JsonController extends AbsController {
 			JsonResult result = new JsonResult();
 			result.setStatus(JsonResult.VERSION_ERR);
 			result.getErrorMsg().add(ApplicationMessage.get("errors.version"));
+			obj = result;
+		} catch(AlreadyExistKeyException e) {
+			//一意制約エラーが発生した場合、その情報をJsonオブジェクトに設定して返却
+			super.tearDown();
+			JsonResult result = new JsonResult();
+			result.setStatus(JsonResult.DUPLICATE_ERR);
+			result.getErrorMsg().add(ApplicationMessage.get("errors.duplicate"));
 			obj = result;
 		}
 		return writeJsonObj(obj);

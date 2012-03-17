@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ConcurrentModificationException;
 
 import jp.co.nemuzuka.core.annotation.Validation;
+import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import jp.co.nemuzuka.model.MemberModel;
 
 import org.slim3.controller.Navigation;
@@ -41,6 +42,7 @@ public abstract class HtmlController extends AbsController {
 		
 		Navigation navigation = null;
 		try {
+			setUserService();
 			navigation = execute();
 			//commit
 			executeCommit();
@@ -48,6 +50,10 @@ public abstract class HtmlController extends AbsController {
 			//今回の思想では、こちらのケースで排他エラーになるような処理は無いので、
 			//強制的にエラー画面を表示させることとする
 			//ここに来たら設計バグ
+			super.tearDown();
+			navigation = forward("/error/noregist/");
+		} catch(AlreadyExistKeyException e) {
+			//一意制約エラーの場合
 			super.tearDown();
 			navigation = forward("/error/noregist/");
 		}

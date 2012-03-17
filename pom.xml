@@ -23,6 +23,17 @@
         <updatePolicy>never</updatePolicy>
       </releases>
     </repository>
+    <repository>
+      <id>mvnrepository.com</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://mvnrepository.com/artifact</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>

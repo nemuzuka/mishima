@@ -2,6 +2,8 @@ package jp.co.nemuzuka.model;
 
 import java.util.Date;
 
+import net.arnx.jsonic.JSONHint;
+
 import org.slim3.datastore.Attribute;
 import org.slim3.datastore.CreationDate;
 import org.slim3.datastore.CreationUser;
@@ -21,23 +23,23 @@ public abstract class AbsModel {
 	//共通的に使用する
 	/** 登録日時. */
 	@Attribute(listener = CreationDate.class, unindexed=true)
-	Date createdAt;
+	private Date createdAt;
 	
 	/** 登録ユーザ. */
 	@Attribute(listener = CreationUser.class, unindexed=true)
-	User createUser;
+	private User createUser;
 	
 	/** 更新日時. */
 	@Attribute(listener = ModificationDate.class, unindexed=true)
-	Date updatedAt;
+	private Date updatedAt;
 	
 	/** 更新ユーザ. */
 	@Attribute(listener = ModificationUser.class, unindexed=true)
-	User updateUser;
+	private User updateUser;
 
 	/** バージョンNo. */
 	@Attribute(version = true)
-	Long version;
+	private Long version;
 
 	/**
 	 * Key情報の取得.
@@ -52,18 +54,6 @@ public abstract class AbsModel {
 	public abstract void setKey(Key key);
 	
 	/**
-	 * 不要データ削除.
-	 * 登録/更新、日時、対象者をnullに置き換えます。
-	 * 一覧を表示する際にトラフィックを減らすために使用します。
-	 */
-	public void clearData() {
-		createdAt = null;
-		createUser = null;
-		updatedAt = null;
-		updateUser = null;
-	}
-	
-	/**
 	 * Keyの文字列情報取得.
 	 * @return 文字列化したKey
 	 */
@@ -74,6 +64,7 @@ public abstract class AbsModel {
 	/**
 	 * @return createdAt
 	 */
+	@JSONHint(ignore=true)
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -88,6 +79,7 @@ public abstract class AbsModel {
 	/**
 	 * @return createUser
 	 */
+	@JSONHint(ignore=true)
 	public User getCreateUser() {
 		return createUser;
 	}
@@ -102,6 +94,7 @@ public abstract class AbsModel {
 	/**
 	 * @return updatedAt
 	 */
+	@JSONHint(ignore=true)
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
@@ -116,6 +109,7 @@ public abstract class AbsModel {
 	/**
 	 * @return updateUser
 	 */
+	@JSONHint(ignore=true)
 	public User getUpdateUser() {
 		return updateUser;
 	}

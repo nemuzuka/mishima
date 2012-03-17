@@ -12,6 +12,9 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.slim3.controller.Controller;
 import org.slim3.util.BeanUtil;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+
 /**
  * Contorollerの基底クラス.
  * @author kazumune
@@ -22,6 +25,8 @@ public abstract class AbsController extends Controller {
 	//Sessionも、リクエストパラメータもこの項目であることが前提です。
 	protected String TOKEN_KEY = "jp.co.nemuzuka.token";
 
+	/** ログインユーザ情報. */
+	protected UserService userService;
 	
 	/**
 	 * 終了時処理.
@@ -37,6 +42,13 @@ public abstract class AbsController extends Controller {
 		}
 	};
 
+	/**
+	 * ログインユーザ情報設定.
+	 */
+	protected void setUserService() {
+		userService = UserServiceFactory.getUserService();
+	}
+	
 	/**
 	 * Method取得.
 	 * メソッドを取得します。

@@ -1,6 +1,7 @@
 package jp.co.nemuzuka.model;
 
 import jp.co.nemuzuka.common.Authority;
+import net.arnx.jsonic.JSONHint;
 
 import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Datastore;
@@ -49,6 +50,7 @@ public class MemberModel extends AbsModel {
 	/**
 	 * @return key
 	 */
+	@JSONHint(ignore=true)
 	public Key getKey() {
 		return key;
 	}

@@ -1,5 +1,7 @@
 package jp.co.nemuzuka.model;
 
+import net.arnx.jsonic.JSONHint;
+
 import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Model;
 
@@ -32,6 +34,7 @@ public class ProjectModel extends AbsModel {
 	/**
 	 * @return key
 	 */
+	@JSONHint(ignore=true)
 	public Key getKey() {
 		return key;
 	}
