@@ -42,9 +42,10 @@ public interface MemberService {
 	 * 該当レコード取得.
 	 * 一覧を取得します。
 	 * @param name 検索条件：氏名
+	 * @param mail 検索条件：メールアドレス
 	 * @return 該当レコード
 	 */
-	List<MemberModel> getList(String name);
+	List<MemberModel> getList(String name, String mail);
 	
 	/**
 	 * 全件取得.

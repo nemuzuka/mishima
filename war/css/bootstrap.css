@@ -562,7 +562,7 @@ select,
 .uneditable-input {
   display: inline-block;
   width: 210px;
-  height: 18px;
+  height: 28px;
   padding: 4px;
   margin-bottom: 9px;
   font-size: 13px;
@@ -1021,12 +1021,12 @@ legend + .control-group {
 }
 .form-horizontal .control-label {
   float: left;
-  width: 140px;
+  width: 100px;
   padding-top: 5px;
   text-align: right;
 }
 .form-horizontal .controls {
-  margin-left: 160px;
+  margin-left: 120px;
 }
 .form-horizontal .form-actions {
   padding-left: 160px;
@@ -3507,4 +3507,8 @@ text-overflow: ellipsis;
 
 .sidebar-nav {
 padding: 9px 0;
+}
+
+.span9 .well {
+  background-color: #fff;
 }

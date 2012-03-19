@@ -52,13 +52,17 @@ public class MemberDao extends AbsDao {
 	/**
 	 * List取得.
 	 * @param name 氏名(前方一致)
+	 * @param mail メール(前方一致)
 	 * @return 該当レコード
 	 */
-	public List<MemberModel> getList(String name) {
+	public List<MemberModel> getList(String name, String mail) {
 		MemberModelMeta e = MemberModelMeta.get();
 		Set<FilterCriterion> filterSet = new HashSet<FilterCriterion>();
 		if(StringUtils.isNotEmpty(name)) {
 			filterSet.add(e.name.startsWith(name));
+		}
+		if(StringUtils.isNotEmpty(mail)) {
+			filterSet.add(e.mail.startsWith(mail));
 		}
 		return Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0])).asList();
 	}

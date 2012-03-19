@@ -13,6 +13,7 @@
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link href="/css/bootstrap-responsive.css" rel="stylesheet">
 <link href="/css/docs.css" rel="stylesheet">
+<link href="/css/common.css" rel="stylesheet">
 
 <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>

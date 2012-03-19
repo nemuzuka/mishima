@@ -35,6 +35,14 @@ public class MemberModel extends AbsModel {
 	private Authority authority;
 	
 	/**
+	 * 権限Label取得.
+	 * @return 権限Label
+	 */
+	public String getAuthorityLabel() {
+		return authority.getLabel();
+	}
+	
+	/**
 	 * Key生成.
 	 * 引数のメールアドレスでKeyを生成します。
 	 * メンバ変数のメールアドレスにも設定します。

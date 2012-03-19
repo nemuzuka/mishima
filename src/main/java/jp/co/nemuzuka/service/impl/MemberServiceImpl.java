@@ -63,11 +63,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	/* (非 Javadoc)
-	 * @see jp.co.nemuzuka.service.MemberService#getList(java.lang.String)
+	 * @see jp.co.nemuzuka.service.MemberService#getList(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<MemberModel> getList(String name) {
-		List<MemberModel> list = memberDao.getList(name);
+	public List<MemberModel> getList(String name, String mail) {
+		List<MemberModel> list = memberDao.getList(name, mail);
 		return list;
 	}
 

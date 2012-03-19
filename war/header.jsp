@@ -51,10 +51,7 @@
             <a href="#">プロジェクト設定</a>
           </li>
           <li class="">
-            <a href="#">メンバー管理</a>
-          </li>
-          <li class="">
-            <a href="#">プロジェクト管理</a>
+            <a href="#">各種管理</a>
           </li>
         </ul>
       </div>
