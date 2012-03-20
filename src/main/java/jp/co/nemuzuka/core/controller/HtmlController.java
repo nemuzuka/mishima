@@ -31,6 +31,14 @@ public abstract class HtmlController extends AbsController {
 	abstract protected Navigation execute() throws Exception;
 
 	/**
+	 * ログアウト用URL取得
+	 * @return ログアウト用URL
+	 */
+	public String getLogoutUrl() {
+		return userService.createLogoutURL("/");
+	}
+	
+	/**
 	 * メイン処理.
 	 * 正常終了時、commitしてThreadLocalから削除します。
 	 * @see org.slim3.controller.Controller#run()

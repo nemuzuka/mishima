@@ -11,53 +11,75 @@
 </c:param>
   
 <c:param name="content">
+
+<script type="text/javascript" src="/js/management/member.js"></script>
+
 <div class="widget">
 <form class="form-horizontal">
+
 	<h2 class="title">メンバー検索</h2>
 	<table class="search_table">
 	<tbody>
 	<tr>
-		<th>氏名</tf>
+		<th>氏名</th>
 		<td><input type="text" id="search_name" /></td>
-		<th>メールアドレス</tf>
+		<th>メールアドレス</th>
 		<td><input type="text" id="search_mail" /></td>
 	</tr>
 	</tbody>
 	</table>
 	<div class="search_ctrl">
-		<input type="button" class="btn btn-primary" value="検索" />
-		<input type="button" class="btn" value="新規登録" />
+		<input type="button" class="btn btn-primary" id="searchMemberBtn" value="検索" />
+		<input type="button" class="btn" value="新規登録" id="addMemberBtn" />
 	</div>
 	
 	<div id="result_area" class="result">
-		<hr noshade />
-		<table class="table table-bordered result_table">
-		<thead><tr>
-			<th>氏名</th>
-			<th>メールアドレス</th>
-			<th>権限</th>
-			<th></th>
-		</tr></thead>
-		<tbody>
-		<tr>
-			<td><a>片桐　一宗</a></td>
-			<td>kkaz123@gmail.com</td>
-			<td>管理者</td>
-			<td><input type="button" class="btn btn-danger btn-mini" value="削"></td>
-		</tr>
-		<tr>
-			<td><a>片桐　一宗2</a></td>
-			<td>kkaz1234@gmail.com</td>
-			<td>一般</td>
-			<td><input type="button" class="btn btn-danger btn-mini" value="削"></td>
-		</tr>
-		</tbody>
-		</table>
-	<div>
+	</div>
+
+<%-- 一覧表示時の件数. --%>
+<input type="hidden" id="listCnt" value="0" />
+<%-- token. --%>
+<input type="hidden" id="token" />
+
 </form>
 </div>
 
-<input type="hidden" id="selected_sub_menu" id="sub_menu2" />
+
+<%-- メンバーダイアログ --%>
+<div id="memberDialog" title="メンバー" class="dialog-widget">
+<div class="dialog-container form-horizontal" >
+<fieldset>
+	<div class="control-group">
+		<label class="control-label" for="edit_name">氏名</label>
+		<div class="controls">
+			<input type="text" class="input-xlarge" id="edit_name">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="edit_mail">メールアドレス</label>
+		<div class="controls">
+			<input type="text" class="input-xlarge" id="edit_mail">
+			<p class="help-block">googleの認証で使用するメールアドレスです</p>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="edit_authority">権限</label>
+		<div class="controls">
+			<label class="radio inline"><input type="radio" name="authority" value="admin">管理者</label>
+			<label class="radio inline"><input type="radio" name="authority" value="normal">一般</label>
+		</div>
+	</div>
+	<div class="edit_ctrl">
+		<input type="button" class="btn btn-primary" id="memberDialog-add" value="登録する" />
+		<input type="button" class="btn" id="memberDialog-cancel" value="キャンセル" />
+		<input type="hidden" id="edit_versionNo" />
+		<input type="hidden" id="edit_keyToString" />
+	</div>
+</fieldset>
+</div>
+</div>
+
+<input type="hidden" id="selected_sub_menu" value="sub_menu2" />
 
 </c:param>
 

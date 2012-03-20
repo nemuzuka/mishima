@@ -53,6 +53,11 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     
+    <servlet>
+        <servlet-name>_ah_sessioncleanup</servlet-name>
+        <servlet-class>com.google.apphosting.utils.servlet.SessionCleanupServlet</servlet-class>
+    </servlet>
+    
     <!--
     <servlet>
         <servlet-name>GWTServiceServlet</servlet-name>
@@ -64,6 +69,11 @@
     <servlet-mapping>
         <servlet-name>GlobalTransactionServlet</servlet-name>
         <url-pattern>/slim3/gtx</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>_ah_sessioncleanup</servlet-name>
+        <url-pattern>/_ah/sessioncleanup</url-pattern>
     </servlet-mapping>
     
     <!--
@@ -96,6 +106,17 @@
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- SessionクリーンのServletは管理者権限のみ -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>session-cleanup</web-resource-name>
+            <url-pattern>/_ah/sessioncleanup</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>
 

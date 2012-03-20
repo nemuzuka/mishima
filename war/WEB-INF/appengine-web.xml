@@ -5,6 +5,13 @@
 
   <static-files>
     <include path="/**.*"/>
+    <include path="/css/**.css"/>
+    <include path="/css/**.png"/>
+    <include path="/js/**.js"/>
+    <include path="/img/**.png"/>
+    <include path="/img/**.gif"/>
+    <include path="/img/**.jpg"/>
+    <include path="/favicon.ico"/>
   </static-files>
 
   <system-properties>

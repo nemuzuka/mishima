@@ -1,11 +1,9 @@
 package jp.co.nemuzuka.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.common.UniqueKey;
-import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import jp.co.nemuzuka.form.MemberForm;
@@ -58,7 +56,6 @@ public class MemberServiceImpl implements MemberService {
 				setForm(form, model);
 			}
 		}
-		form.authorityList = createAuthorityList();
 		return form;
 	}
 
@@ -86,7 +83,7 @@ public class MemberServiceImpl implements MemberService {
 			model = memberDao.get(key, version);
 		} else {
 			//新規の場合、入力されたKey項目相当が存在するかチェック
-			if (Datastore.putUniqueValue(UniqueKey.member.name(), form.mail)) {
+			if (Datastore.putUniqueValue(UniqueKey.member.name(), form.mail) == false) {
 				throw new AlreadyExistKeyException();
 			}
 			model = new MemberModel();
@@ -119,21 +116,6 @@ public class MemberServiceImpl implements MemberService {
 		return list;
 	}
 	
-	/**
-	 * ユーザ権限LabelValueBean生成.
-	 * @return 生成ユーザ権限LabelValueBeanのList
-	 */
-	private List<LabelValueBean> createAuthorityList() {
-		
-		List<LabelValueBean> list = new ArrayList<LabelValueBean>();
-		Authority[] authoritys = Authority.values();
-		for(Authority target : authoritys) {
-			list.add(new LabelValueBean(target.getLabel(), target.getCode()));
-		}
-		list.add(0, new LabelValueBean("", ""));
-		return list;
-	}
-
 	/**
 	 * Form情報設定.
 	 * @param form 設定対象Form

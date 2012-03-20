@@ -1,9 +1,6 @@
 package jp.co.nemuzuka.form;
 
 import java.io.Serializable;
-import java.util.List;
-
-import jp.co.nemuzuka.core.entity.LabelValueBean;
 
 /**
  * MemberForm.
@@ -26,29 +23,11 @@ public class MemberForm implements Serializable {
 	public String name;
 	
 	/** 権限. */
-	public String authority;
+	public String authority = "normal";
 
 	/** バージョンNo. */
 	public String versionNo;
 	
-	//登録、変更画面構成情報
-	/** 権限List. */
-	public List<LabelValueBean> authorityList;
-	
-	/**
-	 * @return authorityList
-	 */
-	public List<LabelValueBean> getAuthorityList() {
-		return authorityList;
-	}
-
-	/**
-	 * @param authorityList セットする authorityList
-	 */
-	public void setAuthorityList(List<LabelValueBean> authorityList) {
-		this.authorityList = authorityList;
-	}
-
 	/**
 	 * @return keyToString
 	 */

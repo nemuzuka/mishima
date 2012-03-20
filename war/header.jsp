@@ -40,17 +40,17 @@
     <div class="container">
       <div class="nav-collapse">
         <ul class="nav">
-          <li class="active">
+          <li class="" id="main_menu1">
             <a href="#">ダッシュボード</a>
           </li>
-          <li class="">
+          <li class="" id="main_menu2">
             <a href="#">チケット</a>
           </li>
           <li class="divider-vertical"></li>
-          <li class="">
+          <li class="" id="main_menu3">
             <a href="#">プロジェクト設定</a>
           </li>
-          <li class="">
+          <li class="" id="main_menu4">
             <a href="#">各種管理</a>
           </li>
         </ul>
@@ -58,3 +58,16 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+<!--
+$(function(){
+	var selectedMainMenu = $("#selected_main_menu").val();
+	$("#" + selectedMainMenu).addClass("active");
+
+	var selectedSubMenu = $("#selected_sub_menu").val();
+	$("#" + selectedSubMenu).addClass("active");
+});
+//-->
+</script>
+

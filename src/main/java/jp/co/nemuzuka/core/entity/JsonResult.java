@@ -18,6 +18,9 @@ public class JsonResult implements Serializable {
 	public static Integer VERSION_ERR = -4;
 	/** 一意制約エラー. */
 	public static Integer DUPLICATE_ERR = -5;
+	/** 該当データ無し. */
+	public static Integer NO_DATA = -6;
+	
 	
 	/**
 	 * serialVersionUID.
@@ -33,6 +36,21 @@ public class JsonResult implements Serializable {
 	private Integer status = STATUS_OK;
 	/** 結果Object. */
 	private Object result;
+	/** token文字列. */
+	private String token;
+	
+	/**
+	 * @return token
+	 */
+	public String getToken() {
+		return token;
+	}
+	/**
+	 * @param token セットする token
+	 */
+	public void setToken(String token) {
+		this.token = token;
+	}
 	/**
 	 * @return errorMsg
 	 */

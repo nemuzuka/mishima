@@ -1,10 +1,10 @@
 @charset "utf-8";
 
-h2.title{color:08C;line-height:26px;font-size:150%;}
+h2.title{color:08C;line-height:26px;font-size:150%;font-weight:normal;text-shadow:1px 1px 1px #08C;}
 
 /* 検索テーブル. */
-.search_table{font-size:86%;border-top:2px solid #08C;border-bottom:2px solid #08C;}
-.search_table th,.search_table td{padding:5px 10px;border-bottom:1px solid #fcc;}
+.search_table{font-size:100%;border-top:2px solid #08C;border-bottom:2px solid #08C;}
+.search_table th,.search_table td{padding:5px 10px;border-bottom:1px solid #08C;}
 .search_table th{background:#8fecff;width:100px;}
 .search_table td{background:#FFF;width:150px;}
 .search_table td:last-child{width:auto;}
@@ -15,5 +15,25 @@ h2.title{color:08C;line-height:26px;font-size:150%;}
 
 .result{margin-top:15px;}
 /* 検索結果テーブル */
-.result_table thead th{background:#f0ffff;font-size: 86%;text-align:center;}
-.result_table a{text-decoration:underline;cursor: pointer;}
+.result_table {font-size: 100%;}
+.result_table thead th{background:#f0ffff;text-align:center;}
+.result_table a{cursor: pointer;}
+
+
+/* ダイアログテーブル(並べ替え・編集・フォロー) */
+.edit_table {font-size:86%;border-top:2px solid #08C;border-bottom:2px solid #08C;width:100%;border-left:1px solid #08C;}
+.edit_table th,
+.edit_table td {border-bottom:1px solid #08C;border-right:1px solid #08C;padding:5px 10px}
+.edit_table th {background:#8fecff;}
+.edit_table td {background:#FFF;}
+.edit_ctrl{margin-top:10px;margin-left:120px;}
+.edit_ctrl .btn {margin-right:5px;}
+
+
+/* ダイアログ. */
+.dialog-widget{display:none;}
+.dialog-container{margin:5px auto;padding:10px;background:#FFF;overflow:auto;}
+
+
+hr {border: 0 none; height: 2px; color: #08C;background-color: #08C;}
+
