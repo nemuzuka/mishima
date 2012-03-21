@@ -1,8 +1,7 @@
 package jp.co.nemuzuka.controller;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,7 +34,7 @@ public class DataStoreControllerTest extends ControllerTestCase {
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
 		String actual = tester.response.getOutputAsString();
-		assertThat(actual, is("{\"errorMsg\":[],\"infoMsg\":[\"処理が正常に終了しました。\"],\"result\":{\"hoge\":\"終了でーす。\"},\"status\":0}"));
+		assertThat(actual, is("{\"errorMsg\":[],\"infoMsg\":[\"処理が正常に終了しました。\"],\"result\":{\"hoge\":\"終了でーす。\"},\"status\":0,\"token\":null}"));
 		
 		//データストアに格納されていることを確認
 		actualList = Slim3Service.queryAll();
@@ -58,7 +57,7 @@ public class DataStoreControllerTest extends ControllerTestCase {
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
 		String actual = tester.response.getOutputAsString();
-		assertThat(actual, is("{\"errorMsg\":[\"サーバでエラーが発生しました。\"],\"infoMsg\":[],\"result\":null,\"status\":-3}"));
+		assertThat(actual, is("{\"errorMsg\":[\"サーバでエラーが発生しました。\"],\"infoMsg\":[],\"result\":null,\"status\":-3,\"token\":null}"));
 		
 		//データストアに格納されていないことを確認
 		actualList = Slim3Service.queryAll();

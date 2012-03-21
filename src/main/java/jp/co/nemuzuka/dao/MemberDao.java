@@ -64,6 +64,7 @@ public class MemberDao extends AbsDao {
 		if(StringUtils.isNotEmpty(mail)) {
 			filterSet.add(e.mail.startsWith(mail));
 		}
-		return Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0])).asList();
+		return Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0]))
+				.sortInMemory(e.authority.asc, e.key.asc).asList();
 	}
 }

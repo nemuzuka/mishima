@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.service.impl;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import jp.co.nemuzuka.common.Authority;
@@ -34,11 +35,11 @@ public class MemberServiceImpl implements MemberService {
 			return;
 		}
 		//存在しないので、登録する
-		model = new MemberModel();
-		model.createKey(mail);
-		model.setName(mail);
-		model.setAuthority(Authority.admin);
-		memberDao.put(model);
+		MemberForm form = new MemberForm();
+		form.mail = mail;
+		form.name = mail;
+		form.authority = Authority.admin.name();
+		put(form);
 	}
 
 	/* (非 Javadoc)
@@ -81,6 +82,10 @@ public class MemberServiceImpl implements MemberService {
 			Long version = ConvertUtils.toLong(form.versionNo);
 			//versionとKeyで情報を取得
 			model = memberDao.get(key, version);
+			if(model == null) {
+				//該当レコードが存在しない場合、Exceptionをthrow
+				throw new ConcurrentModificationException();
+			}
 		} else {
 			//新規の場合、入力されたKey項目相当が存在するかチェック
 			if (Datastore.putUniqueValue(UniqueKey.member.name(), form.mail) == false) {
@@ -103,8 +108,14 @@ public class MemberServiceImpl implements MemberService {
 		Key key = Datastore.stringToKey(form.keyToString);
 		Long version = ConvertUtils.toLong(form.versionNo);
 		MemberModel model = memberDao.get(key, version);
+		if(model == null) {
+			//該当レコードが存在しない場合、Exceptionをthrow
+			throw new ConcurrentModificationException();
+		}
 		//削除
 		memberDao.delete(model.getKey());
+		//一意制約チェック用のModelからも削除する
+		Datastore.deleteUniqueValue(UniqueKey.member.name(), model.getMail());
 	}
 
 	/* (非 Javadoc)

@@ -59,7 +59,7 @@
 		<label class="control-label" for="edit_mail">メールアドレス</label>
 		<div class="controls">
 			<input type="text" class="input-xlarge" id="edit_mail">
-			<p class="help-block">googleの認証で使用するメールアドレスです</p>
+			<p class="help-block">googleの認証で使用するメールアドレスです。同じメールアドレスは登録できません</p>
 		</div>
 	</div>
 	<div class="control-group">

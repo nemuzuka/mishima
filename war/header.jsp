@@ -1,4 +1,5 @@
 <%@page pageEncoding="UTF-8" isELIgnored="false"%>
+<%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <!-- Navbar
     ================================================== -->
 <div class="navbar navbar-fixed-top">
@@ -29,7 +30,7 @@
             <a href="#" id="personal_settings">個人設定</a>
           </li>
           <li class="">
-            <a href="#" id="logout">logout</a>
+            <a href="${f:h(logoutURL)}">logout</a>
           </li>
         </ul>
       </div>

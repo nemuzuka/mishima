@@ -8,6 +8,7 @@ import jp.co.nemuzuka.model.AbsModel;
 
 import org.slim3.datastore.Datastore;
 import org.slim3.datastore.EntityNotFoundRuntimeException;
+import org.slim3.datastore.InMemorySortCriterion;
 import org.slim3.datastore.ModelMeta;
 
 import com.google.appengine.api.datastore.Key;
@@ -92,9 +93,24 @@ public abstract class AbsDao {
 	 * @param <M>
 	 * @return 登録データList
 	 */
-	@SuppressWarnings("unchecked")
 	public <M> List<M> getAllList() {
-		return (List<M>) Datastore.query(getModelMeta()).asList();
+		return getAllList((InMemorySortCriterion[])null);
 	}
-	
+
+	/**
+	 * 全件取得.
+	 * 登録されているデータを全件取得します。
+	 * @param <M>
+	 * @param sort 検索条件
+	 * @return 登録データList
+	 */
+	@SuppressWarnings("unchecked")
+	public <M> List<M> getAllList(InMemorySortCriterion... sort) {
+		
+		if(sort == null) {
+			return (List<M>) Datastore.query(getModelMeta()).asList();
+		}
+		return (List<M>) Datastore.query(getModelMeta()).sortInMemory(sort).asList();
+	}
+
 }

@@ -1,3 +1,5 @@
+var g_searchParams;
+
 $(function(){
 	initDialog();
 	
@@ -38,6 +40,12 @@ function initDialog(){
 //メンバー検索
 function searchMember() {
 	var params = createSearchParams();
+	g_searchParams = params;
+	searchAndRender(params);
+}
+
+//検索＆レンダリング
+function searchAndRender(params) {
 	setAjaxDefault();
 	$.ajax({
 		type: "POST",
@@ -77,11 +85,11 @@ function searchMember() {
 				var name = this.name;
 				var mail = this.mail;
 				var authorityLabel = this.authorityLabel;
-				var version = this.version
+				var versionNo = this.version
 
 				var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
 				$delBtn.click(function(){
-					deleteMember(name, keyToString, version);
+					deleteMember(name, keyToString, versionNo);
 				});
 				
 				var $a = $("<a />").attr({href:"javascript:void(0)"}).text(name);
@@ -109,9 +117,11 @@ function openEditDialog(keyToString) {
 	if(keyToString == '') {
 		$("#ui-dialog-title-memberDialog").append("メンバー登録");
 		$("#memberDialog-add").attr({value:"登録する"});
+		$("#edit_mail").prop("readonly", false);
 	} else {
 		$("#ui-dialog-title-memberDialog").append("メンバー変更");
 		$("#memberDialog-add").attr({value:"変更する"});
+		$("#edit_mail").prop("readonly", true);
 	}
 	
 	var params = {};
@@ -164,6 +174,10 @@ function execute() {
 				if(data.status == -1) {
 					//validateのエラーの場合、tokenを再発行
 					reSetToken();
+				} else {
+					//強制的にダイアログを閉じて、再検索
+					$("#memberDialog").dialog("close");
+					backView();
 				}
 				return;
 			}
@@ -184,7 +198,7 @@ function deleteMember(name, keyToString, version) {
 	
 	var params = {};
 	params["keyToString"] = keyToString;
-	params["version"] = version;
+	params["versionNo"] = version;
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	
 	setAjaxDefault();
@@ -228,7 +242,7 @@ function createExecuteParams() {
 //一覧に1件以上表示されている場合、再検索します。
 function backView() {
 	if($("#listCnt").val() != '0') {
-		searchMember();
+		searchAndRender(g_searchParams);
 	}
 }
 

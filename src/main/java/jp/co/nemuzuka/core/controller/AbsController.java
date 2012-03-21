@@ -44,9 +44,11 @@ public abstract class AbsController extends Controller {
 
 	/**
 	 * ログインユーザ情報設定.
+	 * 同時にlogout用のURLを設定します。
 	 */
 	protected void setUserService() {
 		userService = UserServiceFactory.getUserService();
+		requestScope("logoutURL", userService.createLogoutURL("/"));
 	}
 	
 	/**
