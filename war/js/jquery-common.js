@@ -3,7 +3,7 @@ function setAjaxDefault() {
 	$.ajaxSetup({
 		timeout: 10000,		//ミリ秒
 		ifModified: true,
-		async: false,
+		async: true,		//非同期通信
 
 		//通信前の処理を定義
 		beforeSend: function(jqXHR, settings) {
@@ -13,10 +13,10 @@ function setAjaxDefault() {
 		complete: function(jqXHR, textStatus) {
 			unBlockLoadingMsg();
 		},
-	    // エラー・ハンドラを定義（エラー時にダイアログ表示）
-	    error: function(xhr, status, err) {
-	      alert('通信エラーが発生しました。');
-	    }
+		// エラー・ハンドラを定義（エラー時にダイアログ表示）
+		error: function(xhr, status, err) {
+			alert('通信エラーが発生しました。');
+		}
 	});
 }
 
@@ -28,10 +28,15 @@ function viewLoadingMsg() {
 		fadeOut: 0,
 		showOverlay: true,
 		centerY: false,
+		centerX: false,
 		css: {
+			top: '85px', 
+			left: '', 
+			right: '10px',
 			border: 'none',
 			padding: '5px',
-			backgroundColor: '#333',
+			width: '120px',
+			backgroundColor: '#F00',
 			'-webkit-border-radius': '10px',
 			'-moz-border-radius': '10px',
 			opacity: .6,

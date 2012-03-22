@@ -41,73 +41,110 @@ function initDialog(){
 function searchMember() {
 	var params = createSearchParams();
 	g_searchParams = params;
-	searchAndRender(params);
+	var df = $.Deferred();
+	searchAndRender(df, params);
+	df.resolve();
+}
+
+//メンバー検索Ajax呼び出し
+function callSearch(params) {
+	return $.ajax({
+		type: "POST",
+		url: "/management/ajax/memberList",
+		data: params
+	});
 }
 
 //検索＆レンダリング
-function searchAndRender(params) {
-	setAjaxDefault();
-	$.ajax({
-		type: "POST",
-		url: "/management/ajax/memberList",
-		data: params,
-		success: function(data, status){
-
-			$("#result_area").empty();
-
-			//共通エラーチェック
-			if(errorCheck(data) == false) {
-				return;
+function searchAndRender(beforeTask, params) {
+	
+	var df = beforeTask;
+	var task;
+	task = df.pipe(
+			function() {
+				//前の処理が成功していた場合
+				setAjaxDefault();
+				return callSearch(params);
+			},
+			function() {
+				return "failed";
 			}
-			infoCheck(data);
-			//tokenの設定
-			$("#token").val(data.token);
-			
-			var result = data.result;
-			$("#listCnt").val(result.length);
-			if(result.length == 0) {
-				return;
+		).then(
+			function(data) {
+				render(data);
+			},
+			function(data) {
+				//ajax呼び出しに失敗した際の処理
 			}
-			
-			//一覧をレンダリング
-			var $table = $("<table />").addClass("table table-bordered result_table");
-			var $thead = $("<thead />").append($("<tr />")
-						.append($("<th />").text("氏名"))
-						.append($("<th />").text("メールアドレス"))
-						.append($("<th />").text("権限"))
-						.append($("<th />").text(""))
-					);
-			$table.append($thead);
-			
-			var $tbody = $("<tbody />");
-			$.each(result, function(){
-				var keyToString = this.keyToString;
-				var name = this.name;
-				var mail = this.mail;
-				var authorityLabel = this.authorityLabel;
-				var versionNo = this.version
+		);
+	return task;
+}
 
-				var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
-				$delBtn.click(function(){
-					deleteMember(name, keyToString, versionNo);
-				});
-				
-				var $a = $("<a />").attr({href:"javascript:void(0)"}).text(name);
-				$a.click(function(){
-					openEditDialog(keyToString);
-				});
-				var $tr = $("<tr />");
-				$tr.append($("<td />").append($a))
-					.append($("<td />").text(mail))
-					.append($("<td />").text(authorityLabel))
-					.append($("<td />").append($delBtn));
-				$tbody.append($tr)
-			});
-			$table.append($tbody);
-			
-			$("#result_area").append($("<hr />")).append($table);
-		}
+//一覧表示
+function render(data) {
+	$("#result_area").empty();
+
+	//共通エラーチェック
+	if(errorCheck(data) == false) {
+		return;
+	}
+	infoCheck(data);
+	//tokenの設定
+	$("#token").val(data.token);
+	
+	var result = data.result;
+	$("#listCnt").val(result.length);
+	if(result.length == 0) {
+		return;
+	}
+	
+	//一覧をレンダリング
+	var $table = $("<table />").addClass("table table-bordered result_table");
+	var $thead = $("<thead />").append($("<tr />")
+				.append($("<th />").text("氏名"))
+				.append($("<th />").text("メールアドレス"))
+				.append($("<th />").text("権限"))
+				.append($("<th />").text(""))
+			);
+	$table.append($thead);
+	
+	var $tbody = $("<tbody />");
+	$.each(result, function(){
+		var keyToString = this.keyToString;
+		var name = this.name;
+		var mail = this.mail;
+		var authorityLabel = this.authorityLabel;
+		var versionNo = this.version
+
+		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
+		$delBtn.click(function(){
+			deleteMember(name, keyToString, versionNo);
+		});
+		
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(name);
+		$a.click(function(){
+			openEditDialog(keyToString);
+		});
+		var $tr = $("<tr />");
+		$tr.append($("<td />").append($a))
+			.append($("<td />").text(mail))
+			.append($("<td />").text(authorityLabel))
+			.append($("<td />").append($delBtn));
+		$tbody.append($tr)
 	});
+	$table.append($tbody);
+	
+	$("#result_area").append($("<hr />")).append($table);
+}
+
+//メンバー情報取得Ajax呼び出し
+function callMemberEditInfo(params) {
+	return 	$.ajax({
+		type: "POST",
+		url: "/management/ajax/memberEditInfo",
+		data: params
+		});
+
 }
 
 //登録・更新ダイアログ表示
@@ -126,20 +163,19 @@ function openEditDialog(keyToString) {
 	
 	var params = {};
 	params["keyToString"] = keyToString;
+	
 	setAjaxDefault();
-	$.ajax({
-		type: "POST",
-		url: "/management/ajax/memberEditInfo",
-		data: params,
-		success: function(data, status){
-			
+	var task;
+	var isBackView = false;
+	task = callMemberEditInfo(params).then(
+		function(data) {
 			//共通エラーチェック
 			if(errorCheck(data) == false) {
 				if(data.result == -6) {
 					//変更で該当レコード存在しない場合、一覧を再表示
-					backView();
+					isBackView = true;
 				}
-				return;
+				return "fail!";
 			}
 			
 			//tokenの設定
@@ -155,8 +191,17 @@ function openEditDialog(keyToString) {
 			$("#edit_keyToString").val(form.keyToString);
 			
 			$("#memberDialog").dialog("open");
+		},
+		function(data) {
+			//ajax呼び出しが失敗した際の処理
+			return "fail!";
 		}
-	});
+	);
+	alert(isBackView);
+	if(isBackView) {
+		backView(task);
+	}
+	
 }
 
 //メンバー登録・更新
@@ -171,8 +216,8 @@ function execute() {
 			
 			//共通エラーチェック
 			if(errorCheck(data) == false) {
-				if(data.status == -1) {
-					//validateのエラーの場合、tokenを再発行
+				if(data.status == -1 || data.status == -5) {
+					//validate or 入力値による一意制約エラーの場合、tokenを再発行
 					reSetToken();
 				} else {
 					//強制的にダイアログを閉じて、再検索
@@ -240,9 +285,9 @@ function createExecuteParams() {
 
 //再検索
 //一覧に1件以上表示されている場合、再検索します。
-function backView() {
+function backView(beforeTask) {
 	if($("#listCnt").val() != '0') {
-		searchAndRender(g_searchParams);
+		searchAndRender(beforeTask, g_searchParams);
 	}
 }
 
