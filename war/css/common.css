@@ -15,7 +15,7 @@ h2.title{color:08C;line-height:26px;font-size:150%;font-weight:bold;text-shadow:
 
 .result{margin-top:15px;}
 /* 検索結果テーブル */
-.result_table {font-size: 100%;}
+.result_table {font-size: 100%; margin-top:5px}
 .result_table thead th{background:#f0ffff;text-align:center;}
 .result_table a{cursor: pointer;}
 

@@ -9,12 +9,13 @@ function setAjaxDefault() {
 		beforeSend: function(jqXHR, settings) {
 			viewLoadingMsg();
 		},
-		//通信完了時の処理を定義
-		complete: function(jqXHR, textStatus) {
+		//通信成功時の処理を定義
+		success : function(data, dataType) {
 			unBlockLoadingMsg();
 		},
 		// エラー・ハンドラを定義（エラー時にダイアログ表示）
 		error: function(xhr, status, err) {
+			unBlockLoadingMsg();
 			alert('通信エラーが発生しました。');
 		}
 	});
@@ -86,25 +87,25 @@ function infoCheck(data) {
 //idが'token'であるhiddenオブジェクトに対して、
 //新たにサーバ側で設定したtokenを設定します。
 function reSetToken() {
-	executeReSetToken("/ajax/token");
+	return executeReSetToken("/ajax/token");
 }
 
 //Token設定メイン
 function executeReSetToken(url) {
 	setAjaxDefault();
-	$.ajax({
+	return $.ajax({
 		type: "POST",
-		url: url,
-		success: function(data, status){
+		url: url}).then(
+			function(data){
 
-			//共通エラーチェック
-			if(errorCheck(data) == false) {
-				return;
+				//共通エラーチェック
+				if(errorCheck(data) == false) {
+					return;
+				}
+	
+				$("#token").val(data.token);
 			}
-
-			$("#token").val(data.token);
-		}
-	});
+		);
 }
 
 

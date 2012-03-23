@@ -8,8 +8,6 @@ import jp.co.nemuzuka.form.MemberForm;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.impl.MemberServiceImpl;
 
-import org.slim3.util.ApplicationMessage;
-
 /**
  * Member削除Controller.
  * @author kazumune
@@ -32,7 +30,6 @@ public class MemberDeleteController extends JsonController {
 		memberService.delete(form);
 		
 		JsonResult result = new JsonResult();
-		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;
 	}
 }

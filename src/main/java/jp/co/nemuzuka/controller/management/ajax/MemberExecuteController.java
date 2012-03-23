@@ -10,7 +10,6 @@ import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.impl.MemberServiceImpl;
 
 import org.slim3.controller.validator.Validators;
-import org.slim3.util.ApplicationMessage;
 
 /**
  * Member登録・更新Controller.
@@ -35,7 +34,6 @@ public class MemberExecuteController extends JsonController {
 		memberService.put(form);
 		
 		JsonResult result = new JsonResult();
-		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;
 	}
 
