@@ -1,3 +1,4 @@
+@charset "utf-8";
 /*!
  * Bootstrap v2.0.1
  *
@@ -3496,7 +3497,7 @@ a.thumbnail:hover {
 }
 
 
-/* ’Ç‰Á */
+/* è¿½åŠ  */
 #selected_project_name1 {
 white-space: nowrap;
 overflow: hidden;

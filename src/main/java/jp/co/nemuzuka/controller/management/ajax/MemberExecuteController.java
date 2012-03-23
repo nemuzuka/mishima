@@ -8,6 +8,7 @@ import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.form.MemberForm;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.impl.MemberServiceImpl;
+import jp.co.nemuzuka.utils.ValidatorUtils;
 
 import org.slim3.controller.validator.Validators;
 
@@ -44,7 +45,7 @@ public class MemberExecuteController extends JsonController {
 	protected Validators validate() {
 		Validators v = new Validators(request);
 		v.add("name", v.required());
-		v.add("mail", v.required());
+		v.add("mail", v.required(), ValidatorUtils.getEmailValidator(v));
 		v.add("authority", v.required());
 		return v;
 	}
