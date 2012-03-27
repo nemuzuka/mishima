@@ -6,6 +6,8 @@ import jp.co.nemuzuka.service.impl.MemberServiceImpl;
 
 import org.slim3.controller.Navigation;
 
+import com.google.appengine.api.users.User;
+
 /**
  * メインController.
  * アプリケーション管理者の場合、MemberModelが登録されているか確認し、
@@ -24,7 +26,10 @@ public class IndexController extends HtmlController {
 		
 		if(userService.isUserAdmin()) {
 			//アプリケーション管理者の場合、MemberModelに登録されているかチェック
-			memberService.checkAndCreateAdminMember(userService.getCurrentUser().getEmail());
+			User currentUser = userService.getCurrentUser();
+			memberService.checkAndCreateAdminMember(
+					currentUser.getEmail(),
+					currentUser.getNickname());
 		}
 		return forward("index.jsp");
 	}

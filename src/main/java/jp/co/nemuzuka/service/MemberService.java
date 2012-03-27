@@ -15,8 +15,9 @@ public interface MemberService {
 	 * Memberに登録されていれば管理者としてputし、
 	 * 登録されていなければ何も処理を行いません。
 	 * @param mail メールアドレス
+	 * @param nickName ニックネーム
 	 */
-	void checkAndCreateAdminMember(String mail);
+	void checkAndCreateAdminMember(String mail, String nickName);
 	
 	/**
 	 * 詳細情報取得.

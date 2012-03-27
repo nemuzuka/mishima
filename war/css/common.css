@@ -4,7 +4,7 @@ h2.title{color:08C;line-height:26px;font-size:150%;font-weight:bold;text-shadow:
 
 /* 検索テーブル. */
 .search_table{font-size:100%;border-top:2px solid #08C;border-bottom:2px solid #08C;}
-.search_table th,.search_table td{padding:5px 10px;border-bottom:1px solid #08C;}
+.search_table th,.search_table td{padding:2px 2px;border-bottom:1px solid #08C;}
 .search_table th{background:#8fecff;width:100px;}
 .search_table td{background:#FFF;width:150px;}
 .search_table td:last-child{width:auto;}
@@ -23,7 +23,7 @@ h2.title{color:08C;line-height:26px;font-size:150%;font-weight:bold;text-shadow:
 /* ダイアログテーブル(並べ替え・編集・フォロー) */
 .edit_table {font-size:86%;border-top:2px solid #08C;border-bottom:2px solid #08C;width:100%;border-left:1px solid #08C;}
 .edit_table th,
-.edit_table td {border-bottom:1px solid #08C;border-right:1px solid #08C;padding:5px 10px}
+.edit_table td {border-bottom:1px solid #08C;border-right:1px solid #08C;padding:2px 2px}
 .edit_table th {background:#8fecff;}
 .edit_table td {background:#FFF;}
 .edit_ctrl{margin-top:10px;margin-left:120px;}

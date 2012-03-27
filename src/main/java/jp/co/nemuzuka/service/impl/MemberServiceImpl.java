@@ -26,10 +26,10 @@ public class MemberServiceImpl implements MemberService {
 	MemberDao memberDao = new MemberDao();
 	
 	/* (非 Javadoc)
-	 * @see jp.co.nemuzuka.service.MemberService#checkAndCreateAdminMember(java.lang.String)
+	 * @see jp.co.nemuzuka.service.MemberService#checkAndCreateAdminMember(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void checkAndCreateAdminMember(String mail) {
+	public void checkAndCreateAdminMember(String mail, String nickName) {
 		MemberModel model = memberDao.get(mail);
 		if(model != null) {
 			return;
@@ -37,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
 		//存在しないので、登録する
 		MemberForm form = new MemberForm();
 		form.mail = mail;
-		form.name = mail;
+		form.name = nickName;
 		form.authority = Authority.admin.name();
 		put(form);
 	}

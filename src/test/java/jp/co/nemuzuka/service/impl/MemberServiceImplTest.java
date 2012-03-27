@@ -32,14 +32,14 @@ public class MemberServiceImplTest extends AppEngineTestCase {
 		
 		assertThat(dao.getAllList().size(), is(0));
 		
-		sevice.checkAndCreateAdminMember("hoge@hage.hige");
+		sevice.checkAndCreateAdminMember("hoge@hage.hige", "ニックネーム");
 		GlobalTransaction.transaction.get().commit();
 		
 		List<MemberModel> actualList = dao.getAllList();
 		assertThat(actualList.size(), is(1));
 		MemberModel actual = actualList.get(0);
 		assertThat(actual.getMail(), is("hoge@hage.hige"));
-		assertThat(actual.getName(), is("hoge@hage.hige"));
+		assertThat(actual.getName(), is("ニックネーム"));
 		assertThat(actual.getAuthority(), is(Authority.admin));
 		assertThat(actual.getVersion(), is(1L));
 	}
@@ -61,7 +61,7 @@ public class MemberServiceImplTest extends AppEngineTestCase {
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
 		
-		sevice.checkAndCreateAdminMember("hoge@hige.hage");
+		sevice.checkAndCreateAdminMember("hoge@hige.hage", "にっくねーむ");
 		GlobalTransaction.transaction.get().commit();
 		
 		List<MemberModel> actualList = dao.getAllList();

@@ -89,7 +89,7 @@ function render(data) {
 				.append($("<th />").text("氏名"))
 				.append($("<th />").text("メールアドレス"))
 				.append($("<th />").text("権限"))
-				.append($("<th />").text(""))
+				.append($("<th />").text("").attr({width:"50px"}))
 			);
 	$table.append($thead);
 	
