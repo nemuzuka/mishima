@@ -38,8 +38,6 @@
 
 <%-- 一覧表示時の件数. --%>
 <input type="hidden" id="listCnt" value="0" />
-<%-- token. --%>
-<input type="hidden" id="token" />
 
 </form>
 </div>

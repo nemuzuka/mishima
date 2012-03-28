@@ -37,6 +37,8 @@
     <div class="span9">
       <!--メインコンテンツ-->
       <div class="well">
+        <%-- token. --%>
+        <input type="hidden" id="token" />
         ${param.content}
       </div>
     </div>
