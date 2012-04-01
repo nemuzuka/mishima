@@ -4,15 +4,15 @@
   <classpathentry kind="src" path=".apt_generated"/>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
   <classpathentry kind="output" path="war/WEB-INF/classes"/>
-  <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/google/appengine/appengine-api-stubs/1.6.3/appengine-api-stubs-1.6.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/google/appengine/appengine-testing/1.6.3/appengine-testing-1.6.3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/net/arnx/jsonic/jsonic/1.2.0/jsonic-1.2.0.jar"/>
-  <classpathentry kind="var" path="M2_REPO/junit/junit/4.7/junit-4.7.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/slim3/slim3/1.0.15/slim3-1.0.15.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/arnx/jsonic/jsonic/1.2.0/jsonic-1.2.0.jar" sourcepath="M2_REPO/net/arnx/jsonic/jsonic/1.2.0/jsonic-1.2.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/4.7/junit-4.7.jar" sourcepath="M2_REPO/junit/junit/4.7/junit-4.7-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slim3/slim3/1.0.15/slim3-1.0.15.jar" sourcepath="M2_REPO/org/slim3/slim3/1.0.15/slim3-1.0.15-sources.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 </classpath>
