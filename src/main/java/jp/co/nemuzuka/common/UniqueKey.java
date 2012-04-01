@@ -7,5 +7,7 @@ package jp.co.nemuzuka.common;
 public enum UniqueKey {
 	/** MemberModel用. */
 	member,
+	/** ProjectMemberModel用. */
+	projectMember,
 	;
 }

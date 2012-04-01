@@ -56,7 +56,7 @@ public class MemberDao extends AbsDao {
 	 * @return 該当レコード
 	 */
 	public List<MemberModel> getList(String name, String mail) {
-		MemberModelMeta e = MemberModelMeta.get();
+		MemberModelMeta e = (MemberModelMeta) getModelMeta();
 		Set<FilterCriterion> filterSet = new HashSet<FilterCriterion>();
 		if(StringUtils.isNotEmpty(name)) {
 			filterSet.add(e.name.startsWith(name));

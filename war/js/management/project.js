@@ -3,11 +3,11 @@ var g_searchParams;
 $(function(){
 	initDialog();
 	
-	$("#searchMemberBtn").click(function(){
-		searchMember();
+	$("#searchProjectBtn").click(function(){
+		searchProject();
 	});
 	
-	$("#addMemberBtn").click(function(){
+	$("#addProjectBtn").click(function(){
 		openEditDialog("");
 	});
 	
@@ -15,7 +15,7 @@ $(function(){
 
 //ダイアログ初期化
 function initDialog(){
-	$("#memberDialog").dialog({
+	$("#projectDialog").dialog({
 		modal:true,
 		autoOpen:false,
 		width:500,
@@ -28,17 +28,17 @@ function initDialog(){
 		}
 	});
 	
-	$("#memberDialog-add").click(function(){
+	$("#projectDialog-add").click(function(){
 		execute();
 	});
 	
-	$("#memberDialog-cancel").click(function(){
-		$("#memberDialog").dialog("close");
+	$("#projectDialog-cancel").click(function(){
+		$("#projectDialog").dialog("close");
 	});
 }
 
-//メンバー検索
-function searchMember() {
+//プロジェクト検索
+function searchProject() {
 	var params = createSearchParams();
 	g_searchParams = params;
 	searchAndRender(params);
@@ -49,7 +49,7 @@ function searchAndRender(params) {
 	setAjaxDefault();
 	return $.ajax({
 		type: "POST",
-		url: "/management/ajax/memberList",
+		url: "/management/ajax/projectList",
 		data: params
 	}).then(
 		function(data) {
@@ -86,34 +86,35 @@ function render(data) {
 	//一覧をレンダリング
 	var $table = $("<table />").addClass("table table-bordered result_table");
 	var $thead = $("<thead />").append($("<tr />")
-				.append($("<th />").text("氏名"))
-				.append($("<th />").text("メールアドレス"))
-				.append($("<th />").text("権限"))
+				.append($("<th />").text("プロジェクト名"))
+				.append($("<th />").text("プロジェクト識別子"))
+				.append($("<th />").text("プロジェクト概要"))
 				.append($("<th />").text("").attr({width:"50px"}))
 			);
 	$table.append($thead);
 	
 	var $tbody = $("<tbody />");
 	$.each(result, function(){
-		var keyToString = this.keyToString;
-		var name = this.name;
-		var mail = this.mail;
-		var authorityLabel = this.authorityLabel;
-		var versionNo = this.version
+		var keyToString = this.entity.keyToString;
+		var projectName = this.entity.projectName;
+		var projectId = this.entity.projectId;
+		var versionNo = this.entity.version
+		var projectSummaryView = this.projectSummaryView;
 
 		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
 		$delBtn.click(function(){
-			deleteMember(name, keyToString, versionNo);
+			deleteProject(projectName, keyToString, versionNo);
 		});
 		
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(name);
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(projectName);
 		$a.click(function(){
 			openEditDialog(keyToString);
 		});
 		var $tr = $("<tr />");
 		$tr.append($("<td />").append($a))
-			.append($("<td />").text(mail))
-			.append($("<td />").text(authorityLabel))
+			.append($("<td />").text(projectName))
+			.append($("<td />").text(projectId))
+			.append($("<td />").html(projectSummaryView))
 			.append($("<td />").append($delBtn));
 		$tbody.append($tr)
 	});
@@ -128,17 +129,17 @@ function openEditDialog(keyToString) {
 	var title = "";
 	var buttonLabel = "";
 	if(keyToString == '') {
-		title = "メンバー登録";
+		title = "プロジェクト登録";
 		buttonLabel = "登録する";
-		$("#edit_mail").prop("readonly", false);
+		$("#project_admin_area").show();
 	} else {
-		title = "メンバー変更";
+		title = "プロジェクト変更";
 		buttonLabel = "変更する";
-		$("#edit_mail").prop("readonly", true);
+		$("#project_admin_area").hide();
 	}
-	$("#ui-dialog-title-memberDialog").empty();
-	$("#ui-dialog-title-memberDialog").append(title);
-	$("#memberDialog-add").attr({value:buttonLabel});
+	$("#ui-dialog-title-projectDialog").empty();
+	$("#ui-dialog-title-projectDialog").append(title);
+	$("#projectDialog-add").attr({value:buttonLabel});
 	
 	var params = {};
 	params["keyToString"] = keyToString;
@@ -147,7 +148,7 @@ function openEditDialog(keyToString) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/management/ajax/memberEditInfo",
+		url: "/management/ajax/projectEditInfo",
 		data: params
 	});
 	
@@ -170,13 +171,20 @@ function openEditDialog(keyToString) {
 			//form情報の設定
 			var form = data.result;
 			
-			$("#edit_name").val(form.name);
-			$("#edit_mail").val(form.mail);
-			$("input[type='radio'][name='authority']").val([form.authority]);
+			$("#edit_project_name").val(form.projectName);
+			$("#edit_project_id").val(form.projectId);
+			$("#edit_project_summary").val(form.projectSummary);
+			
+			$("#project_admin").empty();
+			$.each(form.memberList, function(){
+				$("#project_admin").append($('<option>').attr({ value: this.value }).text(this.label));
+			});
+			$("#project_admin").val(form.adminMemberId);
+			
 			$("#edit_versionNo").val(form.versionNo);
 			$("#edit_keyToString").val(form.keyToString);
 			
-			$("#memberDialog").dialog("open");
+			$("#projectDialog").dialog("open");
 			return;
 		}
 	);
@@ -189,7 +197,7 @@ function execute() {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/management/ajax/memberExecute",
+		url: "/management/ajax/projectExecute",
 		data: params
 	});
 	
@@ -199,12 +207,12 @@ function execute() {
 		function(data) {
 			//共通エラーチェック
 			if(errorCheck(data) == false) {
-				if(data.status == -1 || data.status == -5) {
-					//validate or 入力値による一意制約エラーの場合、tokenを再発行
+				if(data.status == -1 ) {
+					//validateの場合、tokenを再発行
 					return reSetToken();
 				} else {
 					//強制的にダイアログを閉じて、再検索
-					$("#memberDialog").dialog("close");
+					$("#projectDialog").dialog("close");
 					return reSearchAndRender();
 				}
 				return;
@@ -212,7 +220,7 @@ function execute() {
 			
 			//メッセージを表示して、戻る
 			infoCheck(data);
-			$("#memberDialog").dialog("close");
+			$("#projectDialog").dialog("close");
 			return reSearchAndRender();
 		}
 	);
@@ -253,17 +261,17 @@ function deleteMember(name, keyToString, version) {
 //検索条件パラメータ設定
 function createSearchParams() {
 	var params = {};
-	params["name"] = $("#search_name").val();
-	params["mail"] = $("#search_mail").val();
+	params["projectName"] = $("#search_projectName").val();
 	return params;
 }
 
 //登録パラメータ設定
 function createExecuteParams() {
 	var params = {};
-	params["name"] = $("#edit_name").val();
-	params["mail"] = $("#edit_mail").val();
-	params["authority"] = $("input[type='radio'][name='authority']:checked").val();
+	params["projectName"] = $("#edit_project_name").val();
+	params["projectId"] = $("#edit_project_id").val();
+	params["projectSummary"] = $("#edit_project_summary").val();
+	params["adminMemberId"] = $("#project_admin").val();
 	params["versionNo"] = $("#edit_versionNo").val();
 	params["keyToString"] = $("#edit_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();

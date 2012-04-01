@@ -24,7 +24,6 @@ public class ProjectModel extends AbsModel {
 	
 	/** プロジェクト識別子. */
 	//被っても特に問題はない
-	@Attribute(unindexed=true)
 	private String projectId;
 	
 	/** プロジェクト概要. */
