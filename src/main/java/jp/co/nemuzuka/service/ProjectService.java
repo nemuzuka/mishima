@@ -27,6 +27,7 @@ public interface ProjectService {
 	/**
 	 * delete処理.
 	 * keyとバージョンNoが合致するデータを削除します。
+	 * 本プロジェクトに紐付くメンバー情報も削除します。
 	 * @param form delete対象Form
 	 */
 	void delete(ProjectForm form);

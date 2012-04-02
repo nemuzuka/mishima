@@ -68,6 +68,12 @@ $(function(){
 
 	var selectedSubMenu = $("#selected_sub_menu").val();
 	$("#" + selectedSubMenu).addClass("active");
+	
+	$("#main_menu4").click(function(){
+		moveUrl("/management/");
+	});
+	
+	
 });
 //-->
 </script>

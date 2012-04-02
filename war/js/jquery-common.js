@@ -227,9 +227,9 @@ function getValues4Name(nameStr) {
 /**
  * 指定したURLに移動します。
  */
-function moveUrl(contextPath, url) {
+function moveUrl(url) {
 	viewLoadingMsg();
-	document.location.href = contextPath + url;
+	document.location.href = url;
 }
 
 /**

@@ -79,10 +79,29 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 	}
 
+	/* (非 Javadoc)
+	 * @see jp.co.nemuzuka.service.ProjectService#delete(jp.co.nemuzuka.form.ProjectForm)
+	 */
 	@Override
 	public void delete(ProjectForm form) {
-		// TODO 自動生成されたメソッド・スタブ
-
+		//versionとKeyで情報を取得
+		Key key = Datastore.stringToKey(form.keyToString);
+		Long version = ConvertUtils.toLong(form.versionNo);
+		ProjectModel model = projectDao.get(key, version);
+		if(model == null) {
+			//該当レコードが存在しない場合、Exceptionをthrow
+			throw new ConcurrentModificationException();
+		}
+		//削除
+		projectDao.delete(model.getKey());
+		
+		//プロジェクトメンバーも削除
+		List<ProjectMemberModel> list = projectMemberDao.getList(form.keyToString, null);
+		List<Key> keyList = new ArrayList<Key>();
+		for(ProjectMemberModel target : list) {
+			keyList.add(target.getKey());
+		}
+		projectMemberDao.delete(keyList.toArray(new Key[0]));
 	}
 
 	/* (非 Javadoc)

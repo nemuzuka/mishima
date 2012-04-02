@@ -225,9 +225,9 @@ function execute() {
 	);
 }
 
-//メンバー削除
-function deleteMember(name, keyToString, version) {
-	if(window.confirm("メンバー「" + name + "」を削除します。本当によろしいですか？") == false) {
+//プロジェクト削除
+function deleteProject(name, keyToString, version) {
+	if(window.confirm("プロジェクト「" + name + "」を削除します。本当によろしいですか？") == false) {
 		return;
 	}
 	
@@ -240,7 +240,7 @@ function deleteMember(name, keyToString, version) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/management/ajax/memberDelete",
+		url: "/management/ajax/projectDelete",
 		data: params
 	});
 	
