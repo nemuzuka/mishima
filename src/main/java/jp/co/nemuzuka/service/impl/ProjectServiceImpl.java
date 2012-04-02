@@ -97,6 +97,7 @@ public class ProjectServiceImpl implements ProjectService {
 			ProjectModelEx model = new ProjectModelEx();
 			model.setModel(target);
 			model.setProjectSummaryView(HtmlStringUtils.escapeTextAreaString(target.getProjectSummary()));
+			target.setProjectSummary("");
 			retList.add(model);
 		}
 		return retList;

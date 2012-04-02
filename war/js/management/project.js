@@ -95,10 +95,10 @@ function render(data) {
 	
 	var $tbody = $("<tbody />");
 	$.each(result, function(){
-		var keyToString = this.entity.keyToString;
-		var projectName = this.entity.projectName;
-		var projectId = this.entity.projectId;
-		var versionNo = this.entity.version
+		var keyToString = this.model.keyToString;
+		var projectName = this.model.projectName;
+		var projectId = this.model.projectId;
+		var versionNo = this.model.version
 		var projectSummaryView = this.projectSummaryView;
 
 		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
@@ -112,7 +112,6 @@ function render(data) {
 		});
 		var $tr = $("<tr />");
 		$tr.append($("<td />").append($a))
-			.append($("<td />").text(projectName))
 			.append($("<td />").text(projectId))
 			.append($("<td />").html(projectSummaryView))
 			.append($("<td />").append($delBtn));

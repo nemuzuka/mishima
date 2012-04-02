@@ -62,6 +62,6 @@ public class ProjectDao extends AbsDao {
 			filterSet.add(e.projectName.startsWith(projectName));
 		}
 		return Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0]))
-				.sortInMemory(e.projectId.asc, e.key.asc).asList();
+				.sortInMemory(e.key.asc).asList();
 	}
 }
