@@ -10,15 +10,15 @@ import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.model.MemberModel;
+import jp.co.nemuzuka.tester.AppEngineTestCase4HRD;
 
 import org.junit.Test;
-import org.slim3.tester.AppEngineTestCase;
 
 /**
  * MemberServiceImplのテストクラス.
  * @author kazumune
  */
-public class MemberServiceImplTest extends AppEngineTestCase {
+public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 
 	MemberServiceImpl sevice = new MemberServiceImpl();
 	MemberDao dao = new MemberDao();

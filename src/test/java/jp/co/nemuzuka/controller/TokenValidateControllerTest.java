@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import jp.co.nemuzuka.form.TestForm;
+import jp.co.nemuzuka.tester.ControllerTestCase4HRD;
 
 import org.junit.Test;
-import org.slim3.tester.ControllerTestCase;
 
-public class TokenValidateControllerTest extends ControllerTestCase {
+public class TokenValidateControllerTest extends ControllerTestCase4HRD {
 
 	/**
 	 * 通常テスト.

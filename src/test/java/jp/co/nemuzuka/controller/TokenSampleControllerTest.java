@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.junit.Test;
-import org.slim3.tester.ControllerTestCase;
+import jp.co.nemuzuka.tester.ControllerTestCase4HRD;
 
-public class TokenSampleControllerTest extends ControllerTestCase {
+import org.junit.Test;
+
+public class TokenSampleControllerTest extends ControllerTestCase4HRD {
 
 	/**
 	 * 通常テスト.

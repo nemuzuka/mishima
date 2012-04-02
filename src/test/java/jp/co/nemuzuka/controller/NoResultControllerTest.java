@@ -8,10 +8,11 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
-import org.slim3.tester.ControllerTestCase;
+import jp.co.nemuzuka.tester.ControllerTestCase4HRD;
 
-public class NoResultControllerTest extends ControllerTestCase {
+import org.junit.Test;
+
+public class NoResultControllerTest extends ControllerTestCase4HRD {
 
 	/**
 	 * 通常テスト.

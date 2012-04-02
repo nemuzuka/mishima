@@ -1,8 +1,8 @@
 package jp.co.nemuzuka.core.entity;
 
-import org.slim3.datastore.Datastore;
-
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.datastore.TransactionOptions;
 
 /**
  * グローバルトランザクションとロールバック有無を保持するClass.
@@ -35,9 +35,10 @@ public class TransactionEntity {
 	
 	/**
 	 * トランザクションbegin.
+	 * HRD対応のトランザクションをbigin状態にします。
 	 */
 	public void begin() {
-		transaction = Datastore.beginTransaction();
+		transaction = DatastoreServiceFactory.getDatastoreService().beginTransaction(TransactionOptions.Builder.withXG(true));;
 	}
 	
 	/**

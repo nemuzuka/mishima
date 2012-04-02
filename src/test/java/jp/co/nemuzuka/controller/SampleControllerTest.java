@@ -9,10 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
-import org.slim3.tester.ControllerTestCase;
+import jp.co.nemuzuka.tester.ControllerTestCase4HRD;
 
-public class SampleControllerTest extends ControllerTestCase {
+import org.junit.Test;
+
+public class SampleControllerTest extends ControllerTestCase4HRD {
 
 	/**
 	 * 通常テスト.

@@ -1,18 +1,18 @@
 package jp.co.nemuzuka.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.junit.Test;
-import org.slim3.tester.ControllerTestCase;
+import jp.co.nemuzuka.tester.ControllerTestCase4HRD;
 
-public class Submit2ControllerTest extends ControllerTestCase {
+import org.junit.Test;
+
+public class Submit2ControllerTest extends ControllerTestCase4HRD {
 
 	/**
 	 * 通常テスト.

@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import jp.co.nemuzuka.model.Slim3Model;
 import jp.co.nemuzuka.service.Slim3Service;
+import jp.co.nemuzuka.tester.ControllerTestCase4HRD;
 
 import org.junit.Test;
-import org.slim3.tester.ControllerTestCase;
 
-public class DataStoreControllerTest extends ControllerTestCase {
+public class DataStoreControllerTest extends ControllerTestCase4HRD {
 
 	/**
 	 * 通常テスト.

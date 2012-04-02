@@ -1,8 +1,7 @@
 package jp.co.nemuzuka.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
@@ -10,12 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import jp.co.nemuzuka.model.MemberModel;
+import jp.co.nemuzuka.tester.ControllerTestCase4HRD;
 
 import org.junit.Test;
 import org.slim3.datastore.Datastore;
-import org.slim3.tester.ControllerTestCase;
 
-public class SubmitControllerTest extends ControllerTestCase {
+public class SubmitControllerTest extends ControllerTestCase4HRD {
 
 	/**
 	 * 通常テスト.
