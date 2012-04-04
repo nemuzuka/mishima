@@ -113,4 +113,17 @@ public abstract class AbsDao {
 		return (List<M>) Datastore.query(getModelMeta()).sortInMemory(sort).asList();
 	}
 
+	/**
+	 * 指定Keyによる取得.
+	 * 指定Keyによるデータを取得します。
+	 * @param keys key配列
+	 * @return 該当データ
+	 */
+	@SuppressWarnings("unchecked")
+	public <M> List<M> get(Key...keys) {
+		return Datastore.get(
+				GlobalTransaction.transaction.get().getTransaction(),
+				getModelClass(), 
+				keys);
+	}
 }

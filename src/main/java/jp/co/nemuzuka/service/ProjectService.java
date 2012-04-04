@@ -2,6 +2,7 @@ package jp.co.nemuzuka.service;
 
 import java.util.List;
 
+import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.entity.ProjectModelEx;
 import jp.co.nemuzuka.form.ProjectForm;
 import jp.co.nemuzuka.model.ProjectModel;
@@ -46,7 +47,7 @@ public interface ProjectService {
 	 * @param email ユーザのメールアドレス
 	 * @return 該当レコード
 	 */
-	List<ProjectModel> getUserProjectList(String email);
+	List<LabelValueBean> getUserProjectList(String email);
 	
 	/**
 	 * 全件取得.

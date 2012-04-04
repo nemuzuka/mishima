@@ -16,6 +16,8 @@
 
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
+    <!-- Session情報のリフレッシュ間隔(分単位) -->
+    <property name="jp.co.nemuzuka.session.refresh.min" value="15"/>
   </system-properties>
   
   <sessions-enabled>true</sessions-enabled>

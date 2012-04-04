@@ -44,6 +44,14 @@ public abstract class HtmlController extends AbsController {
 		Navigation navigation = null;
 		try {
 			setUserService();
+			
+			//TODO Sessionが存在しない
+			//UserInfoの更新開始時刻を現在の時刻が超えた(もしくはnull)
+			//の場合、参照可能プロジェクトを更新と共に更新開始時期を
+			//現在時刻 + システムプロパティ(jp.co.nemuzuka.session.refresh.min)分加算して設定する
+			//System.getProperty("jp.co.nemuzuka.session.refresh.min")
+			//で取得できる
+			
 			navigation = execute();
 			//commit
 			executeCommit();

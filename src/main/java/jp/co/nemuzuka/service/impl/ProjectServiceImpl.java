@@ -2,7 +2,9 @@ package jp.co.nemuzuka.service.impl;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import jp.co.nemuzuka.common.ProjectAuthority;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
@@ -122,16 +124,47 @@ public class ProjectServiceImpl implements ProjectService {
 		return retList;
 	}
 
+	/* (非 Javadoc)
+	 * @see jp.co.nemuzuka.service.ProjectService#getUserProjectList(java.lang.String)
+	 */
 	@Override
-	public List<ProjectModel> getUserProjectList(String email) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+	public List<LabelValueBean> getUserProjectList(String email) {
+		
+		//メンバーが紐付くプロジェクト情報を取得する
+		MemberModel model = new MemberModel();
+		model.createKey(email);
+		List<ProjectMemberModel> list = projectMemberDao.getList(null, model.getKeyToString());
+		
+		Set<Key> projectKeySet = new LinkedHashSet<Key>();
+		for(ProjectMemberModel target : list) {
+			projectKeySet.add(target.getProjectKey());
+		}
+		return createUserProjectList(projectKeySet);
 	}
 
 	@Override
 	public List<ProjectModel> getAllList() {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
+	}
+
+	/**
+	 * プロジェクトLabelValueBean情報取得.
+	 * @param projectKeySet プロジェクトKeySet
+	 * @return プロジェクトLabelValueBeanList(先頭には空データ格納)
+	 */
+	private List<LabelValueBean> createUserProjectList(Set<Key> projectKeySet) {
+		
+		List<LabelValueBean> list = new ArrayList<LabelValueBean>();
+		list.add(new LabelValueBean("--プロジェクトを選択--", ""));
+		
+		if(projectKeySet.size() != 0) {
+			List<ProjectModel> projectList = projectDao.get(projectKeySet.toArray(new Key[0]));
+			for(ProjectModel target : projectList) {
+				list.add(new LabelValueBean(target.getProjectName(), target.getKeyToString()));
+			}
+		}
+		return list;
 	}
 
 	/**
