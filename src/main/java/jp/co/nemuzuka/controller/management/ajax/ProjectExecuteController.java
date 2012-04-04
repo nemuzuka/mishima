@@ -10,6 +10,7 @@ import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
 
 import org.slim3.controller.validator.Validators;
+import org.slim3.util.ApplicationMessage;
 
 /**
  * Project登録・更新Controller.
@@ -34,6 +35,7 @@ public class ProjectExecuteController extends JsonController {
 		projectService.put(form);
 		
 		JsonResult result = new JsonResult();
+		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;
 	}
 

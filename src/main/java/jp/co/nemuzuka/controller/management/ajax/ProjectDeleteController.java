@@ -8,6 +8,8 @@ import jp.co.nemuzuka.form.ProjectForm;
 import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
 
+import org.slim3.util.ApplicationMessage;
+
 /**
  * Project削除Controller.
  * @author kazumune
@@ -30,6 +32,7 @@ public class ProjectDeleteController extends JsonController {
 		projectService.delete(form);
 		
 		JsonResult result = new JsonResult();
+		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;
 	}
 }

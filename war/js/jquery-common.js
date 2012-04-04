@@ -23,8 +23,13 @@ function setAjaxDefault() {
 
 //読み込み中のメッセージを表示
 function viewLoadingMsg() {
+	viewMsg("読み込み中...");
+}
+
+//メッセージ表示
+function viewMsg(msg) {
 	$.blockUI({
-		message: '読み込み中...',
+		message: msg,
 		fadeIn: 0,
 		fadeOut: 0,
 		showOverlay: true,
@@ -55,6 +60,7 @@ function unBlockLoadingMsg() {
 	$.unblockUI();
 }
 
+//メッセージ表示
 function getMsgs(msgList) {
 	var msg = "";
 	for(var i = 0; i < msgList.length; i++) {
@@ -78,7 +84,10 @@ function errorCheck(data) {
 function infoCheck(data) {
 	if(data.infoMsg.length != 0) {
 		//メッセージが存在する場合
-		alert(getMsgs(data.infoMsg));
+		var msg = getMsgs(data.infoMsg);
+		$.toast({
+			message:msg
+		});
 	}
 	return;
 }

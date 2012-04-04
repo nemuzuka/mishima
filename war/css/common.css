@@ -37,3 +37,10 @@ h2.title{color:08C;line-height:26px;font-size:150%;font-weight:bold;text-shadow:
 
 hr {border: 0 none; height: 2px; color: #08C;background-color: #08C;}
 
+/* toast用 */
+.toast{
+	/* border properties */
+	border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border: 2px solid #CCCCCC;
+	/* Aesthetics */
+	position: absolute; padding: 10px; color: #ffffff; background-color:rgba(0,0,0, 0.8); display:none;
+}
