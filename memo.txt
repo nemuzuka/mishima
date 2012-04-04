@@ -1,0 +1,4 @@
+pomの依存jarを変更した場合
+mvn eclipse:eclipse -DdownloadSources=true
+をコマンドラインから叩くこと
+
