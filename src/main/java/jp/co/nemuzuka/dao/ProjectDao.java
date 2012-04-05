@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.dao;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,6 +61,23 @@ public class ProjectDao extends AbsDao {
 		Set<FilterCriterion> filterSet = new HashSet<FilterCriterion>();
 		if(StringUtils.isNotEmpty(projectName)) {
 			filterSet.add(e.projectName.startsWith(projectName));
+		}
+		return Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0]))
+				.sortInMemory(e.key.asc).asList();
+	}
+	
+	/**
+	 * List取得.
+	 * @param keys key配列
+	 * @return 該当レコード
+	 */
+	public List<ProjectModel> getList(Key...keys) {
+		ProjectModelMeta e = (ProjectModelMeta) getModelMeta();
+		Set<FilterCriterion> filterSet = new HashSet<FilterCriterion>();
+		if(keys != null && keys.length != 0) {
+			filterSet.add(e.key.in(keys));
+		} else {
+			return new ArrayList<ProjectModel>();
 		}
 		return Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0]))
 				.sortInMemory(e.key.asc).asList();

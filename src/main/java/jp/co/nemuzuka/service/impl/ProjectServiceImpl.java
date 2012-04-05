@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.common.ProjectAuthority;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.dao.MemberDao;
@@ -130,22 +131,33 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<LabelValueBean> getUserProjectList(String email) {
 		
-		//メンバーが紐付くプロジェクト情報を取得する
-		MemberModel model = new MemberModel();
-		model.createKey(email);
-		List<ProjectMemberModel> list = projectMemberDao.getList(null, model.getKeyToString());
-		
-		Set<Key> projectKeySet = new LinkedHashSet<Key>();
-		for(ProjectMemberModel target : list) {
-			projectKeySet.add(target.getProjectKey());
+		MemberModel model = memberDao.get(email);
+		if(model == null) {
+			return new ArrayList<LabelValueBean>();
 		}
-		return createUserProjectList(projectKeySet);
+		
+		if(model.getAuthority() == Authority.admin) {
+			//管理者権限を有する場合、全てのプロジェクトが対象
+			List<ProjectModel> list = projectDao.getAllList();
+			return createUserProjectList(list);
+		} else {
+			//一般の場合、ログインユーザが紐付くプロジェクト情報を取得する
+			List<ProjectMemberModel> list = projectMemberDao.getList(null, model.getKeyToString());
+			
+			Set<Key> projectKeySet = new LinkedHashSet<Key>();
+			for(ProjectMemberModel target : list) {
+				projectKeySet.add(target.getProjectKey());
+			}
+			return createUserProjectList(projectKeySet);
+		}
 	}
 
+	/* (非 Javadoc)
+	 * @see jp.co.nemuzuka.service.ProjectService#getAllList()
+	 */
 	@Override
 	public List<ProjectModel> getAllList() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return projectDao.getAllList();
 	}
 
 	/**
@@ -153,16 +165,22 @@ public class ProjectServiceImpl implements ProjectService {
 	 * @param projectKeySet プロジェクトKeySet
 	 * @return プロジェクトLabelValueBeanList(先頭には空データ格納)
 	 */
-	private List<LabelValueBean> createUserProjectList(Set<Key> projectKeySet) {
+	protected List<LabelValueBean> createUserProjectList(Set<Key> projectKeySet) {
 		
+		List<ProjectModel> projectList = projectDao.getList(projectKeySet.toArray(new Key[0]));
+		return createUserProjectList(projectList);
+	}
+	
+	/**
+	 * プロジェクトLabelValueBeanList作成.
+	 * @param projectList プロジェクトList
+	 * @return 生成List
+	 */
+	private List<LabelValueBean> createUserProjectList(List<ProjectModel> projectList) {
 		List<LabelValueBean> list = new ArrayList<LabelValueBean>();
 		list.add(new LabelValueBean("--プロジェクトを選択--", ""));
-		
-		if(projectKeySet.size() != 0) {
-			List<ProjectModel> projectList = projectDao.get(projectKeySet.toArray(new Key[0]));
-			for(ProjectModel target : projectList) {
-				list.add(new LabelValueBean(target.getProjectName(), target.getKeyToString()));
-			}
+		for(ProjectModel target : projectList) {
+			list.add(new LabelValueBean(target.getProjectName(), target.getKeyToString()));
 		}
 		return list;
 	}
