@@ -38,6 +38,15 @@ public class CurrentDateUtils {
 	}
 
 	/**
+	 * 現在日付取得.
+	 * 時間以降の情報を含めます。
+	 * @return 現在日付
+	 */
+	public Date getCurrentDateTime() {
+		return new Date();
+	}
+
+	/**
 	 * 最大日付取得.
 	 * システム的に使用されないであろう最大日付を設定します。
 	 * @return 最大日付

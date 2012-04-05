@@ -2,11 +2,18 @@ package jp.co.nemuzuka.core.controller;
 
 import java.lang.reflect.Method;
 import java.util.ConcurrentModificationException;
+import java.util.Date;
 
 import jp.co.nemuzuka.core.annotation.Validation;
+import jp.co.nemuzuka.core.entity.UserInfo;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import jp.co.nemuzuka.model.MemberModel;
+import jp.co.nemuzuka.service.ProjectService;
+import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
+import jp.co.nemuzuka.utils.ConvertUtils;
+import jp.co.nemuzuka.utils.CurrentDateUtils;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 import org.slim3.datastore.Datastore;
@@ -45,12 +52,8 @@ public abstract class HtmlController extends AbsController {
 		try {
 			setUserService();
 			
-			//TODO Sessionが存在しない
-			//UserInfoの更新開始時刻を現在の時刻が超えた(もしくはnull)
-			//の場合、参照可能プロジェクトを更新と共に更新開始時期を
-			//現在時刻 + システムプロパティ(jp.co.nemuzuka.session.refresh.min)分加算して設定する
-			//System.getProperty("jp.co.nemuzuka.session.refresh.min")
-			//で取得できる
+			//UserInfoの確認
+			checkAndSetUserInfo();
 			
 			navigation = execute();
 			//commit
@@ -149,5 +152,59 @@ public abstract class HtmlController extends AbsController {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * UserInfo確認.
+	 * Sessionが存在しない or UserInfoの更新開始時刻を現在の時刻が超えた(もしくはnull)
+	 * の場合、参照可能プロジェクトを更新と共に更新開始時期を
+	 * 現在時刻 + システムプロパティ(jp.co.nemuzuka.session.refresh.min)分加算して設定する
+	 */
+	private void checkAndSetUserInfo() {
+		UserInfo userInfo = sessionScope(USER_INFO_KEY);
+		if(userInfo == null || isOverRefreshStartTime(userInfo.refreshStartTime)) {
+			//更新する
+			if(userInfo == null) {
+				userInfo = new UserInfo();
+			}
+			refreshUserInfo(userInfo);
+			sessionScope(USER_INFO_KEY, userInfo);
+		}
+	}
+
+	/**
+	 * 更新開始時刻超えチェック.
+	 * 現在時刻が更新開始時刻を超えているがチェックします。
+	 * @param refreshStartTime 更新開始時刻
+	 * @return 更新開始時刻超えの場合、true
+	 */
+	private boolean isOverRefreshStartTime(Date refreshStartTime) {
+		
+		if(refreshStartTime == null) {
+			return true;
+		}
+		
+		long cuurentTime = CurrentDateUtils.getInstance().getCurrentDateTime().getTime();
+		long targetTime = refreshStartTime.getTime();
+		if(cuurentTime > targetTime) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * UserInfo更新.
+	 * 参照可能プロジェクトと更新開始時刻を更新する
+	 * @param userInfo 設定UserInfo
+	 */
+	private void refreshUserInfo(UserInfo userInfo) {
+		ProjectService service = new ProjectServiceImpl();
+		userInfo.projectList = service.getUserProjectList(userService.getCurrentUser().getEmail());
+		
+		//現在時刻に加算分の時刻(分)を加算し、設定する
+		Date date = CurrentDateUtils.getInstance().getCurrentDateTime();
+		int min = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.session.refresh.min", "15"));
+		date = DateUtils.addMinutes(date, min);
+		userInfo.refreshStartTime = date;
 	}
 }

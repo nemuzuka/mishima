@@ -21,6 +21,9 @@ import com.google.appengine.api.users.UserServiceFactory;
  */
 public abstract class AbsController extends Controller {
 
+	/** UserInfo格納キー. */
+	protected String USER_INFO_KEY = "jp.co.nemuzuka.userInfo";
+	
 	/** token格納キー. */
 	//Sessionも、リクエストパラメータもこの項目であることが前提です。
 	protected String TOKEN_KEY = "jp.co.nemuzuka.token";

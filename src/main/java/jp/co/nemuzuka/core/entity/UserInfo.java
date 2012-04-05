@@ -1,7 +1,7 @@
 package jp.co.nemuzuka.core.entity;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,9 +17,11 @@ public class UserInfo implements Serializable {
 	
 	/** 更新開始時刻. */
 	//この時間を超えた場合、参照可能プロジェクトListを再設定する
-	public Calendar refreshStartTime;
+	public Date refreshStartTime;
 	
 	/** 参照可能プロジェクトList. */
 	public List<LabelValueBean> projectList;
 	
+	/** 選択プロジェクト. */
+	public String selectedProject = "";
 }
