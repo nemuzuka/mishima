@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.co.nemuzuka.core.entity.LabelValueBean;
@@ -44,14 +45,27 @@ public interface ProjectService {
 	/**
 	 * 該当レコード取得.
 	 * ユーザ情報が参照可能なプロジェクト一覧を取得します。
+	 * GAE管理者 or アプリケーション管理者であるかも設定します。
 	 * @param email ユーザのメールアドレス
+	 * @param gaeAdmin GAE管理者の場合、true
 	 * @return 該当レコード
 	 */
-	List<LabelValueBean> getUserProjectList(String email);
+	TargetProjectResult getUserProjectList(String email, boolean gaeAdmin);
 	
 	/**
 	 * 全件取得.
 	 * @return 該当レコード
 	 */
 	List<ProjectModel> getAllList();
+	
+	/**
+	 * 戻り値.
+	 * @author kazumune
+	 */
+	class TargetProjectResult {
+		/** 参照可能プロジェクトList. */
+		public List<LabelValueBean> projectList = new ArrayList<LabelValueBean>();
+		/** GAE管理者 or アプリケーション管理者であるか. */
+		public boolean admin = false;
+	}
 }

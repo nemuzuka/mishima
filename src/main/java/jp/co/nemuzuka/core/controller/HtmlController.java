@@ -97,7 +97,7 @@ public abstract class HtmlController extends AbsController {
 		//validationの実行
 		return executeValidation(clazz);
 	}
-
+	
 	/**
 	 * ログインユーザ設定チェック.
 	 * ログインユーザが登録済みである or Google App Engine管理者であるかチェックを行います。
@@ -199,8 +199,12 @@ public abstract class HtmlController extends AbsController {
 	 */
 	private void refreshUserInfo(UserInfo userInfo) {
 		ProjectService service = new ProjectServiceImpl();
-		userInfo.projectList = service.getUserProjectList(userService.getCurrentUser().getEmail());
+		ProjectService.TargetProjectResult result = 
+				service.getUserProjectList(userService.getCurrentUser().getEmail(), userService.isUserAdmin());
 		
+		userInfo.projectList = result.projectList;
+		userInfo.systemManager = result.admin;
+
 		//現在時刻に加算分の時刻(分)を加算し、設定する
 		Date date = CurrentDateUtils.getInstance().getCurrentDateTime();
 		int min = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.session.refresh.min", "15"));

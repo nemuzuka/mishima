@@ -1,5 +1,7 @@
 <%@page pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!-- Navbar
     ================================================== -->
 <div class="navbar navbar-fixed-top">
@@ -12,18 +14,15 @@
         <span class="icon-bar"></span>
       </a>
       
-      <a class="brand" href="http://twitter.github.com/bootstrap/index.html">Mishima</a>
+      <a class="brand" href="/">Mishima</a>
       <div class="nav-collapse" style="float: right;">
         <ul class="nav">
-          <li style="color:#FFF;height: 40px;margin:auto;line-height: 40px;" id="selected_project_name">
-            【プロジェクト名】
-          </li>
           <li class="divider-vertical"></li>
           <li class="" style="line-height: 40px;">
             <select id="targetProjects">
-              <option>--プロジェクトを選択--</option>
-              <option>XXXプロジェクト</option>
-              <option>YYYプロジェクト</option>
+            <c:forEach var="project" items="${userInfo.projectList}">
+              <option value="${f:h(project.value)}">${f:h(project.label)}</option>
+            </c:forEach>
             </select>
           </li>
           <li class="">
@@ -45,11 +44,11 @@
             <a href="#">ダッシュボード</a>
           </li>
           <li class="" id="main_menu2">
-            <a href="#">チケット</a>
+            <a href="#" id="ticket_menu">チケット</a>
           </li>
           <li class="divider-vertical"></li>
           <li class="" id="main_menu3">
-            <a href="#">プロジェクト設定</a>
+            <a href="#" id="project_menu">プロジェクト設定</a>
           </li>
           <li class="" id="main_menu4">
             <a href="#">各種管理</a>
@@ -73,7 +72,35 @@ $(function(){
 		moveUrl("/management/");
 	});
 	
+	var selectedProject = "${f:h(userInfo.selectedProject)}";
+	var projectManager = ${f:h(userInfo.projectManager)};
+	var projectMember = ${f:h(userInfo.projectMember)};
+	var systemManager = ${f:h(userInfo.systemManager)};
 	
+	$("#targetProjects").val(selectedProject);
+	$("#targetProjects").change(function() {
+		var targetProject = $("#targetProjects").val();
+		if(targetProject == '') {
+			return;
+		}
+		moveUrl("/changeProject?projectKey=" + targetProject);
+	});
+
+	//プロジェクトを選択していなければ、チケット、プロジェクト設定は参照できない
+	if(selectedProject == "") {
+		$("#ticket_menu").hide();
+		$("#project_menu").hide();
+	}
+
+	//プロジェクト管理者でなければ、プロジェクト設定は参照できない
+	if(projectManager == false) {
+		$("#project_menu").hide();
+	}
+
+	//プロジェクトメンバーでなければチケットは参照できない
+	if(projectMember == false) {
+		$("#ticket_menu").hide();
+	}
 });
 //-->
 </script>

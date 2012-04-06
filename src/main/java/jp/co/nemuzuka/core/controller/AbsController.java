@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
+import jp.co.nemuzuka.core.entity.UserInfo;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.slim3.controller.Controller;
@@ -22,7 +23,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 public abstract class AbsController extends Controller {
 
 	/** UserInfo格納キー. */
-	protected String USER_INFO_KEY = "jp.co.nemuzuka.userInfo";
+	protected String USER_INFO_KEY = "userInfo";
 	
 	/** token格納キー. */
 	//Sessionも、リクエストパラメータもこの項目であることが前提です。
@@ -44,6 +45,15 @@ public abstract class AbsController extends Controller {
 			GlobalTransaction.transaction.remove();
 		}
 	};
+
+	/**
+	 * UserInfo取得.
+	 * Sessionに格納されているUserInfoを取得します。
+	 * @return UserInfoインスタンス
+	 */
+	protected UserInfo getUserInfo() {
+		return sessionScope(USER_INFO_KEY);
+	}
 
 	/**
 	 * ログインユーザ情報設定.

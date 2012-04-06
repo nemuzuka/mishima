@@ -126,20 +126,24 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	/* (非 Javadoc)
-	 * @see jp.co.nemuzuka.service.ProjectService#getUserProjectList(java.lang.String)
+	 * @see jp.co.nemuzuka.service.ProjectService#getUserProjectList(java.lang.String, boolean)
 	 */
 	@Override
-	public List<LabelValueBean> getUserProjectList(String email) {
+	public TargetProjectResult getUserProjectList(String email, boolean gaeAdmin){
+		
+		TargetProjectResult result = new TargetProjectResult();
 		
 		MemberModel model = memberDao.get(email);
 		if(model == null) {
-			return new ArrayList<LabelValueBean>();
+			return result;
 		}
 		
-		if(model.getAuthority() == Authority.admin) {
+		if(gaeAdmin || model.getAuthority() == Authority.admin) {
+			result.admin = true;
+			
 			//管理者権限を有する場合、全てのプロジェクトが対象
 			List<ProjectModel> list = projectDao.getAllList();
-			return createUserProjectList(list);
+			result.projectList = createUserProjectList(list);
 		} else {
 			//一般の場合、ログインユーザが紐付くプロジェクト情報を取得する
 			List<ProjectMemberModel> list = projectMemberDao.getList(null, model.getKeyToString());
@@ -148,8 +152,9 @@ public class ProjectServiceImpl implements ProjectService {
 			for(ProjectMemberModel target : list) {
 				projectKeySet.add(target.getProjectKey());
 			}
-			return createUserProjectList(projectKeySet);
+			result.projectList = createUserProjectList(projectKeySet);
 		}
+		return result;
 	}
 
 	/* (非 Javadoc)

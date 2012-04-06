@@ -15,6 +15,7 @@ public class MemberController extends HtmlController {
 	 */
 	@Override
 	protected Navigation execute() throws Exception {
+		getUserInfo().selectedProject = "";
 		return forward("/management/member.jsp");
 	}
 
