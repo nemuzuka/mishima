@@ -15,7 +15,7 @@ public class IndexController extends HtmlController {
 	 */
 	@Override
 	protected Navigation execute() throws Exception {
-		getUserInfo().clearProjectInfo();
+		getUserInfo().initProjectInfo();
 		return forward("/management/index.jsp");
 	}
 

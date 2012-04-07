@@ -45,7 +45,7 @@ public class UserInfo implements Serializable {
 	/**
 	 * プロジェクト関連情報初期化.
 	 */
-	public void clearProjectInfo() {
+	public void initProjectInfo() {
 		selectedProject = "";
 		projectManager = false;
 		projectMember = false;

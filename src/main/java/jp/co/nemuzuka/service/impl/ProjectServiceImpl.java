@@ -174,7 +174,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public void setUserInfo(String projectKeyString, String mail,
 			UserInfo userInfo) {
 		//初期化
-		userInfo.clearProjectInfo();
+		userInfo.initProjectInfo();
 		userInfo.setSelectedProject(projectKeyString);
 		
 		MemberModel memberModel = memberDao.get(mail);
