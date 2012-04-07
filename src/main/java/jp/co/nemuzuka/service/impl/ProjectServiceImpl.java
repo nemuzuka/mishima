@@ -9,6 +9,7 @@ import java.util.Set;
 import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.common.ProjectAuthority;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
+import jp.co.nemuzuka.core.entity.UserInfo;
 import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.dao.ProjectDao;
 import jp.co.nemuzuka.dao.ProjectMemberDao;
@@ -165,6 +166,46 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDao.getAllList();
 	}
 
+
+	/* (非 Javadoc)
+	 * @see jp.co.nemuzuka.service.ProjectService#setUserInfo(java.lang.String, java.lang.String, jp.co.nemuzuka.core.entity.UserInfo)
+	 */
+	@Override
+	public void setUserInfo(String projectKeyString, String mail,
+			UserInfo userInfo) {
+		//初期化
+		userInfo.clearProjectInfo();
+		userInfo.setSelectedProject(projectKeyString);
+		
+		MemberModel memberModel = memberDao.get(mail);
+		if(memberModel == null) {
+			return;
+		}
+		//管理者ユーザである場合、管理者権限ありと設定する
+		if(userInfo.isSystemManager()) {
+			userInfo.setProjectManager(true);
+		}
+		
+		Key projectKey = Datastore.stringToKey(projectKeyString);
+		//プロジェクトに紐付くメンバー情報を取得する
+		ProjectMemberModel projectMemberModel = projectMemberDao.get(projectKey, memberModel.getKey());
+		if(projectMemberModel == null) {
+			return;
+		}
+		
+		//データが取得できたので、プロジェクトメンバーである
+		userInfo.setProjectMember(true);
+		
+		//GAE、アプリケーション管理者でなく、プロジェクト管理者の権限を取得している場合
+		//プロジェクト管理者であると設定
+		if(userInfo.isProjectManager() == false) {
+			if(projectMemberModel.getProjectAuthority() == ProjectAuthority.type1) {
+				userInfo.setProjectManager(true);
+			}
+		}
+		userInfo.setProjectAuthority(projectMemberModel.getProjectAuthority());
+	}
+
 	/**
 	 * プロジェクトLabelValueBean情報取得.
 	 * @param projectKeySet プロジェクトKeySet
@@ -248,7 +289,4 @@ public class ProjectServiceImpl implements ProjectService {
 		model.setProjectAuthority(ProjectAuthority.type1);
 		projectMemberDao.put(model);
 	}
-
-
-
 }

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import jp.co.nemuzuka.common.ProjectAuthority;
+
 /**
  * Session情報.
  * @author kazumune
@@ -21,7 +23,11 @@ public class UserInfo implements Serializable {
 	
 	/** 参照可能プロジェクトList. */
 	public List<LabelValueBean> projectList;
-	
+
+	/** システムの管理者(管理者権限を持つ or GAE管理者)であればtrue. */
+	public boolean systemManager;
+
+	//選択したプロジェクトに関する設定
 	/** 選択プロジェクト. */
 	public String selectedProject = "";
 
@@ -33,9 +39,33 @@ public class UserInfo implements Serializable {
 	//チケットの参照ができる
 	public boolean projectMember;
 
-	/** システムの管理者(管理者権限を持つ or GAE管理者)であればtrue. */
-	public boolean systemManager;
+	/** プロジェクトユーザ権限. */
+	public ProjectAuthority projectAuthority;
 	
+	/**
+	 * プロジェクト関連情報初期化.
+	 */
+	public void clearProjectInfo() {
+		selectedProject = "";
+		projectManager = false;
+		projectMember = false;
+		projectAuthority = null;
+	}
+	
+	/**
+	 * @return projectAuthority
+	 */
+	public ProjectAuthority getProjectAuthority() {
+		return projectAuthority;
+	}
+
+	/**
+	 * @param projectAuthority セットする projectAuthority
+	 */
+	public void setProjectAuthority(ProjectAuthority projectAuthority) {
+		this.projectAuthority = projectAuthority;
+	}
+
 	/**
 	 * @return projectMember
 	 */

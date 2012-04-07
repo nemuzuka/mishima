@@ -1,7 +1,10 @@
 package jp.co.nemuzuka.controller;
 
 import jp.co.nemuzuka.core.controller.HtmlController;
+import jp.co.nemuzuka.service.ProjectService;
+import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
 
+import org.apache.commons.lang.StringUtils;
 import org.slim3.controller.Navigation;
 
 /**
@@ -12,6 +15,8 @@ import org.slim3.controller.Navigation;
  */
 public class ChangeProjectController extends HtmlController {
 
+	ProjectService service = new ProjectServiceImpl();
+	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.HtmlController#execute()
 	 */
@@ -19,8 +24,10 @@ public class ChangeProjectController extends HtmlController {
 	protected Navigation execute() throws Exception {
 		
 		//リクエストからデータを取得
-//		String projectKey = asString("projectKey");
+		String projectKey = StringUtils.defaultString(asString("projectKey"), "");
+		
+		//選択したプロジェクトに対して権限情報を設定
+		service.setUserInfo(projectKey, userService.getCurrentUser().getEmail(), getUserInfo());
 		return forward("index.jsp");
 	}
-
 }

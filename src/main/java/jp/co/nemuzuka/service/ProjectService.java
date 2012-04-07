@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.co.nemuzuka.core.entity.LabelValueBean;
+import jp.co.nemuzuka.core.entity.UserInfo;
 import jp.co.nemuzuka.entity.ProjectModelEx;
 import jp.co.nemuzuka.form.ProjectForm;
 import jp.co.nemuzuka.model.ProjectModel;
@@ -57,6 +58,15 @@ public interface ProjectService {
 	 * @return 該当レコード
 	 */
 	List<ProjectModel> getAllList();
+	
+	/**
+	 * UserInfo情報更新.
+	 * プロジェクトKey、ログインユーザのメールアドレスを元に、UserInfoに権限を設定します。
+	 * @param projectKeyString プロジェクトKey文字列
+	 * @param mail ログインユーザのメールアドレス
+	 * @param userInfo 設定先UserInfoインスタンス
+	 */
+	void setUserInfo(String projectKeyString, String mail, UserInfo userInfo);
 	
 	/**
 	 * 戻り値.
