@@ -96,6 +96,16 @@ public abstract class HtmlController extends AbsController {
 			return navigation;
 		}
 		
+		//ProjectAdmin、ProjectMember、SystemManagerの設定確認
+		boolean projectAdmin = executeProjectAdminCheck(clazz);
+		boolean projectMember = executeProjectMemberCheck(clazz);
+		boolean systemManager = executeSystemManagerCheck(clazz);
+		if(projectAdmin == false || projectMember == false || systemManager == false) {
+			//不正なエラーの場合、TOP画面に遷移させる
+			getUserInfo().initProjectInfo();
+			return forward("/");
+		}
+		
 		//ActionFormの設定
 		setActionForm(clazz);
 

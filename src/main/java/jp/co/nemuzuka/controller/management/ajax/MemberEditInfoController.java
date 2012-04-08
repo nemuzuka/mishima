@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller.management.ajax;
 
+import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.form.MemberForm;
@@ -21,6 +22,7 @@ public class MemberEditInfoController extends JsonController {
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
 	@Override
+	@SystemManager
 	protected Object execute() throws Exception {
 		
 		JsonResult result = new JsonResult();

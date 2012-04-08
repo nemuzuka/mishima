@@ -1,6 +1,7 @@
 package jp.co.nemuzuka.controller.management.ajax;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.JsonController;
@@ -30,6 +31,7 @@ public class MemberExecuteController extends JsonController {
 	 */
 	@Override
 	@TokenCheck
+	@SystemManager
 	@Validation(method="validate", input="jsonError")
 	protected Object execute() throws Exception {
 		//登録・更新する

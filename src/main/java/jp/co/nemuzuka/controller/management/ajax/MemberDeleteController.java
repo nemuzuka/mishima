@@ -1,6 +1,7 @@
 package jp.co.nemuzuka.controller.management.ajax;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
@@ -27,6 +28,7 @@ public class MemberDeleteController extends JsonController {
 	 */
 	@Override
 	@TokenCheck
+	@SystemManager
 	protected Object execute() throws Exception {
 		//削除する
 		memberService.delete(form);

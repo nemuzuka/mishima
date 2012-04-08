@@ -5,6 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.ProjectAdmin;
+import jp.co.nemuzuka.core.annotation.ProjectMember;
+import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.core.entity.UserInfo;
@@ -185,4 +188,80 @@ public abstract class AbsController extends Controller {
 		entity.commit();
 		GlobalTransaction.transaction.remove();
 	}
+	
+	/**
+	 * ProjectAdminチェック実行.
+	 * メイン処理に「@ProjectAdmin」が付与されれている場合、プロジェクト管理者であるかチェックを行います。
+	 * 管理者でない場合、戻り値をfalseに設定します。
+	 * @param clazz 対象クラス
+	 * @return プロジェクト管理者である or 付与されていない場合、true/プロジェクト管理者でない場合、false
+	 */
+	@SuppressWarnings("rawtypes")
+	protected boolean executeProjectAdminCheck(Class clazz) {
+		//executeメソッドにProjectAdminアノテーションが付与されている場合
+		Method target = null;
+		try {
+			target = getDeclaredMethod(clazz, "execute", (Class[])null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		ProjectAdmin projectAdmin = target.getAnnotation(ProjectAdmin.class);
+		if(projectAdmin != null) {
+			//UserInfoにおいて、管理者であるかの結果を返す
+			return getUserInfo().projectManager;
+		}
+		return true;
+	}
+
+	/**
+	 * ProjectMemberチェック実行.
+	 * メイン処理に「@ProjectMember」が付与されれている場合、プロジェクト参加者であるかチェックを行います。
+	 * プロジェクト参加者でない場合、戻り値をfalseに設定します。
+	 * @param clazz 対象クラス
+	 * @return プロジェクト参加者である or 付与されていない場合、true/プロジェクト参加者でない場合、false
+	 */
+	@SuppressWarnings("rawtypes")
+	protected boolean executeProjectMemberCheck(Class clazz) {
+		//executeメソッドにProjectMemberアノテーションが付与されている場合
+		Method target = null;
+		try {
+			target = getDeclaredMethod(clazz, "execute", (Class[])null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		ProjectMember projectMember = target.getAnnotation(ProjectMember.class);
+		if(projectMember != null) {
+			//UserInfoにおいて、プロジェクト参加者であるかの結果を返す
+			return getUserInfo().projectMember;
+		}
+		return true;
+	}
+
+	/**
+	 * SystemManagerチェック実行.
+	 * メイン処理に「@SystemManager」が付与されれている場合、システム管理者であるかチェックを行います。
+	 * システム管理者でない場合、戻り値をfalseに設定します。
+	 * @param clazz 対象クラス
+	 * @return システム管理者である or 付与されていない場合、true/システム管理者でない場合、false
+	 */
+	@SuppressWarnings("rawtypes")
+	protected boolean executeSystemManagerCheck(Class clazz) {
+		//executeメソッドにSystemManagerアノテーションが付与されている場合
+		Method target = null;
+		try {
+			target = getDeclaredMethod(clazz, "execute", (Class[])null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		SystemManager systemManager = target.getAnnotation(SystemManager.class);
+		if(systemManager != null) {
+			//UserInfoにおいて、システム管理者であるかの結果を返す
+			return getUserInfo().systemManager;
+		}
+		return true;
+	}
+
 }

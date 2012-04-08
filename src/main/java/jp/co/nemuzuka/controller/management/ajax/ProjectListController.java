@@ -3,6 +3,7 @@ package jp.co.nemuzuka.controller.management.ajax;
 import java.util.List;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.entity.ProjectModelEx;
@@ -28,6 +29,7 @@ public class ProjectListController extends JsonController {
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
 	@Override
+	@SystemManager
 	protected Object execute() throws Exception {
 		
 		JsonResult result = new JsonResult();

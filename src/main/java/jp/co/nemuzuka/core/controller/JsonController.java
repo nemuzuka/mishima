@@ -102,10 +102,13 @@ public abstract class JsonController extends AbsController {
 		//ActionFormの設定
 		setActionForm(clazz);
 
-		//TokenCheckが指定されていれば実行
+		//TokenCheck、ProjectAdmin、ProjectMemberが指定されていれば実行
 		boolean status = executeTokenCheck(clazz);
+		boolean projectAdmin = executeProjectAdminCheck(clazz);
+		boolean projectMember = executeProjectMemberCheck(clazz);
+		boolean systemManager = executeSystemManagerCheck(clazz);
 
-		if(status) {
+		if(status && projectAdmin && projectMember && systemManager) {
 			//validationが指定されていれば実行
 			status = executeValidation(clazz);
 			if(status == false) {
@@ -214,7 +217,7 @@ public abstract class JsonController extends AbsController {
 	/**
 	 * tokenチェック実行.
 	 * メイン処理に「@TokenCheck」が付与されれている場合、tokenチェックを行います。
-	 * 合致しない場合、戻り値を
+	 * 合致しない場合、戻り値をfalseに設定します。
 	 * @param clazz 対象クラス
 	 * @return エラーが無い or 付与されていない場合、true/エラーが存在する場合、false
 	 */
