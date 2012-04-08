@@ -40,6 +40,10 @@ public abstract class HtmlController extends AbsController {
 	/**
 	 * メイン処理.
 	 * 正常終了時、commitしてThreadLocalから削除します。
+	 * ConcurrentModificationExceptionやAlreadyExistKeyExceptionは
+	 * 本クラスを継承したクラスでは発生しない設計思想なので、
+	 * エラー画面に遷移させます。
+	 * ※更新は、Ajax側で行う
 	 * @see org.slim3.controller.Controller#run()
 	 */
 	@Override
@@ -63,11 +67,12 @@ public abstract class HtmlController extends AbsController {
 			//強制的にエラー画面を表示させることとする
 			//ここに来たら設計バグ
 			super.tearDown();
-			navigation = forward("/error/noregist/");
+			navigation = forward(ERR_URL_SYSERROR);
 		} catch(AlreadyExistKeyException e) {
 			//一意制約エラーの場合
+			//ここに来たら設計バグ
 			super.tearDown();
-			navigation = forward("/error/noregist/");
+			navigation = forward(ERR_URL_SYSERROR);
 		}
 		return navigation;
 	}
@@ -116,7 +121,7 @@ public abstract class HtmlController extends AbsController {
 			Datastore.get(MemberModel.class, key);
 		} catch(EntityNotFoundRuntimeException e) {
 			//存在しないので遷移先のNavigation
-			return forward("/error/noregist/");
+			return forward(ERR_URL_NO_REGIST);
 		}
 		return null;
 	}

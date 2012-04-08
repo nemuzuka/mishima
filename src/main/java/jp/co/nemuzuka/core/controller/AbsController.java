@@ -32,6 +32,12 @@ public abstract class AbsController extends Controller {
 	/** ログインユーザ情報. */
 	protected UserService userService;
 	
+	//遷移先URL
+	/** システムに登録されていないユーザからのアクセス. */
+	protected String ERR_URL_NO_REGIST = "/error/noregist";
+	/** システムエラー. */
+	protected String ERR_URL_SYSERROR = "/error/syserror";
+	
 	/**
 	 * 終了時処理.
 	 * ThreadLocalに存在する場合、ロールバックして空にします。
@@ -61,7 +67,7 @@ public abstract class AbsController extends Controller {
 	 */
 	protected void setUserService() {
 		userService = UserServiceFactory.getUserService();
-		requestScope("logoutURL", userService.createLogoutURL("/"));
+		requestScope("logoutURL", "/logout");
 	}
 	
 	/**

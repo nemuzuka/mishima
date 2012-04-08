@@ -61,21 +61,26 @@
 
 <script type="text/javascript">
 <!--
+
+var selectedProject = "${f:h(userInfo.selectedProject)}";
+var projectManager = ${f:h(userInfo.projectManager)};
+var projectMember = ${f:h(userInfo.projectMember)};
+var systemManager = ${f:h(userInfo.systemManager)};
+
 $(function(){
 	var selectedMainMenu = $("#selected_main_menu").val();
 	$("#" + selectedMainMenu).addClass("active");
 
 	var selectedSubMenu = $("#selected_sub_menu").val();
 	$("#" + selectedSubMenu).addClass("active");
+
+	$("#main_menu3").click(function(){
+		moveUrl("/project/management/");
+	});
 	
 	$("#main_menu4").click(function(){
 		moveUrl("/management/");
 	});
-	
-	var selectedProject = "${f:h(userInfo.selectedProject)}";
-	var projectManager = ${f:h(userInfo.projectManager)};
-	var projectMember = ${f:h(userInfo.projectMember)};
-	var systemManager = ${f:h(userInfo.systemManager)};
 	
 	$("#targetProjects").val(selectedProject);
 	$("#targetProjects").change(function() {
