@@ -34,7 +34,7 @@ public class DataStoreControllerTest extends ControllerTestCase4HRD {
 		assertThat(tester.response.getStatus(),
 				is(equalTo(HttpServletResponse.SC_OK)));
 		String actual = tester.response.getOutputAsString();
-		assertThat(actual, is("{\"errorMsg\":[],\"infoMsg\":[\"処理が正常に終了しました。\"],\"result\":{\"hoge\":\"終了でーす。\"},\"status\":0,\"token\":null}"));
+		assertThat(actual, is("{\"errorMsg\":[],\"infoMsg\":[\"処理が正常に終了しました。反映に時間がかかる場合があります。\"],\"result\":{\"hoge\":\"終了でーす。\"},\"status\":0,\"token\":null}"));
 		
 		//データストアに格納されていることを確認
 		actualList = Slim3Service.queryAll();

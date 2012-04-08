@@ -37,9 +37,9 @@ public abstract class AbsController extends Controller {
 	
 	//遷移先URL
 	/** システムに登録されていないユーザからのアクセス. */
-	protected String ERR_URL_NO_REGIST = "/error/noregist";
+	protected String ERR_URL_NO_REGIST = "/error/noregist/";
 	/** システムエラー. */
-	protected String ERR_URL_SYSERROR = "/error/syserror";
+	protected String ERR_URL_SYSERROR = "/error/syserror/";
 	
 	/**
 	 * 終了時処理.
