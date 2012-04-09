@@ -2,3 +2,12 @@ pomの依存jarを変更した場合
 mvn eclipse:eclipse -DdownloadSources=true
 をコマンドラインから叩くこと
 
+
+
+gitコミット→githubにup
+コミット
+リモート→push
+
+githubから取込→ワークスペース反映
+リモート→fetch
+Pull
