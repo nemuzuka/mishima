@@ -24,6 +24,10 @@ import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
 
+/**
+ * ProjectMemberServiceImplのテストクラス.
+ * @author k-katagiri
+ */
 public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 
 	ProjectMemberServiceImpl service = new ProjectMemberServiceImpl();
@@ -231,13 +235,6 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 		model.createKey(projectKeyList.get(1), targetMemberKey);
 		model.setProjectAuthority(ProjectAuthority.type3);
 		putProjectMemberModel(model);
-		
-		//登録されるまでSleep
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
 	}
 	
 	/**

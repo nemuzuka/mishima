@@ -43,9 +43,7 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		if(StringUtils.isNotEmpty(keyString)) {
 			ProjectModel model = projectDao.get(keyString);
-			if(model != null) {
-				setForm(form, model);
-			}
+			setForm(form, model);
 		}
 		//Formに対して画面表示情報を設定する
 		setFormCommon(form);

@@ -65,6 +65,8 @@ public abstract class AbsDao {
 					getModelClass(), key);
 		} catch(EntityNotFoundRuntimeException e) {
 			return null;
+		} catch(IllegalArgumentException e) {
+			return null;
 		}
 	}
 
