@@ -24,7 +24,7 @@ public class HogeService {
 		model.setProp1(prop1);
 		Key key = Datastore.createKey(HogeModelMeta.get(), keyStr);
 		model.setKey(key);
-		Datastore.put(GlobalTransaction.transaction.get().getTransaction(), model);
+		GlobalTransaction.transaction.get().getTransaction().put(model);
 		return model;
 	}
 

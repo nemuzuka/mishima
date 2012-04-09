@@ -38,8 +38,7 @@ public abstract class AbsDao {
 	 * @param model 対象Model
 	 */
 	public void put(AbsModel model) {
-		Key key = Datastore.put(
-				GlobalTransaction.transaction.get().getTransaction(), model);
+		Key key = GlobalTransaction.transaction.get().getTransaction().put(model);
 		model.setKey(key);
 	}
 	
@@ -48,8 +47,7 @@ public abstract class AbsDao {
 	 * @param keys 削除対象Key
 	 */
 	public void delete(Key... keys) {
-		Datastore.delete(
-				GlobalTransaction.transaction.get().getTransaction(), keys);
+		GlobalTransaction.transaction.get().getTransaction().delete(keys);
 	}
 	
 	/**
@@ -60,8 +58,7 @@ public abstract class AbsDao {
 	@SuppressWarnings("unchecked")
 	public <M> M get(Key key) {
 		try {
-			return (M) Datastore.get(
-					GlobalTransaction.transaction.get().getTransaction(),
+			return (M) GlobalTransaction.transaction.get().getTransaction().get(
 					getModelClass(), key);
 		} catch(EntityNotFoundRuntimeException e) {
 			return null;
@@ -79,8 +76,7 @@ public abstract class AbsDao {
 	@SuppressWarnings("unchecked")
 	public <M> M get(Key key, Long version) {
 		try {
-			return (M) Datastore.get(
-					GlobalTransaction.transaction.get().getTransaction(),
+			return (M) GlobalTransaction.transaction.get().getTransaction().get(
 					getModelClass(), key, version);
 		} catch(EntityNotFoundRuntimeException e) {
 			return null;

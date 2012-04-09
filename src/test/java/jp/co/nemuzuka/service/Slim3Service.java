@@ -22,7 +22,7 @@ public class Slim3Service {
 	public static Slim3Model newAndPut(String prop1) {
 		Slim3Model model = new Slim3Model();
 		model.setProp1(prop1);
-		Key key = Datastore.put(GlobalTransaction.transaction.get().getTransaction(), model);
+		Key key = GlobalTransaction.transaction.get().getTransaction().put(model);
 		model.setKey(key);
 		return model;
 	}
