@@ -2,12 +2,18 @@ package jp.co.nemuzuka.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.slim3.datastore.Datastore;
+
+import jp.co.nemuzuka.common.ProjectAuthority;
 import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.dao.ProjectMemberDao;
 import jp.co.nemuzuka.entity.ProjectMemberModelEx;
+import jp.co.nemuzuka.form.ProjectMemberForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.ProjectMemberModel;
 import jp.co.nemuzuka.service.ProjectMemberService;
@@ -51,6 +57,41 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 		}
 		return result;
 	}
+	
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.ProjectMemberService#updateProjectMember(java.lang.String, jp.co.nemuzuka.form.ProjectMemberForm)
+	 */
+	@Override
+	public void updateProjectMember(String selectedProject,
+			ProjectMemberForm form) {
+		
+		//プロジェクトKey文字列に紐付くプロジェクトメンバー情報を全件削除
+		List<ProjectMemberModel> list = projectMemberDao.getList(selectedProject, "");
+		Set<Key> projectMemberKeySet = new LinkedHashSet<Key>();
+		for(ProjectMemberModel target : list) {
+			projectMemberKeySet.add(target.getKey());
+		}
+		if(projectMemberKeySet.size() != 0) {
+			projectMemberDao.delete(projectMemberKeySet.toArray(new Key[0]));
+		}
+
+		//form情報を元に更新
+		int index = 0;
+		Key projectKey = Datastore.stringToKey(selectedProject);
+		for(String target : form.memberKeyArray) {
+			
+			ProjectMemberModel model = new ProjectMemberModel();
+			Key memberKey = Datastore.stringToKey(target);
+			model.createKey(projectKey, memberKey);
+			ProjectAuthority projectAuthority = ProjectAuthority.fromCode(form.authorityCodeArray[index]);
+			if(projectAuthority == null) {
+				projectAuthority = ProjectAuthority.type3;
+			}
+			model.setProjectAuthority(projectAuthority);
+			projectMemberDao.put(model);
+			index++;
+		}
+	}
 
 	/**
 	 * プロジェクトメンバーMap生成.
@@ -67,4 +108,5 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 		}
 		return map;
 	}
+
 }

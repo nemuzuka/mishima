@@ -3,16 +3,23 @@ package jp.co.nemuzuka.service.impl;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.dao.MemberDao;
+import jp.co.nemuzuka.exception.AlreadyExistKeyException;
+import jp.co.nemuzuka.form.MemberForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.tester.AppEngineTestCase4HRD;
 
 import org.junit.Test;
+import org.slim3.datastore.Datastore;
+
+import com.google.appengine.api.datastore.Key;
 
 /**
  * MemberServiceImplのテストクラス.
@@ -20,8 +27,10 @@ import org.junit.Test;
  */
 public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 
-	MemberServiceImpl sevice = new MemberServiceImpl();
-	MemberDao dao = new MemberDao();
+	MemberServiceImpl service = new MemberServiceImpl();
+	MemberDao memberDao = new MemberDao();
+	
+	List<Key> memberKeyList;
 	
 	/**
 	 * checkAndCreateAdminMemberのテスト.
@@ -30,12 +39,12 @@ public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 	@Test
 	public void testCheckAndCreateAdminMember() {
 		
-		assertThat(dao.getAllList().size(), is(0));
+		assertThat(memberDao.getAllList().size(), is(0));
 		
-		sevice.checkAndCreateAdminMember("hoge@hage.hige", "ニックネーム");
+		service.checkAndCreateAdminMember("hoge@hage.hige", "ニックネーム");
 		GlobalTransaction.transaction.get().commit();
 		
-		List<MemberModel> actualList = dao.getAllList();
+		List<MemberModel> actualList = memberDao.getAllList();
 		assertThat(actualList.size(), is(1));
 		MemberModel actual = actualList.get(0);
 		assertThat(actual.getMail(), is("hoge@hage.hige"));
@@ -57,14 +66,14 @@ public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 		model.setName("富樫　義博");
 		model.setAuthority(Authority.normal);
 		model.setVersion(10L);
-		dao.put(model);
+		memberDao.put(model);
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
 		
-		sevice.checkAndCreateAdminMember("hoge@hige.hage", "にっくねーむ");
+		service.checkAndCreateAdminMember("hoge@hige.hage", "にっくねーむ");
 		GlobalTransaction.transaction.get().commit();
 		
-		List<MemberModel> actualList = dao.getAllList();
+		List<MemberModel> actualList = memberDao.getAllList();
 		assertThat(actualList.size(), is(1));
 		MemberModel actual = actualList.get(0);
 		assertThat(actual.getMail(), is("hoge@hige.hage"));
@@ -73,6 +82,193 @@ public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(actual.getVersion(), is(11L));
 	}
 	
+	/**
+	 * getのテスト.
+	 */
+	@Test
+	public void testGet() {
+		createInitData();
+
+		//新規の場合
+		MemberForm actual = service.get("");
+		assertThat(actual.keyToString, is(nullValue()));
+		assertThat(actual.mail, is(nullValue()));
+		assertThat(actual.name, is(nullValue()));
+		assertThat(actual.authority, is(Authority.normal.getCode()));
+		assertThat(actual.versionNo, is(nullValue()));
+		
+		//更新の場合
+		String keyString = Datastore.keyToString(memberKeyList.get(3));
+		actual = service.get(keyString);
+		assertThat(actual.keyToString, is(keyString));
+		assertThat(actual.mail, is("mail3@gmail.com"));
+		assertThat(actual.name, is("name3"));
+		assertThat(actual.authority, is(Authority.normal.getCode()));
+		assertThat(actual.versionNo, is("1"));
+		
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+		
+		//存在しない場合
+		MemberModel model = new MemberModel();
+		model.createKey("noregist@gmail.com");
+		keyString = Datastore.keyToString(model.getKey());
+		actual = service.get(keyString);
+		assertThat(actual.keyToString, is(nullValue()));
+		assertThat(actual.mail, is(nullValue()));
+		assertThat(actual.name, is(nullValue()));
+		assertThat(actual.authority, is(Authority.normal.getCode()));
+		assertThat(actual.versionNo, is(nullValue()));
+	}
+	
+	/**
+	 * putとdeleteのテスト.
+	 */
+	@Test
+	public void testPutAndDelete() {
+		createInitData();
+		
+		String keyString = testPut();
+		testDelete(keyString);
+	}
+	
+	/**
+	 * getAllListのテスト
+	 */
+	@Test
+	public void testGetAllList() {
+		createInitData();
+		
+		List<MemberModel> actualList = service.getAllList();
+		assertThat(actualList.size(), is(4));
+		assertThat(actualList.get(0).getAuthorityLabel(), is("管理者"));
+		assertThat(actualList.get(1).getAuthorityLabel(), is("一般"));
+	}
+	
+	
+	/**
+	 * deleteのテスト.
+	 * @param keyString 対象Key文字列
+	 */
+	private void testDelete(String keyString) {
+		
+		//バージョン違い
+		MemberForm form = service.get(keyString);
+		form.setVersionNo("-1");
+		try {
+			service.delete(form);
+			fail();
+		} catch (ConcurrentModificationException e) {}
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+		
+		//削除
+		form = service.get(keyString);
+		service.delete(form);
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+		
+		List<MemberModel> list = service.getList("name123", null);
+		assertThat(list.size(), is(0));
+	}
+
+	/**
+	 * putのテスト.
+	 * @return 登録Key文字列
+	 */
+	private String testPut() {
+		
+		MemberForm form = service.get("");
+		form.setMail("mail0123@hige.hage");
+		form.setName("name123");
+		form.setAuthority(Authority.admin.getCode());
+		service.put(form);
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+
+		//登録されていることの確認
+		List<MemberModel> list = service.getList("name123", null);
+		assertThat(list.size(), is(1));
+		assertThat(list.get(0).getMail(), is("mail0123@hige.hage"));
+		assertThat(list.get(0).getName(), is("name123"));
+		assertThat(list.get(0).getAuthority(), is(Authority.admin));
+		String keyString = Datastore.keyToString(list.get(0).getKey());
+		
+		//更新
+		form = service.get(keyString);
+		form.setMail("mail0123_2@hige.hage");
+		form.setName("name123456");
+		form.setAuthority(Authority.normal.getCode());
+		service.put(form);
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+
+		list = service.getList(null, "mail0123@hige.hage");
+		assertThat(list.size(), is(1));
+		//メールアドレスは更新されない
+		assertThat(list.get(0).getMail(), is("mail0123@hige.hage"));
+		assertThat(list.get(0).getName(), is("name123456"));
+		assertThat(list.get(0).getAuthority(), is(Authority.normal));
+
+		//更新(その2：存在しないユーザ権限を設定された)
+		form = service.get(keyString);
+		form.setAuthority("not_anthority!");
+		service.put(form);
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+
+		list = service.getList(null, "mail0123@hige.hage");
+		assertThat(list.size(), is(1));
+		//一般として登録される
+		assertThat(list.get(0).getAuthority(), is(Authority.normal));
+		
+		
+		//バージョン違い
+		form = service.get(keyString);
+		form.setVersionNo("-1");
+		try {
+			service.put(form);
+			fail();
+		} catch(ConcurrentModificationException e) {}
+		
+		//既に同じメールアドレスが登録されている
+		form = service.get("");
+		form.setMail("mail0123@hige.hage");
+		form.setName("登録できないデータ！");
+		form.setAuthority(Authority.admin.getCode());
+		try {
+			service.put(form);
+			fail();
+		} catch(AlreadyExistKeyException e) {}
+		
+		return keyString;
+	}
+	
+	/**
+	 * 事前データ作成.
+	 * ユーザを4人作成します。
+	 */
+	private void createInitData() {
+		memberKeyList = new ArrayList<Key>();
+		for(int i = 0; i < 4; i++) {
+			MemberModel model = new MemberModel();
+			model.createKey("mail" + i + "@gmail.com");
+			model.setName("name" + i);
+			Authority authority = null;
+			if(i == 0 || i == 2) {
+				authority = Authority.admin;
+			} else {
+				authority = Authority.normal;
+			}
+			model.setAuthority(authority);
+			memberDao.put(model);
+			memberKeyList.add(model.getKey());
+			
+			GlobalTransaction.transaction.get().commit();
+			GlobalTransaction.transaction.get().begin();
+		}
+	}
+
 	
 	/* (非 Javadoc)
 	 * @see org.slim3.tester.AppEngineTestCase#setUp()

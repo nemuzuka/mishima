@@ -66,12 +66,12 @@ function render(data) {
 		var projectMember = this.projectMember;
 		var authorityCode = this.authorityCode;
 		
-		var $checkBox = $("<input />").attr({type:"checkbox", value:keyToString});
+		var $checkBox = $("<input />").attr({type:"checkbox", value:keyToString, name:"memberKey"});
 		if(projectMember == true) {
 			$checkBox.prop("checked", true);
 		}
 		
-		var $select = $("<select />");
+		var $select = $("<select />").attr({name:"authorityCode"});
 		$select
 			.append($("<option />").attr({value:"projectAdmin"}).text("プロジェクト管理者"))
 			.append($("<option />").attr({value:"developer"}).text("開発者"))
@@ -93,11 +93,12 @@ function render(data) {
 //プロジェクトメンバー設定
 function execute() {
 	var params = createExecuteParams();
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/executeMemberSetting",
+		url: "/project/management/ajax/memberSetting",
 		data: params
 	});
 	
@@ -123,12 +124,19 @@ function execute() {
 //登録パラメータ設定
 function createExecuteParams() {
 	var params = {};
-	params["name"] = $("#edit_name").val();
-	params["mail"] = $("#edit_mail").val();
-	params["authority"] = $("input[type='radio'][name='authority']:checked").val();
-	params["versionNo"] = $("#edit_versionNo").val();
-	params["keyToString"] = $("#edit_keyToString").val();
+	params["memberKeyArray"] = {};
+	params["authorityCodeArray"] = {};
 	params["jp.co.nemuzuka.token"] = $("#token").val();
+
+	var count = 0;
+	$("input[type='checkbox'][name='memberKey']").each(function(index){
+		
+		if($(this).prop("checked") == true) {
+			params["memberKeyArray"][count] = $(this).val();
+			params["authorityCodeArray"][count] = $($("select[name='authorityCode']").get()[index]).val();
+			count++;
+		}
+	});
 	return params;
 }
 

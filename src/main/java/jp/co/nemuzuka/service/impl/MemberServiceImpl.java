@@ -53,9 +53,7 @@ public class MemberServiceImpl implements MemberService {
 			//Key情報が設定されていた場合
 			Key key = Datastore.stringToKey(keyString);
 			MemberModel model = memberDao.get(key);
-			if(model != null) {
-				setForm(form, model);
-			}
+			setForm(form, model);
 		}
 		return form;
 	}
@@ -133,6 +131,9 @@ public class MemberServiceImpl implements MemberService {
 	 * @param model 設定Model
 	 */
 	private void setForm(MemberForm form, MemberModel model) {
+		if(model == null) {
+			return;
+		}
 		form.keyToString = model.getKeyToString();
 		form.mail = model.getMail();
 		form.name = model.getName();
@@ -156,6 +157,8 @@ public class MemberServiceImpl implements MemberService {
 		Authority authority = Authority.fromCode(form.authority);
 		if(authority != null) {
 			model.setAuthority(authority);
+		} else {
+			model.setAuthority(Authority.normal);
 		}
 	}
 }
