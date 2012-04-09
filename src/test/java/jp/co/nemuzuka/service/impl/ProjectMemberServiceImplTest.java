@@ -173,8 +173,8 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 		String[] authorityCodes = authorityCodeSet.toArray(new String[0]);
 		
 		ProjectMemberForm form = new ProjectMemberForm();
-		form.memberKeys = memberKeys;
-		form.authorityCodes = authorityCodes;
+		form.memberKeyArray = memberKeys;
+		form.authorityCodeArray = authorityCodes;
 		
 		String projectKeyString = Datastore.keyToString(projectKeyList.get(0));
 		

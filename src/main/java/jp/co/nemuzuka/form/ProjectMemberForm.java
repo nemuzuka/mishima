@@ -14,32 +14,31 @@ public class ProjectMemberForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/** プロジェクトに参加させるメンバーKey文字列配列. */
-	public String[] memberKeys = new String[0];
+	public String[] memberKeyArray = new String[0];
 	/** 権限Key配列. */
-	public String[] authorityCodes = new String[0];
-
+	public String[] authorityCodeArray = new String[0];
 	/**
-	 * @return the memberKeys
+	 * @return the memberKeyArray
 	 */
-	public String[] getMemberKeys() {
-		return memberKeys;
+	public String[] getMemberKeyArray() {
+		return memberKeyArray;
 	}
 	/**
-	 * @param memberKeys the memberKeys to set
+	 * @param memberKeyArray the memberKeyArray to set
 	 */
-	public void setMemberKeys(String[] memberKeys) {
-		this.memberKeys = memberKeys;
+	public void setMemberKeyArray(String[] memberKeyArray) {
+		this.memberKeyArray = memberKeyArray;
 	}
 	/**
-	 * @return the authorityCodes
+	 * @return the authorityCodeArray
 	 */
-	public String[] getAuthorityCodes() {
-		return authorityCodes;
+	public String[] getAuthorityCodeArray() {
+		return authorityCodeArray;
 	}
 	/**
-	 * @param authorityCodes the authorityCodes to set
+	 * @param authorityCodeArray the authorityCodeArray to set
 	 */
-	public void setAuthorityCodes(String[] authorityCodes) {
-		this.authorityCodes = authorityCodes;
+	public void setAuthorityCodeArray(String[] authorityCodeArray) {
+		this.authorityCodeArray = authorityCodeArray;
 	}
 }

@@ -78,12 +78,12 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 		//form情報を元に更新
 		int index = 0;
 		Key projectKey = Datastore.stringToKey(selectedProject);
-		for(String target : form.memberKeys) {
+		for(String target : form.memberKeyArray) {
 			
 			ProjectMemberModel model = new ProjectMemberModel();
 			Key memberKey = Datastore.stringToKey(target);
 			model.createKey(projectKey, memberKey);
-			ProjectAuthority projectAuthority = ProjectAuthority.fromCode(form.authorityCodes[index]);
+			ProjectAuthority projectAuthority = ProjectAuthority.fromCode(form.authorityCodeArray[index]);
 			if(projectAuthority == null) {
 				projectAuthority = ProjectAuthority.type3;
 			}
