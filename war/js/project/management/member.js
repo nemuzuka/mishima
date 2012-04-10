@@ -124,16 +124,17 @@ function execute() {
 //登録パラメータ設定
 function createExecuteParams() {
 	var params = {};
-	params["memberKeyArray"] = {};
-	params["authorityCodeArray"] = {};
+	params["memberKeyArray"] = new Array();
+	params["authorityCodeArray"] = new Array();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
+	params["jp.co.nemuzuka.token2"] = $("#token").val();
 
 	var count = 0;
 	$("input[type='checkbox'][name='memberKey']").each(function(index){
 		
 		if($(this).prop("checked") == true) {
-			params["memberKeyArray"][count] = $(this).val();
-			params["authorityCodeArray"][count] = $($("select[name='authorityCode']").get()[index]).val();
+			params["memberKeyArray"].push($(this).val());
+			params["authorityCodeArray"].push($($("select[name='authorityCode']").get()[index]).val());
 			count++;
 		}
 	});

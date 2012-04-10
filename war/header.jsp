@@ -51,7 +51,7 @@
             <a href="#" id="project_menu">プロジェクト設定</a>
           </li>
           <li class="" id="main_menu4">
-            <a href="#">各種管理</a>
+            <a href="#" id="admin_menu">各種管理</a>
           </li>
         </ul>
       </div>
@@ -74,11 +74,11 @@ $(function(){
 	var selectedSubMenu = $("#selected_sub_menu").val();
 	$("#" + selectedSubMenu).addClass("active");
 
-	$("#main_menu3").click(function(){
+	$("#project_menu").click(function(){
 		moveUrl("/project/management/");
 	});
 	
-	$("#main_menu4").click(function(){
+	$("#admin_menu").click(function(){
 		moveUrl("/management/");
 	});
 	
@@ -90,6 +90,11 @@ $(function(){
 		}
 		moveUrl("/changeProject?projectKey=" + targetProject);
 	});
+
+	//システムマネージャでなければ、各種管理は参照できない
+	if(systemManager == false) {
+		$("#admin_menu").hide();
+	}
 
 	//プロジェクトを選択していなければ、チケット、プロジェクト設定は参照できない
 	if(selectedProject == "") {
