@@ -1,4 +1,4 @@
-package jp.co.nemuzuka.controller.error.noregist;
+package jp.co.nemuzuka.controller.error.timeout;
 
 import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.controller.HtmlController;
@@ -6,8 +6,8 @@ import jp.co.nemuzuka.core.controller.HtmlController;
 import org.slim3.controller.Navigation;
 
 /**
- * 未登録ユーザエラーController.
- * 登録してもらう旨通知するエラー画面を表示します。
+ * SessionタイムアウトエラーController.
+ * Sessionタイムアウト画面を表示します。
  * @author kazumune
  */
 public class IndexController extends HtmlController {
@@ -17,7 +17,7 @@ public class IndexController extends HtmlController {
 	@NoSessionCheck
 	@Override
 	protected Navigation execute() throws Exception {
-		return forward("/error/noregist/index.jsp");
+		return forward("/error/timeout/index.jsp");
 	}
 
 }

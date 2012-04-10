@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller;
 
+import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
@@ -16,6 +17,7 @@ public class TokenSampleController extends JsonController {
 	 */
 	@Override
 	@TokenCheck
+	@NoSessionCheck
 	protected Object execute() throws Exception {
 		JsonResult result = new JsonResult();
 		return result;

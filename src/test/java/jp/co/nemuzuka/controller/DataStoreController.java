@@ -3,6 +3,7 @@ package jp.co.nemuzuka.controller;
 import java.io.Serializable;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
@@ -27,6 +28,7 @@ public class DataStoreController extends JsonController {
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
 	@Override
+	@NoSessionCheck
 	@Validation(method="validate", input="jsonError")
 	protected Object execute() throws Exception {
 		JsonResult result = new JsonResult();

@@ -29,7 +29,7 @@
             <a href="#" id="personal_settings">個人設定</a>
           </li>
           <li class="">
-            <a href="${f:h(logoutURL)}">logout</a>
+            <a href="#" id="logout_link">logout</a>
           </li>
         </ul>
       </div>
@@ -66,6 +66,7 @@ var selectedProject = "${f:h(userInfo.selectedProject)}";
 var projectManager = ${f:h(userInfo.projectManager)};
 var projectMember = ${f:h(userInfo.projectMember)};
 var systemManager = ${f:h(userInfo.systemManager)};
+var logoutUrl = "${f:h(logoutURL)}";
 
 $(function(){
 	var selectedMainMenu = $("#selected_main_menu").val();
@@ -73,6 +74,10 @@ $(function(){
 
 	var selectedSubMenu = $("#selected_sub_menu").val();
 	$("#" + selectedSubMenu).addClass("active");
+
+	$("#logout_link").click(function(){
+		moveUrl(logoutUrl);
+	});
 
 	$("#project_menu").click(function(){
 		moveUrl("/project/management/");

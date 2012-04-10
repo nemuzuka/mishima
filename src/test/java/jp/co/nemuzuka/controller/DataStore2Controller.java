@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller;
 
+import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.model.HogeModel;
@@ -17,6 +18,7 @@ public class DataStore2Controller extends JsonController {
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
+	@NoSessionCheck
 	@Override
 	protected Object execute() throws Exception {
 		JsonResult result = new JsonResult();

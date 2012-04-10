@@ -2,7 +2,6 @@ package jp.co.nemuzuka.utils;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -54,7 +53,7 @@ public class CurrentDateUtils {
 	public Date getMaxDate() {
 		Date date = null;
 		try {
-			date = new SimpleDateFormat("yyyy/MM/dd").parse("2999/12/31");
+			date = DateTimeUtils.createSdf("yyyy/MM/dd").parse("2999/12/31");
 		} catch (ParseException e) {}
 
 		return date;

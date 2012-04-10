@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller;
 
+import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
@@ -15,6 +16,7 @@ public class SampleController extends JsonController {
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
+	@NoSessionCheck
 	@Override
 	@Validation(method="validate", input="jsonError")
 	protected Object execute() throws Exception {

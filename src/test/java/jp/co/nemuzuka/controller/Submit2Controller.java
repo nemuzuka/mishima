@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller;
 
+import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.controller.HtmlController;
 
 import org.slim3.controller.Navigation;
@@ -16,6 +17,7 @@ public class Submit2Controller extends HtmlController {
 	 * @return フォワード文字列
 	 * @throws Exception 例外
 	 */
+	@NoSessionCheck
 	@Override
 	protected Navigation execute() throws Exception {
 		return forward("index.jsp");

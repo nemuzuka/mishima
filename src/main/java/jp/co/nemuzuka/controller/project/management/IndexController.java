@@ -17,11 +17,7 @@ public class IndexController extends HtmlController {
 	@ProjectAdmin
 	@Override
 	protected Navigation execute() throws Exception {
-		
-		//TODO プロジェクトが設定されていない or プロジェクト管理者でない場合、Exceptionをthrowする
-		//プロジェクト情報をクリアして、TOPに強制的に遷移
-		
-		return forward("/project/management/index.jsp");
+		return forward("/project/management/member");
 	}
 
 }

@@ -32,6 +32,8 @@ public abstract class JsonController extends AbsController {
 	private String SEVERE_ERR_KEY = "jp.co.nemuzuka.severe.err";
 	/** 前処理エラー存在有無格納キー. */
 	private String SETUP_ERROR = "jp.co.nemuzuka.setup.error";
+	/** 前処理エラー存在有無格納キー. */
+	private String SESSION_TIMEOUT_ERROR = "jp.co.nemuzuka.session.timeout.error";
 	
 	/** logger. */
 	protected final Logger logger = Logger.getLogger(getClass().getName());
@@ -60,7 +62,6 @@ public abstract class JsonController extends AbsController {
 		
 		Object obj = null;
 		try {
-			setUserService();
 			obj = execute();
 			if (obj == null) {
 				throw new AssertionError("execute() must not be null.");
@@ -99,9 +100,20 @@ public abstract class JsonController extends AbsController {
 		super.setUp();
 		Class clazz = getClass();
 
+		setUserService();
+
 		//ActionFormの設定
 		setActionForm(clazz);
 
+		//Sesisonが存在しない時にエラーレスポンスを返す
+		boolean sessionCheck = executeSessionCheck(clazz);
+		if(sessionCheck == false) {
+			errors.put("message", ApplicationMessage.get("errors.session.timeout"));
+			requestScope(SESSION_TIMEOUT_ERROR, "1");
+			jsonError();
+			return null;
+		}
+	
 		//TokenCheck、ProjectAdmin、ProjectMemberが指定されていれば実行
 		boolean status = executeTokenCheck(clazz);
 		boolean projectAdmin = executeProjectAdminCheck(clazz);
@@ -161,12 +173,17 @@ public abstract class JsonController extends AbsController {
 		}
 		String jsonError = requestScope(TOKEN_ERR_KEY);
 		String severeError = requestScope(SEVERE_ERR_KEY);
+		String sessionTimeOut = requestScope(SESSION_TIMEOUT_ERROR);
+		
 		if(StringUtils.isNotEmpty(jsonError)) {
 			//Tokenエラー
 			result.setStatus(JsonResult.TOKEN_ERROR);
 		} else if(StringUtils.isNotEmpty(severeError)) {
 			//サーバーエラー
 			result.setStatus(JsonResult.SEVERE_ERROR);
+		} else if(StringUtils.isNotEmpty(sessionTimeOut)) {
+			//Sessionタイムアウトエラー
+			result.setStatus(JsonResult.SESSION_TIMEOUT);
 		} else {
 			//通常のエラー
 			result.setStatus(JsonResult.STATUS_NG);

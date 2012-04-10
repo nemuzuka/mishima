@@ -64,7 +64,7 @@ public class DateTimeChecker {
 			return false;
 		}
 
-		SimpleDateFormat format = new SimpleDateFormat(pattern);
+		SimpleDateFormat format = DateTimeUtils.createSdf(pattern);
 		format.setLenient(false);
 		try {
 			format.parse(target);

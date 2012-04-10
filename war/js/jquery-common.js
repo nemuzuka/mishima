@@ -74,6 +74,11 @@ function errorCheck(data) {
 	if(data.errorMsg.length != 0) {
 		//エラーが存在する場合
 		alert(getMsgs(data.errorMsg));
+		
+		//Sessionタイムアウトの場合、強制的にログアウトさせる
+		if(data.status == -99) {
+			moveUrl(logoutUrl);
+		}
 		return false;
 	}
 	return true;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -39,7 +40,7 @@ public class DateTimeUtils {
 	 * @return index 0:月初のDate index 1:月末のDate
 	 */
 	public static List<Date> getStartEndDate(String targetYyyyMM) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		sdf.setLenient(false);
 		List<Date> retList = new ArrayList<Date>();
 		try {
@@ -145,7 +146,7 @@ public class DateTimeUtils {
 	 * @return 加算後文字列
 	 */
 	public static String addTime(String targethhmm, int time) {
-		SimpleDateFormat sdf = new SimpleDateFormat("HHmm");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("HHmm");
 		Date date = null;
 		try {
 			date = sdf.parse(targethhmm);
@@ -168,7 +169,7 @@ public class DateTimeUtils {
 		Date date = CurrentDateUtils.getInstance().getCurrentDate();
 		date = DateUtils.addMonths(date, 1);
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMM");
 		return sdf.format(date);
 	}
 
@@ -204,7 +205,7 @@ public class DateTimeUtils {
 	 */
 	public static String addMonth(String targetYyyyMm, int amount) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		Date date;
 		try {
 			date = sdf.parse(targetYyyyMm + "01");
@@ -212,7 +213,7 @@ public class DateTimeUtils {
 			throw new RuntimeException(e);
 		}
 		date = DateUtils.addMonths(date, amount);
-		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat sdf2 = DateTimeUtils.createSdf("yyyyMM");
 		return sdf2.format(date);
 	}
 
@@ -235,7 +236,7 @@ public class DateTimeUtils {
 
 		Date date = CurrentDateUtils.getInstance().getCurrentDate();
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMM");
 		return sdf.format(date);
 	}
 
@@ -403,11 +404,22 @@ public class DateTimeUtils {
 			throw new IllegalArgumentException("入力が不正です。");
 		}
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		int val1 = Integer.valueOf(sdf.format(baseDate));
 		int val2 = Integer.valueOf(sdf.format(birthDay));
 
 		return (val1 - val2) / 10000;
 	}
 
+	/**
+	 * SimpleDateForm取得.
+	 * タイムゾーンをJSTにしたSimpleDateFormatを取得します。
+	 * @param pattern フォーマットパターン
+	 * @return SimpleDateFormatインスタンス
+	 */
+	public static SimpleDateFormat createSdf(String pattern) {
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		sdf.setTimeZone(TimeZone.getTimeZone("JST"));
+		return sdf;
+	}
 }

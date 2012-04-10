@@ -1,6 +1,7 @@
 package jp.co.nemuzuka.controller;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.HtmlController;
 import jp.co.nemuzuka.form.TestForm;
@@ -36,6 +37,7 @@ public class SubmitController extends HtmlController {
 	 */
 	@Validation(method="validate",input="error")
 	@Override
+	@NoSessionCheck
 	protected Navigation execute() throws Exception {
 		return forward("index.jsp");
 	}

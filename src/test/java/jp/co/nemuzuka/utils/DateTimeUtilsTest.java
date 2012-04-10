@@ -23,7 +23,7 @@ public class DateTimeUtilsTest {
 	 */
 	@Test
 	public void testGetStartEndDate() throws ParseException{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 
 		List<Date> list = DateTimeUtils.getStartEndDate("201102");
 		assertThat(list.get(0), is(sdf.parse("20110201")));
@@ -49,7 +49,7 @@ public class DateTimeUtilsTest {
 	 */
 	@Test
 	public void testGetStartEndDate4SunDay() throws ParseException{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		List<Date> list = DateTimeUtils.getStartEndDate4SunDay("201110");
 		assertThat(list.get(0), is(sdf.parse("20110925")));
 		assertThat(list.get(1), is(sdf.parse("20111105")));
@@ -70,7 +70,7 @@ public class DateTimeUtilsTest {
 	 */
 	@Test
 	public void testGetStartEndDateList() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		List<Date> list = DateTimeUtils.getStartEndDateList("201102");
 		assertThat(list.size(), is(28));
 		assertThat(list.get(0), is(sdf.parse("20110201")));
@@ -84,7 +84,7 @@ public class DateTimeUtilsTest {
 	 */
 	@Test
 	public void testGetStartEndDate4SunDayList() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		List<Date> list = DateTimeUtils.getStartEndDate4SunDayList("201112");
 		assertThat(list.size(), is(35));
 		assertThat(list.get(0), is(sdf.parse("20111127")));
@@ -98,7 +98,7 @@ public class DateTimeUtilsTest {
 	 */
 	@Test
 	public void testGetDays() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		Date startDate = sdf.parse("20100101");
 		Date endDate = sdf.parse("20100101");
 		assertThat(DateTimeUtils.getDays(startDate, endDate), is(1));
@@ -152,7 +152,7 @@ public class DateTimeUtilsTest {
 	 */
 	@Test
 	public void testAddWeek() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		assertThat(DateTimeUtils.addWeek(sdf.parse("20111025"), -1).getTime(), is(sdf.parse("20111018").getTime()));
 		assertThat(DateTimeUtils.addWeek(sdf.parse("20111025"), 1).getTime(), is(sdf.parse("20111101").getTime()));
 	}
@@ -162,7 +162,7 @@ public class DateTimeUtilsTest {
 	 */
 	@Test
 	public void testCalcAge() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 
 		Date baseDate = sdf.parse("20120106");
 		Date birthDay = sdf.parse("19770106");

@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller;
 
+import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 
 /**
@@ -11,6 +12,7 @@ public class NoResultController extends JsonController {
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
+	@NoSessionCheck
 	@Override
 	protected Object execute() throws Exception {
 		return null;

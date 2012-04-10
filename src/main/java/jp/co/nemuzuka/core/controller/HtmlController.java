@@ -8,12 +8,8 @@ import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.entity.UserInfo;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import jp.co.nemuzuka.model.MemberModel;
-import jp.co.nemuzuka.service.ProjectService;
-import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
-import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 import org.slim3.datastore.Datastore;
@@ -54,8 +50,6 @@ public abstract class HtmlController extends AbsController {
 		
 		Navigation navigation = null;
 		try {
-			setUserService();
-			
 			//UserInfoの確認
 			checkAndSetUserInfo();
 			
@@ -89,6 +83,14 @@ public abstract class HtmlController extends AbsController {
 	protected Navigation setUp() {
 		super.setUp();
 		Class clazz = getClass();
+
+		setUserService();
+		
+		boolean sessionCheck = executeSessionCheck(clazz);
+		if(sessionCheck == false) {
+			//SessionTimeoutの場合、エラー画面に遷移
+			return forward(ERR_SESSION_TIMEOUT);
+		}
 
 		//ログインユーザの情報を元に、データストアに設定されているかチェック
 		Navigation navigation = checkSettingUser();
@@ -205,25 +207,5 @@ public abstract class HtmlController extends AbsController {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * UserInfo更新.
-	 * 参照可能プロジェクトと更新開始時刻を更新する
-	 * @param userInfo 設定UserInfo
-	 */
-	private void refreshUserInfo(UserInfo userInfo) {
-		ProjectService service = new ProjectServiceImpl();
-		ProjectService.TargetProjectResult result = 
-				service.getUserProjectList(userService.getCurrentUser().getEmail(), userService.isUserAdmin());
-		
-		userInfo.projectList = result.projectList;
-		userInfo.systemManager = result.admin;
-
-		//現在時刻に加算分の時刻(分)を加算し、設定する
-		Date date = CurrentDateUtils.getInstance().getCurrentDateTime();
-		int min = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.session.refresh.min", "15"));
-		date = DateUtils.addMinutes(date, min);
-		userInfo.refreshStartTime = date;
 	}
 }

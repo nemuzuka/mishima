@@ -3,16 +3,23 @@ package jp.co.nemuzuka.core.controller;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Date;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.annotation.ProjectAdmin;
 import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.core.entity.UserInfo;
+import jp.co.nemuzuka.service.ProjectService;
+import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
+import jp.co.nemuzuka.utils.ConvertUtils;
+import jp.co.nemuzuka.utils.CurrentDateUtils;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.slim3.controller.Controller;
 import org.slim3.util.BeanUtil;
 
@@ -40,6 +47,8 @@ public abstract class AbsController extends Controller {
 	protected String ERR_URL_NO_REGIST = "/error/noregist/";
 	/** システムエラー. */
 	protected String ERR_URL_SYSERROR = "/error/syserror/";
+	/** Sessionタイムアウト. */
+	protected String ERR_SESSION_TIMEOUT = "/error/timeout/";
 	
 	/**
 	 * 終了時処理.
@@ -262,6 +271,54 @@ public abstract class AbsController extends Controller {
 			return getUserInfo().systemManager;
 		}
 		return true;
+	}
+
+	/**
+	 * Session存在チェック.
+	 * Sessionが存在するか確認します。
+	 * @param clazz 対象クラス
+	 * @return Sessionが存在する or NoSessionCheckアノテーションが付与されている場合、true/Sessionが存在しない、false
+	 */
+	@SuppressWarnings("rawtypes")
+	protected boolean executeSessionCheck(Class clazz) {
+		Method target = null;
+		try {
+			target = getDeclaredMethod(clazz, "execute", (Class[])null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		NoSessionCheck noSessionCheck = target.getAnnotation(NoSessionCheck.class);
+		if(noSessionCheck != null) {
+			//executeメソッドにNoSessionCheckアノテーションが付与されている場合、無条件でOKとする
+			return true;
+		}
+		UserInfo userInfo = getUserInfo();
+		if(userInfo == null) {
+			return false;
+		}
+		return true;
+	}
+
+
+	/**
+	 * UserInfo更新.
+	 * 参照可能プロジェクトと更新開始時刻を更新する
+	 * @param userInfo 設定UserInfo
+	 */
+	protected void refreshUserInfo(UserInfo userInfo) {
+		ProjectService service = new ProjectServiceImpl();
+		ProjectService.TargetProjectResult result = 
+				service.getUserProjectList(userService.getCurrentUser().getEmail(), userService.isUserAdmin());
+		
+		userInfo.projectList = result.projectList;
+		userInfo.systemManager = result.admin;
+
+		//現在時刻に加算分の時刻(分)を加算し、設定する
+		Date date = CurrentDateUtils.getInstance().getCurrentDateTime();
+		int min = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.session.refresh.min", "15"));
+		date = DateUtils.addMinutes(date, min);
+		userInfo.refreshStartTime = date;
 	}
 
 }

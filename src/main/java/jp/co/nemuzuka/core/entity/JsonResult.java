@@ -20,6 +20,8 @@ public class JsonResult implements Serializable {
 	public static Integer DUPLICATE_ERR = -5;
 	/** 該当データ無し. */
 	public static Integer NO_DATA = -6;
+	/** Sessionタイムアウト. */
+	public static Integer SESSION_TIMEOUT = -99;
 	
 	
 	/**

@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller;
 
+import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.controller.HtmlController;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.impl.MemberServiceImpl;
@@ -21,6 +22,7 @@ public class IndexController extends HtmlController {
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.HtmlController#execute()
 	 */
+	@NoSessionCheck
 	@Override
 	protected Navigation execute() throws Exception {
 		
