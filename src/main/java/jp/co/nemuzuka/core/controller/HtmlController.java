@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ConcurrentModificationException;
 import java.util.Date;
 
+import jp.co.nemuzuka.core.annotation.NoRegistCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.entity.UserInfo;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
@@ -51,7 +52,7 @@ public abstract class HtmlController extends AbsController {
 		Navigation navigation = null;
 		try {
 			//UserInfoの確認
-			checkAndSetUserInfo();
+			checkAndSetUserInfo(getClass());
 			
 			navigation = execute();
 			//commit
@@ -93,7 +94,7 @@ public abstract class HtmlController extends AbsController {
 		}
 
 		//ログインユーザの情報を元に、データストアに設定されているかチェック
-		Navigation navigation = checkSettingUser();
+		Navigation navigation = checkSettingUser(clazz);
 		if(navigation != null) {
 			return navigation;
 		}
@@ -118,10 +119,26 @@ public abstract class HtmlController extends AbsController {
 	/**
 	 * ログインユーザ設定チェック.
 	 * ログインユーザが登録済みである or Google App Engine管理者であるかチェックを行います。
+	 * 「@NoRegistCheck」が付与されている場合、強制的にnullを返します。
+	 * @param clazz 対象クラス
 	 * @return 登録済みである or GAE管理者である場合、null/それ以外、強制遷移先Navigation
 	 */
-	private Navigation checkSettingUser() {
+	@SuppressWarnings({ "rawtypes" })
+	private Navigation checkSettingUser(Class clazz) {
 		
+		//executeメソッドにValidatetionアノテーションが付与されている場合
+		Method target = null;
+		try {
+			target = getDeclaredMethod(clazz, "execute", (Class[])null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		NoRegistCheck validation = target.getAnnotation(NoRegistCheck.class);
+		if(validation != null) {
+			return null;
+		}
+
 		UserService service = UserServiceFactory.getUserService();
 		if(service.isUserAdmin()) {
 			//管理者がログインした場合、処理終了
@@ -176,8 +193,25 @@ public abstract class HtmlController extends AbsController {
 	 * Sessionが存在しない or UserInfoの更新開始時刻を現在の時刻が超えた(もしくはnull)
 	 * の場合、参照可能プロジェクトを更新と共に更新開始時期を
 	 * 現在時刻 + システムプロパティ(jp.co.nemuzuka.session.refresh.min)分加算して設定する
+	 * 「@NoRegistCheck」が付与されている場合、チェックを行いません。
+	 * @param clazz 対象クラス
 	 */
-	private void checkAndSetUserInfo() {
+	@SuppressWarnings({ "rawtypes" })
+	private void checkAndSetUserInfo(Class clazz) {
+		
+		//executeメソッドにValidatetionアノテーションが付与されている場合、処理終了
+		Method target = null;
+		try {
+			target = getDeclaredMethod(clazz, "execute", (Class[])null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		NoRegistCheck validation = target.getAnnotation(NoRegistCheck.class);
+		if(validation != null) {
+			return;
+		}
+		
 		UserInfo userInfo = sessionScope(USER_INFO_KEY);
 		if(userInfo == null || isOverRefreshStartTime(userInfo.refreshStartTime)) {
 			//更新する

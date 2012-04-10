@@ -27,7 +27,7 @@
 <!--
 $(function(){
 	alert("一定時間操作されなかったのでタイムアウトしました。");
-	moveUrl("/logout/");
+	moveUrl("/logout");
 });
 //-->
 </script>
