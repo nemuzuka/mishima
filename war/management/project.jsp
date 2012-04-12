@@ -48,14 +48,14 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_project_name">プロジェクト名</label>
 		<div class="controls">
-			<input type="text" class="input-xlarge" id="edit_project_name">
+			<input type="text" class="input-xlarge required-input" id="edit_project_name">
 		</div>
 	</div>
 
 	<div class="control-group">
 		<label class="control-label" for="edit_project_id">識別子</label>
 		<div class="controls">
-			<input type="text" class="input-xlarge" id="edit_project_id">
+			<input type="text" class="input-xlarge required-input" id="edit_project_id">
 		</div>
 	</div>
 

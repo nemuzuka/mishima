@@ -2,6 +2,9 @@
 
 h2.title{color:08C;line-height:26px;font-size:150%;font-weight:bold;text-shadow:1px 1px 1px #CCC;}
 
+/* 必須項目 */
+.required-input{background-color: #FFFCEE;}
+
 /* 検索テーブル. */
 .search_table{font-size:100%;border-top:2px solid #08C;border-bottom:2px solid #08C;}
 .search_table th,.search_table td{padding:2px 2px;border-bottom:1px solid #08C;}

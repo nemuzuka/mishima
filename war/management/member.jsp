@@ -50,13 +50,13 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_name">氏名</label>
 		<div class="controls">
-			<input type="text" class="input-xlarge" id="edit_name">
+			<input type="text" class="input-xlarge required-input" id="edit_name">
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label" for="edit_mail">メールアドレス</label>
 		<div class="controls">
-			<input type="text" class="input-xlarge" id="edit_mail">
+			<input type="text" class="input-xlarge required-input" id="edit_mail">
 			<p class="help-block">googleの認証で使用するメールアドレスです。同じメールアドレスは登録できません</p>
 		</div>
 	</div>

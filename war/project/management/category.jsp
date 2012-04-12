@@ -12,16 +12,16 @@
   
 <c:param name="content">
 
-<script type="text/javascript" src="/js/project/management/kind.js"></script>
+<script type="text/javascript" src="/js/project/management/category.js"></script>
 
 <div class="widget">
 <form class="form-horizontal">
 
-	<h2 class="title">種別管理</h2>
+	<h2 class="title">カテゴリ管理</h2>
 	<div class="search_ctrl">
-		<input type="button" class="btn btn-primary" id="searchKindBtn" value="検索" />
-		<input type="button" class="btn" value="新規登録" id="addKindBtn" />
-		<input type="button" class="btn" value="表示順変更" id="sortKindBtn" />
+		<input type="button" class="btn btn-primary" id="searchCategoryBtn" value="検索" />
+		<input type="button" class="btn" value="新規登録" id="addCategoryBtn" />
+		<input type="button" class="btn" value="表示順変更" id="sortCategoryBtn" />
 	</div>
 	
 	<div id="result_area" class="result">
@@ -34,20 +34,20 @@
 </div>
 
 
-<%-- 種別ダイアログ --%>
-<div id="kindDialog" title="種別" class="dialog-widget">
+<%-- カテゴリダイアログ --%>
+<div id="categoryDialog" title="カテゴリ" class="dialog-widget">
 <div class="dialog-container form-horizontal" >
 <fieldset>
 	<div class="control-group">
-		<label class="control-label" for="edit_project_name">種別名</label>
+		<label class="control-label" for="edit_category_name">カテゴリ名</label>
 		<div class="controls">
-			<input type="text" class="input-xlarge required-input" id="edit_kind_name">
+			<input type="text" class="input-xlarge required-input" id="edit_category_name">
 		</div>
 	</div>
 
 	<div class="edit_ctrl">
-		<input type="button" class="btn btn-primary" id="kindDialog-add" value="登録する" />
-		<input type="button" class="btn" id="kindDialog-cancel" value="キャンセル" />
+		<input type="button" class="btn btn-primary" id="categoryDialog-add" value="登録する" />
+		<input type="button" class="btn" id="categoryDialog-cancel" value="キャンセル" />
 		<input type="hidden" id="edit_versionNo" />
 		<input type="hidden" id="edit_keyToString" />
 	</div>
@@ -56,14 +56,14 @@
 </div>
 
 <%-- 表示順変更ダイアログ --%>
-<div id="kindSortDialog" title="表示順変更" class="dialog-widget">
+<div id="categorySortDialog" title="表示順変更" class="dialog-widget">
 <div class="dialog-container form-horizontal" >
 <fieldset>
 	<div class="control-group">
-		<label class="control-label" for="kind_to">種別</label>
+		<label class="control-label" for="category_to">カテゴリ</label>
 		<div class="controls">
 			<div class="sort_to">
-				<select id="kind_to" size="10" multiple="multiple"></select>
+				<select id="category_to" size="10" multiple="multiple"></select>
 			</div>
 			<div class="sort_action_area">
 				<input type="button" class="btn sort_up_button" id="sort_up" value="↑" style="float:left;margin-bottom: 50px;" /><br/>
@@ -73,15 +73,15 @@
 	</div>
 
 	<div class="edit_ctrl">
-		<input type="button" class="btn btn-primary" id="kindSortDialog-execute" value="変更する" />
-		<input type="button" class="btn" id="kindSortDialog-cancel" value="キャンセル" />
+		<input type="button" class="btn btn-primary" id="categorySortDialog-execute" value="変更する" />
+		<input type="button" class="btn" id="categorySortDialog-cancel" value="キャンセル" />
 	</div>
 </fieldset>
 </div>
 </div>
 
 
-<input type="hidden" id="selected_sub_menu" value="sub_menu2" />
+<input type="hidden" id="selected_sub_menu" value="sub_menu3" />
 
 </c:param>
 

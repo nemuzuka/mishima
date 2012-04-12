@@ -1,18 +1,18 @@
 $(function(){
 	initDialog();
 
-	$("#addKindBtn").click(function(){
+	$("#addCategoryBtn").click(function(){
 		openEditDialog("");
 	});
 
-	$("#searchKindBtn").click(function(){
-		searchKind();
+	$("#searchCategoryBtn").click(function(){
+		searchCategory();
 	});
 });
 
 //ダイアログ初期化
 function initDialog(){
-	$("#kindDialog").dialog({
+	$("#categoryDialog").dialog({
 		modal:true,
 		autoOpen:false,
 		width:500,
@@ -25,7 +25,7 @@ function initDialog(){
 		}
 	});
 
-	$("#kindSortDialog").dialog({
+	$("#categorySortDialog").dialog({
 		modal:true,
 		autoOpen:false,
 		width:500,
@@ -38,35 +38,35 @@ function initDialog(){
 		}
 	});
 
-	$("#kindDialog-add").click(function(){
+	$("#categoryDialog-add").click(function(){
 		execute();
 	});
 	
-	$("#kindDialog-cancel").click(function(){
-		$("#kindDialog").dialog("close");
+	$("#categoryDialog-cancel").click(function(){
+		$("#categoryDialog").dialog("close");
 	});
 	
 
 	//ソートダイアログ
-	$("#sortKindBtn").click(function(){
+	$("#sortCategoryBtn").click(function(){
 		openSortDialog();
 	});
 	$("#sort_up").click(function(){
-		upItems("kind_to");
+		upItems("category_to");
 	});
 	$("#sort_down").click(function(){
-		downItems("kind_to");
+		downItems("category_to");
 	});
-	$("#kindSortDialog-execute").click(function(){
+	$("#categorySortDialog-execute").click(function(){
 		executeSort();
 	});
-	$("#kindSortDialog-cancel").click(function(){
-		$("#kindSortDialog").dialog("close");
+	$("#categorySortDialog-cancel").click(function(){
+		$("#categorySortDialog").dialog("close");
 	});
 }
 
-//種別検索
-function searchKind() {
+//カテゴリ検索
+function searchCategory() {
 	searchAndRender();
 }
 
@@ -75,7 +75,7 @@ function searchAndRender() {
 	setAjaxDefault();
 	return $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindList"
+		url: "/project/management/ajax/categoryList"
 	}).then(
 		function(data) {
 			render(data);
@@ -111,7 +111,7 @@ function render(data) {
 	//一覧をレンダリング
 	var $table = $("<table />").addClass("table table-bordered result_table");
 	var $thead = $("<thead />").append($("<tr />")
-				.append($("<th />").text("種別"))
+				.append($("<th />").text("カテゴリ"))
 				.append($("<th />").text("").attr({width:"50px"}))
 			);
 	$table.append($thead);
@@ -119,15 +119,15 @@ function render(data) {
 	var $tbody = $("<tbody />");
 	$.each(result, function(){
 		var keyToString = this.keyToString;
-		var kindName = this.kindName;
+		var categoryName = this.categoryName;
 		var versionNo = this.version
 
 		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
 		$delBtn.click(function(){
-			deleteKind(kindName, keyToString, versionNo);
+			deleteCategory(categoryName, keyToString, versionNo);
 		});
 		
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(kindName);
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(categoryName);
 		$a.click(function(){
 			openEditDialog(keyToString);
 		});
@@ -147,15 +147,15 @@ function openEditDialog(keyToString) {
 	var title = "";
 	var buttonLabel = "";
 	if(keyToString == '') {
-		title = "種別登録";
+		title = "カテゴリ登録";
 		buttonLabel = "登録する";
 	} else {
-		title = "種別変更";
+		title = "カテゴリ変更";
 		buttonLabel = "変更する";
 	}
-	$("#ui-dialog-title-kindDialog").empty();
-	$("#ui-dialog-title-kindDialog").append(title);
-	$("#kindDialog-add").attr({value:buttonLabel});
+	$("#ui-dialog-title-categoryDialog").empty();
+	$("#ui-dialog-title-categoryDialog").append(title);
+	$("#categoryDialog-add").attr({value:buttonLabel});
 	
 	var params = {};
 	params["keyToString"] = keyToString;
@@ -164,7 +164,7 @@ function openEditDialog(keyToString) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindEditInfo",
+		url: "/project/management/ajax/categoryEditInfo",
 		data: params
 	});
 	
@@ -187,25 +187,25 @@ function openEditDialog(keyToString) {
 			//form情報の設定
 			var form = data.result;
 			
-			$("#edit_kind_name").val(form.kindName);
+			$("#edit_category_name").val(form.categoryName);
 
 			$("#edit_versionNo").val(form.versionNo);
 			$("#edit_keyToString").val(form.keyToString);
 			
-			$("#kindDialog").dialog("open");
+			$("#categoryDialog").dialog("open");
 			return;
 		}
 	);
 }
 
-//種別登録・更新
+//カテゴリ登録・更新
 function execute() {
 	var params = createExecuteParams();
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindExecute",
+		url: "/project/management/ajax/categoryExecute",
 		data: params
 	});
 	
@@ -220,7 +220,7 @@ function execute() {
 					return reSetToken();
 				} else {
 					//強制的にダイアログを閉じて、再検索
-					$("#kindDialog").dialog("close");
+					$("#categoryDialog").dialog("close");
 					return reSearchAndRender();
 				}
 				return;
@@ -228,15 +228,15 @@ function execute() {
 			
 			//メッセージを表示して、戻る
 			infoCheck(data);
-			$("#kindDialog").dialog("close");
+			$("#categoryDialog").dialog("close");
 			return reSearchAndRender();
 		}
 	);
 }
 
-//種別削除
-function deleteKind(name, keyToString, version) {
-	if(window.confirm("種別「" + name + "」を削除します。本当によろしいですか？") == false) {
+//カテゴリ削除
+function deleteCategory(name, keyToString, version) {
+	if(window.confirm("カテゴリ「" + name + "」を削除します。本当によろしいですか？") == false) {
 		return;
 	}
 	
@@ -249,7 +249,7 @@ function deleteKind(name, keyToString, version) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindDelete",
+		url: "/project/management/ajax/categoryDelete",
 		data: params
 	});
 	
@@ -269,7 +269,7 @@ function deleteKind(name, keyToString, version) {
 //登録パラメータ設定
 function createExecuteParams() {
 	var params = {};
-	params["kindName"] = $("#edit_kind_name").val();
+	params["categoryName"] = $("#edit_category_name").val();
 	params["versionNo"] = $("#edit_versionNo").val();
 	params["keyToString"] = $("#edit_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
@@ -298,7 +298,7 @@ function openSortDialog() {
 	setAjaxDefault();
 	return $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindList"
+		url: "/project/management/ajax/categoryList"
 	}).then(
 		function(data) {
 			renderSortDialog(data);
@@ -308,7 +308,7 @@ function openSortDialog() {
 
 //ソートダイアログデータ設定 & Open
 function renderSortDialog(data) {
-	$("#kind_to").empty();
+	$("#category_to").empty();
 
 	//共通エラーチェック
 	if(errorCheck(data) == false) {
@@ -325,24 +325,24 @@ function renderSortDialog(data) {
 
 	$.each(result, function(){
 		var keyToString = this.keyToString;
-		var kindName = this.kindName;
-		$("#kind_to").append($('<option />').attr({value:keyToString }).text(kindName));
+		var categoryName = this.categoryName;
+		$("#category_to").append($('<option />').attr({value:keyToString }).text(categoryName));
 	});
-	reWriteSelect("kind_to", new Array());
-	$("#kindSortDialog").dialog("open");
+	reWriteSelect("category_to", new Array());
+	$("#categorySortDialog").dialog("open");
 }
 
 //ソート情報変更
 function executeSort() {
 	var params = {};
-	params["sortedKindKeys"] = getSelectArray("kind_to");
+	params["sortedCategoryKeys"] = getSelectArray("category_to");
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindSort",
+		url: "/project/management/ajax/categorySort",
 		data: params
 	});
 	
@@ -360,7 +360,7 @@ function executeSort() {
 
 			//メッセージを表示して、ダイアログを閉じて、再検索
 			infoCheck(data);
-			$("#kindSortDialog").dialog("close");
+			$("#categorySortDialog").dialog("close");
 			return reSearchAndRender();
 		}
 	);
