@@ -60,6 +60,7 @@ public class KindModel extends AbsModel {
 	/**
 	 * @return sortNum
 	 */
+	@JSONHint(ignore=true)
 	public Long getSortNum() {
 		return sortNum;
 	}
@@ -74,6 +75,7 @@ public class KindModel extends AbsModel {
 	/**
 	 * @return projectKey
 	 */
+	@JSONHint(ignore=true)
 	public Key getProjectKey() {
 		return projectKey;
 	}
