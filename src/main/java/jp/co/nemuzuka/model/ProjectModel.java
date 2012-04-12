@@ -6,6 +6,7 @@ import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * プロジェクトを管理するModel.
@@ -28,7 +29,7 @@ public class ProjectModel extends AbsModel {
 	
 	/** プロジェクト概要. */
 	@Attribute(unindexed=true)
-	private String projectSummary;
+	private Text projectSummary;
 
 	/**
 	 * @return key
@@ -76,14 +77,14 @@ public class ProjectModel extends AbsModel {
 	/**
 	 * @return projectSummary
 	 */
-	public String getProjectSummary() {
+	public Text getProjectSummary() {
 		return projectSummary;
 	}
 
 	/**
 	 * @param projectSummary セットする projectSummary
 	 */
-	public void setProjectSummary(String projectSummary) {
+	public void setProjectSummary(Text projectSummary) {
 		this.projectSummary = projectSummary;
 	}
 }

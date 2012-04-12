@@ -197,6 +197,21 @@ public abstract class JsonController extends AbsController {
 		}
 	}
 
+	
+	/**
+	 * エラーJsonResult作成.
+	 * 引数の情報を元にエラーメッセージを設定したJsonResultを作成します。
+	 * @param key エラーメッセージKey
+	 * @param obj エラーメッセージパラメータ
+	 * @return エラーJsonResultインスタンス
+	 */
+	protected JsonResult createErrorMsg(String key, Object...obj) {
+		JsonResult result = new JsonResult();
+		result.setStatus(JsonResult.STATUS_NG);
+		result.getErrorMsg().add(ApplicationMessage.get(key, obj));
+		return result;
+	}
+
 	/**
 	 * validation実行.
 	 * メイン処理に「@Validation」が付与されれている場合、メソッドを呼び出し、validateを実行します。

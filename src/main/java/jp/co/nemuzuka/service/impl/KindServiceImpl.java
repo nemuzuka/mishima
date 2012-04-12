@@ -60,7 +60,7 @@ public class KindServiceImpl implements KindService {
 			//新規の場合
 			model = new KindModel();
 		}
-		setModel(model, form);
+		setModel(model, form, projectKeyToString);
 		kindDao.put(model);
 	}
 
@@ -135,8 +135,17 @@ public class KindServiceImpl implements KindService {
 	 * Model情報設定.
 	 * @param model 設定対象Model
 	 * @param form 設定Form
+	 * @param projectKeyToString プロジェクトKey文字列
 	 */
-	private void setModel(KindModel model, KindForm form) {
+	private void setModel(KindModel model, KindForm form, String projectKeyToString) {
+		
+		if(model.getKey() == null) {
+			//新規の場合
+			Key projectKey = Datastore.stringToKey(projectKeyToString);
+			model.setProjectKey(projectKey);
+			model.setSortNum(Long.MAX_VALUE);
+		}
+		
 		model.setKindName(form.kindName);
 	}
 }

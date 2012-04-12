@@ -80,19 +80,4 @@ public class MemberSettingController extends JsonController {
 		}
 		return null;
 	}
-	
-	/**
-	 * エラーJsonResult作成.
-	 * 引数の情報を元にエラーメッセージを設定したJsonResultを作成します。
-	 * @param key エラーメッセージKey
-	 * @param obj エラーメッセージパラメータ
-	 * @return エラーJsonResultインスタンス
-	 */
-	private JsonResult createErrorMsg(String key, Object...obj) {
-		JsonResult result = new JsonResult();
-		result.setStatus(JsonResult.STATUS_NG);
-		result.getErrorMsg().add(ApplicationMessage.get(key, obj));
-		return result;
-	}
-	
 }

@@ -63,12 +63,12 @@ public class KindDao extends AbsDao {
 		KindModel model = get(key, version);
 		if(model != null) {
 			Key projectKey = Datastore.stringToKey(projectKeyToString);
-			if(model.getProjectKey().equals(projectKey) != false) {
+			if(model.getProjectKey().equals(projectKey) == false) {
 				//プロジェクトが合致しない場合、戻り値はnull
 				model = null;
 			}
 		}
-		return null;
+		return model;
 	}
 	
 	/**

@@ -23,6 +23,7 @@
 <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
 <script type="text/javascript" src="/js/jquery.toast.js"></script>
 <script type="text/javascript" src="/js/jquery.elastic.js"></script>
+<script type="text/javascript" src="/js/select-utils.js"></script>
 
 </head>
 <body data-spy="scroll" data-target=".subnav" data-offset="50" data-twttr-rendered="true">

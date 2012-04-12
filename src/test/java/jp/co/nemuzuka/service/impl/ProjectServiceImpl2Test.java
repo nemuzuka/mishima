@@ -24,6 +24,7 @@ import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.tester.AppEngineTestCase4HRD;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * ProjectServiceImplのテストクラス(その2).
@@ -191,7 +192,7 @@ public class ProjectServiceImpl2Test extends AppEngineTestCase4HRD {
 			ProjectModel model = new ProjectModel();
 			model.setProjectId("id_" + i);
 			model.setProjectName("project_name_" + i);
-			model.setProjectSummary("summary_" + i);
+			model.setProjectSummary(new Text("summary_" + i));
 			
 			projectDao.put(model);
 			projectKeyList.add(model.getKey());

@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 public class ProjectServiceImpl implements ProjectService {
 
@@ -117,8 +118,8 @@ public class ProjectServiceImpl implements ProjectService {
 		for(ProjectModel target : list) {
 			ProjectModelEx model = new ProjectModelEx();
 			model.setModel(target);
-			model.setProjectSummaryView(HtmlStringUtils.escapeTextAreaString(target.getProjectSummary()));
-			target.setProjectSummary("");
+			model.setProjectSummaryView(HtmlStringUtils.escapeTextAreaString(target.getProjectSummary().getValue()));
+			target.setProjectSummary(null);
 			retList.add(model);
 		}
 		return retList;
@@ -242,7 +243,7 @@ public class ProjectServiceImpl implements ProjectService {
 		form.keyToString = model.getKeyToString();
 		form.projectName = model.getProjectName();
 		form.projectId = model.getProjectId();
-		form.projectSummary = model.getProjectSummary();
+		form.projectSummary = model.getProjectSummary().getValue();
 		form.versionNo = ConvertUtils.toString(model.getVersion());
 	}
 
@@ -270,7 +271,7 @@ public class ProjectServiceImpl implements ProjectService {
 	private void setModel(ProjectModel model, ProjectForm form) {
 		model.setProjectName(form.projectName);
 		model.setProjectId(form.projectId);
-		model.setProjectSummary(form.projectSummary);
+		model.setProjectSummary(new Text(form.projectSummary));
 	}
 
 	/**

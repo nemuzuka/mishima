@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * ProjectServiceImplのテストクラス.
@@ -158,7 +159,7 @@ public class ProjectServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(actualList.size(), is(1));
 		assertThat(actualList.get(0).getModel().getProjectId(), is("project_hogehoge2"));
 		assertThat(actualList.get(0).getModel().getProjectName(), is("プロジェクトほげほげ2"));
-		assertThat(actualList.get(0).getModel().getProjectSummary(), is(""));
+		assertThat(actualList.get(0).getModel().getProjectSummary(), is(nullValue()));
 		assertThat(actualList.get(0).getModel().getVersion(), is(2L));
 		assertThat(actualList.get(0).getProjectSummaryView(), is("プロジェクト<br />概要2"));
 
@@ -196,7 +197,7 @@ public class ProjectServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(actualList.size(), is(1));
 		assertThat(actualList.get(0).getModel().getProjectId(), is("project_hogehoge"));
 		assertThat(actualList.get(0).getModel().getProjectName(), is("プロジェクトほげほげ"));
-		assertThat(actualList.get(0).getModel().getProjectSummary(), is(""));
+		assertThat(actualList.get(0).getModel().getProjectSummary(), is(nullValue()));
 		assertThat(actualList.get(0).getModel().getVersion(), is(1L));
 		assertThat(actualList.get(0).getProjectSummaryView(), is("プロジェクト<br />概要"));
 		
@@ -260,7 +261,7 @@ public class ProjectServiceImplTest extends AppEngineTestCase4HRD {
 			ProjectModel model = new ProjectModel();
 			model.setProjectId("project_" + i);
 			model.setProjectName("name" + i);
-			model.setProjectSummary("summary" + i);
+			model.setProjectSummary(new Text("summary" + i));
 			dao.put(model);
 			keys.add(model.getKey());
 		}

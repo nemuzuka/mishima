@@ -35,6 +35,20 @@ public class KindModel extends AbsModel {
 	public Key getKey() {
 		return key;
 	}
+	/**
+	 * @return sortNum
+	 */
+	@JSONHint(ignore=true)
+	public Long getSortNum() {
+		return sortNum;
+	}
+	/**
+	 * @return projectKey
+	 */
+	@JSONHint(ignore=true)
+	public Key getProjectKey() {
+		return projectKey;
+	}
 
 	/**
 	 * @return kindName
@@ -58,26 +72,10 @@ public class KindModel extends AbsModel {
 	}
 
 	/**
-	 * @return sortNum
-	 */
-	@JSONHint(ignore=true)
-	public Long getSortNum() {
-		return sortNum;
-	}
-
-	/**
 	 * @param sortNum セットする sortNum
 	 */
 	public void setSortNum(Long sortNum) {
 		this.sortNum = sortNum;
-	}
-
-	/**
-	 * @return projectKey
-	 */
-	@JSONHint(ignore=true)
-	public Key getProjectKey() {
-		return projectKey;
 	}
 
 	/**

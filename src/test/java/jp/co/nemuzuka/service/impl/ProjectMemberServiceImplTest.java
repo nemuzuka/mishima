@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * ProjectMemberServiceImplのテストクラス.
@@ -233,7 +234,7 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 			ProjectModel model = new ProjectModel();
 			model.setProjectId("id_" + i);
 			model.setProjectName("project_name_" + i);
-			model.setProjectSummary("summary_" + i);
+			model.setProjectSummary(new Text("summary_" + i));
 			
 			projectDao.put(model);
 			projectKeyList.add(model.getKey());
@@ -302,7 +303,7 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 			ProjectModel model = new ProjectModel();
 			model.setProjectId("id_" + i);
 			model.setProjectName("project_name_" + i);
-			model.setProjectSummary("summary_" + i);
+			model.setProjectSummary(new Text("summary_" + i));
 			
 			projectDao.put(model);
 			projectKeyList.add(model.getKey());

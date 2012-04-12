@@ -48,8 +48,8 @@ public class MemberExecuteController extends JsonController {
 	 */
 	protected Validators validate() {
 		Validators v = new Validators(request);
-		v.add("name", v.required());
-		v.add("mail", v.required(), ValidatorUtils.getEmailValidator(v));
+		v.add("name", v.required(), v.maxlength(64));
+		v.add("mail", v.required(), ValidatorUtils.getEmailValidator(v), v.maxlength(256));
 		v.add("authority", v.required());
 		return v;
 	}

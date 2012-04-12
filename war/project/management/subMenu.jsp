@@ -33,6 +33,7 @@ $(function(){
 		$("#sub_menu2").hide();
 		$("#sub_menu3").hide();
 		$("#sub_menu4").hide();
+		$("#sub_menu5").hide();
 	}
 });
 //-->
