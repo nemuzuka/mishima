@@ -6,18 +6,18 @@ $(function(){
 
 	initDialog();
 
-	$("#addKindBtn").click(function(){
+	$("#addVersionBtn").click(function(){
 		openEditDialog("");
 	});
 
-	$("#searchKindBtn").click(function(){
-		searchKind();
+	$("#searchVersionBtn").click(function(){
+		searchVersion();
 	});
 });
 
 //ダイアログ初期化
 function initDialog(){
-	$("#kindDialog").dialog({
+	$("#versionDialog").dialog({
 		modal:true,
 		autoOpen:false,
 		width:500,
@@ -30,7 +30,7 @@ function initDialog(){
 		}
 	});
 
-	$("#kindSortDialog").dialog({
+	$("#versionSortDialog").dialog({
 		modal:true,
 		autoOpen:false,
 		width:500,
@@ -43,35 +43,35 @@ function initDialog(){
 		}
 	});
 
-	$("#kindDialog-add").click(function(){
+	$("#versionDialog-add").click(function(){
 		execute();
 	});
 	
-	$("#kindDialog-cancel").click(function(){
-		$("#kindDialog").dialog("close");
+	$("#versionDialog-cancel").click(function(){
+		$("#versionDialog").dialog("close");
 	});
 	
 
 	//ソートダイアログ
-	$("#sortKindBtn").click(function(){
+	$("#sortVersionBtn").click(function(){
 		openSortDialog();
 	});
 	$("#sort_up").click(function(){
-		upItems("kind_to");
+		upItems("version_to");
 	});
 	$("#sort_down").click(function(){
-		downItems("kind_to");
+		downItems("version_to");
 	});
-	$("#kindSortDialog-execute").click(function(){
+	$("#versionSortDialog-execute").click(function(){
 		executeSort();
 	});
-	$("#kindSortDialog-cancel").click(function(){
-		$("#kindSortDialog").dialog("close");
+	$("#versionSortDialog-cancel").click(function(){
+		$("#versionSortDialog").dialog("close");
 	});
 }
 
-//種別検索
-function searchKind() {
+//バージョン検索
+function searchVersion() {
 	searchAndRender();
 }
 
@@ -80,7 +80,7 @@ function searchAndRender() {
 	setAjaxDefault();
 	return $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindList"
+		url: "/project/management/ajax/versionList"
 	}).then(
 		function(data) {
 			render(data);
@@ -116,7 +116,7 @@ function render(data) {
 	//一覧をレンダリング
 	var $table = $("<table />").addClass("table table-bordered result_table");
 	var $thead = $("<thead />").append($("<tr />")
-				.append($("<th />").text("種別"))
+				.append($("<th />").text("バージョン"))
 				.append($("<th />").text("").attr({width:"50px"}))
 			);
 	$table.append($thead);
@@ -124,15 +124,15 @@ function render(data) {
 	var $tbody = $("<tbody />");
 	$.each(result, function(){
 		var keyToString = this.keyToString;
-		var kindName = this.kindName;
+		var versionName = this.versionName;
 		var versionNo = this.version
 
 		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
 		$delBtn.click(function(){
-			deleteKind(kindName, keyToString, versionNo);
+			deleteVersion(versionName, keyToString, versionNo);
 		});
 		
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(kindName);
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(versionName);
 		$a.click(function(){
 			openEditDialog(keyToString);
 		});
@@ -152,15 +152,15 @@ function openEditDialog(keyToString) {
 	var title = "";
 	var buttonLabel = "";
 	if(keyToString == '') {
-		title = "種別登録";
+		title = "バージョン登録";
 		buttonLabel = "登録する";
 	} else {
-		title = "種別変更";
+		title = "バージョン変更";
 		buttonLabel = "変更する";
 	}
-	$("#ui-dialog-title-kindDialog").empty();
-	$("#ui-dialog-title-kindDialog").append(title);
-	$("#kindDialog-add").attr({value:buttonLabel});
+	$("#ui-dialog-title-versionDialog").empty();
+	$("#ui-dialog-title-versionDialog").append(title);
+	$("#versionDialog-add").attr({value:buttonLabel});
 	
 	var params = {};
 	params["keyToString"] = keyToString;
@@ -169,7 +169,7 @@ function openEditDialog(keyToString) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindEditInfo",
+		url: "/project/management/ajax/versionEditInfo",
 		data: params
 	});
 	
@@ -192,25 +192,25 @@ function openEditDialog(keyToString) {
 			//form情報の設定
 			var form = data.result;
 			
-			$("#edit_kind_name").val(form.kindName);
+			$("#edit_version_name").val(form.versionName);
 
 			$("#edit_versionNo").val(form.versionNo);
 			$("#edit_keyToString").val(form.keyToString);
 			
-			$("#kindDialog").dialog("open");
+			$("#versionDialog").dialog("open");
 			return;
 		}
 	);
 }
 
-//種別登録・更新
+//バージョン登録・更新
 function execute() {
 	var params = createExecuteParams();
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindExecute",
+		url: "/project/management/ajax/versionExecute",
 		data: params
 	});
 	
@@ -225,7 +225,7 @@ function execute() {
 					return reSetToken();
 				} else {
 					//強制的にダイアログを閉じて、再検索
-					$("#kindDialog").dialog("close");
+					$("#versionDialog").dialog("close");
 					return reSearchAndRender();
 				}
 				return;
@@ -233,15 +233,15 @@ function execute() {
 			
 			//メッセージを表示して、戻る
 			infoCheck(data);
-			$("#kindDialog").dialog("close");
+			$("#versionDialog").dialog("close");
 			return reSearchAndRender();
 		}
 	);
 }
 
-//種別削除
-function deleteKind(name, keyToString, version) {
-	if(window.confirm("種別「" + name + "」を削除します。本当によろしいですか？") == false) {
+//バージョン削除
+function deleteVersion(name, keyToString, version) {
+	if(window.confirm("バージョン「" + name + "」を削除します。本当によろしいですか？") == false) {
 		return;
 	}
 	
@@ -254,7 +254,7 @@ function deleteKind(name, keyToString, version) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindDelete",
+		url: "/project/management/ajax/versionDelete",
 		data: params
 	});
 	
@@ -274,7 +274,7 @@ function deleteKind(name, keyToString, version) {
 //登録パラメータ設定
 function createExecuteParams() {
 	var params = {};
-	params["kindName"] = $("#edit_kind_name").val();
+	params["versionName"] = $("#edit_version_name").val();
 	params["versionNo"] = $("#edit_versionNo").val();
 	params["keyToString"] = $("#edit_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
@@ -303,7 +303,7 @@ function openSortDialog() {
 	setAjaxDefault();
 	return $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindList"
+		url: "/project/management/ajax/versionList"
 	}).then(
 		function(data) {
 			renderSortDialog(data);
@@ -313,7 +313,7 @@ function openSortDialog() {
 
 //ソートダイアログデータ設定 & Open
 function renderSortDialog(data) {
-	$("#kind_to").empty();
+	$("#version_to").empty();
 
 	//共通エラーチェック
 	if(errorCheck(data) == false) {
@@ -330,24 +330,24 @@ function renderSortDialog(data) {
 
 	$.each(result, function(){
 		var keyToString = this.keyToString;
-		var kindName = this.kindName;
-		$("#kind_to").append($('<option />').attr({value:keyToString }).text(kindName));
+		var versionName = this.versionName;
+		$("#version_to").append($('<option />').attr({value:keyToString }).text(versionName));
 	});
-	reWriteSelect("kind_to", new Array());
-	$("#kindSortDialog").dialog("open");
+	reWriteSelect("version_to", new Array());
+	$("#versionSortDialog").dialog("open");
 }
 
 //ソート情報変更
 function executeSort() {
 	var params = {};
-	params["sortedKindKeys"] = getSelectArray("kind_to");
+	params["sortedVersionKeys"] = getSelectArray("version_to");
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/project/management/ajax/kindSort",
+		url: "/project/management/ajax/versionSort",
 		data: params
 	});
 	
@@ -365,7 +365,7 @@ function executeSort() {
 
 			//メッセージを表示して、ダイアログを閉じて、再検索
 			infoCheck(data);
-			$("#kindSortDialog").dialog("close");
+			$("#versionSortDialog").dialog("close");
 			return reSearchAndRender();
 		}
 	);

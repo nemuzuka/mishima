@@ -5,8 +5,8 @@
   <li class="nav-header"></li>
   <li id="sub_menu2"><a href="#" title="要望/バグ/タスクのようなチケットの種別を管理します">種別</a></li>
   <li id="sub_menu3"><a href="#" title="インフラ/要件定義/テストのようなチケットのカテゴリを管理します">カテゴリ</a></li>
-  <li id="sub_menu4"><a href="#" title="プロジェクトの区切りを管理します">マイルストーン</a></li>
-  <li id="sub_menu5"><a href="#" title="対象バージョンを管理します">バージョン</a></li>
+  <li id="sub_menu4"><a href="#" title="プロジェクトの区切りを管理します。チケットを分類する場合に使用します">マイルストーン</a></li>
+  <li id="sub_menu5"><a href="#" title="対象バージョンを管理します。チケットを分類する場合に使用します">バージョン</a></li>
 </ul>
 
 <script type="text/javascript">

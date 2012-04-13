@@ -1,6 +1,12 @@
 var g_searchParams;
 
 $(function(){
+	
+	$(window).unload(function(){
+		//画面を離れる場合
+		unBlockLoadingMsg();
+	});
+	
 	initDialog();
 	
 	$("#searchMemberBtn").click(function(){

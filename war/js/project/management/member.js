@@ -1,4 +1,9 @@
 $(function(){
+	$(window).unload(function(){
+		//画面を離れる場合
+		unBlockLoadingMsg();
+	});
+
 	searchMember();
 });
 
