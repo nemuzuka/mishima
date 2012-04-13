@@ -1,12 +1,12 @@
 <%@page pageEncoding="UTF-8" isELIgnored="false"%>
 <ul class="nav nav-list">
   <li class="nav-header"></li>
-  <li id="sub_menu1"><a href="#">プロジェクトメンバー</a></li>
+  <li id="sub_menu1"><a href="#" title="プロジェクトに参加するメンバーを管理します">プロジェクトメンバー</a></li>
   <li class="nav-header"></li>
-  <li id="sub_menu2"><a href="#">種別</a></li>
-  <li id="sub_menu3"><a href="#">カテゴリ</a></li>
-  <li id="sub_menu4"><a href="#">マイルストーン</a></li>
-  <li id="sub_menu5"><a href="#">バージョン</a></li>
+  <li id="sub_menu2"><a href="#" title="要望/バグ/タスクのようなチケットの種別を管理します">種別</a></li>
+  <li id="sub_menu3"><a href="#" title="インフラ/要件定義/テストのようなチケットのカテゴリを管理します">カテゴリ</a></li>
+  <li id="sub_menu4"><a href="#" title="プロジェクトの区切りを管理します">マイルストーン</a></li>
+  <li id="sub_menu5"><a href="#" title="対象バージョンを管理します">バージョン</a></li>
 </ul>
 
 <script type="text/javascript">
