@@ -6,23 +6,23 @@ import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
-import jp.co.nemuzuka.form.CategoryForm;
-import jp.co.nemuzuka.service.CategoryService;
-import jp.co.nemuzuka.service.impl.CategoryServiceImpl;
+import jp.co.nemuzuka.form.VersionForm;
+import jp.co.nemuzuka.service.VersionService;
+import jp.co.nemuzuka.service.impl.VersionServiceImpl;
 
 import org.slim3.util.ApplicationMessage;
 
 /**
- * カテゴリ削除Controller.
+ * バージョン削除Controller.
  * @author kazumune
  */
-public class CategoryDeleteController extends JsonController {
+public class VersionDeleteController extends JsonController {
 
 	/** ActionForm. */
 	@ActionForm
-	protected CategoryForm form;
+	protected VersionForm form;
 	
-	protected CategoryService categoryService = new CategoryServiceImpl();
+	protected VersionService versionService = new VersionServiceImpl();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
@@ -33,7 +33,7 @@ public class CategoryDeleteController extends JsonController {
 	@ProjectMember
 	protected Object execute() throws Exception {
 		//削除する
-		categoryService.delete(form, getUserInfo().selectedProject);
+		versionService.delete(form, getUserInfo().selectedProject);
 		
 		JsonResult result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));

@@ -1,7 +1,8 @@
 package jp.co.nemuzuka.controller.project.management.ajax;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
-import jp.co.nemuzuka.core.annotation.SystemManager;
+import jp.co.nemuzuka.core.annotation.ProjectAdmin;
+import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
@@ -28,7 +29,8 @@ public class KindDeleteController extends JsonController {
 	 */
 	@Override
 	@TokenCheck
-	@SystemManager
+	@ProjectAdmin
+	@ProjectMember
 	protected Object execute() throws Exception {
 		//削除する
 		kindService.delete(form, getUserInfo().selectedProject);
