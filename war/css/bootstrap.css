@@ -553,6 +553,7 @@ textarea {
   font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','Meiryo UI','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
 }
 label {
+  font-size: 85%;
   display: block;
   margin-bottom: 5px;
   color: #333333;

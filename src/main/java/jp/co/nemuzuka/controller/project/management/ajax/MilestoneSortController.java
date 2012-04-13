@@ -5,20 +5,20 @@ import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
-import jp.co.nemuzuka.service.VersionService;
-import jp.co.nemuzuka.service.impl.VersionServiceImpl;
+import jp.co.nemuzuka.service.MilestoneService;
+import jp.co.nemuzuka.service.impl.MilestoneServiceImpl;
 
 import org.slim3.util.ApplicationMessage;
 
 /**
- * バージョン表示順変更Controller.
+ * マイルストーン表示順変更Controller.
  * @author kazumune
  */
-public class VersionSortController extends JsonController {
+public class MilestoneSortController extends JsonController {
 
-	private String[] sortedVersionKeys;
+	private String[] sortedMilestoneKeys;
 	
-	protected VersionService versionService = new VersionServiceImpl();
+	protected MilestoneService milestoneService = new MilestoneServiceImpl();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
@@ -35,7 +35,7 @@ public class VersionSortController extends JsonController {
 		}
 		
 		//登録・更新する
-		versionService.updateSortNum(sortedVersionKeys, getUserInfo().selectedProject);
+		milestoneService.updateSortNum(sortedMilestoneKeys, getUserInfo().selectedProject);
 		
 		JsonResult result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
@@ -48,11 +48,11 @@ public class VersionSortController extends JsonController {
 	 */
 	private JsonResult validate() {
 		
-		sortedVersionKeys = paramValues("sortedVersionKeys[]");
+		sortedMilestoneKeys = paramValues("sortedMilestoneKeys[]");
 		
-		//バージョンは1つ以上選択すること
-		if(sortedVersionKeys == null || sortedVersionKeys.length == 0) {
-			return createErrorMsg("validator.check.required", "バージョン");
+		//マイルストーンは1つ以上選択すること
+		if(sortedMilestoneKeys == null || sortedMilestoneKeys.length == 0) {
+			return createErrorMsg("validator.check.required", "マイルストーン");
 		}
 		return null;
 	}
