@@ -1,5 +1,7 @@
 package jp.co.nemuzuka.model;
 
+import java.util.Date;
+
 import net.arnx.jsonic.JSONHint;
 
 import org.slim3.datastore.Attribute;
@@ -8,21 +10,29 @@ import org.slim3.datastore.Model;
 import com.google.appengine.api.datastore.Key;
 
 /**
- * 種別を管理するModel.
+ * マイルストーンを管理するModel.
  * @author kazumune
  */
 @Model(schemaVersion = 1)
-public class KindModel extends AbsModel {
+public class MilestoneModel extends AbsModel {
 
-	/** 種別Key. */
+	/** バージョンKey. */
 	//自動採番
 	@Attribute(primaryKey=true)
 	private Key key;
 
-	/** 種別名. */
+	/** マイルストーン名. */
 	@Attribute(unindexed=true)
-	private String kindName;
+	private String milestoneName;
 
+	/** 開始日. */
+	@Attribute(unindexed=true)
+	private Date startDate;
+	
+	/** 終了日. */
+	@Attribute(unindexed=true)
+	private Date endDate;
+	
 	/** プロジェクトKey. */
 	private Key projectKey;
 	
@@ -50,21 +60,45 @@ public class KindModel extends AbsModel {
 	public Key getProjectKey() {
 		return projectKey;
 	}
-
 	/**
-	 * @return kindName
+	 * @return the startDate
 	 */
-	public String getKindName() {
-		return kindName;
+	@JSONHint(ignore=true)
+	public Date getStartDate() {
+		return startDate;
 	}
-
 	/**
-	 * @param kindName セットする kindName
+	 * @return the endDate
 	 */
-	public void setKindName(String kindName) {
-		this.kindName = kindName;
+	@JSONHint(ignore=true)
+	public Date getEndDate() {
+		return endDate;
 	}
-
+	
+	/**
+	 * @return the milestoneName
+	 */
+	public String getMilestoneName() {
+		return milestoneName;
+	}
+	/**
+	 * @param milestoneName the milestoneName to set
+	 */
+	public void setMilestoneName(String milestoneName) {
+		this.milestoneName = milestoneName;
+	}
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	/**
+	 * @param endDate the endDate to set
+	 */
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 	/**
 	 * @param key セットする key
 	 */

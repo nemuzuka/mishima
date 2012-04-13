@@ -20,6 +20,7 @@ public class VersionModel extends AbsModel {
 	private Key key;
 
 	/** バージョン名. */
+	@Attribute(unindexed=true)
 	private String versionName;
 
 	/** プロジェクトKey. */

@@ -20,6 +20,7 @@ public class CategoryModel extends AbsModel {
 	private Key key;
 
 	/** カテゴリ名. */
+	@Attribute(unindexed=true)
 	private String categoryName;
 
 	/** プロジェクトKey. */
