@@ -103,7 +103,7 @@ public class CategoryServiceImpl implements CategoryService {
 		if(keys.size() == 0) {
 			return;
 		}
-		Map<Key, CategoryModel> map = categoryDao.getList(projectKeyToString, keys.toArray(new Key[0]));
+		Map<Key, CategoryModel> map = categoryDao.getMap(projectKeyToString, keys.toArray(new Key[0]));
 		
 		//ソート順を1から採番して更新する
 		long sortNum = 1;

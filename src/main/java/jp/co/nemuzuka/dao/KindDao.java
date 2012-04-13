@@ -87,13 +87,13 @@ public class KindDao extends AbsDao {
 	}
 	
 	/**
-	 * List取得.
+	 * Map取得.
 	 * 指定したKey配列に合致するデータを取得します。
 	 * @param projectKeyString プロジェクトKey文字列
 	 * @param keys key配列
-	 * @return 該当レコード
+	 * @return 該当Map
 	 */
-	public Map<Key, KindModel> getList(String projectKeyString, Key...keys) {
+	public Map<Key, KindModel> getMap(String projectKeyString, Key...keys) {
 		KindModelMeta e = (KindModelMeta) getModelMeta();
 		Set<FilterCriterion> filterSet = new HashSet<FilterCriterion>();
 		Map<Key, KindModel> map = new HashMap<Key, KindModel>();

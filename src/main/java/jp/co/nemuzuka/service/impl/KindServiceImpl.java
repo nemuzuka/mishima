@@ -103,7 +103,7 @@ public class KindServiceImpl implements KindService {
 		if(keys.size() == 0) {
 			return;
 		}
-		Map<Key, KindModel> map = kindDao.getList(projectKeyToString, keys.toArray(new Key[0]));
+		Map<Key, KindModel> map = kindDao.getMap(projectKeyToString, keys.toArray(new Key[0]));
 		
 		//ソート順を1から採番して更新する
 		long sortNum = 1;

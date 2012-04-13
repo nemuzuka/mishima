@@ -87,13 +87,13 @@ public class CategoryDao extends AbsDao {
 	}
 	
 	/**
-	 * List取得.
+	 * Map取得.
 	 * 指定したKey配列に合致するデータを取得します。
 	 * @param projectKeyString プロジェクトKey文字列
 	 * @param keys key配列
-	 * @return 該当レコード
+	 * @return 該当Map
 	 */
-	public Map<Key, CategoryModel> getList(String projectKeyString, Key...keys) {
+	public Map<Key, CategoryModel> getMap(String projectKeyString, Key...keys) {
 		CategoryModelMeta e = (CategoryModelMeta) getModelMeta();
 		Set<FilterCriterion> filterSet = new HashSet<FilterCriterion>();
 		Map<Key, CategoryModel> map = new HashMap<Key, CategoryModel>();
