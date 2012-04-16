@@ -8,9 +8,6 @@ import jp.co.nemuzuka.form.KindForm;
 import jp.co.nemuzuka.service.KindService;
 import jp.co.nemuzuka.service.impl.KindServiceImpl;
 
-import org.apache.commons.lang.StringUtils;
-import org.slim3.util.ApplicationMessage;
-
 /**
  * 種別登録・更新ダイアログ情報取得Controller.
  * @author kazumune
@@ -29,17 +26,9 @@ public class KindEditInfoController extends JsonController {
 		
 		JsonResult result = new JsonResult();
 		//Form情報を取得
-		String keyToString = asString("keyToString");
-		KindForm form = kindService.get(keyToString);
-		
-		if(StringUtils.isNotEmpty(keyToString) && StringUtils.isEmpty(form.keyToString)) {
-			//リクエストパラメータに紐付くデータが存在しない場合、エラーとして返却
-			result.setStatus(JsonResult.NO_DATA);
-			result.getErrorMsg().add(ApplicationMessage.get("info.empty"));
-		} else {
-			result.setToken(this.setToken());
-			result.setResult(form);
-		}
+		KindForm form = kindService.get(getUserInfo().selectedProject);
+		result.setToken(this.setToken());
+		result.setResult(form);
 		return result;
 	}
 

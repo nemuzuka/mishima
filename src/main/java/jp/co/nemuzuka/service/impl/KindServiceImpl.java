@@ -1,21 +1,21 @@
 package jp.co.nemuzuka.service.impl;
 
 import java.util.ConcurrentModificationException;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
+import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.dao.KindDao;
 import jp.co.nemuzuka.form.KindForm;
 import jp.co.nemuzuka.model.KindModel;
 import jp.co.nemuzuka.service.KindService;
 import jp.co.nemuzuka.utils.ConvertUtils;
+import jp.co.nemuzuka.utils.LabelValueBeanUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * KindServiceの実装クラス.
@@ -29,29 +29,30 @@ public class KindServiceImpl implements KindService {
 	 * @see jp.co.nemuzuka.service.KindService#get(java.lang.String)
 	 */
 	@Override
-	public KindForm get(String keyString) {
+	public KindForm get(String projectKeyString) {
 
 		KindForm form = new KindForm();
-		if(StringUtils.isNotEmpty(keyString)) {
-			KindModel model = kindDao.get(keyString);
+		if(StringUtils.isNotEmpty(projectKeyString)) {
+			KindModel model = kindDao.get4ProjectKey(projectKeyString);
 			setForm(form, model);
 		}
 		return form;
 	}
 
-	/* (非 Javadoc)
-	 * @see jp.co.nemuzuka.service.KindService#put(jp.co.nemuzuka.form.KindForm, java.lang.String)
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.KindService#put(jp.co.nemuzuka.form.KindForm)
 	 */
 	@Override
-	public void put(KindForm form, String projectKeyToString) {
+	public void put(KindForm form, String projectKeyString) {
 
 		KindModel model = null;
-		if(StringUtils.isNotEmpty(form.keyToString)) {
+		Long version = ConvertUtils.toLong(form.versionNo);
+
+		if(version != null) {
 			//更新の場合
+			//versionとKeyで情報を取得
 			Key key = Datastore.stringToKey(form.keyToString);
-			Long version = ConvertUtils.toLong(form.versionNo);
-			//versionとKeyとprojectKeyで情報を取得
-			model = kindDao.get(key, version, projectKeyToString);
+			model = kindDao.get(key, version);
 			if(model == null) {
 				//該当レコードが存在しない場合、Exceptionをthrow
 				throw new ConcurrentModificationException();
@@ -59,62 +60,22 @@ public class KindServiceImpl implements KindService {
 		} else {
 			//新規の場合
 			model = new KindModel();
+			//プロジェクトKeyを元にKeyを生成
+			Key key = Datastore.createKey(KindModel.class, projectKeyString);
+			model.setKey(key);
 		}
-		setModel(model, form, projectKeyToString);
+		setModel(model, form);
 		kindDao.put(model);
 	}
 
-	/* (非 Javadoc)
-	 * @see jp.co.nemuzuka.service.KindService#delete(jp.co.nemuzuka.form.KindForm, java.lang.String)
-	 */
-	@Override
-	public void delete(KindForm form, String projectKeyToString) {
-		Key key = Datastore.stringToKey(form.keyToString);
-		Long version = ConvertUtils.toLong(form.versionNo);
-		//versionとKeyとprojectKeyで情報を取得
-		KindModel model = kindDao.get(key, version, projectKeyToString);
-		if(model == null) {
-			//該当レコードが存在しない場合、Exceptionをthrow
-			throw new ConcurrentModificationException();
-		}
-		kindDao.delete(model.getKey());
-	}
 
-	/* (非 Javadoc)
-	 * @see jp.co.nemuzuka.service.KindService#getAllList(java.lang.String)
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.KindService#getList(java.lang.String)
 	 */
 	@Override
-	public List<KindModel> getAllList(String projectKeyToString) {
-		return kindDao.getAllList(projectKeyToString);
-	}
-
-	/* (非 Javadoc)
-	 * @see jp.co.nemuzuka.service.KindService#updateSortNum(java.lang.String[], java.lang.String)
-	 */
-	@Override
-	public void updateSortNum(String[] sortedKeyToString,
-			String projectKeyToString) {
-		
-		//更新対象のKeyを取得
-		Set<Key> keys = new LinkedHashSet<Key>();
-		for(String target : sortedKeyToString) {
-			keys.add(Datastore.stringToKey(target));
-		}
-		if(keys.size() == 0) {
-			return;
-		}
-		Map<Key, KindModel> map = kindDao.getMap(projectKeyToString, keys.toArray(new Key[0]));
-		
-		//ソート順を1から採番して更新する
-		long sortNum = 1;
-		for(Key target : keys) {
-			KindModel model = map.get(target);
-			if(model != null) {
-				model.setSortNum(sortNum);
-				kindDao.put(model);
-				sortNum++;
-			}
-		}
+	public List<LabelValueBean> getList(String projectKeyToString) {
+		KindForm form = get(projectKeyToString);
+		return LabelValueBeanUtils.createList(form.getKindName(), true);
 	}
 
 	/**
@@ -127,25 +88,16 @@ public class KindServiceImpl implements KindService {
 			return;
 		}
 		form.keyToString = model.getKeyToString();
-		form.kindName = model.getKindName();
+		form.kindName = model.getKindName().getValue();
 		form.versionNo = ConvertUtils.toString(model.getVersion());
 	}
-
+	
 	/**
 	 * Model情報設定.
 	 * @param model 設定対象Model
-	 * @param form 設定Form
-	 * @param projectKeyToString プロジェクトKey文字列
+	 * @param form 設定元Form
 	 */
-	private void setModel(KindModel model, KindForm form, String projectKeyToString) {
-		
-		if(model.getKey() == null) {
-			//新規の場合
-			Key projectKey = Datastore.stringToKey(projectKeyToString);
-			model.setProjectKey(projectKey);
-			model.setSortNum(Long.MAX_VALUE);
-		}
-		
-		model.setKindName(form.kindName);
+	private void setModel(KindModel model, KindForm form) {
+		model.setKindName(new Text(form.kindName));
 	}
 }

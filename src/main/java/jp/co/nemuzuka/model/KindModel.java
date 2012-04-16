@@ -6,29 +6,25 @@ import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * 種別を管理するModel.
+ * プロジェクトにつき1レコード作成されます
  * @author kazumune
  */
 @Model(schemaVersion = 1)
 public class KindModel extends AbsModel {
 
 	/** 種別Key. */
-	//自動採番
+	//projectKeyを元に作成
 	@Attribute(primaryKey=true)
 	private Key key;
 
 	/** 種別名. */
 	@Attribute(unindexed=true)
-	private String kindName;
+	private Text kindName;
 
-	/** プロジェクトKey. */
-	private Key projectKey;
-	
-	/** ソート順. */
-	private Long sortNum;
-	
 	/**
 	 * @return key
 	 */
@@ -37,52 +33,22 @@ public class KindModel extends AbsModel {
 		return key;
 	}
 	/**
-	 * @return sortNum
+	 * @return the kindName
 	 */
 	@JSONHint(ignore=true)
-	public Long getSortNum() {
-		return sortNum;
-	}
-	/**
-	 * @return projectKey
-	 */
-	@JSONHint(ignore=true)
-	public Key getProjectKey() {
-		return projectKey;
-	}
-
-	/**
-	 * @return kindName
-	 */
-	public String getKindName() {
+	public Text getKindName() {
 		return kindName;
 	}
-
 	/**
-	 * @param kindName セットする kindName
+	 * @param kindName the kindName to set
 	 */
-	public void setKindName(String kindName) {
+	public void setKindName(Text kindName) {
 		this.kindName = kindName;
 	}
-
 	/**
 	 * @param key セットする key
 	 */
 	public void setKey(Key key) {
 		this.key = key;
-	}
-
-	/**
-	 * @param sortNum セットする sortNum
-	 */
-	public void setSortNum(Long sortNum) {
-		this.sortNum = sortNum;
-	}
-
-	/**
-	 * @param projectKey セットする projectKey
-	 */
-	public void setProjectKey(Key projectKey) {
-		this.projectKey = projectKey;
 	}
 }
