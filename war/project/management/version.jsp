@@ -17,7 +17,7 @@
 <div class="widget">
 <form class="form-horizontal">
 
-	<h2 class="title">バージョン管理</h2>
+	<h2 class="title">バージョン管理<span id="selectedProjectName"></span></h2>
 	
 	<table class="edit_main_table">
 	<tbody>

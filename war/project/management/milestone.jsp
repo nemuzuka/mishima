@@ -17,7 +17,7 @@
 <div class="widget">
 <form class="form-horizontal">
 
-	<h2 class="title">マイルストーン管理</h2>
+	<h2 class="title">マイルストーン管理<span id="selectedProjectName"></span></h2>
 	<div class="search_ctrl">
 		<input type="button" class="btn btn-primary" id="searchMilestoneBtn" value="検索" />
 		<input type="button" class="btn" value="新規登録" id="addMilestoneBtn" />

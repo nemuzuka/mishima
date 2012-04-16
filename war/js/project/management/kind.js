@@ -8,6 +8,9 @@ $(function(){
 		execute();
 	});
 	
+	var selectedProjectName =  $("#targetProjects option:selected").text();
+	$("#selectedProjectName").text("(" + selectedProjectName + ")");
+
 	//初期データ取得
 	getInitData();
 });
