@@ -49,7 +49,7 @@ public class VersionExecuteController extends JsonController {
 	 */
 	protected Validators validate() {
 		Validators v = new Validators(request);
-		v.add("versionName", v.required(), v.maxlength(128));
+		v.add("versionName", v.required(), v.maxlength(1024));
 		return v;
 	}
 }

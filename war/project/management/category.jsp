@@ -27,7 +27,7 @@
 	</tr>
 	</tbody>
 	</table>
-	<p>改行コードで区切ることで複数の項目を設定することができます</p>
+	<p>改行で区切ることで複数の項目を設定することができます</p>
 	<div class="edit_main_ctrl">
 		<input type="button" class="btn btn-primary" id="category-add" value="登録する" />
 	</div>

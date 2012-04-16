@@ -6,29 +6,25 @@ import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * バージョンを管理するModel.
+ * プロジェクトにつき1レコード作成されます
  * @author kazumune
  */
 @Model(schemaVersion = 1)
 public class VersionModel extends AbsModel {
 
 	/** バージョンKey. */
-	//自動採番
+	//projectKeyを元に作成
 	@Attribute(primaryKey=true)
 	private Key key;
 
 	/** バージョン名. */
 	@Attribute(unindexed=true)
-	private String versionName;
+	private Text versionName;
 
-	/** プロジェクトKey. */
-	private Key projectKey;
-	
-	/** ソート順. */
-	private Long sortNum;
-	
 	/**
 	 * @return key
 	 */
@@ -36,51 +32,26 @@ public class VersionModel extends AbsModel {
 	public Key getKey() {
 		return key;
 	}
-	/**
-	 * @return sortNum
-	 */
-	@JSONHint(ignore=true)
-	public Long getSortNum() {
-		return sortNum;
-	}
-	/**
-	 * @return projectKey
-	 */
-	@JSONHint(ignore=true)
-	public Key getProjectKey() {
-		return projectKey;
-	}
 
 	/**
 	 * @return the versionName
 	 */
-	public String getVersionName() {
+	@JSONHint(ignore=true)
+	public Text getVersionName() {
 		return versionName;
 	}
+
 	/**
 	 * @param versionName the versionName to set
 	 */
-	public void setVersionName(String versionName) {
+	public void setVersionName(Text versionName) {
 		this.versionName = versionName;
 	}
+
 	/**
-	 * @param key セットする key
+	 * @param key the key to set
 	 */
 	public void setKey(Key key) {
 		this.key = key;
-	}
-
-	/**
-	 * @param sortNum セットする sortNum
-	 */
-	public void setSortNum(Long sortNum) {
-		this.sortNum = sortNum;
-	}
-
-	/**
-	 * @param projectKey セットする projectKey
-	 */
-	public void setProjectKey(Key projectKey) {
-		this.projectKey = projectKey;
 	}
 }

@@ -1,21 +1,21 @@
 package jp.co.nemuzuka.service.impl;
 
 import java.util.ConcurrentModificationException;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
+import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.dao.VersionDao;
 import jp.co.nemuzuka.form.VersionForm;
 import jp.co.nemuzuka.model.VersionModel;
 import jp.co.nemuzuka.service.VersionService;
 import jp.co.nemuzuka.utils.ConvertUtils;
+import jp.co.nemuzuka.utils.LabelValueBeanUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * VersionServiceの実装クラス.
@@ -24,16 +24,15 @@ import com.google.appengine.api.datastore.Key;
 public class VersionServiceImpl implements VersionService {
 
 	VersionDao versionDao = new VersionDao();
-	
+
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.VersionService#get(java.lang.String)
 	 */
 	@Override
-	public VersionForm get(String keyString) {
-
+	public VersionForm get(String projectKeyString) {
 		VersionForm form = new VersionForm();
-		if(StringUtils.isNotEmpty(keyString)) {
-			VersionModel model = versionDao.get(keyString);
+		if(StringUtils.isNotEmpty(projectKeyString)) {
+			VersionModel model = versionDao.get4ProjectKey(projectKeyString);
 			setForm(form, model);
 		}
 		return form;
@@ -43,15 +42,15 @@ public class VersionServiceImpl implements VersionService {
 	 * @see jp.co.nemuzuka.service.VersionService#put(jp.co.nemuzuka.form.VersionForm, java.lang.String)
 	 */
 	@Override
-	public void put(VersionForm form, String projectKeyToString) {
-
+	public void put(VersionForm form, String projectKeyString) {
 		VersionModel model = null;
-		if(StringUtils.isNotEmpty(form.keyToString)) {
+		Long version = ConvertUtils.toLong(form.versionNo);
+
+		if(version != null) {
 			//更新の場合
+			//versionとKeyで情報を取得
 			Key key = Datastore.stringToKey(form.keyToString);
-			Long version = ConvertUtils.toLong(form.versionNo);
-			//versionとKeyとprojectKeyで情報を取得
-			model = versionDao.get(key, version, projectKeyToString);
+			model = versionDao.get(key, version);
 			if(model == null) {
 				//該当レコードが存在しない場合、Exceptionをthrow
 				throw new ConcurrentModificationException();
@@ -59,64 +58,23 @@ public class VersionServiceImpl implements VersionService {
 		} else {
 			//新規の場合
 			model = new VersionModel();
+			//プロジェクトKeyを元にKeyを生成
+			Key key = Datastore.createKey(VersionModel.class, projectKeyString);
+			model.setKey(key);
 		}
-		setModel(model, form, projectKeyToString);
+		setModel(model, form);
 		versionDao.put(model);
 	}
 
 	/* (non-Javadoc)
-	 * @see jp.co.nemuzuka.service.VersionService#delete(jp.co.nemuzuka.form.VersionForm, java.lang.String)
+	 * @see jp.co.nemuzuka.service.VersionService#getList(java.lang.String)
 	 */
 	@Override
-	public void delete(VersionForm form, String projectKeyToString) {
-		Key key = Datastore.stringToKey(form.keyToString);
-		Long version = ConvertUtils.toLong(form.versionNo);
-		//versionとKeyとprojectKeyで情報を取得
-		VersionModel model = versionDao.get(key, version, projectKeyToString);
-		if(model == null) {
-			//該当レコードが存在しない場合、Exceptionをthrow
-			throw new ConcurrentModificationException();
-		}
-		versionDao.delete(model.getKey());
+	public List<LabelValueBean> getList(String projectKeyString) {
+		VersionForm form = get(projectKeyString);
+		return LabelValueBeanUtils.createList(form.versionName, true);
 	}
-
-	/* (non-Javadoc)
-	 * @see jp.co.nemuzuka.service.VersionService#getAllList(java.lang.String)
-	 */
-	@Override
-	public List<VersionModel> getAllList(String projectKeyToString) {
-		return versionDao.getAllList(projectKeyToString);
-	}
-
-	/* (non-Javadoc)
-	 * @see jp.co.nemuzuka.service.VersionService#updateSortNum(java.lang.String[], java.lang.String)
-	 */
-	@Override
-	public void updateSortNum(String[] sortedKeyToString,
-			String projectKeyToString) {
-		
-		//更新対象のKeyを取得
-		Set<Key> keys = new LinkedHashSet<Key>();
-		for(String target : sortedKeyToString) {
-			keys.add(Datastore.stringToKey(target));
-		}
-		if(keys.size() == 0) {
-			return;
-		}
-		Map<Key, VersionModel> map = versionDao.getMap(projectKeyToString, keys.toArray(new Key[0]));
-		
-		//ソート順を1から採番して更新する
-		long sortNum = 1;
-		for(Key target : keys) {
-			VersionModel model = map.get(target);
-			if(model != null) {
-				model.setSortNum(sortNum);
-				versionDao.put(model);
-				sortNum++;
-			}
-		}
-	}
-
+	
 	/**
 	 * Form情報設定.
 	 * @param form 設定対象Form
@@ -127,25 +85,17 @@ public class VersionServiceImpl implements VersionService {
 			return;
 		}
 		form.keyToString = model.getKeyToString();
-		form.versionName = model.getVersionName();
+		form.versionName = model.getVersionName().getValue();
 		form.versionNo = ConvertUtils.toString(model.getVersion());
 	}
 
 	/**
 	 * Model情報設定.
 	 * @param model 設定対象Model
-	 * @param form 設定Form
-	 * @param projectKeyToString プロジェクトKey文字列
+	 * @param form 設定元Form
 	 */
-	private void setModel(VersionModel model, VersionForm form, String projectKeyToString) {
-		
-		if(model.getKey() == null) {
-			//新規の場合
-			Key projectKey = Datastore.stringToKey(projectKeyToString);
-			model.setProjectKey(projectKey);
-			model.setSortNum(Long.MAX_VALUE);
-		}
-		
-		model.setVersionName(form.versionName);
+	private void setModel(VersionModel model, VersionForm form) {
+		model.setVersionName(new Text(form.versionName));
 	}
+
 }

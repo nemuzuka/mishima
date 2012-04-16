@@ -26,10 +26,10 @@
             </select>
           </li>
           <li class="">
-            <a href="#" id="personal_settings">個人設定</a>
+            <a href="#" id="personal_settings" title="個人の情報を設定します">個人設定</a>
           </li>
           <li class="">
-            <a href="#" id="logout_link">logout</a>
+            <a href="#" id="logout_link" title="ログアウトしてシステムを終了します">logout</a>
           </li>
         </ul>
       </div>
@@ -41,17 +41,17 @@
       <div class="nav-collapse">
         <ul class="nav">
           <li class="" id="main_menu1">
-            <a href="#">ダッシュボード</a>
+            <a href="#" title="あなたに割り当てられているチケットやTODOの状態を参照します">ダッシュボード</a>
           </li>
           <li class="" id="main_menu2">
-            <a href="#" id="ticket_menu">チケット</a>
+            <a href="#" id="ticket_menu" title="プロジェクト毎のチケットを参照します">チケット</a>
           </li>
           <li class="divider-vertical"></li>
           <li class="" id="main_menu3">
-            <a href="#" id="project_menu">プロジェクト設定</a>
+            <a href="#" id="project_menu" title="プロジェクトに関する設定を行います">プロジェクト設定</a>
           </li>
           <li class="" id="main_menu4">
-            <a href="#" id="admin_menu">各種管理</a>
+            <a href="#" id="admin_menu" title="システムに関する設定を行います">システム管理</a>
           </li>
         </ul>
       </div>

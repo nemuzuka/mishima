@@ -50,7 +50,7 @@ function getInitData() {
 	);
 }
 
-//種別登録・更新
+//カテゴリ登録・更新
 function execute() {
 	var params = createExecuteParams();
 	setAjaxDefault();

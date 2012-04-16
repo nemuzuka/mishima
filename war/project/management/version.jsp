@@ -18,68 +18,25 @@
 <form class="form-horizontal">
 
 	<h2 class="title">バージョン管理</h2>
-	<div class="search_ctrl">
-		<input type="button" class="btn btn-primary" id="searchVersionBtn" value="検索" />
-		<input type="button" class="btn" value="新規登録" id="addVersionBtn" />
-		<input type="button" class="btn" value="表示順変更" id="sortVersionBtn" />
-	</div>
 	
-	<div id="result_area" class="result">
+	<table class="edit_main_table">
+	<tbody>
+	<tr>
+		<th>バージョン</th>
+		<td><textarea id="edit_version_name" cols="30" rows="10"></textarea></td>
+	</tr>
+	</tbody>
+	</table>
+	<p>改行で区切ることで複数の項目を設定することができます</p>
+	<div class="edit_main_ctrl">
+		<input type="button" class="btn btn-primary" id="version-add" value="登録する" />
 	</div>
 
-<%-- 一覧表示時の件数. --%>
-<input type="hidden" id="listCnt" value="0" />
+	<input type="hidden" id="edit_versionNo" />
+	<input type="hidden" id="edit_keyToString" />
 
 </form>
 </div>
-
-
-<%-- バージョンダイアログ --%>
-<div id="versionDialog" title="バージョン" class="dialog-widget">
-<div class="dialog-container form-horizontal" >
-<fieldset>
-	<div class="control-group">
-		<label class="control-label" for="edit_version_name">バージョン名</label>
-		<div class="controls">
-			<input type="text" class="input-xlarge required-input" id="edit_version_name">
-		</div>
-	</div>
-
-	<div class="edit_ctrl">
-		<input type="button" class="btn btn-primary" id="versionDialog-add" value="登録する" />
-		<input type="button" class="btn" id="versionDialog-cancel" value="キャンセル" />
-		<input type="hidden" id="edit_versionNo" />
-		<input type="hidden" id="edit_keyToString" />
-	</div>
-</fieldset>
-</div>
-</div>
-
-<%-- 表示順変更ダイアログ --%>
-<div id="versionSortDialog" title="表示順変更" class="dialog-widget">
-<div class="dialog-container form-horizontal" >
-<fieldset>
-	<div class="control-group">
-		<label class="control-label" for="version_to">カテゴリ</label>
-		<div class="controls">
-			<div class="sort_to">
-				<select id="version_to" size="10" multiple="multiple"></select>
-			</div>
-			<div class="sort_action_area">
-				<input type="button" class="btn sort_up_button" id="sort_up" value="↑" style="float:left;margin-bottom: 50px;" /><br/>
-				<input type="button" class="btn" id="sort_down" value="↓" />
-			</div>
-		</div>
-	</div>
-
-	<div class="edit_ctrl">
-		<input type="button" class="btn btn-primary" id="versionSortDialog-execute" value="変更する" />
-		<input type="button" class="btn" id="versionSortDialog-cancel" value="キャンセル" />
-	</div>
-</fieldset>
-</div>
-</div>
-
 
 <input type="hidden" id="selected_sub_menu" value="sub_menu5" />
 

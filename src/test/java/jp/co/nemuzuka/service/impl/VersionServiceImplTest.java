@@ -3,11 +3,11 @@ package jp.co.nemuzuka.service.impl;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
+import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.dao.ProjectDao;
 import jp.co.nemuzuka.dao.VersionDao;
@@ -32,189 +32,93 @@ public class VersionServiceImplTest extends AppEngineTestCase4HRD {
 	VersionDao versionDao = new VersionDao();
 	ProjectDao projectDao = new ProjectDao();
 	
-	List<Key> versionKeyList;
 	Key projectKey;
 
 	/**
-	 * getのテスト.
+	 * get/putのテスト.
 	 */
 	@Test
-	public void testGet() {
+	public void testGetAndPut() {
 		createTestData();
 		
-		//該当データが存在する場合
-		String keyString = Datastore.keyToString(versionKeyList.get(0));
-		VersionForm actual = service.get(keyString);
-		assertThat(actual.getKeyToString(), is(keyString));
-		assertThat(actual.getVersionName(), is("1.2.3.0"));
-		assertThat(actual.getVersionNo(), is("1"));
+		//該当データが存在しない場合
+		String projectKeyString = Datastore.keyToString(projectKey);
+		VersionForm actual = service.get(projectKeyString);
+		assertThat(actual.getKeyToString(), is(nullValue()));
+		assertThat(actual.getVersionName(), is(nullValue()));
+		assertThat(actual.getVersionNo(), is(nullValue()));
 		
-		//新規の場合
+		//該当データが存在しない場合
 		actual = service.get("");
 		assertThat(actual.getKeyToString(), is(nullValue()));
 		assertThat(actual.getVersionName(), is(nullValue()));
 		assertThat(actual.getVersionNo(), is(nullValue()));
 		
-		
-		//データを削除する
-		versionDao.delete(versionKeyList.get(2));
+		//登録する
+		actual.keyToString = null;
+		actual.versionName = "バージョン1\r\nバージョン2\nバージョン3";
+		service.put(actual, projectKeyString);
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
 
-		//keyを指定したが存在しない場合
-		keyString = Datastore.keyToString(versionKeyList.get(2));
-		actual = service.get(keyString);
-		assertThat(actual.getKeyToString(), is(nullValue()));
-		assertThat(actual.getVersionName(), is(nullValue()));
-		assertThat(actual.getVersionNo(), is(nullValue()));
-	}
-
-	/**
-	 * putのテスト.
-	 */
-	@Test
-	public void testPut() {
-		createTestData();
+		//登録後、取得
+		actual = service.get(projectKeyString);
+		assertThat(actual.getKeyToString(), is(Datastore.keyToString(Datastore.createKey(VersionModel.class, projectKeyString))));
+		assertThat(actual.getVersionName(), is("バージョン1\r\nバージョン2\nバージョン3"));
+		assertThat(actual.getVersionNo(), is("1"));
 		
-		String projectKeyToString = Datastore.keyToString(projectKey);
-		
-		//
-		//新規
-		//
-		
-		VersionForm form = new VersionForm();
-		form.versionName = "追加バージョン";
-		service.put(form, projectKeyToString);
-		GlobalTransaction.transaction.get().commit();
-		GlobalTransaction.transaction.get().begin();
-		
-		//1件追加されていること
-		List<VersionModel> allList = service.getAllList(projectKeyToString);
-		assertThat(allList.size(), is(4));
-		VersionModel actual = allList.get(3);
-		assertThat(actual.getVersionName(), is("追加バージョン"));
-		assertThat(actual.getProjectKey(), is(projectKey));
-		assertThat(actual.getSortNum(), is(Long.MAX_VALUE));
-		assertThat(actual.getVersion(), is(1L));
-		
-		//
 		//更新
-		//
-		String keyString = Datastore.keyToString(versionKeyList.get(0));
-		form = service.get(keyString);
-		form.setVersionName("変更後バージョン");
-		
-		service.put(form, projectKeyToString);
+		actual.versionName = "おほほー";
+		service.put(actual, projectKeyString);
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
-		
-		allList = service.getAllList(projectKeyToString);
-		actual = allList.get(0);
-		assertThat(actual.getVersionName(), is("変更後バージョン"));
-		assertThat(actual.getProjectKey(), is(projectKey));
-		assertThat(actual.getSortNum(), is(Long.MAX_VALUE));
-		assertThat(actual.getVersion(), is(2L));
-		
-		//
-		//該当レコードが存在しない
-		//
-		keyString = Datastore.keyToString(versionKeyList.get(1));
-		form = service.get(keyString);
-		form.setVersionName("バージョン不正");
-		form.setVersionNo("-1");
+
+		//更新後、取得
+		actual = service.get(projectKeyString);
+		assertThat(actual.getKeyToString(), 
+				is(Datastore.keyToString(Datastore.createKey(VersionModel.class, projectKeyString))));
+		assertThat(actual.getVersionName(), is("おほほー"));
+		assertThat(actual.getVersionNo(), is("2"));
+
+		//バージョン不正
+		actual.versionName = "おほほー123";
+		actual.versionNo = "-1";
 		try {
-			service.put(form, projectKeyToString);
+			service.put(actual, projectKeyString);
 			fail();
 		} catch (ConcurrentModificationException e) {}
 	}
 	
 	/**
-	 * deleteのテスト.
+	 * getListのテスト.
 	 */
 	@Test
-	public void testDelete() {
+	public void testGetList() {
 		createTestData();
-		
-		String projectKeyToString = Datastore.keyToString(projectKey);
-		String keyString = Datastore.keyToString(versionKeyList.get(0));
-		VersionForm form = service.get(keyString);
-		service.delete(form, projectKeyToString);
+
+		//テスト用データ作成
+		String projectKeyString = Datastore.keyToString(projectKey);
+		VersionForm form = new VersionForm();
+		form.versionName = "バージョン1\r\nバージョン2\nバージョン3";
+		service.put(form, projectKeyString);
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
-
-		form = service.get(keyString);
-		assertThat(form.keyToString, is(nullValue()));
 		
-		//
-		//バージョン違い
-		//
-		keyString = Datastore.keyToString(versionKeyList.get(1));
-		form = service.get(keyString);
-		form.versionNo = "-1";
-		try {
-			service.delete(form, projectKeyToString);
-			fail();
-		} catch (ConcurrentModificationException e) {}
+		List<LabelValueBean> actualList = service.getList(projectKeyString);
+		assertThat(actualList.size(), is(4));
+		assertThat(actualList.get(0).getLabel(), is(""));
+		assertThat(actualList.get(0).getValue(), is(""));
+		assertThat(actualList.get(1).getLabel(), is("バージョン1"));
+		assertThat(actualList.get(1).getValue(), is("バージョン1"));
+		assertThat(actualList.get(2).getLabel(), is("バージョン2"));
+		assertThat(actualList.get(2).getValue(), is("バージョン2"));
+		assertThat(actualList.get(3).getLabel(), is("バージョン3"));
+		assertThat(actualList.get(3).getValue(), is("バージョン3"));
 	}
-	
-	
-	/**
-	 * updateSortNumのテスト.
-	 */
-	@Test
-	public void testUpdateSortNum() {
-		createTestData();
-		
-		String projectKeyToString = Datastore.keyToString(projectKey);
-		String[] sortedKeyToString = new String[]{
-				Datastore.keyToString(versionKeyList.get(0)),
-				Datastore.keyToString(versionKeyList.get(2)),
-				Datastore.keyToString(versionKeyList.get(1))
-		};
-		service.updateSortNum(sortedKeyToString, projectKeyToString);
-		GlobalTransaction.transaction.get().commit();
-		GlobalTransaction.transaction.get().begin();
-		//順番が変わっていること
-		List<VersionModel> allList = service.getAllList(projectKeyToString);
-		assertThat(allList.size(), is(3));
-		assertThat(allList.get(0).getKey(), is(versionKeyList.get(0)));
-		assertThat(allList.get(1).getKey(), is(versionKeyList.get(2)));
-		assertThat(allList.get(2).getKey(), is(versionKeyList.get(1)));
 
-		//
-		//サイズ0の配列を渡されてもエラーにならないこと
-		//
-		service.updateSortNum(new String[0], projectKeyToString);
-		GlobalTransaction.transaction.get().commit();
-		GlobalTransaction.transaction.get().begin();
-		
-		
-		//削除された状態で呼び出してもエラーにならないこと
-		VersionForm form = service.get(Datastore.keyToString(versionKeyList.get(0)));
-		service.delete(form, projectKeyToString);
-		GlobalTransaction.transaction.get().commit();
-		GlobalTransaction.transaction.get().begin();
-		sortedKeyToString = new String[]{
-				Datastore.keyToString(versionKeyList.get(0)),
-				Datastore.keyToString(versionKeyList.get(2)),
-				Datastore.keyToString(versionKeyList.get(1))
-		};
-		service.updateSortNum(sortedKeyToString, projectKeyToString);
-		GlobalTransaction.transaction.get().commit();
-		GlobalTransaction.transaction.get().begin();
-		//順番が変わっていること
-		allList = service.getAllList(projectKeyToString);
-		assertThat(allList.size(), is(2));
-		assertThat(allList.get(0).getKey(), is(versionKeyList.get(2)));
-		assertThat(allList.get(1).getKey(), is(versionKeyList.get(1)));
-
-	}
-	
-	
 	/**
 	 * テストデータ作成.
-	 * プロジェクト1件
-	 * バージョン3件を作成します。
+	 * プロジェクト1件を作成します。
 	 */
 	private void createTestData() {
 		
@@ -224,16 +128,6 @@ public class VersionServiceImplTest extends AppEngineTestCase4HRD {
 		model.setProjectSummary(new Text("テスト用プロジェクトですってば"));
 		projectDao.put(model);
 		projectKey = model.getKey();
-		
-		versionKeyList = new ArrayList<Key>();
-		for(int i = 0; i < 3; i++) {
-			VersionModel versionModel = new VersionModel();
-			versionModel.setVersionName("1.2.3." + i);
-			versionModel.setProjectKey(projectKey);
-			versionModel.setSortNum(Long.MAX_VALUE);
-			versionDao.put(versionModel);
-			versionKeyList.add(versionModel.getKey());
-		}
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
 		return;
