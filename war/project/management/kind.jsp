@@ -19,16 +19,16 @@
 
 	<h2 class="title">種別管理</h2>
 	
-	<table class="edit_table">
+	<table class="edit_main_table">
 	<tbody>
 	<tr>
-		<th>種別名</th>
+		<th>種別</th>
 		<td><textarea id="edit_kind_name" cols="30" rows="10"></textarea></td>
 	</tr>
 	</tbody>
 	</table>
-	<p>改行コードで区切ることで複数の種別を設定することができます</p>
-	<div class="search_ctrl">
+	<p>改行コードで区切ることで複数の項目を設定することができます</p>
+	<div class="edit_main_ctrl">
 		<input type="button" class="btn btn-primary" id="kind-add" value="登録する" />
 	</div>
 
