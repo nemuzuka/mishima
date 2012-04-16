@@ -41,7 +41,10 @@
       <div class="nav-collapse">
         <ul class="nav">
           <li class="" id="main_menu1">
-            <a href="#" title="あなたに割り当てられているチケットやTODOの状態を参照します">ダッシュボード</a>
+            <a href="#" id="dash_board_menu" title="あなたに割り当てられているチケットやTODOの状態を参照します">ダッシュボード</a>
+          </li>
+          <li class="" id="main_menu5">
+            <a href="#"　id="todo_menu" title="あなたのTODOを参照します">TODO</a>
           </li>
           <li class="" id="main_menu2">
             <a href="#" id="ticket_menu" title="プロジェクト毎のチケットを参照します">チケット</a>
