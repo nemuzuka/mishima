@@ -43,6 +43,10 @@ function initDialog(){
 		}
 	});
 
+	$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
+	$("#edit_start_date").datepicker();
+	$("#edit_end_date").datepicker();
+	
 	$("#milestoneDialog-add").click(function(){
 		execute();
 	});
@@ -142,8 +146,8 @@ function render(data) {
 		});
 		var $tr = $("<tr />");
 		$tr.append($("<td />").append($a))
-			.append($("<td />").text(startDate))
-			.append($("<td />").text(endDate))
+			.append($("<td />").text(formatDateyyyyMMdd(startDate)))
+			.append($("<td />").text(formatDateyyyyMMdd(endDate)))
 			.append($("<td />").append($delBtn));
 		$tbody.append($tr)
 	});
@@ -199,8 +203,8 @@ function openEditDialog(keyToString) {
 			var form = data.result;
 			
 			$("#edit_milestone_name").val(form.milestoneName);
-			$("#edit_start_date").val(form.startDate);
-			$("#edit_end_date").val(form.endDate);
+			$("#edit_start_date").val(formatDateyyyyMMdd(form.startDate));
+			$("#edit_end_date").val(formatDateyyyyMMdd(form.endDate));
 
 			$("#edit_versionNo").val(form.versionNo);
 			$("#edit_keyToString").val(form.keyToString);
@@ -283,8 +287,8 @@ function deleteMilestone(name, keyToString, version) {
 function createExecuteParams() {
 	var params = {};
 	params["milestoneName"] = $("#edit_milestone_name").val();
-	params["startDate"] = $("#edit_start_date").val();
-	params["endDate"] = $("#edit_end_date").val();
+	params["startDate"] = unFormatDate($("#edit_start_date").val());
+	params["endDate"] = unFormatDate($("#edit_end_date").val());
 	params["versionNo"] = $("#edit_versionNo").val();
 	params["keyToString"] = $("#edit_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();

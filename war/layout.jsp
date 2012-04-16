@@ -24,6 +24,9 @@
 <script type="text/javascript" src="/js/jquery.toast.js"></script>
 <script type="text/javascript" src="/js/jquery.elastic.js"></script>
 <script type="text/javascript" src="/js/select-utils.js"></script>
+<script type="text/javascript" src="/js/i18n/ui.datepicker-ja.js"></script>
+<script type="text/javascript" src="/js/dateformat.js"></script>
+<script type="text/javascript" src="/js/format-utils.js"></script>
 
 </head>
 <body data-spy="scroll" data-target=".subnav" data-offset="50" data-twttr-rendered="true">
