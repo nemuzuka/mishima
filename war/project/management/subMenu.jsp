@@ -28,6 +28,9 @@ $(function(){
 	$("#sub_menu5").click(function(){
 		moveUrl("/project/management/version");
 	});
+	$("#sub_menu6").click(function(){
+		moveUrl("/project/management/status");
+	});
 	
 	//プロジェクトメンバーでなければ非表示
 	if(projectMember == false) {

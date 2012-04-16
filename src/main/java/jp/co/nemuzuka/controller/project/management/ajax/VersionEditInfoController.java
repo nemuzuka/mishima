@@ -9,7 +9,7 @@ import jp.co.nemuzuka.service.VersionService;
 import jp.co.nemuzuka.service.impl.VersionServiceImpl;
 
 /**
- * バージョン登録・更新ダイアログ情報取得Controller.
+ * バージョン登録・更新情報取得Controller.
  * @author kazumune
  */
 public class VersionEditInfoController extends JsonController {

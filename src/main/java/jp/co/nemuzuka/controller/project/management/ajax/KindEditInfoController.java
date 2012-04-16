@@ -9,7 +9,7 @@ import jp.co.nemuzuka.service.KindService;
 import jp.co.nemuzuka.service.impl.KindServiceImpl;
 
 /**
- * 種別登録・更新ダイアログ情報取得Controller.
+ * 種別登録・更新情報取得Controller.
  * @author kazumune
  */
 public class KindEditInfoController extends JsonController {
