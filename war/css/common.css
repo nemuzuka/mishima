@@ -2,6 +2,8 @@
 
 h2.title{color:08C;line-height:26px;font-size:150%;font-weight:bold;text-shadow:1px 1px 1px #CCC;}
 
+td{empty-cells: show;}
+
 /* 必須項目 */
 .required-input{background-color: #FFFCEE;}
 
