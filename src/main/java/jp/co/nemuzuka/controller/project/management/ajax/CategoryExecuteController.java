@@ -49,7 +49,7 @@ public class CategoryExecuteController extends JsonController {
 	 */
 	protected Validators validate() {
 		Validators v = new Validators(request);
-		v.add("categoryName", v.required(), v.maxlength(128));
+		v.add("categoryName", v.required(), v.maxlength(1024));
 		return v;
 	}
 }

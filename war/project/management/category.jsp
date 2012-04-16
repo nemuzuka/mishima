@@ -18,68 +18,25 @@
 <form class="form-horizontal">
 
 	<h2 class="title">カテゴリ管理</h2>
-	<div class="search_ctrl">
-		<input type="button" class="btn btn-primary" id="searchCategoryBtn" value="検索" />
-		<input type="button" class="btn" value="新規登録" id="addCategoryBtn" />
-		<input type="button" class="btn" value="表示順変更" id="sortCategoryBtn" />
-	</div>
 	
-	<div id="result_area" class="result">
+	<table class="edit_main_table">
+	<tbody>
+	<tr>
+		<th>カテゴリ</th>
+		<td><textarea id="edit_category_name" cols="30" rows="10"></textarea></td>
+	</tr>
+	</tbody>
+	</table>
+	<p>改行コードで区切ることで複数の項目を設定することができます</p>
+	<div class="edit_main_ctrl">
+		<input type="button" class="btn btn-primary" id="category-add" value="登録する" />
 	</div>
 
-<%-- 一覧表示時の件数. --%>
-<input type="hidden" id="listCnt" value="0" />
+	<input type="hidden" id="edit_versionNo" />
+	<input type="hidden" id="edit_keyToString" />
 
 </form>
 </div>
-
-
-<%-- カテゴリダイアログ --%>
-<div id="categoryDialog" title="カテゴリ" class="dialog-widget">
-<div class="dialog-container form-horizontal" >
-<fieldset>
-	<div class="control-group">
-		<label class="control-label" for="edit_category_name">カテゴリ名</label>
-		<div class="controls">
-			<input type="text" class="input-xlarge required-input" id="edit_category_name">
-		</div>
-	</div>
-
-	<div class="edit_ctrl">
-		<input type="button" class="btn btn-primary" id="categoryDialog-add" value="登録する" />
-		<input type="button" class="btn" id="categoryDialog-cancel" value="キャンセル" />
-		<input type="hidden" id="edit_versionNo" />
-		<input type="hidden" id="edit_keyToString" />
-	</div>
-</fieldset>
-</div>
-</div>
-
-<%-- 表示順変更ダイアログ --%>
-<div id="categorySortDialog" title="表示順変更" class="dialog-widget">
-<div class="dialog-container form-horizontal" >
-<fieldset>
-	<div class="control-group">
-		<label class="control-label" for="category_to">カテゴリ</label>
-		<div class="controls">
-			<div class="sort_to">
-				<select id="category_to" size="10" multiple="multiple"></select>
-			</div>
-			<div class="sort_action_area">
-				<input type="button" class="btn sort_up_button" id="sort_up" value="↑" style="float:left;margin-bottom: 50px;" /><br/>
-				<input type="button" class="btn" id="sort_down" value="↓" />
-			</div>
-		</div>
-	</div>
-
-	<div class="edit_ctrl">
-		<input type="button" class="btn btn-primary" id="categorySortDialog-execute" value="変更する" />
-		<input type="button" class="btn" id="categorySortDialog-cancel" value="キャンセル" />
-	</div>
-</fieldset>
-</div>
-</div>
-
 
 <input type="hidden" id="selected_sub_menu" value="sub_menu3" />
 

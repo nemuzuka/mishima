@@ -6,29 +6,25 @@ import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * カテゴリを管理するModel.
+ * プロジェクトにつき1レコード作成されます
  * @author kazumune
  */
 @Model(schemaVersion = 1)
 public class CategoryModel extends AbsModel {
 
 	/** カテゴリKey. */
-	//自動採番
+	//projectKeyを元に作成
 	@Attribute(primaryKey=true)
 	private Key key;
 
 	/** カテゴリ名. */
 	@Attribute(unindexed=true)
-	private String categoryName;
+	private Text categoryName;
 
-	/** プロジェクトKey. */
-	private Key projectKey;
-	
-	/** ソート順. */
-	private Long sortNum;
-	
 	/**
 	 * @return key
 	 */
@@ -36,51 +32,26 @@ public class CategoryModel extends AbsModel {
 	public Key getKey() {
 		return key;
 	}
+
 	/**
-	 * @return sortNum
+	 * @return the categoryName
 	 */
 	@JSONHint(ignore=true)
-	public Long getSortNum() {
-		return sortNum;
-	}
-	/**
-	 * @return projectKey
-	 */
-	@JSONHint(ignore=true)
-	public Key getProjectKey() {
-		return projectKey;
+	public Text getCategoryName() {
+		return categoryName;
 	}
 
 	/**
-	 * @return categoryName
+	 * @param categoryName the categoryName to set
 	 */
-	public String getCategoryName() {
-		return categoryName;
-	}
-	/**
-	 * @param categoryName セットする categoryName
-	 */
-	public void setCategoryName(String categoryName) {
+	public void setCategoryName(Text categoryName) {
 		this.categoryName = categoryName;
 	}
+
 	/**
-	 * @param key セットする key
+	 * @param key the key to set
 	 */
 	public void setKey(Key key) {
 		this.key = key;
-	}
-
-	/**
-	 * @param sortNum セットする sortNum
-	 */
-	public void setSortNum(Long sortNum) {
-		this.sortNum = sortNum;
-	}
-
-	/**
-	 * @param projectKey セットする projectKey
-	 */
-	public void setProjectKey(Key projectKey) {
-		this.projectKey = projectKey;
 	}
 }
