@@ -18,10 +18,6 @@ function initTodoDialog() {
 		resizable:false
 	});
 
-	//textareaの自動拡張
-	$("#edit_todo_content").elastic();
-	$("#edit_todo_comment").elastic();
-
 	//TODO 登録するとかその他諸々のボタン設定
 }
 

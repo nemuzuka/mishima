@@ -62,7 +62,7 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_project_summary">概要</label>
 		<div class="controls">
-			<textarea class="input-xlarge" id="edit_project_summary"></textarea>
+			<textarea class="input-xlarge" cols="30" rows="10" id="edit_project_summary"></textarea>
 		</div>
 	</div>
 

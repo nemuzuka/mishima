@@ -41,9 +41,6 @@ function initDialog(){
 	$("#projectDialog-cancel").click(function(){
 		$("#projectDialog").dialog("close");
 	});
-	
-	//textareaの自動拡張
-	$("#edit_project_summary").elastic();
 }
 
 //プロジェクト検索
