@@ -44,7 +44,7 @@
             <a href="#" id="dash_board_menu" title="あなたに割り当てられているチケットやTODOの状態を参照します">ダッシュボード</a>
           </li>
           <li class="" id="main_menu5">
-            <a href="#"　id="todo_menu" title="あなたのTODOを参照します">TODO</a>
+            <a href="#" id="todo_menu" title="あなたのTODOを参照します">TODO</a>
           </li>
           <li class="" id="main_menu2">
             <a href="#" id="ticket_menu" title="プロジェクト毎のチケットを参照します">チケット</a>
@@ -88,6 +88,10 @@ $(function(){
 	
 	$("#admin_menu").click(function(){
 		moveUrl("/management/");
+	});
+
+	$("#todo_menu").click(function(){
+		moveUrl("/todo/");
 	});
 	
 	$("#targetProjects").val(selectedProject);
