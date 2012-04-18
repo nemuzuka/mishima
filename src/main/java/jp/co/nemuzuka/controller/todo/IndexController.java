@@ -17,7 +17,6 @@ public class IndexController extends HtmlController {
 	@SystemManager
 	@Override
 	protected Navigation execute() throws Exception {
-		getUserInfo().initProjectInfo();
 		return forward("/todo/todo.jsp");
 	}
 

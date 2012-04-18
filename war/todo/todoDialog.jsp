@@ -75,3 +75,10 @@
 </fieldset>
 </div>
 </div>
+
+<%-- TODO詳細ダイアログ --%>
+<div id="todoDetailDialog" title="TODO詳細" class="dialog-widget">
+<div class="dialog-container form-horizontal dialog-detail" >
+</div>
+</div>
+

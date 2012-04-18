@@ -61,7 +61,7 @@ function renderSearchInfo(data) {
 
 
 //TODO検索
-function searchMember() {
+function searchTodo() {
 	var params = createSearchParams();
 	g_searchParams = params;
 	searchAndRender(params);

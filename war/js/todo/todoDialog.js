@@ -11,6 +11,18 @@ function initTodoDialog() {
 			document.body.style.overflow = "visible";
 		}
 	});
+	$("#todoDetailDialog").dialog({
+		modal:true,
+		autoOpen:false,
+		width:500,
+		resizable:false,
+		open:function(event) {
+			document.body.style.overflow = "hidden";
+		},
+		close:function(event) {
+			document.body.style.overflow = "visible";
+		}
+	});
 	$("#todoCommentDialog").dialog({
 		modal:true,
 		autoOpen:false,
@@ -23,5 +35,10 @@ function initTodoDialog() {
 
 //TODOダイアログオープン
 function openEditTodoDialog(key) {
+	
+}
+
+//TODO詳細ダイアログオープン
+function openDetailTodoDialog(key) {
 	
 }
