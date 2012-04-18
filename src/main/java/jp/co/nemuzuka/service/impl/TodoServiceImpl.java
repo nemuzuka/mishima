@@ -164,7 +164,7 @@ public class TodoServiceImpl implements TodoService {
 		}
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		form.keyToString = model.getKeyToString();
-		form.status = model.getStatus().getCode();
+		form.todoStatus = model.getStatus().getCode();
 		form.title = model.getTitle();
 		form.content = model.getContent().getValue();
 		form.period = ConvertUtils.toString(model.getPeriod(), sdf);
@@ -179,7 +179,7 @@ public class TodoServiceImpl implements TodoService {
 	private void setModel(TodoModel model, TodoForm form) {
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		
-		TodoStatus status = TodoStatus.fromCode(form.status);
+		TodoStatus status = TodoStatus.fromCode(form.todoStatus);
 		if(status == null) {
 			status = TodoStatus.nothing;
 		}

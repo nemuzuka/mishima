@@ -63,7 +63,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		//登録する
 		actual = new TodoForm();
 		actual.keyToString = null;
-		actual.status = TodoStatus.finish.getCode();
+		actual.todoStatus = TodoStatus.finish.getCode();
 		actual.title = "新規登録タイトル";
 		actual.content = "詳細情報";
 		actual.period = "20150101";
@@ -88,7 +88,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(actual.getVersionNo(), is("1"));
 		
 		//更新
-		actual.status = "4989";
+		actual.todoStatus = "4989";
 		actual.title = "新規登録タイトル1";
 		actual.content = "詳細情報2";
 		actual.period = "20150103";

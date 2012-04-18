@@ -13,7 +13,7 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_todo_status">ステータス</label>
 		<div class="controls">
-			<select class="input-xlarge" id="edit_todo_status"></select>
+			<select class="required-input" id="edit_todo_status"></select>
 		</div>
 	</div>
 
@@ -27,14 +27,14 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_todo_content">内容</label>
 		<div class="controls">
-			<textarea class="input-xlarge" id="edit_todo_content"></textarea>
+			<textarea class="input-xlarge" cols="30" rows="8" id="edit_todo_content"></textarea>
 		</div>
 	</div>
 
 	<div class="control-group">
 		<label class="control-label" for="edit_todo_period">期限</label>
 		<div class="controls">
-			<input type="text" class="input-xlarge required-input" id="edit_todo_period">
+			<input type="text" class="input-xlarge" id="edit_todo_period">
 		</div>
 	</div>
 

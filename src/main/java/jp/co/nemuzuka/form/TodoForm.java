@@ -1,6 +1,11 @@
 package jp.co.nemuzuka.form;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.co.nemuzuka.common.TodoStatus;
+import jp.co.nemuzuka.core.entity.LabelValueBean;
 
 /**
  * TODO登録・更新Form
@@ -17,7 +22,7 @@ public class TodoForm implements Serializable {
 	public String keyToString;
 	
 	/** ステータス. */
-	public String status;
+	public String todoStatus;
 
 	/** 件名. */
 	public String title;
@@ -30,6 +35,17 @@ public class TodoForm implements Serializable {
 	
 	/** バージョンNo. */
 	public String versionNo;
+
+	//検索条件構成情報
+	/** ステータス構成情報. */
+	public List<LabelValueBean> getStatusList() {
+		List<LabelValueBean> list = new ArrayList<LabelValueBean>();
+		TodoStatus[] statusList = TodoStatus.values();
+		for(TodoStatus target : statusList) {
+			list.add(new LabelValueBean(target.getLabel(), target.getCode()));
+		}
+		return list;
+	}
 
 	/**
 	 * @return the keyToString
@@ -49,14 +65,14 @@ public class TodoForm implements Serializable {
 	 * @return the status
 	 */
 	public String getStatus() {
-		return status;
+		return todoStatus;
 	}
 
 	/**
 	 * @param status the status to set
 	 */
 	public void setStatus(String status) {
-		this.status = status;
+		this.todoStatus = status;
 	}
 
 	/**
