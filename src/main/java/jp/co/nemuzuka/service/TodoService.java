@@ -14,10 +14,11 @@ public interface TodoService {
 
 	/**
 	 * 一覧取得.
-	 * @param projectKeyToString プロジェクトKey文字列
+	 * @param param 検索条件
+	 * @param isDashboard ダッシュボード表示の場合、true
 	 * @return 該当レコード
 	 */
-	List<TodoModelEx> getList(TodoDao.Param param);
+	List<TodoModelEx> getList(TodoDao.Param param, boolean isDashboard);
 
 	/**
 	 * 詳細情報取得.

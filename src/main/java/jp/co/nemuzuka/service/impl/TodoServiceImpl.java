@@ -3,6 +3,7 @@ package jp.co.nemuzuka.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -11,6 +12,7 @@ import org.slim3.datastore.Datastore;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 
+import jp.co.nemuzuka.common.PeriodStatus;
 import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.dao.TodoDao;
 import jp.co.nemuzuka.dao.TodoDao.Param;
@@ -20,6 +22,7 @@ import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TodoModel;
 import jp.co.nemuzuka.service.TodoService;
 import jp.co.nemuzuka.utils.ConvertUtils;
+import jp.co.nemuzuka.utils.CurrentDateUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
 
 /**
@@ -34,10 +37,17 @@ public class TodoServiceImpl implements TodoService {
 	 * @see jp.co.nemuzuka.service.TodoService#getList(jp.co.nemuzuka.dao.TodoDao.Param)
 	 */
 	@Override
-	public List<TodoModelEx> getList(Param param) {
+	public List<TodoModelEx> getList(Param param, boolean isDashboard) {
 		
 		List<TodoModel> modelList = todoDao.getList(param);
+		if(isDashboard) {
+			modelList = todoDao.getDashbordList(param.limit, param.email);
+		} else {
+			modelList = todoDao.getList(param);
+		}
+		
 		List<TodoModelEx> list = new ArrayList<TodoModelEx>();
+		Date today = CurrentDateUtils.getInstance().getCurrentDate();
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		SimpleDateFormat sdf2 = DateTimeUtils.createSdf("yyyy/MM/dd HH:mm");
 		for(TodoModel target : modelList) {
@@ -45,6 +55,12 @@ public class TodoServiceImpl implements TodoService {
 			entity.setModel(target);
 			entity.setPeriod(ConvertUtils.toString(target.getPeriod(), sdf));
 			entity.setCreatedAt(ConvertUtils.toString(target.getCreatedAt(), sdf2));
+			
+			//期限が設定されている場合
+			if(target.getPeriod() != null) {
+				entity.setPeriodStatus(
+						createPeriodStatus(today, target.getPeriod(), target.getStatus()));
+			}
 			list.add(entity);
 		}
 		return list;
@@ -112,6 +128,31 @@ public class TodoServiceImpl implements TodoService {
 		todoDao.delete(key);
 	}
 
+	/**
+	 * 期限ステータス判断.
+	 * @param today システム日付
+	 * @param targetDate 期限
+	 * @param todoStatus TODOステータス
+	 * @return 期限ステータス値
+	 */
+	PeriodStatus createPeriodStatus(Date today, Date targetDate, TodoStatus todoStatus) {
+		long toDayTime = today.getTime();
+		long periodTime = targetDate.getTime();
+		
+		//ステータスが未完了の場合
+		PeriodStatus periodStatus = null;
+		switch(todoStatus) {
+			case doing:case nothing:
+				if(toDayTime == periodTime) {
+					periodStatus = PeriodStatus.today;
+				} else if(toDayTime > periodTime) {
+					periodStatus = PeriodStatus.periodDate;
+				}
+				break;
+		}
+		return periodStatus;
+	}
+	
 	/**
 	 * Form情報設定.
 	 * @param form 設定対象Form

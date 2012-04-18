@@ -36,7 +36,7 @@ public class TodoListController extends JsonController {
 		result.setToken(this.setToken());
 		//検索結果を返す
 		List<TodoModelEx> list = todoService.getList(
-				form.createParam(userService.getCurrentUser().getEmail()));
+				form.createParam(userService.getCurrentUser().getEmail()), false);
 		result.setResult(list);
 		
 		if(list.size() == 0) {

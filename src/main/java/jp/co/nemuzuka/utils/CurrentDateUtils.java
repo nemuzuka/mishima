@@ -2,6 +2,7 @@ package jp.co.nemuzuka.utils;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -33,7 +34,16 @@ public class CurrentDateUtils {
 	 * @return 現在日付
 	 */
 	public Date getCurrentDate() {
-		return DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
+		
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		String dateStr = sdf.format(new Date());
+		Date date;
+		try {
+			date = sdf.parse(dateStr);
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+		return DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.entity;
 
+import jp.co.nemuzuka.common.PeriodStatus;
 import jp.co.nemuzuka.model.TodoModel;
 
 /**
@@ -18,6 +19,23 @@ public class TodoModelEx {
 	/** 登録日時. */
 	//yyyy/MM/dd HH:mmフォーマット
 	private String createdAt;
+
+	/** 期限ステータス. */
+	private PeriodStatus periodStatus;
+	
+	/**
+	 * @return the periodStatus
+	 */
+	public PeriodStatus getPeriodStatus() {
+		return periodStatus;
+	}
+
+	/**
+	 * @param periodStatus the periodStatus to set
+	 */
+	public void setPeriodStatus(PeriodStatus periodStatus) {
+		this.periodStatus = periodStatus;
+	}
 
 	/**
 	 * @return the model

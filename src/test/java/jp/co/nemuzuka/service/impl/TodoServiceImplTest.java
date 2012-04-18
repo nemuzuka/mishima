@@ -9,6 +9,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.List;
 
+import jp.co.nemuzuka.common.PeriodStatus;
 import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
@@ -147,7 +148,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		
 		TodoDao.Param param = new TodoDao.Param();
 		param.email = "hoge@hige.hage";
-		List<TodoModelEx> todoExList = service.getList(param);
+		List<TodoModelEx> todoExList = service.getList(param, false);
 		assertThat(todoExList.size(), is(6));
 		
 		assertThat(todoExList.get(0).getModel().getKey(), is(todoKeyList.get(0)));
@@ -160,6 +161,47 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(todoExList.get(5).getModel().getKey(), is(todoKeyList.get(5)));
 
 	}
+
+	/**
+	 * getListのテスト.
+	 * @throws Exception 例外
+	 */
+	@Test
+	public void testGetList2() throws Exception {
+		createTestData();
+		
+		TodoDao.Param param = new TodoDao.Param();
+		param.email = "hoge2@hige.hage";
+		param.limit = 1;
+		List<TodoModelEx> todoExList = service.getList(param, true);
+		assertThat(todoExList.size(), is(1));
+		assertThat(todoExList.get(0).getModel().getKey(), is(todoKeyList.get(6)));
+	}
+	
+	
+	/**
+	 * createPeriodStatusのテスト.
+	 * @throws Exception 例外
+	 */
+	@Test
+	public void testCreatePeriodStatus() throws Exception {
+		
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		Date today = sdf.parse("20100101");
+		Date targetDate = sdf.parse("20100101");
+		PeriodStatus actual = service.createPeriodStatus(today, targetDate, TodoStatus.nothing);
+		assertThat(actual, is(PeriodStatus.today));
+		
+		targetDate = sdf.parse("20091231");
+		actual = service.createPeriodStatus(today, targetDate, TodoStatus.nothing);
+		assertThat(actual, is(PeriodStatus.periodDate));
+		
+		targetDate = sdf.parse("20100102");
+		actual = service.createPeriodStatus(today, targetDate, TodoStatus.nothing);
+		assertThat(actual, is(nullValue()));
+		
+	}
+	
 	
 	/**
 	 * テストデータ作成.

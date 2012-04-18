@@ -2,6 +2,7 @@ package jp.co.nemuzuka.dao;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,10 +10,12 @@ import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.meta.TodoModelMeta;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TodoModel;
+import jp.co.nemuzuka.utils.CurrentDateUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.slim3.datastore.Datastore;
 import org.slim3.datastore.InMemoryFilterCriterion;
+import org.slim3.datastore.InMemorySortCriterion;
 import org.slim3.datastore.ModelMeta;
 import org.slim3.datastore.ModelQuery;
 
@@ -88,18 +91,87 @@ public class TodoDao extends AbsDao {
 			filterSet.add(e.period.isNotNull());
 			filterSet.add(e.period.lessThanOrEqual(param.toPeriod));
 		}
+
+		//期限未設定のみを抽出
+		if(param.periodNull) {
+			//期限がnullであることを指定する
+			filterSet.add(e.period.equal(null));
+		}
+		
+		Set<InMemorySortCriterion> sortSet = new LinkedHashSet<InMemorySortCriterion>();
+		if(param.orderByPeriod) {
+			//期限の昇順でソートする
+			sortSet.add(e.period.asc);
+		}
+		sortSet.add(e.key.asc);
 		
 		//参照可能ユーザの検索条件
 		Key createMemberKey = Datastore.createKey(MemberModel.class, param.email);
 		filterSet.add(e.createMemberKey.equal(createMemberKey));
 		
 		ModelQuery<TodoModel> query = Datastore.query(e).filterInMemory(filterSet.toArray(new InMemoryFilterCriterion[0]))
-				.sortInMemory(e.key.asc);
+				.sortInMemory(sortSet.toArray(new InMemorySortCriterion[0]));
+		
+		List<TodoModel> retList =  query.asList();
 		if(param.limit != null) {
+			
+			int toIndex = param.limit;
+			if(toIndex > retList.size()) {
+				//結果が一覧取得数より少ない場合
+				toIndex = retList.size();
+			}
 			//一覧取得数の指定がされている場合、設定
-			query = query.limit(param.limit);
+			return retList.subList(0, toIndex);
 		}
-		return query.asList();
+		return retList;
+		
+	}
+	
+	/**
+	 * ダッシュボード用一覧取得.
+	 * ステータスが未完了のTODOを指定したlimit件数分取得します。
+	 * 一覧は、
+	 * ・期限が設定されているもの(期限の昇順)
+	 * ・期限が未設定のもの(登録順)
+	 * の順番でソートされます。
+	 * @param limit 取得件数
+	 * @param email メールアドレス
+	 * @return 該当レコード
+	 */
+	public List<TodoModel> getDashbordList(int limit, String email) {
+		
+		//ステータスが未完了で、指定したLimit分取得する
+		
+		//期限が設定されていて、未完了のものを取得
+		Param param = new Param();
+		param.limit = limit;
+		param.email = email;
+		param.toPeriod = CurrentDateUtils.getInstance().getMaxDate();
+		param.orderByPeriod = true;
+		
+		List<TodoModel> list = getList(param);
+		if(list.size() >= limit) {
+			//指定件数分取得できた場合、終了
+			return list;
+		}
+		
+		//期限が設定されておらず、未完了のものを取得
+		param.toPeriod = null;
+		param.periodNull = true;
+		param.orderByPeriod = false;
+		List<TodoModel> periodNullList = getList(param);
+		for(TodoModel target : periodNullList) {
+			//期限がnullのものだけ戻りListに取り込む
+			if(target.getPeriod() != null) {
+				break;
+			}
+			list.add(target);
+			if(list.size() >= limit) {
+				//追加後、上限件数を超えた場合、終了
+				break;
+			}
+		}
+		return list;
 	}
 	
 	/**
@@ -150,11 +222,15 @@ public class TodoDao extends AbsDao {
 		public Date fromPeriod;
 		/** 期限To. */
 		public Date toPeriod;
+		/** 期限がnullのもののみ取得する場合、true */
+		boolean periodNull;
 
 		/** 取得上限件数. */
 		public Integer limit;
 		/** メールアドレス. */
 		public String email;
+		
+		/** 期限の昇順でソートする場合、true */
+		boolean orderByPeriod;
 	}
-
 }
