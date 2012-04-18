@@ -132,7 +132,6 @@ function createExecuteParams() {
 	params["memberKeyArray"] = new Array();
 	params["authorityCodeArray"] = new Array();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
-	params["jp.co.nemuzuka.token2"] = $("#token").val();
 
 	var count = 0;
 	$("input[type='checkbox'][name='memberKey']").each(function(index){

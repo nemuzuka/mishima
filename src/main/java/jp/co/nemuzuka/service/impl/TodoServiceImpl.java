@@ -61,6 +61,7 @@ public class TodoServiceImpl implements TodoService {
 				entity.setPeriodStatus(
 						createPeriodStatus(today, target.getPeriod(), target.getStatus()));
 			}
+			entity.setTodoStatus(target.getStatus().getLabel());
 			list.add(entity);
 		}
 		return list;
@@ -133,7 +134,7 @@ public class TodoServiceImpl implements TodoService {
 	 * @param today システム日付
 	 * @param targetDate 期限
 	 * @param todoStatus TODOステータス
-	 * @return 期限ステータス値
+	 * @return 期限ステータス
 	 */
 	PeriodStatus createPeriodStatus(Date today, Date targetDate, TodoStatus todoStatus) {
 		long toDayTime = today.getTime();

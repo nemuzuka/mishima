@@ -61,18 +61,19 @@ public class TodoForm implements Serializable {
 		this.keyToString = keyToString;
 	}
 
+
 	/**
-	 * @return the status
+	 * @return the todoStatus
 	 */
-	public String getStatus() {
+	public String getTodoStatus() {
 		return todoStatus;
 	}
 
 	/**
-	 * @param status the status to set
+	 * @param todoStatus the todoStatus to set
 	 */
-	public void setStatus(String status) {
-		this.todoStatus = status;
+	public void setTodoStatus(String todoStatus) {
+		this.todoStatus = todoStatus;
 	}
 
 	/**

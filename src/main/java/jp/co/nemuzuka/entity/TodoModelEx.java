@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.entity;
 
+import net.arnx.jsonic.JSONHint;
 import jp.co.nemuzuka.common.PeriodStatus;
 import jp.co.nemuzuka.model.TodoModel;
 
@@ -23,18 +24,41 @@ public class TodoModelEx {
 	/** 期限ステータス. */
 	private PeriodStatus periodStatus;
 	
+	/** TODOステータス. */
+	private String todoStatus = "";
+	
 	/**
-	 * @return the periodStatus
+	 * @return 期限ステータスコード値.
 	 */
-	public PeriodStatus getPeriodStatus() {
-		return periodStatus;
+	public String getPeriodStatusCode() {
+		if(periodStatus != null) {
+			return periodStatus.getCode();
+		}
+		return "";
 	}
 
 	/**
-	 * @param periodStatus the periodStatus to set
+	 * @return 期限ステータスラベル.
 	 */
-	public void setPeriodStatus(PeriodStatus periodStatus) {
-		this.periodStatus = periodStatus;
+	public String getPeriodStatusLabel() {
+		if(periodStatus != null) {
+			return periodStatus.getLabel();
+		}
+		return "";
+	}
+
+	/**
+	 * @return the todoStatus
+	 */
+	public String getTodoStatus() {
+		return todoStatus;
+	}
+
+	/**
+	 * @param todoStatus the todoStatus to set
+	 */
+	public void setTodoStatus(String todoStatus) {
+		this.todoStatus = todoStatus;
 	}
 
 	/**
@@ -77,5 +101,20 @@ public class TodoModelEx {
 	 */
 	public void setCreatedAt(String createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	/**
+	 * @return the periodStatus
+	 */
+	@JSONHint(ignore=true)
+	public PeriodStatus getPeriodStatus() {
+		return periodStatus;
+	}
+
+	/**
+	 * @param periodStatus the periodStatus to set
+	 */
+	public void setPeriodStatus(PeriodStatus periodStatus) {
+		this.periodStatus = periodStatus;
 	}
 }

@@ -62,7 +62,7 @@ function renderSearchInfo(data) {
 
 //TODO検索
 function searchTodo() {
-	var params = createSearchParams();
+	var params = createSearchTodoParams();
 	g_searchParams = params;
 	searchAndRender(params);
 }
@@ -106,38 +106,53 @@ function render(data) {
 		$msgDiv.append($("<span />").text("該当件数：" + result.length + "件").addClass("label label-info"));
 	}
 	
-	//TODO記述
 	//一覧をレンダリング
 	var $table = $("<table />").addClass("table table-bordered result_table");
 	var $thead = $("<thead />").append($("<tr />")
-				.append($("<th />").text("氏名"))
-				.append($("<th />").text("メールアドレス"))
-				.append($("<th />").text("権限"))
+				.append($("<th />").text("ステータス"))
+				.append($("<th />").text("件名"))
+				.append($("<th />").text("期限"))
 				.append($("<th />").text("").attr({width:"50px"}))
 			);
 	$table.append($thead);
 	
 	var $tbody = $("<tbody />");
 	$.each(result, function(){
-		var keyToString = this.keyToString;
-		var name = this.name;
-		var mail = this.mail;
-		var authorityLabel = this.authorityLabel;
-		var versionNo = this.version
+		var keyToString = this.model.keyToString;
+		var todoStatus = this.todoStatus;
+		var title = this.model.title;
+		var versionNo = this.model.version;
+		var period = this.period;
+		var createdAt = this.createdAt;
+		var periodStatusLabel = this.periodStatusLabel;
+		var periodStatusCode = this.periodStatusCode;
 
 		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
 		$delBtn.click(function(){
-			deleteMember(name, keyToString, versionNo);
+			deleteTodo(title, keyToString, versionNo);
 		});
 		
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(name);
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(title);
 		$a.click(function(){
-			openEditDialog(keyToString);
+			openDetailTodoDialog(keyToString);
 		});
+		
+		var $todoStatusSpan = $("<span />").text(todoStatus);
+		var $periodStatusSpan = $("<span />");
+		if(periodStatusCode != '') {
+			$periodStatusSpan.text(periodStatusLabel);
+			if(periodStatusCode == '1') {
+				$periodStatusSpan = $periodStatusSpan.addClass("label label-warning");
+			} else {
+				$periodStatusSpan = $periodStatusSpan.addClass("label label-important");
+			}
+		}
+		var $statusDiv = $("<div />").append($todoStatusSpan).append($("<br />")).append($periodStatusSpan);
+		
 		var $tr = $("<tr />");
-		$tr.append($("<td />").append($a))
-			.append($("<td />").text(mail))
-			.append($("<td />").text(authorityLabel))
+		$tr.append($("<td />").append($statusDiv))
+			.append($("<td />").append($a))
+			.append($("<td />").text(formatDateyyyyMMdd(period)))
 			.append($("<td />").append($delBtn));
 		$tbody.append($tr)
 	});
@@ -146,3 +161,49 @@ function render(data) {
 	$("#result_area").append($("<hr />")).append($msgDiv).append($table);
 }
 
+//TODO検索条件設定
+function createSearchTodoParams() {
+	var params = {};
+	params["title"] = $("#search_title").val();
+	params["fromPeriod"] = unFormatDate($("#search_fromPeriod").val());
+	params["toPeriod"] = unFormatDate($("#search_toPeriod").val());
+	params["status"] = new Array();
+	$("input[type='checkbox'][name='search_status']").each(function(index){
+		if($(this).prop("checked") == true) {
+			params["status"].push($(this).val());
+		}
+	});
+	return params;
+}
+
+//TODO削除
+function deleteTodo(name, keyToString, version) {
+	if(window.confirm("TODO「" + name + "」を削除します。本当によろしいですか？") == false) {
+		return;
+	}
+	
+	var params = {};
+	params["keyToString"] = keyToString;
+	params["versionNo"] = version;
+	params["jp.co.nemuzuka.token"] = $("#token").val();
+	
+	setAjaxDefault();
+	var task;
+	task = $.ajax({
+		type: "POST",
+		url: "/todo/ajax/todoDelete",
+		data: params
+	});
+	
+	//後処理の登録
+	//
+	task.pipe(
+		function(data) {
+			//共通エラーチェック
+			errorCheck(data);
+			//メッセージを表示して、戻る
+			infoCheck(data);
+			return reSearchAndRender();
+		}
+	);
+}

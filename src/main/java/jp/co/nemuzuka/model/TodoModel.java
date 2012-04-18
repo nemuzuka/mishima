@@ -56,6 +56,7 @@ public class TodoModel extends AbsModel {
 	/**
 	 * @return the status
 	 */
+	@JSONHint(ignore=true)
 	public TodoStatus getStatus() {
 		return status;
 	}

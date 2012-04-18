@@ -218,7 +218,7 @@ function openEditDialog(keyToString) {
 	);
 }
 
-//バージョン登録・更新
+//マイルストーン登録・更新
 function execute() {
 	var params = createExecuteParams();
 	setAjaxDefault();
@@ -254,7 +254,7 @@ function execute() {
 	);
 }
 
-//バージョン削除
+//マイルストーン削除
 function deleteMilestone(name, keyToString, version) {
 	if(window.confirm("マイルストーン「" + name + "」を削除します。本当によろしいですか？") == false) {
 		return;

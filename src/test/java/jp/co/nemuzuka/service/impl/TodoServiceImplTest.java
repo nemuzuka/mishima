@@ -54,7 +54,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		//新規の場合
 		TodoForm actual = service.get("", "hoge@hige.hage");
 		assertThat(actual.getKeyToString(), is(nullValue()));
-		assertThat(actual.getStatus(), is(nullValue()));
+		assertThat(actual.getTodoStatus(), is(nullValue()));
 		assertThat(actual.getTitle(), is(nullValue()));
 		assertThat(actual.getContent(), is(nullValue()));
 		assertThat(actual.getPeriod(), is(nullValue()));
@@ -81,7 +81,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		String keyToString = Datastore.keyToString(todoList.get(6).getKey());
 		actual = service.get(keyToString, "hoge@hige.hage");
 		assertThat(actual.getKeyToString(), is(keyToString));
-		assertThat(actual.getStatus(), is(TodoStatus.finish.getCode()));
+		assertThat(actual.getTodoStatus(), is(TodoStatus.finish.getCode()));
 		assertThat(actual.getTitle(), is("新規登録タイトル"));
 		assertThat(actual.getContent(), is("詳細情報"));
 		assertThat(actual.getPeriod(), is("20150101"));
@@ -99,7 +99,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		
 		actual = service.get(keyToString, "hoge@hige.hage");
 		assertThat(actual.getKeyToString(), is(keyToString));
-		assertThat(actual.getStatus(), is(TodoStatus.nothing.getCode()));
+		assertThat(actual.getTodoStatus(), is(TodoStatus.nothing.getCode()));
 		assertThat(actual.getTitle(), is("新規登録タイトル1"));
 		assertThat(actual.getContent(), is("詳細情報2"));
 		assertThat(actual.getPeriod(), is("20150103"));
