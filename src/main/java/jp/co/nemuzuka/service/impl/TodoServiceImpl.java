@@ -17,10 +17,12 @@ import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.dao.TodoDao;
 import jp.co.nemuzuka.dao.TodoDao.Param;
 import jp.co.nemuzuka.entity.TodoModelEx;
+import jp.co.nemuzuka.form.TodoCommentForm;
 import jp.co.nemuzuka.form.TodoDetailForm;
 import jp.co.nemuzuka.form.TodoForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TodoModel;
+import jp.co.nemuzuka.service.CommentService;
 import jp.co.nemuzuka.service.TodoService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
@@ -33,6 +35,7 @@ import jp.co.nemuzuka.utils.DateTimeUtils;
 public class TodoServiceImpl implements TodoService {
 
 	TodoDao todoDao = new TodoDao();
+	CommentService commentService = new CommentServiceImpl();
 	
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.TodoService#getList(jp.co.nemuzuka.dao.TodoDao.Param)
@@ -98,8 +101,7 @@ public class TodoServiceImpl implements TodoService {
 		
 		TodoDetailForm detailForm = new TodoDetailForm();
 		detailForm.setForm(form);
-		
-		//TODO TODOに紐付くコメント一覧の情報を取得する
+		detailForm.commentList = commentService.getList(Datastore.stringToKey(form.keyToString));
 		
 		return detailForm;
 	}
@@ -172,6 +174,64 @@ public class TodoServiceImpl implements TodoService {
 			throw new ConcurrentModificationException();
 		}
 		todoDao.delete(key);
+	}
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.TodoService#putComment(jp.co.nemuzuka.form.TodoCommentForm, java.lang.String)
+	 */
+	@Override
+	public void putComment(TodoCommentForm form, String email) {
+		//ステータスが変更されていないかチェックする
+		Key todoModelKey = Datastore.stringToKey(form.keyToString);
+		Key memberKey = Datastore.createKey(MemberModel.class, email);
+		
+		//KeyとメンバーKeyでデータを取得
+		TodoModel model = todoDao.getWithMemberKey(todoModelKey, memberKey);
+		if(model == null) {
+			//該当レコードが存在しない場合、Exceptionをthrow
+			throw new ConcurrentModificationException();
+		}
+		
+		//ステータスが変更されているかチェックする
+		TodoStatus status = TodoStatus.fromCode(form.status);
+		if(status == null) {
+			status = TodoStatus.nothing;
+		}
+		if(model.getStatus().equals(status) == false) {
+			Long versonNo = ConvertUtils.toLong(form.versionNo);
+			//変更されているので、更新
+			if(model.getVersion().equals(versonNo) == false) {
+				//他のユーザに更新されている可能性があるので、Exceptionをthrow
+				throw new ConcurrentModificationException();
+			}
+			model.setStatus(status);
+			todoDao.put(model);
+		}
+
+		//コメント登録
+		commentService.put(todoModelKey, form.comment, email);
+	}
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.TodoService#deleteComment(java.lang.String, java.lang.String, java.lang.Long, java.lang.String)
+	 */
+	@Override
+	public void deleteComment(String keyString, String commentKeyString,
+			Long commentVersionNo, String email) {
+
+		//TODOの存在チェック
+		Key todoModelKey = Datastore.stringToKey(keyString);
+		Key memberKey = Datastore.createKey(MemberModel.class, email);
+		
+		//KeyとメンバーKeyでデータを取得
+		TodoModel model = todoDao.getWithMemberKey(todoModelKey, memberKey);
+		if(model == null) {
+			//該当レコードが存在しない場合、Exceptionをthrow
+			throw new ConcurrentModificationException();
+		}
+		
+		//コメント削除
+		commentService.delete(todoModelKey, commentKeyString, commentVersionNo);
 	}
 
 	/**

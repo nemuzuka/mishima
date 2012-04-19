@@ -1,7 +1,9 @@
 package jp.co.nemuzuka.form;
 
 import java.io.Serializable;
+import java.util.List;
 
+import jp.co.nemuzuka.entity.CommentModelEx;
 import jp.co.nemuzuka.utils.HtmlStringUtils;
 
 /**
@@ -18,10 +20,9 @@ public class TodoDetailForm implements Serializable {
 	/** TodoForm. */
 	public TodoForm form;
 
+	/** コメント一覧. */
+	public List<CommentModelEx> commentList;
 	
-	//TODO TODOに紐付くコメントの一覧をプロパティに持つ
-	
-
 	/**
 	 * 表示用内容取得.
 	 * @return 表示用内容
@@ -42,5 +43,19 @@ public class TodoDetailForm implements Serializable {
 	 */
 	public void setForm(TodoForm form) {
 		this.form = form;
+	}
+
+	/**
+	 * @return the commentList
+	 */
+	public List<CommentModelEx> getCommentList() {
+		return commentList;
+	}
+
+	/**
+	 * @param commentList the commentList to set
+	 */
+	public void setCommentList(List<CommentModelEx> commentList) {
+		this.commentList = commentList;
 	}
 }

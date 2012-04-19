@@ -1,7 +1,9 @@
 package jp.co.nemuzuka.dao;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import jp.co.nemuzuka.meta.MemberModelMeta;
@@ -66,5 +68,28 @@ public class MemberDao extends AbsDao {
 		}
 		return Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0]))
 				.sortInMemory(e.authority.asc, e.key.asc).asList();
+	}
+	
+	/**
+	 * Map取得.
+	 * 指定したKey配列に合致するデータを取得します。
+	 * @param keys key配列
+	 * @return 該当Map
+	 */
+	public Map<Key, MemberModel> getMap(Key...keys) {
+		MemberModelMeta e = (MemberModelMeta) getModelMeta();
+		Set<FilterCriterion> filterSet = new HashSet<FilterCriterion>();
+		Map<Key, MemberModel> map = new HashMap<Key, MemberModel>();
+		if(keys != null && keys.length != 0) {
+			filterSet.add(e.key.in(keys));
+		} else {
+			return map;
+		}
+		
+		List<MemberModel> list = Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0])).asList();
+		for(MemberModel target : list) {
+			map.put(target.getKey(), target);
+		}
+		return map;
 	}
 }

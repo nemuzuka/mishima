@@ -49,7 +49,7 @@
 </div>
 
 <%-- TODOコメントダイアログ --%>
-<div id="todoCommentDialog" title="TODOコメント" class="dialog-widget">
+<div id="todoCommentDialog" title="TODOコメント登録" class="dialog-widget">
 <div class="dialog-container form-horizontal" >
 <fieldset>
 	<div class="control-group">
@@ -60,9 +60,9 @@
 	</div>
 
 	<div class="control-group">
-		<label class="control-label" for="edit_todo_comment">内容</label>
+		<label class="control-label" for="edit_todo_comment">コメント</label>
 		<div class="controls">
-			<textarea class="input-xlarge" id="edit_todo_comment"></textarea>
+			<textarea class="input-xlarge" cols="30" rows="8" id="edit_todo_comment"></textarea>
 		</div>
 	</div>
 
@@ -80,24 +80,28 @@
 <div id="todoDetailDialog" title="TODO詳細" class="dialog-widget">
 <div class="dialog-container form-horizontal dialog-detail" >
 
-	<div class="dialog-area">
-		<dl class="detail_dl">
-			<dt class="detail_dt">ステータス</dt>
-			<dd><select class="required-input" id="detail_todo_status"></select></dd>
-			<dt>件名</dt>
-			<dd><div id="detail_todo_title"></div></dd>
-			<dt>期限</dt>
-			<dd><div id="detail_todo_period"></div></dd>
-			<dt>内容</dt>
-			<dd><div id="detail_todo_content"></div></dd>
-		</dl>
-	
-		<div class="detail_ctrl">
-			<input type="button" class="btn" id="todoDetail-edit" value="TODO内容変更" />
-			<input type="button" class="btn" id="todoDetail-Comment-add" value="コメント追加" />
-			<input type="hidden" id="detail_todo_versionNo" />
-			<input type="hidden" id="detail_todo_keyToString" />
+	<div class="scroll_area">
+		<div class="dialog-area">
+			<dl class="detail_dl">
+				<dt class="detail_dt">ステータス</dt>
+				<dd><select id="detail_todo_status"></select></dd>
+				<dt>件名</dt>
+				<dd><div id="detail_todo_title"></div></dd>
+				<dt>期限</dt>
+				<dd><div id="detail_todo_period"></div></dd>
+				<dt>内容</dt>
+				<dd><div id="detail_todo_content"></div></dd>
+			</dl>
+		
+			<div class="detail_ctrl">
+				<input type="button" class="btn" id="todoDetail-edit" value="TODO内容変更" />
+				<input type="button" class="btn" id="todoDetail-Comment-add" value="コメント登録" />
+				<input type="hidden" id="detail_todo_versionNo" />
+				<input type="hidden" id="detail_todo_keyToString" />
+			</div>
 		</div>
+
+		<div id="todo_comment_list" class="result"></div>
 	</div>
 
 	<div class="detail_close">

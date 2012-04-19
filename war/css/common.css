@@ -49,6 +49,8 @@ td{empty-cells: show;}
 .dialog-widget{display:none;}
 .dialog-container{margin:5px auto;padding:10px;background:#FFF;overflow:auto;}
 
+.scroll_area{height: 320px;overflow: auto;}
+
 /* 詳細ダイアログ. */
 .dialog-detail dl dt{
 	font-weight: bold;
@@ -67,6 +69,8 @@ td{empty-cells: show;}
 .detail_ctrl .btn {margin-right:5px;}
 .detail_close{margin-top:10px;margin-left:2em;float: right;}
 
+.comment_list_table th, 
+.comment_list_table td{font-size:86%;}
 
 hr {border: 0 none; height: 2px; color: #08C;background-color: #08C;}
 

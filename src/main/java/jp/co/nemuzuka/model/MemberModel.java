@@ -30,12 +30,14 @@ public class MemberModel extends AbsModel {
 	
 	/** 
 	 * 権限. 
-	 * 管理者：システムにユーザを追加できる
-	 * 一般
+	 * 管理者：システムにユーザを追加できる、プロジェクトを追加できる、プロジェクト管理者扱い
+	 * 一般:新規にユーザやプロジェクトは追加できない
 	 */
+	@Attribute(unindexed=true)
 	private Authority authority;
 	
 	/** メモ. */
+	@Attribute(unindexed=true)
 	private Text memo;
 	
 	/**

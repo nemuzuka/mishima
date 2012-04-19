@@ -4,6 +4,7 @@ import java.util.List;
 
 import jp.co.nemuzuka.dao.TodoDao;
 import jp.co.nemuzuka.entity.TodoModelEx;
+import jp.co.nemuzuka.form.TodoCommentForm;
 import jp.co.nemuzuka.form.TodoDetailForm;
 import jp.co.nemuzuka.form.TodoForm;
 
@@ -61,4 +62,21 @@ public interface TodoService {
 	 */
 	void updateTodoStatus(TodoForm form, String email);
 	
+	/**
+	 * TODOに紐付くコメント登録.
+	 * ステータスが変更されている場合、TODOのステータスも変更します。
+	 * @param form コメント登録Form
+	 * @param email ログインユーザのメールアドレス
+	 */
+	void putComment(TodoCommentForm form, String email);
+
+	/**
+	 * TODOに紐付くコメント削除.
+	 * @param keyString　TODOのKey文字列
+	 * @param commentKeyString　コメントのKey文字列
+	 * @param commentVersionNo コメントのバージョン
+	 * @param email ログインユーザのメールアドレス
+	 */
+	void deleteComment(String keyString, String commentKeyString,
+			Long commentVersionNo, String email);
 }
