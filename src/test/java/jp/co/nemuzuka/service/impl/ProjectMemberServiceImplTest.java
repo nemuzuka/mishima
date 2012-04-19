@@ -72,22 +72,22 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 		ProjectMemberModelEx actual = actualList.get(0);
 		assertThat(actual.projectMember, is(false));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
-		assertThat(actual.member.getMail(), is("mail0@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 		
 		actual = actualList.get(1);
 		assertThat(actual.projectMember, is(true));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type1.getCode()));
-		assertThat(actual.member.getMail(), is("mail1@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 
 		actual = actualList.get(2);
 		assertThat(actual.projectMember, is(false));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
-		assertThat(actual.member.getMail(), is("mail2@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 
 		actual = actualList.get(3);
 		assertThat(actual.projectMember, is(false));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
-		assertThat(actual.member.getMail(), is("mail3@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 	}
 	
 	
@@ -103,22 +103,22 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 		ProjectMemberModelEx actual = actualList.get(0);
 		assertThat(actual.projectMember, is(true));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type2.getCode()));
-		assertThat(actual.member.getMail(), is("mail0@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 		
 		actual = actualList.get(1);
 		assertThat(actual.projectMember, is(false));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
-		assertThat(actual.member.getMail(), is("mail1@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 
 		actual = actualList.get(2);
 		assertThat(actual.projectMember, is(true));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
-		assertThat(actual.member.getMail(), is("mail2@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 
 		actual = actualList.get(3);
 		assertThat(actual.projectMember, is(false));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
-		assertThat(actual.member.getMail(), is("mail3@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 	}
 
 	/**
@@ -133,22 +133,22 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 		ProjectMemberModelEx actual = actualList.get(0);
 		assertThat(actual.projectMember, is(true));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type1.getCode()));
-		assertThat(actual.member.getMail(), is("mail0@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 		
 		actual = actualList.get(1);
 		assertThat(actual.projectMember, is(false));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
-		assertThat(actual.member.getMail(), is("mail1@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 
 		actual = actualList.get(2);
 		assertThat(actual.projectMember, is(false));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
-		assertThat(actual.member.getMail(), is("mail2@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 
 		actual = actualList.get(3);
 		assertThat(actual.projectMember, is(false));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
-		assertThat(actual.member.getMail(), is("mail3@gmail.com"));
+		assertThat(actual.member.getMail(), is(""));
 	}
 	
 

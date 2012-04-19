@@ -53,6 +53,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 				entity.setProjectMember(true);
 				entity.setAuthorityCode(model.getProjectAuthority().getCode());
 			}
+			//メールアドレスは空文字に置き換える
+			target.setMail("");
 			result.add(entity);
 		}
 		return result;

@@ -57,8 +57,7 @@ function render(data) {
 	var $table = $("<table />").addClass("table table-bordered result_table");
 	var $thead = $("<thead />").append($("<tr />")
 				.append($("<th />").html("プロジェクト<br />メンバー").attr({width:"80px"}))
-				.append($("<th />").text("氏名"))
-				.append($("<th />").text("メールアドレス"))
+				.append($("<th />").text("ニックネーム"))
 				.append($("<th />").text("権限"))
 			);
 	$table.append($thead);
@@ -67,7 +66,6 @@ function render(data) {
 	$.each(result, function(){
 		var keyToString = this.member.keyToString;
 		var name = this.member.name;
-		var mail = this.member.mail;
 		var projectMember = this.projectMember;
 		var authorityCode = this.authorityCode;
 		
@@ -86,7 +84,6 @@ function render(data) {
 		var $tr = $("<tr />");
 		$tr.append($("<td />").append($checkBox).css({"text-align":"center"}))
 			.append($("<td />").text(name))
-			.append($("<td />").text(mail))
 			.append($("<td />").append($select));
 		$tbody.append($tr)
 	});

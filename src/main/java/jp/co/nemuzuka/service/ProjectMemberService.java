@@ -13,6 +13,7 @@ public interface ProjectMemberService {
 	/**
 	 * プロジェクトメンバーデータ取得.
 	 * 指定したプロジェクトに紐付く全メンバーの設定情報を取得します。
+	 * セキュリティ確保の為、メールアドレスは空文字に設定します。
 	 * @param selectedProject 選択プロジェクトKey文字列
 	 * @return プロジェクトメンバーデータList
 	 */
