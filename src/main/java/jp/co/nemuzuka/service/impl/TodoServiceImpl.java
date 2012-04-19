@@ -17,6 +17,7 @@ import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.dao.TodoDao;
 import jp.co.nemuzuka.dao.TodoDao.Param;
 import jp.co.nemuzuka.entity.TodoModelEx;
+import jp.co.nemuzuka.form.TodoDetailForm;
 import jp.co.nemuzuka.form.TodoForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TodoModel;
@@ -84,6 +85,28 @@ public class TodoServiceImpl implements TodoService {
 		return form;
 	}
 
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.TodoService#getDetail(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public TodoDetailForm getDetail(String keyString, String mail) {
+		
+		TodoForm form = get(keyString, mail);
+		if(StringUtils.isEmpty(form.keyToString)) {
+			return null;
+		}
+		
+		TodoDetailForm detailForm = new TodoDetailForm();
+		detailForm.setForm(form);
+		
+		//TODO TODOに紐付くコメント一覧の情報を取得する
+		
+		return detailForm;
+	}
+
+
+
+	
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.TodoService#put(jp.co.nemuzuka.form.TodoForm, java.lang.String)
 	 */
@@ -190,6 +213,4 @@ public class TodoServiceImpl implements TodoService {
 		model.setPeriod(ConvertUtils.toDate(form.period, sdf));
 		model.setVersion(ConvertUtils.toLong(form.versionNo));
 	}
-
-
 }

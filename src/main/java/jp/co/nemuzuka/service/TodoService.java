@@ -4,6 +4,7 @@ import java.util.List;
 
 import jp.co.nemuzuka.dao.TodoDao;
 import jp.co.nemuzuka.entity.TodoModelEx;
+import jp.co.nemuzuka.form.TodoDetailForm;
 import jp.co.nemuzuka.form.TodoForm;
 
 /**
@@ -27,6 +28,15 @@ public interface TodoService {
 	 * @return 該当レコードがあれば更新用Form。該当レコードがなければ新規用Form
 	 */
 	TodoForm get(String keyString, String mail);
+	
+	/**
+	 * 詳細情報取得.
+	 * コメント情報も取得します。
+	 * @param keyString キー文字列
+	 * @param mail ログインユーザのメールアドレス
+	 * @return 詳細用Form。該当レコードがなければnull
+	 */
+	TodoDetailForm getDetail(String keyString, String mail);
 	
 	/**
 	 * put処理.

@@ -49,6 +49,25 @@ td{empty-cells: show;}
 .dialog-widget{display:none;}
 .dialog-container{margin:5px auto;padding:10px;background:#FFF;overflow:auto;}
 
+/* 詳細ダイアログ. */
+.dialog-detail dl dt{
+	font-weight: bold;
+	text-indent: 12px;
+	margin-top: 1em;
+	padding-bottom: 2px;
+	border-bottom: 1px dotted #600;
+	color: #600;
+}
+.dialog-detail dl dd{
+	margin-top: 0.3em;
+	margin-left: 2em;
+	line-height: 150%;
+}
+.detail_ctrl{margin-top:10px;}
+.detail_ctrl .btn {margin-right:5px;}
+.detail_close{margin-top:10px;margin-left:2em;float: right;}
+
+
 hr {border: 0 none; height: 2px; color: #08C;background-color: #08C;}
 
 /* 表示順変更用 */

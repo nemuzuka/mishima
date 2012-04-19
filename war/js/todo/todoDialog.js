@@ -41,6 +41,16 @@ function initTodoDialog() {
 		$("#todoDialog").dialog("close");
 	});
 	
+	//TODO詳細ダイアログ
+	$("#todoDetailDialog-cancel").click(function(){
+		$("#todoDetailDialog").dialog("close");
+	});
+	$("#todoDetail-edit").click(function(){
+		$("#todoDetailDialog").dialog("close");
+		openEditTodoDialog($("#detail_todo_keyToString").val())
+	})
+	
+	
 	//TODO 登録するとかその他諸々のボタン設定
 }
 
@@ -81,8 +91,8 @@ function executeTodo() {
 				//新規の場合、一覧再描画
 				return refresh();
 			} else {
-				//更新の場合、詳細ダイアログオープン
-				openDetailTodoDialog(key);
+				//更新の場合、詳細ダイアログオープン(メッセージを見せる必要上、1秒sleepしてから開く)
+				setTimeout(function(){ openDetailTodoDialog(key) }, 1000);
 			}
 		}
 	);
@@ -151,7 +161,7 @@ function openEditTodoDialog(key) {
 			$.each(form.statusList, function(){
 				$("#edit_todo_status").append($("<option />").attr({value:this.value}).text(this.label));
 			});
-			$("#edit_todo_status").val(form.status);
+			$("#edit_todo_status").val(form.todoStatus);
 
 			$("#edit_todo_title").val(form.title);
 			$("#edit_todo_content").val(form.content);
@@ -168,6 +178,58 @@ function openEditTodoDialog(key) {
 }
 
 //TODO詳細ダイアログオープン
-function openDetailTodoDialog(key) {
+function openDetailTodoDialog(key, onlyRefresh) {
 	
+	if(onlyRefresh == undefined) {
+		onlyRefresh = false;
+	}
+	
+	var params = {};
+	params["keyToString"] = key;
+	
+	setAjaxDefault();
+	var task;
+	task = $.ajax({
+		type: "POST",
+		url: "/todo/ajax/todoDetailInfo",
+		data: params
+	});
+	
+	//後処理の登録
+	//表示対象データが存在せず、再検索を行える場合、再検索をします。
+	task.pipe(
+		function(data) {
+			
+			if(errorCheck(data) == false) {
+				if(data.status == -6) {
+					//表示対象データが存在しない場合、再検索して表示
+					return refresh();
+				}
+				return;
+			}
+			
+			//tokenの設定
+			$("#token").val(data.token);
+			
+			//form情報の設定
+			var form = data.result.form;
+			
+			$("#detail_todo_status").empty();
+			$.each(form.statusList, function(){
+				$("#detail_todo_status").append($("<option />").attr({value:this.value}).text(this.label));
+			});
+			$("#detail_todo_status").val(form.todoStatus);
+
+			$("#detail_todo_title").text(form.title);
+			$("#detail_todo_content").html(data.result.contentView);
+			$("#detail_todo_period").text(formatDateyyyyMMdd(form.period));
+
+			$("#detail_todo_versionNo").val(form.versionNo);
+			$("#detail_todo_keyToString").val(form.keyToString);
+			if(onlyRefresh == false) {
+				$("#todoDetailDialog").dialog("open");
+			}
+			return;
+		}
+	);
 }
