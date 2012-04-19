@@ -105,7 +105,29 @@ public class TodoServiceImpl implements TodoService {
 	}
 
 
-
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.TodoService#updateTodoStatus(jp.co.nemuzuka.form.TodoForm, java.lang.String)
+	 */
+	@Override
+	public void updateTodoStatus(TodoForm form, String email) {
+		TodoModel model = null;
+		Key memberKey = Datastore.createKey(MemberModel.class, email);
+		Key key = Datastore.stringToKey(form.keyToString);
+		Long version = ConvertUtils.toLong(form.versionNo);
+		//keyとバージョンとメンバーKeyでデータを取得
+		model = todoDao.get(key, version, memberKey);
+		if(model == null) {
+			//該当レコードが存在しない場合、Exceptionをthrow
+			throw new ConcurrentModificationException();
+		}
+		
+		TodoStatus status = TodoStatus.fromCode(form.todoStatus);
+		if(status == null) {
+			status = TodoStatus.nothing;
+		}
+		model.setStatus(status);
+		todoDao.put(model);
+	}
 	
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.TodoService#put(jp.co.nemuzuka.form.TodoForm, java.lang.String)

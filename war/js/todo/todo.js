@@ -57,6 +57,7 @@ function renderSearchInfo(data) {
 	$("#search_fromPeriod").datepicker();
 	$("#search_toPeriod").datepicker();
 
+	$("input[type='checkbox'][name='search_status']").val(form.status);
 }
 
 

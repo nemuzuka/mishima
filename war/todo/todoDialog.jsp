@@ -93,7 +93,7 @@
 		</dl>
 	
 		<div class="detail_ctrl">
-			<input type="button" class="btn" id="todoDetail-edit" value="変更" />
+			<input type="button" class="btn" id="todoDetail-edit" value="TODO内容変更" />
 			<input type="button" class="btn" id="todoDetail-Comment-add" value="コメント追加" />
 			<input type="hidden" id="detail_todo_versionNo" />
 			<input type="hidden" id="detail_todo_keyToString" />

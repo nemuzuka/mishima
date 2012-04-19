@@ -49,9 +49,57 @@ function initTodoDialog() {
 		$("#todoDetailDialog").dialog("close");
 		openEditTodoDialog($("#detail_todo_keyToString").val())
 	})
-	
+	$("#detail_todo_status").change(function(){
+		changeTodoStatus();
+	});
 	
 	//TODO 登録するとかその他諸々のボタン設定
+}
+
+//ステータス変更
+function changeTodoStatus() {
+	
+	var params = {};
+	params["todoStatus"] = $("#detail_todo_status").val();
+	params["versionNo"] = $("#detail_todo_versionNo").val();
+	params["keyToString"] = $("#detail_todo_keyToString").val();
+	params["jp.co.nemuzuka.token"] = $("#token").val();
+
+	setAjaxDefault();
+	var task;
+	task = $.ajax({
+		type: "POST",
+		url: "/todo/ajax/todoStatusExecute",
+		data: params
+	});
+
+	//後処理の登録
+	//
+	task.pipe(
+		function(data) {
+			//共通エラーチェック
+			if(errorCheck(data) == false) {
+				if(data.status == -1 ) {
+					//validateの場合、tokenを再発行
+					return reSetToken();
+				} else {
+					//強制的にダイアログを閉じて、再検索
+					$("#todoDetailDialog").dialog("close");
+					return refresh();
+				}
+				return;
+			}
+			
+			//メッセージを表示して、戻る
+			infoCheck(data);
+			
+			var key = $("#detail_todo_keyToString").val();
+			//更新の場合、詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
+			setTimeout(function(){ openDetailTodoDialog(key, true) }, 1000);
+		}
+	);
+
+	
 }
 
 //TODO登録・更新

@@ -51,7 +51,8 @@
 				toast.css({
 					"max-width":options.maxWidth+"px",
 					"top":(($(window).height() - toast.outerHeight()) / 2) + $(window).scrollTop() + "px",
-					"left":(($(window).width() - toast.outerWidth()) / 2) + $(window).scrollLeft() + "px"
+					"left":(($(window).width() - toast.outerWidth()) / 2) + $(window).scrollLeft() + "px",
+					"z-index":"9999"
 				});
 				
 				//Show the toast message

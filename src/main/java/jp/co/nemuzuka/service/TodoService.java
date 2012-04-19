@@ -52,5 +52,13 @@ public interface TodoService {
 	 * @param mail ログインユーザのメールアドレス
 	 */
 	void delete(TodoForm form, String mail);
+
+	/**
+	 * TODOステータス更新.
+	 * TODOのステータスのみ更新します。
+	 * @param form 更新対象form
+	 * @param email ログインユーザのメールアドレス
+	 */
+	void updateTodoStatus(TodoForm form, String email);
 	
 }
