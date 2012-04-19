@@ -13,6 +13,7 @@ import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import jp.co.nemuzuka.form.MemberForm;
+import jp.co.nemuzuka.form.PersonForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.tester.AppEngineTestCase4HRD;
 
@@ -20,6 +21,7 @@ import org.junit.Test;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * MemberServiceImplのテストクラス.
@@ -245,6 +247,52 @@ public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 	}
 	
 	/**
+	 * getとPutのテスト.
+	 */
+	@Test
+	public void testGetPut() {
+		createInitData();
+
+		//データが存在しない場合
+		PersonForm actual = service.getPersonForm("noregist@gmail.com");
+		assertThat(actual.keyToString, is(""));
+		assertThat(actual.name, is(""));
+		assertThat(actual.memo, is(""));
+		assertThat(actual.versionNo, is(""));
+
+		
+		//データが存在する場合
+		actual = service.getPersonForm("mail0@gmail.com");
+		assertThat(actual.keyToString, is(Datastore.keyToString(memberKeyList.get(0))));
+		assertThat(actual.name, is("name0"));
+		assertThat(actual.memo, is("メモですよん"));
+		assertThat(actual.versionNo, is("1"));
+		
+		//データ更新
+		actual = service.getPersonForm("mail2@gmail.com");
+		actual.name = "変更後ニックネーム";
+		actual.memo = "変更後メモンガ";
+		service.put(actual);
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+
+		actual = service.getPersonForm("mail2@gmail.com");
+		assertThat(actual.keyToString, is(Datastore.keyToString(memberKeyList.get(2))));
+		assertThat(actual.name, is("変更後ニックネーム"));
+		assertThat(actual.memo, is("変更後メモンガ"));
+		assertThat(actual.versionNo, is("2"));
+		
+		//データが存在しない
+		actual = service.getPersonForm("mail2@gmail.com");
+		actual.versionNo = "-1";
+		try {
+			service.put(actual);
+			fail();
+		} catch(ConcurrentModificationException e) {}
+	}
+
+	
+	/**
 	 * 事前データ作成.
 	 * ユーザを4人作成します。
 	 */
@@ -261,6 +309,9 @@ public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 				authority = Authority.normal;
 			}
 			model.setAuthority(authority);
+			if(i == 0) {
+				model.setMemo(new Text("メモですよん"));
+			}
 			memberDao.put(model);
 			memberKeyList.add(model.getKey());
 			

@@ -8,6 +8,7 @@ import org.slim3.datastore.Datastore;
 import org.slim3.datastore.Model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * アプリケーションに登録されているユーザを管理するModel.
@@ -33,6 +34,9 @@ public class MemberModel extends AbsModel {
 	 * 一般
 	 */
 	private Authority authority;
+	
+	/** メモ. */
+	private Text memo;
 	
 	/**
 	 * 権限Label取得.
@@ -61,6 +65,13 @@ public class MemberModel extends AbsModel {
 	@JSONHint(ignore=true)
 	public Key getKey() {
 		return key;
+	}
+	/**
+	 * @return the memo
+	 */
+	@JSONHint(ignore=true)
+	public Text getMemo() {
+		return memo;
 	}
 
 	/**
@@ -111,4 +122,12 @@ public class MemberModel extends AbsModel {
 	public void setAuthority(Authority authority) {
 		this.authority = authority;
 	}
+
+	/**
+	 * @param memo the memo to set
+	 */
+	public void setMemo(Text memo) {
+		this.memo = memo;
+	}
+
 }

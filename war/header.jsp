@@ -93,6 +93,9 @@ $(function(){
 	$("#todo_menu").click(function(){
 		moveUrl("/todo/");
 	});
+	$("#personal_settings").click(function(){
+		openPersonalDialog();
+	});
 	
 	$("#targetProjects").val(selectedProject);
 	$("#targetProjects").change(function() {

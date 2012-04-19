@@ -8,6 +8,7 @@ import jp.co.nemuzuka.common.UniqueKey;
 import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import jp.co.nemuzuka.form.MemberForm;
+import jp.co.nemuzuka.form.PersonForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.utils.ConvertUtils;
@@ -16,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * MemberServiceの実装クラス.
@@ -125,6 +127,49 @@ public class MemberServiceImpl implements MemberService {
 		return list;
 	}
 	
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.MemberService#getPersonForm(java.lang.String)
+	 */
+	@Override
+	public PersonForm getPersonForm(String email) {
+		
+		PersonForm form = new PersonForm();
+		
+		MemberModel model = memberDao.get(email);
+		if(model == null) {
+			return form;
+		}
+		
+		form.keyToString = model.getKeyToString();
+		if(model.getMemo() != null) {
+			form.memo = model.getMemo().getValue();
+		}
+		form.name = model.getName();
+		form.versionNo = ConvertUtils.toString(model.getVersion());
+		return form;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.MemberService#put(jp.co.nemuzuka.form.PersonForm)
+	 */
+	@Override
+	public void put(PersonForm form) {
+		//更新の場合
+		Key key = Datastore.stringToKey(form.keyToString);
+		Long version = ConvertUtils.toLong(form.versionNo);
+		//versionとKeyで情報を取得
+		MemberModel model = memberDao.get(key, version);
+		if(model == null) {
+			//該当レコードが存在しない場合、Exceptionをthrow
+			throw new ConcurrentModificationException();
+		}
+		//入力値を設定して、登録
+		model.setName(form.name);
+		model.setMemo(new Text(StringUtils.defaultString(form.memo)));
+		memberDao.put(model);
+	}
+
 	/**
 	 * Form情報設定.
 	 * @param form 設定対象Form

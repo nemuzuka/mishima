@@ -3,6 +3,7 @@ package jp.co.nemuzuka.service;
 import java.util.List;
 
 import jp.co.nemuzuka.form.MemberForm;
+import jp.co.nemuzuka.form.PersonForm;
 import jp.co.nemuzuka.model.MemberModel;
 
 /**
@@ -54,5 +55,19 @@ public interface MemberService {
 	 * @return 該当レコード
 	 */
 	List<MemberModel> getAllList();
+
+	/**
+	 * 個人設定情報取得.
+	 * メールアドレスに紐付く個人設定情報を取得します。
+	 * @param email メールアドレス
+	 * @return 個人設定情報
+	 */
+	PersonForm getPersonForm(String email);
 	
+	/**
+	 * put処理.
+	 * @param form put対象Form
+	 */
+	void put(PersonForm form);
+
 }

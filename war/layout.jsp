@@ -30,6 +30,7 @@
 
 </head>
 <body data-spy="scroll" data-target=".subnav" data-offset="50" data-twttr-rendered="true">
+<c:import url="/common/personalDialog.jsp"/>
 <c:import url="/header.jsp"/>
 <!-- Contents -->
 <div class="container-fluid">
