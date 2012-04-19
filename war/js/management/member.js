@@ -92,7 +92,7 @@ function render(data) {
 	//一覧をレンダリング
 	var $table = $("<table />").addClass("table table-bordered result_table");
 	var $thead = $("<thead />").append($("<tr />")
-				.append($("<th />").text("氏名"))
+				.append($("<th />").text("ニックネーム"))
 				.append($("<th />").text("メールアドレス"))
 				.append($("<th />").text("権限"))
 				.append($("<th />").text("").attr({width:"50px"}))

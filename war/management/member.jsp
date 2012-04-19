@@ -21,7 +21,7 @@
 	<table class="search_table">
 	<tbody>
 	<tr>
-		<th>氏名</th>
+		<th>ニックネーム</th>
 		<td><input type="text" id="search_name" /></td>
 		<th>メールアドレス</th>
 		<td><input type="text" id="search_mail" /></td>
@@ -48,7 +48,7 @@
 <div class="dialog-container form-horizontal" >
 <fieldset>
 	<div class="control-group">
-		<label class="control-label" for="edit_name">氏名</label>
+		<label class="control-label" for="edit_name">ニックネーム</label>
 		<div class="controls">
 			<input type="text" class="input-xlarge required-input" id="edit_name">
 		</div>
