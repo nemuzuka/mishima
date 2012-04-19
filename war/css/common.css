@@ -1,6 +1,7 @@
 @charset "utf-8";
 
 h2.title{color:08C;line-height:26px;font-size:150%;font-weight:bold;text-shadow:1px 1px 1px #CCC;}
+h2.title.small{font-size:120%;}
 
 td{empty-cells: show;}
 
@@ -49,16 +50,18 @@ td{empty-cells: show;}
 .dialog-widget{display:none;}
 .dialog-container{margin:5px auto;padding:10px;background:#FFF;overflow:auto;}
 
-.scroll_area{height: 320px;overflow: auto;}
+.scroll_area{height: 330px;overflow: auto;}
 
 /* 詳細ダイアログ. */
 .dialog-detail dl dt{
+	font-size:120%;
+	text-shadow:1px 1px 1px #CCC;
 	font-weight: bold;
 	text-indent: 12px;
 	margin-top: 1em;
 	padding-bottom: 2px;
 	border-bottom: 1px dotted #600;
-	color: #600;
+	color: #08C;
 }
 .dialog-detail dl dd{
 	margin-top: 0.3em;

@@ -7,13 +7,44 @@ $(function(){
 	$("#status-add").click(function(){
 		execute();
 	});
-	
+
+	$("#init-get").click(function(){
+		getInitDataSetting();
+	});
+
 	var selectedProjectName =  $("#targetProjects option:selected").text();
 	$("#selectedProjectName").text("(" + selectedProjectName + ")");
 
 	//初期データ取得
 	getInitData();
 });
+
+//初期設定値取得
+function getInitDataSetting() {
+	var params = {};
+	params["type"] = "status";
+	setAjaxDefault();
+	var task;
+	task = $.ajax({
+		type: "POST",
+		url: "/project/management/ajax/initInfo",
+		data:params
+	});
+	//後処理の登録
+	task.pipe(
+		function(data) {
+			
+			if(errorCheck(data) == false) {
+				return;
+			}
+			//レスポンス情報の設定
+			var datas = data.result.split(",");
+			$("#edit_status_name").val(datas[0]);
+			$("#edit_close_status_name").val(datas[1]);
+			return;
+		}
+	);
+}
 
 //初期データ取得
 function getInitData() {

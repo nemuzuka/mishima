@@ -49,7 +49,7 @@
 </div>
 
 <%-- TODOコメントダイアログ --%>
-<div id="todoCommentDialog" title="TODOコメント登録" class="dialog-widget">
+<div id="todoCommentDialog" title="コメント登録" class="dialog-widget">
 <div class="dialog-container form-horizontal" >
 <fieldset>
 	<div class="control-group">
@@ -94,7 +94,7 @@
 			</dl>
 		
 			<div class="detail_ctrl">
-				<input type="button" class="btn" id="todoDetail-edit" value="TODO内容変更" />
+				<input type="button" class="btn" id="todoDetail-edit" value="内容変更" />
 				<input type="button" class="btn" id="todoDetail-Comment-add" value="コメント登録" />
 				<input type="hidden" id="detail_todo_versionNo" />
 				<input type="hidden" id="detail_todo_keyToString" />

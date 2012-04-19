@@ -361,7 +361,7 @@ function renderTodoCommentList(list) {
 		return;
 	}
 	
-	var $h2 = $("<h2 />").addClass("title").text("コメント").css({"margin-top":"1em"});
+	var $h2 = $("<h2 />").addClass("title small").text("コメント").css({"margin-top":"1em"});
 	var $table = $("<table />").addClass("table table-bordered result_table comment_list_table");
 	var $tbody = $("<tbody />");
 	$.each(list, function(){

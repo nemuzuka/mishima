@@ -30,6 +30,7 @@
 	<p>改行で区切ることで複数の項目を設定することができます</p>
 	<div class="edit_main_ctrl">
 		<input type="button" class="btn btn-primary" id="priority-add" value="登録する" />
+		<input type="button" class="btn" id="init-get" value="初期値取得" />
 	</div>
 
 	<input type="hidden" id="edit_versionNo" />
