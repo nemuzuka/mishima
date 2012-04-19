@@ -1,0 +1,11 @@
+Mishima BTS
+
+Google App Engine(for Java)上で動作するBTSです。
+
+【使用フレームワーク】
+・slim3
+	→基底クラスを個別に作成しています
+・jQuery
+・jQuery UI
+・jsonic
+
