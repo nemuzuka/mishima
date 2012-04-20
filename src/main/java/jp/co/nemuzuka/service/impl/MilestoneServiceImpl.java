@@ -26,8 +26,23 @@ import com.google.appengine.api.datastore.Key;
  */
 public class MilestoneServiceImpl implements MilestoneService {
 
-	MilestoneDao milestoneDao = new MilestoneDao();
+	MilestoneDao milestoneDao = MilestoneDao.getInstance();
 	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static MilestoneServiceImpl impl = new MilestoneServiceImpl();
+	
+	public static MilestoneServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private MilestoneServiceImpl(){}
+
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.MilestoneService#get(java.lang.String)
 	 */

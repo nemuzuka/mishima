@@ -12,7 +12,7 @@ import jp.co.nemuzuka.service.impl.MemberServiceImpl;
  */
 public class MemberEditInfoController extends JsonController {
 
-	protected MemberService memberService = new MemberServiceImpl();
+	protected MemberService memberService = MemberServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

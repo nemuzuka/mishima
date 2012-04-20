@@ -33,8 +33,8 @@ import com.google.appengine.api.datastore.Text;
  */
 public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 
-	TodoServiceImpl service = new TodoServiceImpl();
-	TodoDao todoDao = new TodoDao();
+	TodoServiceImpl service = TodoServiceImpl.getInstance();
+	TodoDao todoDao = TodoDao.getInstance();
 	List<Key> todoKeyList = new ArrayList<Key>();
 
 	/**

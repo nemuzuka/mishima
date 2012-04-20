@@ -30,10 +30,25 @@ import com.google.appengine.api.datastore.Text;
 
 public class ProjectServiceImpl implements ProjectService {
 
-	ProjectDao projectDao = new ProjectDao();
-	MemberDao memberDao = new MemberDao();
-	ProjectMemberDao projectMemberDao = new ProjectMemberDao();
+	ProjectDao projectDao = ProjectDao.getInstance();
+	MemberDao memberDao = MemberDao.getInstance();
+	ProjectMemberDao projectMemberDao = ProjectMemberDao.getInstance();
 	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static ProjectServiceImpl impl = new ProjectServiceImpl();
+	
+	public static ProjectServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private ProjectServiceImpl(){}
+
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.service.ProjectService#get(java.lang.String)
 	 */

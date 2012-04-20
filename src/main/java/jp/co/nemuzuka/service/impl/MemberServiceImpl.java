@@ -25,8 +25,23 @@ import com.google.appengine.api.datastore.Text;
  */
 public class MemberServiceImpl implements MemberService {
 
-	MemberDao memberDao = new MemberDao();
+	MemberDao memberDao = MemberDao.getInstance();
 	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static MemberServiceImpl impl = new MemberServiceImpl();
+	
+	public static MemberServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private MemberServiceImpl(){}
+
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.service.MemberService#checkAndCreateAdminMember(java.lang.String, java.lang.String)
 	 */

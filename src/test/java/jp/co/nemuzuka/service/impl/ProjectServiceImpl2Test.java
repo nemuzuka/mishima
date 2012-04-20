@@ -32,10 +32,10 @@ import com.google.appengine.api.datastore.Text;
  */
 public class ProjectServiceImpl2Test extends AppEngineTestCase4HRD {
 
-	ProjectServiceImpl service = new ProjectServiceImpl();
-	ProjectDao projectDao = new ProjectDao();
-	MemberDao memberDao = new MemberDao();
-	ProjectMemberDao projectMemberDao = new ProjectMemberDao();
+	ProjectServiceImpl service = ProjectServiceImpl.getInstance();
+	ProjectDao projectDao = ProjectDao.getInstance();
+	MemberDao memberDao = MemberDao.getInstance();
+	ProjectMemberDao projectMemberDao = ProjectMemberDao.getInstance();
 	
 	//テスト用データ
 	List<Key> projectKeyList;

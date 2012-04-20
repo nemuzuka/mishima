@@ -23,8 +23,23 @@ import com.google.appengine.api.datastore.Text;
  */
 public class KindServiceImpl implements KindService {
 
-	KindDao kindDao = new KindDao();
+	KindDao kindDao = KindDao.getInstance();
 	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static KindServiceImpl impl = new KindServiceImpl();
+	
+	public static KindServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private KindServiceImpl(){}
+
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.service.KindService#get(java.lang.String)
 	 */

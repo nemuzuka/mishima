@@ -38,6 +38,21 @@ public class ProjectMemberDao extends AbsDao {
 		return ProjectMemberModel.class;
 	}
 	
+	private static ProjectMemberDao projectMemberDao = new ProjectMemberDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static ProjectMemberDao getInstance() {
+		return projectMemberDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private ProjectMemberDao() {}
+
 	/**
 	 * get処理.
 	 * @param projectKey プロジェクトKey

@@ -44,6 +44,21 @@ public class MilestoneDao extends AbsDao {
 		return MilestoneModel.class;
 	}
 
+	private static MilestoneDao milestoneDao = new MilestoneDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static MilestoneDao getInstance() {
+		return milestoneDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private MilestoneDao() {}
+
 	/**
 	 * get処理.
 	 * 引数の情報に合致するModelを取得します。

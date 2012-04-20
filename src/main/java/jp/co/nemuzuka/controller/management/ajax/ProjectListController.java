@@ -19,7 +19,7 @@ import org.slim3.util.ApplicationMessage;
  */
 public class ProjectListController extends JsonController {
 
-	protected ProjectService projectService = new ProjectServiceImpl();
+	protected ProjectService projectService = ProjectServiceImpl.getInstance();
 	
 	/** ActionForm. */
 	@ActionForm

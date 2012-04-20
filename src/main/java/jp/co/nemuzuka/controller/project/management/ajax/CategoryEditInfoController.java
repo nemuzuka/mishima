@@ -14,7 +14,7 @@ import jp.co.nemuzuka.service.impl.CategoryServiceImpl;
  */
 public class CategoryEditInfoController extends JsonController {
 
-	protected CategoryService categoryService = new CategoryServiceImpl();
+	protected CategoryService categoryService = CategoryServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

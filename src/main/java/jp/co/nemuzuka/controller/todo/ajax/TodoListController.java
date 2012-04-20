@@ -18,7 +18,7 @@ import org.slim3.util.ApplicationMessage;
  */
 public class TodoListController extends JsonController {
 
-	protected TodoService todoService = new TodoServiceImpl();
+	protected TodoService todoService = TodoServiceImpl.getInstance();
 	
 	/** ActionForm. */
 	@ActionForm

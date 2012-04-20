@@ -32,6 +32,21 @@ public class KindDao extends AbsDao {
 		return KindModel.class;
 	}
 
+	private static KindDao kindDao = new KindDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static KindDao getInstance() {
+		return kindDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private KindDao() {}
+
 	/**
 	 * get処理.
 	 * 引数の情報に合致するModelを取得します。

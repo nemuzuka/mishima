@@ -28,9 +28,9 @@ import com.google.appengine.api.datastore.Text;
  */
 public class VersionServiceImplTest extends AppEngineTestCase4HRD {
 
-	VersionServiceImpl service = new VersionServiceImpl();
-	VersionDao versionDao = new VersionDao();
-	ProjectDao projectDao = new ProjectDao();
+	VersionServiceImpl service = VersionServiceImpl.getInstance();
+	VersionDao versionDao = VersionDao.getInstance();
+	ProjectDao projectDao = ProjectDao.getInstance();
 	
 	Key projectKey;
 

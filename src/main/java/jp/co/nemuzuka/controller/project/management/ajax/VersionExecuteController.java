@@ -24,7 +24,7 @@ public class VersionExecuteController extends JsonController {
 	@ActionForm
 	protected VersionForm form;
 	
-	protected VersionService versionService = new VersionServiceImpl();
+	protected VersionService versionService = VersionServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

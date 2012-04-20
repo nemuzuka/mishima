@@ -28,9 +28,9 @@ import com.google.appengine.api.datastore.Text;
  */
 public class StatusServiceImplTest extends AppEngineTestCase4HRD {
 
-	StatusServiceImpl service = new StatusServiceImpl();
-	StatusDao statusDao = new StatusDao();
-	ProjectDao projectDao = new ProjectDao();
+	StatusServiceImpl service = StatusServiceImpl.getInstance();
+	StatusDao statusDao = StatusDao.getInstance();
+	ProjectDao projectDao = ProjectDao.getInstance();
 	
 	Key projectKey;
 

@@ -32,6 +32,21 @@ public class VersionDao extends AbsDao {
 		return VersionModel.class;
 	}
 
+	private static VersionDao versionDao = new VersionDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static VersionDao getInstance() {
+		return versionDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private VersionDao() {}
+
 	/**
 	 * get処理.
 	 * 引数の情報に合致するModelを取得します。

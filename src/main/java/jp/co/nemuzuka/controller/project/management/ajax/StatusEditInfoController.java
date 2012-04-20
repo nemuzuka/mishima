@@ -14,7 +14,7 @@ import jp.co.nemuzuka.service.impl.StatusServiceImpl;
  */
 public class StatusEditInfoController extends JsonController {
 
-	protected StatusService statusService = new StatusServiceImpl();
+	protected StatusService statusService = StatusServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

@@ -34,9 +34,24 @@ import jp.co.nemuzuka.utils.DateTimeUtils;
  */
 public class TodoServiceImpl implements TodoService {
 
-	TodoDao todoDao = new TodoDao();
-	CommentService commentService = new CommentServiceImpl();
+	TodoDao todoDao = TodoDao.getInstance();
+	CommentService commentService = CommentServiceImpl.getInstance();
 	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static TodoServiceImpl impl = new TodoServiceImpl();
+	
+	public static TodoServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private TodoServiceImpl(){}
+
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.TodoService#getList(jp.co.nemuzuka.dao.TodoDao.Param)
 	 */

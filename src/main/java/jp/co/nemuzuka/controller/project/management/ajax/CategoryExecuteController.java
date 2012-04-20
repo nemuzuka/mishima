@@ -24,7 +24,7 @@ public class CategoryExecuteController extends JsonController {
 	@ActionForm
 	protected CategoryForm form;
 	
-	protected CategoryService categoryService = new CategoryServiceImpl();
+	protected CategoryService categoryService = CategoryServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

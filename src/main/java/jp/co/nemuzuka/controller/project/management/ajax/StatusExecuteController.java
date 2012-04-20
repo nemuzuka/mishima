@@ -24,7 +24,7 @@ public class StatusExecuteController extends JsonController {
 	@ActionForm
 	protected StatusForm form;
 	
-	protected StatusService statusService = new StatusServiceImpl();
+	protected StatusService statusService = StatusServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

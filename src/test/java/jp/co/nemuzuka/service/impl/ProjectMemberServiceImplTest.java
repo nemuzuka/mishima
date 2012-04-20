@@ -34,10 +34,10 @@ import com.google.appengine.api.datastore.Text;
  */
 public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 
-	ProjectMemberServiceImpl service = new ProjectMemberServiceImpl();
-	MemberDao memberDao = new MemberDao();
-	ProjectDao projectDao = new ProjectDao();
-	ProjectMemberDao projectMemberDao = new ProjectMemberDao();
+	ProjectMemberServiceImpl service = ProjectMemberServiceImpl.getInstance();
+	MemberDao memberDao = MemberDao.getInstance();
+	ProjectDao projectDao = ProjectDao.getInstance();
+	ProjectMemberDao projectMemberDao = ProjectMemberDao.getInstance();
 	
 	//テスト用データ
 	List<Key> projectKeyList;

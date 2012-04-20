@@ -26,9 +26,24 @@ import com.google.appengine.api.datastore.Key;
  */
 public class ProjectMemberServiceImpl implements ProjectMemberService {
 
-	MemberDao memberDao = new MemberDao();
-	ProjectMemberDao projectMemberDao = new ProjectMemberDao();
+	MemberDao memberDao = MemberDao.getInstance();
+	ProjectMemberDao projectMemberDao = ProjectMemberDao.getInstance();
 	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static ProjectMemberServiceImpl impl = new ProjectMemberServiceImpl();
+	
+	public static ProjectMemberServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private ProjectMemberServiceImpl(){}
+
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.service.ProjectMemberService#getProjectMemberModelList(java.lang.String)
 	 */

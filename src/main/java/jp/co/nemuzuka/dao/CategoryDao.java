@@ -32,6 +32,21 @@ public class CategoryDao extends AbsDao {
 		return CategoryModel.class;
 	}
 
+	private static CategoryDao categoryDao = new CategoryDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static CategoryDao getInstance() {
+		return categoryDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private CategoryDao() {}
+	
 	/**
 	 * get処理.
 	 * 引数の情報に合致するModelを取得します。

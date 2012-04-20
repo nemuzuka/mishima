@@ -32,6 +32,21 @@ public class StatusDao extends AbsDao {
 		return StatusModel.class;
 	}
 
+	private static StatusDao statusDao = new StatusDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static StatusDao getInstance() {
+		return statusDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private StatusDao() {}
+
 	/**
 	 * get処理.
 	 * 引数の情報に合致するModelを取得します。

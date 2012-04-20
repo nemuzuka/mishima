@@ -14,7 +14,7 @@ import jp.co.nemuzuka.service.impl.PriorityServiceImpl;
  */
 public class PriorityEditInfoController extends JsonController {
 
-	protected PriorityService priorityService = new PriorityServiceImpl();
+	protected PriorityService priorityService = PriorityServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

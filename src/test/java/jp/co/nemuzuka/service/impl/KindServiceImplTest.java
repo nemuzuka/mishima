@@ -28,9 +28,9 @@ import com.google.appengine.api.datastore.Text;
  */
 public class KindServiceImplTest extends AppEngineTestCase4HRD {
 
-	KindServiceImpl service = new KindServiceImpl();
-	KindDao kindDao = new KindDao();
-	ProjectDao projectDao = new ProjectDao();
+	KindServiceImpl service = KindServiceImpl.getInstance();
+	KindDao kindDao = KindDao.getInstance();
+	ProjectDao projectDao = ProjectDao.getInstance();
 	
 	Key projectKey;
 

@@ -28,9 +28,9 @@ import com.google.appengine.api.datastore.Text;
  */
 public class PriorityServiceImplTest extends AppEngineTestCase4HRD {
 
-	PriorityServiceImpl service = new PriorityServiceImpl();
-	PriorityDao priorityDao = new PriorityDao();
-	ProjectDao projectDao = new ProjectDao();
+	PriorityServiceImpl service = PriorityServiceImpl.getInstance();
+	PriorityDao priorityDao = PriorityDao.getInstance();
+	ProjectDao projectDao = ProjectDao.getInstance();
 	
 	Key projectKey;
 

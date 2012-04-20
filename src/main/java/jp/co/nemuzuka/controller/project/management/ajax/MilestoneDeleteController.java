@@ -22,7 +22,7 @@ public class MilestoneDeleteController extends JsonController {
 	@ActionForm
 	protected MilestoneForm form;
 	
-	protected MilestoneService milestoneService = new MilestoneServiceImpl();
+	protected MilestoneService milestoneService = MilestoneServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

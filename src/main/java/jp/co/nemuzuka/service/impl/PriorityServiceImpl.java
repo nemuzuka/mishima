@@ -23,7 +23,22 @@ import com.google.appengine.api.datastore.Text;
  */
 public class PriorityServiceImpl implements PriorityService {
 
-	PriorityDao priorityDao = new PriorityDao();
+	PriorityDao priorityDao = PriorityDao.getInstance();
+
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static PriorityServiceImpl impl = new PriorityServiceImpl();
+	
+	public static PriorityServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private PriorityServiceImpl(){}
 
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.service.PriorityService#get(java.lang.String)

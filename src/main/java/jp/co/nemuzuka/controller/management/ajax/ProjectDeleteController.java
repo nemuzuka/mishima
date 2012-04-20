@@ -21,7 +21,7 @@ public class ProjectDeleteController extends JsonController {
 	@ActionForm
 	protected ProjectForm form;
 	
-	protected ProjectService projectService = new ProjectServiceImpl();
+	protected ProjectService projectService = ProjectServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

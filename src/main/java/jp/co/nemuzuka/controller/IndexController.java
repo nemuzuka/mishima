@@ -17,7 +17,7 @@ import com.google.appengine.api.users.User;
  */
 public class IndexController extends HtmlController {
 
-	private MemberService memberService = new MemberServiceImpl();
+	private MemberService memberService = MemberServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.HtmlController#execute()

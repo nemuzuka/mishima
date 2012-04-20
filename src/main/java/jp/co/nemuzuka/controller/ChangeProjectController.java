@@ -15,7 +15,7 @@ import org.slim3.controller.Navigation;
  */
 public class ChangeProjectController extends HtmlController {
 
-	ProjectService service = new ProjectServiceImpl();
+	ProjectService service = ProjectServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.HtmlController#execute()

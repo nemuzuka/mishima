@@ -22,7 +22,7 @@ public class TodoCommentExecuteController extends JsonController {
 	@ActionForm
 	protected TodoCommentForm form;
 	
-	protected TodoService todoService = new TodoServiceImpl();
+	protected TodoService todoService = TodoServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

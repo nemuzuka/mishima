@@ -28,9 +28,9 @@ import com.google.appengine.api.datastore.Text;
  */
 public class CategoryServiceImplTest extends AppEngineTestCase4HRD {
 
-	CategoryServiceImpl service = new CategoryServiceImpl();
-	CategoryDao categoryDao = new CategoryDao();
-	ProjectDao projectDao = new ProjectDao();
+	CategoryServiceImpl service = CategoryServiceImpl.getInstance();
+	CategoryDao categoryDao = CategoryDao.getInstance();
+	ProjectDao projectDao = ProjectDao.getInstance();
 	
 	Key projectKey;
 

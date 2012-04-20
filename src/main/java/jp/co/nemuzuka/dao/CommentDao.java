@@ -34,6 +34,21 @@ public class CommentDao extends AbsDao {
 		return CommentModel.class;
 	}
 
+	private static CommentDao commentDao = new CommentDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static CommentDao getInstance() {
+		return commentDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private CommentDao() {}
+
 	/**
 	 * List取得.
 	 * 取得元Keyに合致するComment一覧を返却します

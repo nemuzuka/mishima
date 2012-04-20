@@ -21,7 +21,7 @@ public class MemberExecuteController extends JsonController {
 	@ActionForm
 	protected PersonForm form;
 	
-	protected MemberService memberService = new MemberServiceImpl();
+	protected MemberService memberService = MemberServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

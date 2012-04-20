@@ -33,9 +33,9 @@ import com.google.appengine.api.datastore.Text;
  */
 public class MilestoneServiceImplTest extends AppEngineTestCase4HRD {
 
-	MilestoneServiceImpl service = new MilestoneServiceImpl();
-	MilestoneDao milestoneDao = new MilestoneDao();
-	ProjectDao projectDao = new ProjectDao();
+	MilestoneServiceImpl service = MilestoneServiceImpl.getInstance();
+	MilestoneDao milestoneDao = MilestoneDao.getInstance();
+	ProjectDao projectDao = ProjectDao.getInstance();
 	
 	List<Key> milestoneKeyList;
 	Key projectKey;

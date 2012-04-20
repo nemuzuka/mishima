@@ -23,8 +23,23 @@ import com.google.appengine.api.datastore.Text;
  */
 public class CategoryServiceImpl implements CategoryService {
 
-	CategoryDao categoryDao = new CategoryDao();
+	CategoryDao categoryDao = CategoryDao.getInstance();
 
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static CategoryServiceImpl impl = new CategoryServiceImpl();
+	
+	public static CategoryServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private CategoryServiceImpl(){}
+	
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.CategoryService#get(java.lang.String)
 	 */

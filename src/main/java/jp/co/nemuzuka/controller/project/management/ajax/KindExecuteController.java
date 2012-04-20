@@ -24,7 +24,7 @@ public class KindExecuteController extends JsonController {
 	@ActionForm
 	protected KindForm form;
 	
-	protected KindService kindService = new KindServiceImpl();
+	protected KindService kindService = KindServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

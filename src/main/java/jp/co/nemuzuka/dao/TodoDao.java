@@ -45,6 +45,21 @@ public class TodoDao extends AbsDao {
 		return TodoModel.class;
 	}
 
+	private static TodoDao todoDao = new TodoDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static TodoDao getInstance() {
+		return todoDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private TodoDao() {}
+
 	/**
 	 * List取得.
 	 * @param param 検索条件

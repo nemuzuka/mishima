@@ -29,8 +29,8 @@ import com.google.appengine.api.datastore.Text;
  */
 public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 
-	MemberServiceImpl service = new MemberServiceImpl();
-	MemberDao memberDao = new MemberDao();
+	MemberServiceImpl service = MemberServiceImpl.getInstance();
+	MemberDao memberDao = MemberDao.getInstance();
 	
 	List<Key> memberKeyList;
 	

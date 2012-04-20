@@ -41,6 +41,21 @@ public class MemberDao extends AbsDao {
 		return MemberModel.class;
 	}
 
+	private static MemberDao memberDao = new MemberDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static MemberDao getInstance() {
+		return memberDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private MemberDao() {}
+
 	/**
 	 * get処理.
 	 * 引数の情報に合致するModelを取得します。

@@ -21,7 +21,7 @@ public class MemberSettingController extends JsonController {
 	//本メソッド内でインスタンス生成.
 	protected ProjectMemberForm form;
 	
-	protected ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
+	protected ProjectMemberService projectMemberService = ProjectMemberServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

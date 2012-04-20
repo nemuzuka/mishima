@@ -32,6 +32,21 @@ public class PriorityDao extends AbsDao {
 		return PriorityModel.class;
 	}
 
+	private static PriorityDao priorityDao = new PriorityDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static PriorityDao getInstance() {
+		return priorityDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private PriorityDao() {}
+
 	/**
 	 * get処理.
 	 * 引数の情報に合致するModelを取得します。

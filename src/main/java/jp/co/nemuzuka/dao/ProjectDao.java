@@ -39,6 +39,21 @@ public class ProjectDao extends AbsDao {
 		return ProjectModel.class;
 	}
 
+	private static ProjectDao projectDao = new ProjectDao();
+	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	public static ProjectDao getInstance() {
+		return projectDao;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private ProjectDao() {}
+
 	/**
 	 * get処理.
 	 * 引数の情報に合致するModelを取得します。

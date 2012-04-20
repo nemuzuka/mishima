@@ -15,7 +15,7 @@ import org.slim3.util.ApplicationMessage;
  */
 public class TodoEditInfoController extends JsonController {
 
-	protected TodoService todoService = new TodoServiceImpl();
+	protected TodoService todoService = TodoServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

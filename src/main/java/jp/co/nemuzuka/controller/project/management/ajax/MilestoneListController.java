@@ -18,7 +18,7 @@ import org.slim3.util.ApplicationMessage;
  */
 public class MilestoneListController extends JsonController {
 
-	protected MilestoneService milestoneService = new MilestoneServiceImpl();
+	protected MilestoneService milestoneService = MilestoneServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

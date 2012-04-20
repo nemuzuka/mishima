@@ -19,7 +19,7 @@ import org.slim3.util.ApplicationMessage;
  */
 public class MemberListController extends JsonController {
 
-	protected MemberService memberService = new MemberServiceImpl();
+	protected MemberService memberService = MemberServiceImpl.getInstance();
 	
 	/** ActionForm. */
 	@ActionForm

@@ -307,7 +307,7 @@ public abstract class AbsController extends Controller {
 	 * @param userInfo 設定UserInfo
 	 */
 	protected void refreshUserInfo(UserInfo userInfo) {
-		ProjectService service = new ProjectServiceImpl();
+		ProjectService service = ProjectServiceImpl.getInstance();
 		ProjectService.TargetProjectResult result = 
 				service.getUserProjectList(userService.getCurrentUser().getEmail(), userService.isUserAdmin());
 		

@@ -23,7 +23,22 @@ import com.google.appengine.api.datastore.Text;
  */
 public class VersionServiceImpl implements VersionService {
 
-	VersionDao versionDao = new VersionDao();
+	VersionDao versionDao = VersionDao.getInstance();
+
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static VersionServiceImpl impl = new VersionServiceImpl();
+	
+	public static VersionServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private VersionServiceImpl(){}
 
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.VersionService#get(java.lang.String)

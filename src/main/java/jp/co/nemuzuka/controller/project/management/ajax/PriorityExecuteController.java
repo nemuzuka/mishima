@@ -24,7 +24,7 @@ public class PriorityExecuteController extends JsonController {
 	@ActionForm
 	protected PriorityForm form;
 	
-	protected PriorityService priorityService = new PriorityServiceImpl();
+	protected PriorityService priorityService = PriorityServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

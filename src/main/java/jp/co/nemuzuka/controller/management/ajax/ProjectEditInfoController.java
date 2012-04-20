@@ -16,7 +16,7 @@ import org.slim3.util.ApplicationMessage;
  */
 public class ProjectEditInfoController extends JsonController {
 
-	protected ProjectService projectService = new ProjectServiceImpl();
+	protected ProjectService projectService = ProjectServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

@@ -15,7 +15,7 @@ import jp.co.nemuzuka.service.impl.ProjectMemberServiceImpl;
  */
 public class MemberListController extends JsonController {
 
-	protected ProjectMemberService projectMemberService = new ProjectMemberServiceImpl();
+	protected ProjectMemberService projectMemberService = ProjectMemberServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()

@@ -23,8 +23,23 @@ import jp.co.nemuzuka.utils.LabelValueBeanUtils;
  */
 public class StatusServiceImpl implements StatusService {
 
-	StatusDao statusDao = new StatusDao();
+	StatusDao statusDao = StatusDao.getInstance();
 	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static StatusServiceImpl impl = new StatusServiceImpl();
+	
+	public static StatusServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private StatusServiceImpl(){}
+
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.StatusService#get(java.lang.String)
 	 */

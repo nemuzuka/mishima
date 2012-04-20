@@ -29,9 +29,24 @@ import jp.co.nemuzuka.utils.DateTimeUtils;
  */
 public class CommentServiceImpl implements CommentService {
 
-	CommentDao commentDao = new CommentDao();
-	MemberDao memberDao = new MemberDao();
+	CommentDao commentDao = CommentDao.getInstance();
+	MemberDao memberDao = MemberDao.getInstance();
 	
+	/**
+	 * インスタンス取得.
+	 * @return インスタンス
+	 */
+	private static CommentServiceImpl impl = new CommentServiceImpl();
+	
+	public static CommentServiceImpl getInstance() {
+		return impl;
+	}
+	
+	/**
+	 * デフォルトコンストラクタ.
+	 */
+	private CommentServiceImpl(){}
+
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.CommentService#getList(com.google.appengine.api.datastore.Key)
 	 */

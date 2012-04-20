@@ -29,7 +29,7 @@ import com.google.appengine.api.datastore.Text;
  */
 public class TodoDaoTest extends AppEngineTestCase4HRD {
 
-	TodoDao todoDao = new TodoDao();
+	TodoDao todoDao = TodoDao.getInstance();
 	List<Key> todoKeyList = new ArrayList<Key>();
 	
 	/**
