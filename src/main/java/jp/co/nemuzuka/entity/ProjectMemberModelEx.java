@@ -15,6 +15,8 @@ public class ProjectMemberModelEx {
 	public boolean projectMember;
 	/** 権限コード. */
 	public String authorityCode = ProjectAuthority.type3.getCode();
+	/** 権限名称. */
+	public String authorityName = ProjectAuthority.type3.getLabel();
 	/**
 	 * @return member
 	 */
@@ -50,5 +52,17 @@ public class ProjectMemberModelEx {
 	 */
 	public void setAuthorityCode(String authorityCode) {
 		this.authorityCode = authorityCode;
+	}
+	/**
+	 * @return the authorityName
+	 */
+	public String getAuthorityName() {
+		return authorityName;
+	}
+	/**
+	 * @param authorityName the authorityName to set
+	 */
+	public void setAuthorityName(String authorityName) {
+		this.authorityName = authorityName;
 	}
 }

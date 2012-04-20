@@ -12,12 +12,21 @@ import jp.co.nemuzuka.form.ProjectMemberForm;
 public interface ProjectMemberService {
 	/**
 	 * プロジェクトメンバーデータ取得.
-	 * 指定したプロジェクトに紐付く全メンバーの設定情報を取得します。
+	 * 指定したプロジェクトに紐付く、システムに登録されている全メンバーの設定情報を取得します。
 	 * セキュリティ確保の為、メールアドレスは空文字に設定します。
 	 * @param selectedProject 選択プロジェクトKey文字列
-	 * @return プロジェクトメンバーデータList
+	 * @return プロジェクトメンバーデータList(プロジェクトに参加していないユーザも含む)
 	 */
 	List<ProjectMemberModelEx> getProjectMemberModelList(String selectedProject);
+	
+	/**
+	 * プロジェクトメンバーデータ取得.
+	 * 指定したプロジェクトに参加しているメンバーの情報を取得します。
+	 * セキュリティ確保の為、メールアドレスは空文字に設定します。
+	 * @param selectedProject 選択プロジェクトKey文字列
+	 * @return プロジェクトメンバーList(プロジェクトに参加しているユーザのみ)
+	 */
+	List<ProjectMemberModelEx> getProjectMemberOnlyModelList(String selectedProject);
 	
 	/**
 	 * プロジェクトメンバーデータ更新.

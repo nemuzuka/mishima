@@ -16,8 +16,8 @@
 
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
-    <!-- Session情報のリフレッシュ間隔(分単位) -->
-    <property name="jp.co.nemuzuka.session.refresh.min" value="15"/>
+    <!-- Session情報(参照可能プロジェクト、システム上の権限)のリフレッシュ間隔(分単位) -->
+    <property name="jp.co.nemuzuka.session.refresh.min" value="60"/>
     <!-- 優先度の初期値 -->
     <property name="jp.co.nemuzuka.default.priority" value="高&#xA;中&#xA;低" />
     <!-- ステータスの初期値。ステータス,完了とみなすステータスのフォーマットに従って下さい -->

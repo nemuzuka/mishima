@@ -41,24 +41,33 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 		//指定プロジェクトに紐付くプロジェクトメンバー情報を取得
 		List<ProjectMemberModel> projectMemberList = projectMemberDao.getList(selectedProject, null);
 		Map<Key, ProjectMemberModel> projectMemberMap = createProjectMemberMap(projectMemberList);
-		
-		List<ProjectMemberModelEx> result = new ArrayList<ProjectMemberModelEx>();
-		for(MemberModel target : memberList) {
-			ProjectMemberModelEx entity = new ProjectMemberModelEx();
-			entity.setMember(target);
-			
-			ProjectMemberModel model = projectMemberMap.get(target.getKey());
-			if(model != null) {
-				//プロジェクトメンバーである、と設定されているメンバーの場合
-				entity.setProjectMember(true);
-				entity.setAuthorityCode(model.getProjectAuthority().getCode());
-			}
-			//メールアドレスは空文字に置き換える
-			target.setMail("");
-			result.add(entity);
-		}
-		return result;
+		return createMemberList(memberList, projectMemberMap);
 	}
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.ProjectMemberService#getProjectMemberOnlyModelList(java.lang.String)
+	 */
+	@Override
+	public List<ProjectMemberModelEx> getProjectMemberOnlyModelList(
+			String selectedProject) {
+		//指定プロジェクトに紐付くプロジェクトメンバー情報を取得
+		List<ProjectMemberModel> projectMemberList = projectMemberDao.getList(selectedProject, null);
+		Map<Key, ProjectMemberModel> projectMemberMap = createProjectMemberMap(projectMemberList);
+		
+		//プロジェクトメンバーの情報を取得
+		Set<Key> memberKeySet = new LinkedHashSet<Key>();
+		for(ProjectMemberModel target : projectMemberList) {
+			memberKeySet.add(target.getKey());
+		}
+		List<MemberModel> memberList = null;
+		if(memberKeySet.size() != 0) {
+			memberList = memberDao.getList(memberKeySet.toArray(new Key[0]));
+		} else {
+			memberList = new ArrayList<MemberModel>();
+		}
+		return createMemberList(memberList, projectMemberMap);
+	}
+
 	
 	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.ProjectMemberService#updateProjectMember(java.lang.String, jp.co.nemuzuka.form.ProjectMemberForm)
@@ -111,4 +120,34 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 		return map;
 	}
 
+	/**
+	 * プロジェクトメンバーデータList生成.
+	 * 引数の情報を元にプロジェクトメンバーListを生成します。
+	 * メールアドレスは空文字に設定します。
+	 * @param memberList メンバーList
+	 * @param projectMemberMap プロジェクトメンバーMap
+	 * @return プロジェクトメンバーデータList
+	 */
+	private List<ProjectMemberModelEx> createMemberList(
+			List<MemberModel> memberList, Map<Key, ProjectMemberModel> projectMemberMap) {
+		List<ProjectMemberModelEx> result = new ArrayList<ProjectMemberModelEx>();
+		for(MemberModel target : memberList) {
+			ProjectMemberModelEx entity = new ProjectMemberModelEx();
+			entity.setMember(target);
+			
+			ProjectMemberModel model = projectMemberMap.get(target.getKey());
+			if(model != null) {
+				//プロジェクトメンバーである、と設定されているメンバーの場合
+				entity.setProjectMember(true);
+				if(model.getProjectAuthority() != null ) {
+					entity.setAuthorityCode(model.getProjectAuthority().getCode());
+					entity.setAuthorityName(model.getProjectAuthority().getLabel());
+				}
+			}
+			//メールアドレスは空文字に置き換える
+			target.setMail("");
+			result.add(entity);
+		}
+		return result;
+	}
 }
