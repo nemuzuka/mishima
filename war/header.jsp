@@ -29,12 +29,14 @@
           </li>
 
           <li class="divider-vertical"></li>
-          <li class="" style="line-height: 40px;">
-            <select id="targetProjects">
-            <c:forEach var="project" items="${userInfo.projectList}">
-              <option value="${f:h(project.value)}">${f:h(project.label)}</option>
-            </c:forEach>
-            </select>
+          <li class="" style="height: 40px;">
+          	<div style="margin-top: 5px;">
+              <select id="targetProjects">
+              <c:forEach var="project" items="${userInfo.projectList}">
+                <option value="${f:h(project.value)}">${f:h(project.label)}</option>
+              </c:forEach>
+              </select>
+            </div>
           </li>
           <li class="">
             <a href="#" id="personal_settings" title="個人の情報を設定します">個人設定</a>
