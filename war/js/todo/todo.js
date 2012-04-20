@@ -162,6 +162,29 @@ function render(data) {
 	$("#result_area").append($("<hr />")).append($msgDiv).append($table);
 }
 
+//再検索判断処理
+//一覧に表示されている場合、再検索する、と判断します。
+function isReRender() {
+	if($("#listCnt").val() != '0') {
+		return true;
+	}
+	return false;
+}
+
+//再表示処理
+//ダイアログからの最表示時に呼び出されます
+function refresh() {
+	reSearchAndRender();
+}
+
+//再検索処理
+function reSearchAndRender() {
+	if(isReRender()) {
+		return searchAndRender(g_searchParams);
+	}
+	return "";
+}
+
 //TODO検索条件設定
 function createSearchTodoParams() {
 	var params = {};

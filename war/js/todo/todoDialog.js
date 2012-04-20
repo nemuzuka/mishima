@@ -21,6 +21,8 @@ function initTodoDialog() {
 		},
 		close:function(event) {
 			document.body.style.overflow = "visible";
+			//詳細ダイアログを閉じたタイミングで一覧再描画
+			refresh();
 		}
 	});
 	$("#todoCommentDialog").dialog({
