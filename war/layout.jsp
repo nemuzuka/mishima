@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@page pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
@@ -12,6 +13,12 @@
 <meta name="author" content="">
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+  <script src="/js/html5.js"></script>
+<![endif]-->
+
 <link href="/css/docs.css" rel="stylesheet">
 <link href="/css/jquery-ui-1.8.18.custom.css" rel="stylesheet">
 <link href="/css/common.css" rel="stylesheet">
