@@ -41,13 +41,7 @@
       <div class="nav-collapse">
         <ul class="nav">
           <li class="" id="main_menu1">
-            <a href="#" id="dash_board_menu" title="あなたに割り当てられているチケットやTODOの状態を参照します">ダッシュボード</a>
-          </li>
-          <li class="" id="main_menu5">
-            <a href="#" id="todo_menu" title="あなたのTODOを参照します">TODO</a>
-          </li>
-          <li class="" id="main_menu2">
-            <a href="#" id="ticket_menu" title="プロジェクト毎のチケットを参照します">チケット</a>
+            <a href="#" id="dash_board_menu" title="あなたのTODOやプロジェクトのチケットを参照します">BTS/ITS</a>
           </li>
           <li class="divider-vertical"></li>
           <li class="" id="main_menu3">
@@ -90,9 +84,10 @@ $(function(){
 		moveUrl("/management/");
 	});
 
-	$("#todo_menu").click(function(){
-		moveUrl("/todo/");
+	$("#main_menu1").click(function(){
+		moveUrl("/bts/");
 	});
+
 	$("#personal_settings").click(function(){
 		openPersonalDialog();
 	});
@@ -100,9 +95,6 @@ $(function(){
 	$("#targetProjects").val(selectedProject);
 	$("#targetProjects").change(function() {
 		var targetProject = $("#targetProjects").val();
-		if(targetProject == '') {
-			return;
-		}
 		moveUrl("/changeProject?projectKey=" + targetProject);
 	});
 
@@ -111,9 +103,8 @@ $(function(){
 		$("#admin_menu").hide();
 	}
 
-	//プロジェクトを選択していなければ、チケット、プロジェクト設定は参照できない
+	//プロジェクトを選択していなければ、プロジェクト設定は参照できない
 	if(selectedProject == "") {
-		$("#ticket_menu").hide();
 		$("#project_menu").hide();
 	}
 
@@ -122,10 +113,6 @@ $(function(){
 		$("#project_menu").hide();
 	}
 
-	//プロジェクトメンバーでなければチケットは参照できない
-	if(projectMember == false) {
-		$("#ticket_menu").hide();
-	}
 });
 //-->
 </script>

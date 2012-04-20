@@ -72,7 +72,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 		//プロジェクトメンバーの情報を取得
 		Set<Key> memberKeySet = new LinkedHashSet<Key>();
 		for(ProjectMemberModel target : projectMemberList) {
-			memberKeySet.add(target.getKey());
+			memberKeySet.add(target.getMemberKey());
 		}
 		List<MemberModel> memberList = null;
 		if(memberKeySet.size() != 0) {

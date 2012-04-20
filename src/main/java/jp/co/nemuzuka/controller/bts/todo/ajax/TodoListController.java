@@ -1,4 +1,4 @@
-package jp.co.nemuzuka.controller.todo.ajax;
+package jp.co.nemuzuka.controller.bts.todo.ajax;
 
 import java.util.List;
 

@@ -80,7 +80,7 @@ function executeTodoComment() {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/todo/ajax/todoCommentExecute",
+		url: "/bts/todo/ajax/todoCommentExecute",
 		data: params
 	});
 	
@@ -137,7 +137,7 @@ function changeTodoStatus() {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/todo/ajax/todoStatusExecute",
+		url: "/bts/todo/ajax/todoStatusExecute",
 		data: params
 	});
 
@@ -175,7 +175,7 @@ function executeTodo() {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/todo/ajax/todoExecute",
+		url: "/bts/todo/ajax/todoExecute",
 		data: params
 	});
 	
@@ -248,7 +248,7 @@ function openEditTodoDialog(key) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/todo/ajax/todoEditInfo",
+		url: "/bts/todo/ajax/todoEditInfo",
 		data: params
 	});
 	
@@ -305,7 +305,7 @@ function openDetailTodoDialog(key, onlyRefresh) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/todo/ajax/todoDetailInfo",
+		url: "/bts/todo/ajax/todoDetailInfo",
 		data: params
 	});
 	
@@ -403,7 +403,7 @@ function deleteTodoComment(keyToString, versionNo) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/todo/ajax/todoCommentDelete",
+		url: "/bts/todo/ajax/todoCommentDelete",
 		data: params
 	});
 	

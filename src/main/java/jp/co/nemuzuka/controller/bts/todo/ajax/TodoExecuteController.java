@@ -1,4 +1,4 @@
-package jp.co.nemuzuka.controller.todo.ajax;
+package jp.co.nemuzuka.controller.bts.todo.ajax;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
@@ -13,10 +13,10 @@ import org.slim3.controller.validator.Validators;
 import org.slim3.util.ApplicationMessage;
 
 /**
- * TODOステータス更新Controller.
+ * TODO登録・更新Controller.
  * @author kazumune
  */
-public class TodoStatusExecuteController extends JsonController {
+public class TodoExecuteController extends JsonController {
 
 	/** ActionForm. */
 	@ActionForm
@@ -33,7 +33,7 @@ public class TodoStatusExecuteController extends JsonController {
 	protected Object execute() throws Exception {
 		
 		//登録・更新する
-		todoService.updateTodoStatus(form, userService.getCurrentUser().getEmail());
+		todoService.put(form, userService.getCurrentUser().getEmail());
 		
 		JsonResult result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
@@ -47,6 +47,9 @@ public class TodoStatusExecuteController extends JsonController {
 	protected Validators validate() {
 		Validators v = new Validators(request);
 		v.add("todoStatus", v.required());
+		v.add("title", v.required(), v.maxlength(128));
+		v.add("content", v.maxlength(1024));
+		v.add("period", v.dateType("yyyyMMdd"));
 		return v;
 	}
 }

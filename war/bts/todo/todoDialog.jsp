@@ -4,7 +4,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 
-<script type="text/javascript" src="/js/todo/todoDialog.js"></script>
+<script type="text/javascript" src="/js/bts/todoDialog.js"></script>
 
 <%-- TODOダイアログ --%>
 <div id="todoDialog" title="TODO" class="dialog-widget">

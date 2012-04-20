@@ -33,7 +33,7 @@ public class IndexController extends HtmlController {
 					currentUser.getEmail(),
 					currentUser.getNickname());
 		}
-		return forward("index.jsp");
+		return forward("/bts/");
 	}
 
 }

@@ -2,6 +2,7 @@ package jp.co.nemuzuka.entity;
 
 import jp.co.nemuzuka.common.ProjectAuthority;
 import jp.co.nemuzuka.model.MemberModel;
+import jp.co.nemuzuka.utils.HtmlStringUtils;
 
 /**
  * プロジェクトメンバー画面表示用Entity.
@@ -17,6 +18,17 @@ public class ProjectMemberModelEx {
 	public String authorityCode = ProjectAuthority.type3.getCode();
 	/** 権限名称. */
 	public String authorityName = ProjectAuthority.type3.getLabel();
+	
+	/**
+	 * @return 表示用メモ取得
+	 */
+	public String getMemo() {
+		if(member.getMemo() != null) {
+			return HtmlStringUtils.escapeTextAreaString(member.getMemo().getValue());
+		}
+		return "";
+	}
+	
 	/**
 	 * @return member
 	 */

@@ -28,6 +28,6 @@ public class ChangeProjectController extends HtmlController {
 		
 		//選択したプロジェクトに対して権限情報を設定
 		service.setUserInfo(projectKey, userService.getCurrentUser().getEmail(), getUserInfo());
-		return forward("index.jsp");
+		return forward("/");
 	}
 }

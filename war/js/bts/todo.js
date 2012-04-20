@@ -25,7 +25,7 @@ function initTodo() {
 	setAjaxDefault();
 	return $.ajax({
 		type: "POST",
-		url: "/todo/ajax/todoSearchInfo"
+		url: "/bts/todo/ajax/todoSearchInfo"
 	}).then(
 		function(data) {
 			renderSearchInfo(data);
@@ -73,7 +73,7 @@ function searchAndRender(params) {
 	setAjaxDefault();
 	return $.ajax({
 		type: "POST",
-		url: "/todo/ajax/todoList",
+		url: "/bts/todo/ajax/todoList",
 		data: params
 	}).then(
 		function(data) {
@@ -215,7 +215,7 @@ function deleteTodo(name, keyToString, version) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/todo/ajax/todoDelete",
+		url: "/bts/todo/ajax/todoDelete",
 		data: params
 	});
 	

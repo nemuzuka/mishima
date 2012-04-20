@@ -7,12 +7,12 @@
 <c:param name="title" value="Mishima BTS/ITS"/>
 
 <c:param name="subMenu">
-<c:import url="/todo/subMenu.jsp" />
+<c:import url="/bts/subMenu.jsp" />
 </c:param>
   
 <c:param name="content">
 
-<script type="text/javascript" src="/js/todo/todo.js"></script>
+<script type="text/javascript" src="/js/bts/todo.js"></script>
 
 <div class="widget">
 <form class="form-horizontal">
@@ -48,7 +48,7 @@
 </form>
 </div>
 
-<c:import url="/todo/todoDialog.jsp"/>
+<c:import url="/bts/todo/todoDialog.jsp"/>
 
 <input type="hidden" id="selected_sub_menu" value="sub_menu1" />
 

@@ -190,6 +190,11 @@ public class ProjectServiceImpl implements ProjectService {
 		//初期化
 		userInfo.initProjectInfo();
 		userInfo.setSelectedProject(projectKeyString);
+
+		if(StringUtils.isEmpty(projectKeyString)) {
+			//選択プロジェクトが未選択にされた場合、初期化して終了
+			return;
+		}
 		
 		MemberModel memberModel = memberDao.get(mail);
 		if(memberModel == null) {

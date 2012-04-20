@@ -1,4 +1,4 @@
-package jp.co.nemuzuka.controller.todo;
+package jp.co.nemuzuka.controller.bts.todo;
 
 import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.controller.HtmlController;
@@ -17,7 +17,7 @@ public class IndexController extends HtmlController {
 	@SystemManager
 	@Override
 	protected Navigation execute() throws Exception {
-		return forward("/todo/todo.jsp");
+		return forward("/bts/todo/todo.jsp");
 	}
 
 }
