@@ -29,7 +29,7 @@
 <script type="text/javascript" src="/js/format-utils.js"></script>
 
 </head>
-<body data-spy="scroll" data-target=".subnav" data-offset="50" data-twttr-rendered="true">
+<body>
 <c:import url="/common/personalDialog.jsp"/>
 <c:import url="/header.jsp"/>
 <!-- Contents -->
