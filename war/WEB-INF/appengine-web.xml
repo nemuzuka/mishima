@@ -24,6 +24,8 @@
     <property name="jp.co.nemuzuka.default.status" value="新規&#xA;割り当て済み&#xA;対応中&#xA;差し戻し&#xA;完了&#xA;キャンセル,完了&#xA;キャンセル" />
     <!-- 種別の初期値 -->
     <property name="jp.co.nemuzuka.default.kind" value="機能&#xA;バグ&#xA;課題&#xA;要望&#xA;問い合わせ&#xA;メモ&#xA;" />
+    <!-- Session情報(TicketMst)のリフレッシュ間隔(分単位) -->
+    <property name="jp.co.nemuzuka.ticket.mst.refresh.min" value="60"/>
   </system-properties>
   
   <sessions-enabled>true</sessions-enabled>

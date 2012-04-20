@@ -28,12 +28,12 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	MilestoneDao milestoneDao = MilestoneDao.getInstance();
 	
+	private static MilestoneServiceImpl impl = new MilestoneServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static MilestoneServiceImpl impl = new MilestoneServiceImpl();
-	
 	public static MilestoneServiceImpl getInstance() {
 		return impl;
 	}

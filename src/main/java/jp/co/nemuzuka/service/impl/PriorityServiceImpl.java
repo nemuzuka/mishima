@@ -25,12 +25,12 @@ public class PriorityServiceImpl implements PriorityService {
 
 	PriorityDao priorityDao = PriorityDao.getInstance();
 
+	private static PriorityServiceImpl impl = new PriorityServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static PriorityServiceImpl impl = new PriorityServiceImpl();
-	
 	public static PriorityServiceImpl getInstance() {
 		return impl;
 	}

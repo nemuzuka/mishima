@@ -25,12 +25,12 @@ public class VersionServiceImpl implements VersionService {
 
 	VersionDao versionDao = VersionDao.getInstance();
 
+	private static VersionServiceImpl impl = new VersionServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static VersionServiceImpl impl = new VersionServiceImpl();
-	
 	public static VersionServiceImpl getInstance() {
 		return impl;
 	}

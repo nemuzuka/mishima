@@ -27,12 +27,12 @@ public class MemberServiceImpl implements MemberService {
 
 	MemberDao memberDao = MemberDao.getInstance();
 	
+	private static MemberServiceImpl impl = new MemberServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static MemberServiceImpl impl = new MemberServiceImpl();
-	
 	public static MemberServiceImpl getInstance() {
 		return impl;
 	}

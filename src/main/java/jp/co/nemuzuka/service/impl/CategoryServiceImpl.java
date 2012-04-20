@@ -25,12 +25,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	CategoryDao categoryDao = CategoryDao.getInstance();
 
+	private static CategoryServiceImpl impl = new CategoryServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static CategoryServiceImpl impl = new CategoryServiceImpl();
-	
 	public static CategoryServiceImpl getInstance() {
 		return impl;
 	}

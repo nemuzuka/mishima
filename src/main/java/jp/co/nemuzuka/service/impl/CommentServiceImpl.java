@@ -32,12 +32,12 @@ public class CommentServiceImpl implements CommentService {
 	CommentDao commentDao = CommentDao.getInstance();
 	MemberDao memberDao = MemberDao.getInstance();
 	
+	private static CommentServiceImpl impl = new CommentServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static CommentServiceImpl impl = new CommentServiceImpl();
-	
 	public static CommentServiceImpl getInstance() {
 		return impl;
 	}

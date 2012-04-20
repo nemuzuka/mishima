@@ -25,12 +25,12 @@ public class KindServiceImpl implements KindService {
 
 	KindDao kindDao = KindDao.getInstance();
 	
+	private static KindServiceImpl impl = new KindServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static KindServiceImpl impl = new KindServiceImpl();
-	
 	public static KindServiceImpl getInstance() {
 		return impl;
 	}

@@ -25,12 +25,12 @@ public class StatusServiceImpl implements StatusService {
 
 	StatusDao statusDao = StatusDao.getInstance();
 	
+	private static StatusServiceImpl impl = new StatusServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static StatusServiceImpl impl = new StatusServiceImpl();
-	
 	public static StatusServiceImpl getInstance() {
 		return impl;
 	}

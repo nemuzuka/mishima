@@ -2,6 +2,7 @@ package jp.co.nemuzuka.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -41,6 +42,26 @@ public class DateTimeChecker {
 	 */
 	public static boolean isHourMinute(String target) {
 		return executeCheck(target, "HHmm");
+	}
+
+	/**
+	 * 更新開始時刻超えチェック.
+	 * 現在時刻が更新開始時刻を超えているがチェックします。
+	 * @param refreshStartTime 更新開始時刻
+	 * @return 更新開始時刻超えの場合、true
+	 */
+	public static boolean isOverRefreshStartTime(Date refreshStartTime) {
+		
+		if(refreshStartTime == null) {
+			return true;
+		}
+		
+		long cuurentTime = CurrentDateUtils.getInstance().getCurrentDateTime().getTime();
+		long targetTime = refreshStartTime.getTime();
+		if(cuurentTime > targetTime) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

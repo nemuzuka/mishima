@@ -2,14 +2,13 @@ package jp.co.nemuzuka.core.controller;
 
 import java.lang.reflect.Method;
 import java.util.ConcurrentModificationException;
-import java.util.Date;
 
 import jp.co.nemuzuka.core.annotation.NoRegistCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.entity.UserInfo;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import jp.co.nemuzuka.model.MemberModel;
-import jp.co.nemuzuka.utils.CurrentDateUtils;
+import jp.co.nemuzuka.utils.DateTimeChecker;
 
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
@@ -213,7 +212,7 @@ public abstract class HtmlController extends AbsController {
 		}
 		
 		UserInfo userInfo = sessionScope(USER_INFO_KEY);
-		if(userInfo == null || isOverRefreshStartTime(userInfo.refreshStartTime)) {
+		if(userInfo == null || DateTimeChecker.isOverRefreshStartTime(userInfo.refreshStartTime)) {
 			//更新する
 			if(userInfo == null) {
 				userInfo = new UserInfo();
@@ -221,25 +220,5 @@ public abstract class HtmlController extends AbsController {
 			refreshUserInfo(userInfo);
 			sessionScope(USER_INFO_KEY, userInfo);
 		}
-	}
-
-	/**
-	 * 更新開始時刻超えチェック.
-	 * 現在時刻が更新開始時刻を超えているがチェックします。
-	 * @param refreshStartTime 更新開始時刻
-	 * @return 更新開始時刻超えの場合、true
-	 */
-	private boolean isOverRefreshStartTime(Date refreshStartTime) {
-		
-		if(refreshStartTime == null) {
-			return true;
-		}
-		
-		long cuurentTime = CurrentDateUtils.getInstance().getCurrentDateTime().getTime();
-		long targetTime = refreshStartTime.getTime();
-		if(cuurentTime > targetTime) {
-			return true;
-		}
-		return false;
 	}
 }

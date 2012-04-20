@@ -29,12 +29,12 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 	MemberDao memberDao = MemberDao.getInstance();
 	ProjectMemberDao projectMemberDao = ProjectMemberDao.getInstance();
 	
+	private static ProjectMemberServiceImpl impl = new ProjectMemberServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static ProjectMemberServiceImpl impl = new ProjectMemberServiceImpl();
-	
 	public static ProjectMemberServiceImpl getInstance() {
 		return impl;
 	}

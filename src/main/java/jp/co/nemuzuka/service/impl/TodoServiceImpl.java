@@ -37,12 +37,12 @@ public class TodoServiceImpl implements TodoService {
 	TodoDao todoDao = TodoDao.getInstance();
 	CommentService commentService = CommentServiceImpl.getInstance();
 	
+	private static TodoServiceImpl impl = new TodoServiceImpl();
+	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	private static TodoServiceImpl impl = new TodoServiceImpl();
-	
 	public static TodoServiceImpl getInstance() {
 		return impl;
 	}
