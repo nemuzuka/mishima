@@ -58,13 +58,31 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 		checkProject0();
 		checkProject1();
 		checkProject2();
+		checkProject2Only();
 	}
 
+	/**
+	 *  プロジェクト2用の登録状況を参照します。
+	 *  プロジェクトメンバーとして登録されているメンバーのみ取得します。
+	 */
+	private void checkProject2Only() {
+		//プロジェクト2用の状況
+		String selectedProject = Datastore.keyToString(projectKeyList.get(2));
+		List<ProjectMemberModelEx> actualList = service.getProjectMemberOnlyModelList(selectedProject);
+		assertThat(actualList.size(), is(1));
+		
+		ProjectMemberModelEx actual = actualList.get(0);
+		assertThat(actual.projectMember, is(true));
+		assertThat(actual.authorityCode, is(ProjectAuthority.type1.getCode()));
+		assertThat(actual.member.getMail(), is(""));
+
+	}
+	
 	/**
 	 * プロジェクト2用の登録状況を参照します。
 	 */
 	private void checkProject2() {
-		//プロジェクト0用の状況
+		//プロジェクト2用の状況
 		String selectedProject = Datastore.keyToString(projectKeyList.get(2));
 		List<ProjectMemberModelEx> actualList = service.getProjectMemberModelList(selectedProject);
 		assertThat(actualList.size(), is(4));
@@ -95,7 +113,7 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 	 * プロジェクト1用の登録状況を参照します。
 	 */
 	private void checkProject1() {
-		//プロジェクト0用の状況
+		//プロジェクト1用の状況
 		String selectedProject = Datastore.keyToString(projectKeyList.get(1));
 		List<ProjectMemberModelEx> actualList = service.getProjectMemberModelList(selectedProject);
 		assertThat(actualList.size(), is(4));

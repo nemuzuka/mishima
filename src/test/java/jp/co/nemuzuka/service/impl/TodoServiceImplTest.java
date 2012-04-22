@@ -15,6 +15,8 @@ import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.dao.TodoDao;
 import jp.co.nemuzuka.entity.TodoModelEx;
+import jp.co.nemuzuka.form.TodoCommentForm;
+import jp.co.nemuzuka.form.TodoDetailForm;
 import jp.co.nemuzuka.form.TodoForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TodoModel;
@@ -37,6 +39,65 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 	TodoDao todoDao = TodoDao.getInstance();
 	List<Key> todoKeyList = new ArrayList<Key>();
 
+	/**
+	 * putCommentのテスト.
+	 */
+	@Test
+	public void testPutComment() throws Exception {
+		createTestData();
+		
+		//ステータス変更なしのコメント追加
+		TodoCommentForm form = new TodoCommentForm();
+		form.keyToString = Datastore.keyToString(todoKeyList.get(0));
+		form.status = TodoStatus.nothing.getCode();
+		form.comment = "コメントだったりする";
+		service.putComment(form, "hoge@hige.hage");
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+
+		TodoDetailForm actualForm = service.getDetail(form.keyToString, "hoge@hige.hage");
+		assertThat(actualForm.commentList.size(), is(1));
+		
+		//ステータス変更有りのコメント追加
+		form = new TodoCommentForm();
+		form.keyToString = Datastore.keyToString(todoKeyList.get(0));
+		form.status = TodoStatus.finish.getCode();
+		form.comment = "終了したのよ";
+		form.versionNo = actualForm.form.versionNo;
+		service.putComment(form, "hoge@hige.hage");
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+		
+		actualForm = service.getDetail(form.keyToString, "hoge@hige.hage");
+		assertThat(actualForm.commentList.size(), is(2));
+		
+		//ステータス変更有りだが、該当データが存在しない場合
+		actualForm = service.getDetail(form.keyToString, "hoge@hige.hage");
+		form = new TodoCommentForm();
+		form.keyToString = Datastore.keyToString(todoKeyList.get(0));
+		form.status = TodoStatus.nothing.getCode();
+		form.comment = "差し戻し";
+		form.versionNo = actualForm.form.versionNo;
+		try {
+			//登録したメンバー以外のコメント追加はできない
+			service.putComment(form, "hoge123@hige.hage");
+			fail();
+		} catch (ConcurrentModificationException e) {}
+
+		
+		//ステータス変更有りだが、親のバージョン不正の場合
+		form = new TodoCommentForm();
+		form.keyToString = Datastore.keyToString(todoKeyList.get(0));
+		form.status = TodoStatus.nothing.getCode();
+		form.comment = "差し戻し";
+		form.versionNo = "-1";
+		try {
+			service.putComment(form, "hoge@hige.hage");
+			fail();
+		} catch (ConcurrentModificationException e) {}
+		
+	}
+	
 	/**
 	 * get/putのテスト.
 	 * @throws Exception 例外
