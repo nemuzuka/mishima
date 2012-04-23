@@ -214,7 +214,7 @@ public class TicketMstServiceImpl implements TicketMstService {
 		
 		//ステータス検索用の情報を設定
 		List<LabelValueBean> searchStatusList = LabelValueBeanUtils.createList(statusName, false);
-		searchStatusList.add(0, new LabelValueBean("未完了", "未完了"));
+		searchStatusList.add(0, new LabelValueBean(TicketMst.NO_FINISH_LABEL, TicketMst.NO_FINISH));
 		mst.searchStatusList = searchStatusList;
 	}
 }

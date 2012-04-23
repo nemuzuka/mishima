@@ -36,6 +36,11 @@ public class TicketMstEntity implements Serializable {
 		 */
 		private static final long serialVersionUID = 1L;
 		
+		/** 未完了を意味するコード値. */
+		public static final String NO_FINISH = "-1";
+		/** 未完了を意味するラベル. */
+		public static final String NO_FINISH_LABEL = "未完了";
+		
 		/** 更新開始時刻. */
 		//この時間を超えた場合、チケットマスタの値を再設定する
 		public Date refreshStartTime;
