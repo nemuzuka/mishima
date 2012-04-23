@@ -63,5 +63,9 @@ public class TicketMstEntity implements Serializable {
 		
 		/** バージョン選択肢. */
 		public List<LabelValueBean> versionList;
+		
+		/** メンバー選択肢. */
+		public List<LabelValueBean> memberList;
+		
 	}
 }

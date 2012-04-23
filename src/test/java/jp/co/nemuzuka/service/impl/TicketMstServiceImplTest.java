@@ -3,12 +3,17 @@ package jp.co.nemuzuka.service.impl;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
+import jp.co.nemuzuka.common.Authority;
+import jp.co.nemuzuka.common.ProjectAuthority;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
+import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.dao.ProjectDao;
+import jp.co.nemuzuka.dao.ProjectMemberDao;
 import jp.co.nemuzuka.entity.TicketMstEntity.TicketMst;
 import jp.co.nemuzuka.form.CategoryForm;
 import jp.co.nemuzuka.form.KindForm;
@@ -16,6 +21,8 @@ import jp.co.nemuzuka.form.MilestoneForm;
 import jp.co.nemuzuka.form.PriorityForm;
 import jp.co.nemuzuka.form.StatusForm;
 import jp.co.nemuzuka.form.VersionForm;
+import jp.co.nemuzuka.model.MemberModel;
+import jp.co.nemuzuka.model.ProjectMemberModel;
 import jp.co.nemuzuka.model.ProjectModel;
 import jp.co.nemuzuka.service.CategoryService;
 import jp.co.nemuzuka.service.KindService;
@@ -24,7 +31,6 @@ import jp.co.nemuzuka.service.PriorityService;
 import jp.co.nemuzuka.service.StatusService;
 import jp.co.nemuzuka.service.VersionService;
 import jp.co.nemuzuka.tester.AppEngineTestCase4HRD;
-import jp.co.nemuzuka.utils.DateTimeUtils;
 
 import org.junit.Test;
 import org.slim3.datastore.Datastore;
@@ -40,6 +46,8 @@ public class TicketMstServiceImplTest extends AppEngineTestCase4HRD {
 
 	TicketMstServiceImpl service = TicketMstServiceImpl.getInstance();
 	ProjectDao projectDao = ProjectDao.getInstance();
+	MemberDao memberDao = MemberDao.getInstance();
+	ProjectMemberDao projectMemberDao = ProjectMemberDao.getInstance();
 	
 	Key projectKey;
 
@@ -83,9 +91,8 @@ public class TicketMstServiceImplTest extends AppEngineTestCase4HRD {
 		actual = service.getTicketMst(projectKeyString);
 		
 		
-		//キャッシュ期限を超えた場合
-		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
-		actual.refreshStartTime = sdf.parse("19991231");
+		//初期化された超えた場合
+		service.initRefreshStartTime(projectKeyString);
 		//再作成
 		actual = service.getTicketMst(projectKeyString);
 	}
@@ -155,6 +162,32 @@ public class TicketMstServiceImplTest extends AppEngineTestCase4HRD {
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
 		
+		//メンバーとプロジェクトメンバーを登録
+		List<Key> memberKeyList = new ArrayList<Key>();
+		for(int i = 0; i < 4; i++) {
+			MemberModel memberModel = new MemberModel();
+			memberModel.createKey("mail" + i + "@gmail.com");
+			memberModel.setName("name" + i);
+			Authority authority = null;
+			if(i == 0 || i == 2) {
+				authority = Authority.admin;
+			} else {
+				authority = Authority.normal;
+			}
+			memberModel.setAuthority(authority);
+			memberDao.put(memberModel);
+			memberKeyList.add(memberModel.getKey());
+			
+			GlobalTransaction.transaction.get().commit();
+			GlobalTransaction.transaction.get().begin();
+		}
+
+		ProjectMemberModel projectMemberModel = new ProjectMemberModel();
+		projectMemberModel.createKey(projectKey, memberKeyList.get(0));
+		projectMemberModel.setProjectAuthority(ProjectAuthority.type1);
+		projectMemberDao.put(projectMemberModel);
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
 		return;
 	}
 

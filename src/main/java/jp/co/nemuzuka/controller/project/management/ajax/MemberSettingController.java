@@ -7,7 +7,9 @@ import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.form.ProjectMemberForm;
 import jp.co.nemuzuka.service.ProjectMemberService;
+import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.impl.ProjectMemberServiceImpl;
+import jp.co.nemuzuka.service.impl.TicketMstServiceImpl;
 
 import org.slim3.util.ApplicationMessage;
 
@@ -22,6 +24,7 @@ public class MemberSettingController extends JsonController {
 	protected ProjectMemberForm form;
 	
 	protected ProjectMemberService projectMemberService = ProjectMemberServiceImpl.getInstance();
+	protected TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
@@ -38,6 +41,9 @@ public class MemberSettingController extends JsonController {
 		
 		//登録・更新する
 		projectMemberService.updateProjectMember(getUserInfo().selectedProject, form);
+		//キャッシュの初期化
+		ticketMstService.initRefreshStartTime(getUserInfo().selectedProject);
+		
 		result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;

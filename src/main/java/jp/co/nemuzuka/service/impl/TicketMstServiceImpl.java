@@ -1,7 +1,6 @@
 package jp.co.nemuzuka.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -9,12 +8,11 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.slim3.memcache.Memcache;
 
-import net.sf.jsr107cache.Cache;
-import net.sf.jsr107cache.CacheException;
-import net.sf.jsr107cache.CacheManager;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.entity.MilestoneModelEx;
+import jp.co.nemuzuka.entity.ProjectMemberModelEx;
 import jp.co.nemuzuka.entity.TicketMstEntity;
 import jp.co.nemuzuka.entity.TicketMstEntity.TicketMst;
 import jp.co.nemuzuka.form.StatusForm;
@@ -22,6 +20,7 @@ import jp.co.nemuzuka.service.CategoryService;
 import jp.co.nemuzuka.service.KindService;
 import jp.co.nemuzuka.service.MilestoneService;
 import jp.co.nemuzuka.service.PriorityService;
+import jp.co.nemuzuka.service.ProjectMemberService;
 import jp.co.nemuzuka.service.StatusService;
 import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.VersionService;
@@ -42,6 +41,7 @@ public class TicketMstServiceImpl implements TicketMstService {
 	StatusService statusService = StatusServiceImpl.getInstance();
 	VersionService versionService = VersionServiceImpl.getInstance();
 	MilestoneService milestoneService = MilestoneServiceImpl.getInstance();
+	ProjectMemberService projectMemberService = ProjectMemberServiceImpl.getInstance();
 	
 	private static TicketMstServiceImpl impl = new TicketMstServiceImpl();
 	
@@ -64,21 +64,36 @@ public class TicketMstServiceImpl implements TicketMstService {
 	@Override
 	public TicketMst getTicketMst(String projectKeyString) {
 		
-		//Cash情報を取得
-		Cache cache = null;
-		try {
-			cache = CacheManager.getInstance().getCacheFactory().createCache(Collections.emptyMap());
-		} catch (CacheException e) {
-			throw new RuntimeException(e);
+		//Cash情報から指定した情報を元にTicketデータを取得する
+		return getTicketMst(projectKeyString, getTicketMst4Cash());
+	}
+
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.TicketMstService#initRefreshStartTime(java.lang.String)
+	 */
+	@Override
+	public void initRefreshStartTime(String projectKeyString) {
+		TicketMstEntity mstEntity = getTicketMst4Cash();
+		TicketMst ticketMst = mstEntity.map.get(projectKeyString);
+		if(ticketMst != null) {
+			ticketMst.refreshStartTime = null;
 		}
-		TicketMstEntity ticketMstEntity = (TicketMstEntity)cache.get(TicketMstEntity.class.getName());
+	}
+	
+	/**
+	 * チケット用選択肢マスタ情報取得.
+	 * キャッシュ情報よりチケット用選択肢マスタ情報を取得します。
+	 * @return チケットマスタ情報
+	 */
+	private TicketMstEntity getTicketMst4Cash() {
+		//Cash情報を取得
+		TicketMstEntity ticketMstEntity = Memcache.get(TicketMstEntity.class.getName());
 		if(ticketMstEntity == null) {
 			ticketMstEntity = new TicketMstEntity();
-			cache.put(TicketMstEntity.class.getName(), ticketMstEntity);
+			Memcache.put(TicketMstEntity.class.getName(), ticketMstEntity);
 		}
-		
-		//Cash情報から指定した情報を元にTicketデータを取得する
-		return getTicketMst(projectKeyString, ticketMstEntity);
+		return ticketMstEntity;
 	}
 
 	/**
@@ -91,7 +106,8 @@ public class TicketMstServiceImpl implements TicketMstService {
 			TicketMstEntity ticketMstEntity) {
 		
 		TicketMst ticketMst = ticketMstEntity.map.get(projectKeyString);
-		if(ticketMst == null || DateTimeChecker.isOverRefreshStartTime(ticketMst.refreshStartTime)) {
+		if(ticketMst == null || ticketMst.refreshStartTime == null || 
+				DateTimeChecker.isOverRefreshStartTime(ticketMst.refreshStartTime)) {
 			//新しく作成する
 			ticketMst = createTicketMst(projectKeyString);
 			ticketMstEntity.map.put(projectKeyString, ticketMst);
@@ -113,6 +129,7 @@ public class TicketMstServiceImpl implements TicketMstService {
 		mst.categoryList = categoryService.getList(projectKeyString);
 		mst.milestoneList = createMilestoneList(projectKeyString);
 		mst.versionList = versionService.getList(projectKeyString);
+		mst.memberList = createMemberList(projectKeyString);
 		
 		//現在時刻に加算分の時刻(分)を加算し、設定する
 		Date date = CurrentDateUtils.getInstance().getCurrentDateTime();
@@ -124,6 +141,22 @@ public class TicketMstServiceImpl implements TicketMstService {
 	}
 	
 	/**
+	 * プロジェクトメンバー選択肢作成.
+	 * @param projectKeyString キー文字列(プロジェクトKey)
+	 * @return プロジェクトメンバー選択肢
+	 */
+	private List<LabelValueBean> createMemberList(String projectKeyString) {
+		
+		List<ProjectMemberModelEx> list = projectMemberService.getProjectMemberOnlyModelList(projectKeyString);
+		List<LabelValueBean> ret = new ArrayList<LabelValueBean>();
+		ret.add(new LabelValueBean("", ""));
+		for(ProjectMemberModelEx target : list) {
+			ret.add(new LabelValueBean(target.getMember().getName(), target.getMember().getKeyToString()));
+		}
+		return ret;
+	}
+
+	/**
 	 * マイルストーン選択肢生成.
 	 * @param projectKeyString キー文字列(プロジェクトKey)
 	 * @return マイルストーン選択肢
@@ -132,10 +165,10 @@ public class TicketMstServiceImpl implements TicketMstService {
 		
 		List<MilestoneModelEx> list = milestoneService.getAllList(projectKeyString);
 		List<LabelValueBean> milestoneList = new ArrayList<LabelValueBean>();
+		milestoneList.add(new LabelValueBean("", ""));
 		for(MilestoneModelEx target : list) {
 			milestoneList.add(new LabelValueBean(target.model.getMilestoneName(), target.model.getKeyToString()));
 		}
-		milestoneList.add(0, new LabelValueBean("", ""));
 		
 		return milestoneList;
 	}
