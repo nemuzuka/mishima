@@ -177,10 +177,6 @@ public class TodoDao extends AbsDao {
 		param.orderByPeriod = false;
 		List<TodoModel> periodNullList = getList(param);
 		for(TodoModel target : periodNullList) {
-			//期限がnullのものだけ戻りListに取り込む
-			if(target.getPeriod() != null) {
-				break;
-			}
 			list.add(target);
 			if(list.size() >= limit) {
 				//追加後、上限件数を超えた場合、終了

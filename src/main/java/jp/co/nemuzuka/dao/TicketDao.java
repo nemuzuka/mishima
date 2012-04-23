@@ -83,9 +83,7 @@ public class TicketDao extends AbsDao {
 					statusSet.add(statusValue);
 				}
 			}
-			if(statusSet.size() != 0) {
-				filterSet.add(e.status.in(statusSet));
-			}
+			filterSet.add(e.status.in(statusSet));
 		}
 		
 		//件名の検索条件
@@ -178,15 +176,18 @@ public class TicketDao extends AbsDao {
 	 * @param limit 取得件数
 	 * @param mail ログインユーザのメールアドレス
 	 * @param projectKeyString プロジェクトKey文字列
+	 * @param openStatus 未完了を意味するステータス配列
 	 * @return 該当レコード
 	 */
-	public List<TicketModel> getDashbordList(int limit, String mail, String projectKeyString) {
+	public List<TicketModel> getDashbordList(int limit, String mail, String projectKeyString,
+			String[] openStatus) {
 		
 		//ステータスが未完了で、指定したLimit分取得する
 		
 		//期限が設定されていて、未完了のものを取得
 		Param param = new Param();
 		param.status = new String[]{TicketMst.NO_FINISH};
+		param.openStatus = openStatus;
 		param.limit = limit;
 		param.targetMember = Datastore.keyToString(
 				Datastore.createKey(MemberModel.class, mail));
@@ -206,10 +207,6 @@ public class TicketDao extends AbsDao {
 		param.orderByPeriod = false;
 		List<TicketModel> periodNullList = getList(param);
 		for(TicketModel target : periodNullList) {
-			//期限がnullのものだけ戻りListに取り込む
-			if(target.getPeriod() != null) {
-				break;
-			}
 			list.add(target);
 			if(list.size() >= limit) {
 				//追加後、上限件数を超えた場合、終了
