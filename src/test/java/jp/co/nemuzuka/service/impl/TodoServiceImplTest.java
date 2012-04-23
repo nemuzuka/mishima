@@ -39,6 +39,49 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 	TodoDao todoDao = TodoDao.getInstance();
 	List<Key> todoKeyList = new ArrayList<Key>();
 
+	
+	/**
+	 * updateTodoStatusのテスト.
+	 * @throws Exception
+	 */
+	@Test
+	public void testUpdateTodoStatus() throws Exception {
+		createTestData();
+
+		String keyString = Datastore.keyToString(todoKeyList.get(0));
+		TodoForm form = service.get(keyString, "hoge@hige.hage");
+		form.setTodoStatus(TodoStatus.finish.getCode());
+		
+		service.updateTodoStatus(form, "hoge@hige.hage");
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+
+		form = service.get(keyString, "hoge@hige.hage");
+		assertThat(form.todoStatus, is(TodoStatus.finish.getCode()));
+		
+		
+		//他のユーザが更新してきた場合
+		try {
+			service.updateTodoStatus(form, "hoge2@hige.hage");
+			fail();
+		} catch(ConcurrentModificationException e){}
+		
+	}
+	
+	/**
+	 * getDetailのテスト.
+	 * @throws Exception
+	 */
+	@Test
+	public void testGetDetail() throws Exception {
+		createTestData();
+		
+		//該当レコードなし
+		TodoDetailForm form = service.getDetail("", "hoge@hige.hage");
+		assertThat(form, is(nullValue()));
+		
+	}
+	
 	/**
 	 * putCommentのテスト.
 	 */
@@ -96,6 +139,27 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 			fail();
 		} catch (ConcurrentModificationException e) {}
 		
+		//コメントのdelete
+		actualForm = service.getDetail(form.keyToString, "hoge@hige.hage");
+		String deleteKeyString = actualForm.commentList.get(0).getModel().getKeyToString();
+		Long deleteVersion = actualForm.commentList.get(0).getModel().getVersion();
+		service.deleteComment(actualForm.form.keyToString, 
+				deleteKeyString, 
+				deleteVersion, 
+				"hoge@hige.hage");
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+		
+		actualForm = service.getDetail(form.keyToString, "hoge@hige.hage");
+		assertThat(actualForm.commentList.size(), is(1));
+
+		//存在しないレコードの削除
+		try {
+			service.deleteComment(actualForm.form.keyToString, 
+					deleteKeyString, 
+					deleteVersion, 
+					"hoge2@hige.hage");
+		} catch(ConcurrentModificationException e) {}
 	}
 	
 	/**
