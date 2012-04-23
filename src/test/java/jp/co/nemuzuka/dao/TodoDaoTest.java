@@ -158,11 +158,10 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 		createTestData();
 
 		List<TodoModel> actualList = todoDao.getDashbordList(20, "hoge2@hige.hage");
-		assertThat(actualList.size(), is(4));
+		assertThat(actualList.size(), is(3));
 		assertThat(actualList.get(0).getKey(), is(todoKeyList.get(6)));
 		assertThat(actualList.get(1).getKey(), is(todoKeyList.get(8)));
-		assertThat(actualList.get(2).getKey(), is(todoKeyList.get(9)));
-		assertThat(actualList.get(3).getKey(), is(todoKeyList.get(7)));
+		assertThat(actualList.get(2).getKey(), is(todoKeyList.get(7)));
 		
 		//期限ありのものだけで取得件数を満たした場合
 		actualList = todoDao.getDashbordList(2, "hoge2@hige.hage");
@@ -171,12 +170,11 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 		assertThat(actualList.get(1).getKey(), is(todoKeyList.get(8)));
 
 		//期限ありのもの＋期限なしのもので取得件数を満たした場合
-		actualList = todoDao.getDashbordList(4, "hoge2@hige.hage");
-		assertThat(actualList.size(), is(4));
+		actualList = todoDao.getDashbordList(3, "hoge2@hige.hage");
+		assertThat(actualList.size(), is(3));
 		assertThat(actualList.get(0).getKey(), is(todoKeyList.get(6)));
 		assertThat(actualList.get(1).getKey(), is(todoKeyList.get(8)));
-		assertThat(actualList.get(2).getKey(), is(todoKeyList.get(9)));
-		assertThat(actualList.get(3).getKey(), is(todoKeyList.get(7)));
+		assertThat(actualList.get(2).getKey(), is(todoKeyList.get(7)));
 		
 		//該当レコードが存在しない場合
 		actualList = todoDao.getDashbordList(4, "hoge3@hige.hage");
