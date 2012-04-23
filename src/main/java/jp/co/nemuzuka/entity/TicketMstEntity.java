@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.arnx.jsonic.JSONHint;
+
 import jp.co.nemuzuka.core.entity.LabelValueBean;
 
 /**
@@ -43,6 +45,7 @@ public class TicketMstEntity implements Serializable {
 		
 		/** 更新開始時刻. */
 		//この時間を超えた場合、チケットマスタの値を再設定する
+		@JSONHint(ignore=true)
 		public Date refreshStartTime;
 		
 		/** 優先度選択肢. */

@@ -6,10 +6,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import jp.co.nemuzuka.common.TodoStatus;
-import jp.co.nemuzuka.meta.TodoModelMeta;
+import jp.co.nemuzuka.entity.TicketMstEntity.TicketMst;
+import jp.co.nemuzuka.meta.TicketModelMeta;
 import jp.co.nemuzuka.model.MemberModel;
-import jp.co.nemuzuka.model.TodoModel;
+import jp.co.nemuzuka.model.TicketModel;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 
 import org.apache.commons.lang.StringUtils;
@@ -22,10 +22,10 @@ import org.slim3.datastore.ModelQuery;
 import com.google.appengine.api.datastore.Key;
 
 /**
- * TodoModelに対するDao.
+ * TicketModelに対するDao.
  * @author kazumune
  */
-public class TodoDao extends AbsDao {
+public class TicketDao extends AbsDao {
 
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.dao.AbsDao#getModelMeta()
@@ -33,7 +33,7 @@ public class TodoDao extends AbsDao {
 	@SuppressWarnings("rawtypes")
 	@Override
 	ModelMeta getModelMeta() {
-		return TodoModelMeta.get();
+		return TicketModelMeta.get();
 	}
 
 	/* (非 Javadoc)
@@ -42,47 +42,45 @@ public class TodoDao extends AbsDao {
 	@SuppressWarnings("rawtypes")
 	@Override
 	Class getModelClass() {
-		return TodoModel.class;
+		return TicketModel.class;
 	}
 
-	private static TodoDao todoDao = new TodoDao();
+	private static TicketDao ticketDao = new TicketDao();
 	
 	/**
 	 * インスタンス取得.
 	 * @return インスタンス
 	 */
-	public static TodoDao getInstance() {
-		return todoDao;
+	public static TicketDao getInstance() {
+		return ticketDao;
 	}
 	
 	/**
 	 * デフォルトコンストラクタ.
 	 */
-	private TodoDao() {}
+	private TicketDao() {}
 
 	/**
 	 * List取得.
 	 * @param param 検索条件
 	 * @return 該当レコード
 	 */
-	public List<TodoModel> getList(Param param) {
-		TodoModelMeta e = (TodoModelMeta) getModelMeta();
+	public List<TicketModel> getList(Param param) {
+		TicketModelMeta e = (TicketModelMeta) getModelMeta();
 		
 		Set<InMemoryFilterCriterion> filterSet = new HashSet<InMemoryFilterCriterion>();
 		//ステータスの検索条件
 		String[] status = param.status;
 		if(status != null && status.length != 0) {
-			Set<TodoStatus> statusSet = new HashSet<TodoStatus>();
-			for(String statusCode : status) {
-				if(TodoStatus.NO_FINISH.equals(statusCode)) {
-					//未完了が選択された際には、未対応と対応中を検索条件に設定
-					statusSet.add(TodoStatus.nothing);
-					statusSet.add(TodoStatus.doing);
-				} else {
-					TodoStatus statusType = TodoStatus.fromCode(statusCode);
-					if(statusType != null) {
-						statusSet.add(statusType);
+			Set<String> statusSet = new HashSet<String>();
+			for(String statusValue : status) {
+				if(TicketMst.NO_FINISH.equals(statusValue)) {
+					//未完了が選択された際には、未完了を意味するステータスを設定
+					for(String target : param.openStatus) {
+						statusSet.add(target);
 					}
+				} else {
+					statusSet.add(statusValue);
 				}
 			}
 			if(statusSet.size() != 0) {
@@ -95,6 +93,33 @@ public class TodoDao extends AbsDao {
 			filterSet.add(e.title.startsWith(param.title));
 		}
 		
+		//優先度の検索条件
+		if(StringUtils.isNotEmpty(param.priority)) {
+			filterSet.add(e.priority.equal(param.priority));
+		}
+		//種別の検索条件
+		if(StringUtils.isNotEmpty(param.kind)) {
+			filterSet.add(e.targetKind.equal(param.kind));
+		}
+		//カテゴリの検索条件
+		if(StringUtils.isNotEmpty(param.category)) {
+			filterSet.add(e.category.equal(param.category));
+		}
+		//バージョンの検索条件
+		if(StringUtils.isNotEmpty(param.version)) {
+			filterSet.add(e.targetVersion.equal(param.version));
+		}
+		//マイルストーンの検索条件
+		if(StringUtils.isNotEmpty(param.milestone)) {
+			Key milestoneKey = Datastore.stringToKey(param.milestone);
+			filterSet.add(e.milestone.equal(milestoneKey));
+		}
+		//担当者の検索条件
+		if(StringUtils.isNotEmpty(param.targetMember)) {
+			Key targetMemberKey = Datastore.stringToKey(param.targetMember);
+			filterSet.add(e.targetMemberKey.equal(targetMemberKey));
+		}
+
 		//期限Fromの検索条件
 		if(param.fromPeriod != null) {
 			filterSet.add(e.period.isNotNull());
@@ -120,14 +145,14 @@ public class TodoDao extends AbsDao {
 		}
 		sortSet.add(e.key.asc);
 		
-		//参照可能ユーザの検索条件
-		Key createMemberKey = Datastore.createKey(MemberModel.class, param.email);
-		filterSet.add(e.createMemberKey.equal(createMemberKey));
+		//プロジェクトの検索条件
+		Key projectKey = Datastore.stringToKey(param.projectKeyString);
+		filterSet.add(e.projectKey.equal(projectKey));
 		
-		ModelQuery<TodoModel> query = Datastore.query(e).filterInMemory(filterSet.toArray(new InMemoryFilterCriterion[0]))
+		ModelQuery<TicketModel> query = Datastore.query(e).filterInMemory(filterSet.toArray(new InMemoryFilterCriterion[0]))
 				.sortInMemory(sortSet.toArray(new InMemorySortCriterion[0]));
 		
-		List<TodoModel> retList =  query.asList();
+		List<TicketModel> retList =  query.asList();
 		if(param.limit != null) {
 			
 			int toIndex = param.limit;
@@ -144,28 +169,32 @@ public class TodoDao extends AbsDao {
 	
 	/**
 	 * ダッシュボード用一覧取得.
-	 * ステータスが未完了のTODOを指定したlimit件数分取得します。
+	 * 指定したプロジェクトにおいて、
+	 * ステータスが未完了でかつ、担当者が自分のチケットを指定したlimit件数分取得します。
 	 * 一覧は、
 	 * ・期限が設定されているもの(期限の昇順)
 	 * ・期限が未設定のもの(登録順)
 	 * の順番でソートされます。
 	 * @param limit 取得件数
-	 * @param email メールアドレス
+	 * @param mail ログインユーザのメールアドレス
+	 * @param projectKeyString プロジェクトKey文字列
 	 * @return 該当レコード
 	 */
-	public List<TodoModel> getDashbordList(int limit, String email) {
+	public List<TicketModel> getDashbordList(int limit, String mail, String projectKeyString) {
 		
 		//ステータスが未完了で、指定したLimit分取得する
 		
 		//期限が設定されていて、未完了のものを取得
 		Param param = new Param();
-		param.status = new String[]{TodoStatus.NO_FINISH};
+		param.status = new String[]{TicketMst.NO_FINISH};
 		param.limit = limit;
-		param.email = email;
+		param.targetMember = Datastore.keyToString(
+				Datastore.createKey(MemberModel.class, mail));
+		param.projectKeyString = projectKeyString;
 		param.toPeriod = CurrentDateUtils.getInstance().getMaxDate();
 		param.orderByPeriod = true;
 		
-		List<TodoModel> list = getList(param);
+		List<TicketModel> list = getList(param);
 		if(list.size() >= limit) {
 			//指定件数分取得できた場合、終了
 			return list;
@@ -175,8 +204,8 @@ public class TodoDao extends AbsDao {
 		param.toPeriod = null;
 		param.periodNull = true;
 		param.orderByPeriod = false;
-		List<TodoModel> periodNullList = getList(param);
-		for(TodoModel target : periodNullList) {
+		List<TicketModel> periodNullList = getList(param);
+		for(TicketModel target : periodNullList) {
 			//期限がnullのものだけ戻りListに取り込む
 			if(target.getPeriod() != null) {
 				break;
@@ -192,15 +221,15 @@ public class TodoDao extends AbsDao {
 	
 	/**
 	 * Model取得.
-	 * @param key TodoModelのKey
-	 * @param memberKey MemberModelのKey
+	 * @param key TicketModelのKey
+	 * @param projectKey ProjectModelのKey
 	 * @return 存在すればModelインスタンス
 	 */
-	public TodoModel getWithMemberKey(Key key, Key memberKey) {
+	public TicketModel getWithProjectKey(Key key, Key projectKey) {
 		
-		TodoModel model = get(key);
+		TicketModel model = get(key);
 		if(model != null) {
-			if(model.getCreateMemberKey().equals(memberKey) == false) {
+			if(model.getProjectKey().equals(projectKey) == false) {
 				model = null;
 			}
 		}
@@ -209,16 +238,16 @@ public class TodoDao extends AbsDao {
 	
 	/**
 	 * Model取得.
-	 * @param key TodoModelのKey
-	 * @param version TodoModelのバージョン
-	 * @param memberKey MemberModelのKey
+	 * @param key TicketModelのKey
+	 * @param version TicketModelのバージョン
+	 * @param projectKey ProjectModelのKey
 	 * @return 存在すればModelインスタンス
 	 */
-	public TodoModel get(Key key, Long version, Key memberKey) {
+	public TicketModel get(Key key, Long version, Key projectKey) {
 		
-		TodoModel model = get(key, version);
+		TicketModel model = get(key, version);
 		if(model != null) {
-			if(model.getCreateMemberKey().equals(memberKey) == false) {
+			if(model.getProjectKey().equals(projectKey) == false) {
 				model = null;
 			}
 		}
@@ -234,6 +263,25 @@ public class TodoDao extends AbsDao {
 		public String[] status;
 		/** 件名. */
 		public String title;
+		
+		/** 種別. */
+		public String kind;
+
+		/** カテゴリ. */
+		public String category;
+
+		/** バージョン. */
+		public String version;
+
+		/** マイルストーン. */
+		public String milestone;
+		
+		/** 優先度. */
+		public String priority;
+		
+		/** 担当者. */
+		public String targetMember;
+		
 		/** 期限From. */
 		public Date fromPeriod;
 		/** 期限To. */
@@ -243,8 +291,12 @@ public class TodoDao extends AbsDao {
 
 		/** 取得上限件数. */
 		public Integer limit;
-		/** メールアドレス. */
-		public String email;
+		
+		//必須
+		/** プロジェクトKey. */
+		public String projectKeyString;
+		/** 未完了を意味するステータス. */
+		public String[] openStatus;
 		
 		/** 期限の昇順でソートする場合、true */
 		boolean orderByPeriod;

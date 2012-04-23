@@ -70,7 +70,7 @@
 </form>
 </div>
 
-<%-- <c:import url="/bts/ticket/ticketDialog.jsp"/>  --%>
+<c:import url="/bts/ticket/ticketDialog.jsp"/>
 
 <input type="hidden" id="selected_sub_menu" value="sub_menu3" />
 

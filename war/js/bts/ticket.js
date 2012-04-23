@@ -7,7 +7,7 @@ $(function(){
 		unBlockLoadingMsg();
 	});
 
-//	initTicketDialog();
+	initTicketDialog();
 
 	$("#searchTicketBtn").click(function(){
 		searchTicket();
