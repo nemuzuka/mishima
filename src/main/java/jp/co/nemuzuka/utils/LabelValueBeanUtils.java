@@ -31,14 +31,8 @@ public class LabelValueBeanUtils {
 			return list;
 		}
 		
-		String name = targetStr;
-		name = name.replaceAll("\r\n", "\n");
-		name = name.replaceAll("\r", "\n");
-		String[] names = name.split("\n");
-		for(String value : names) {
-			if(StringUtils.isEmpty(value)) {
-				continue;
-			}
+		String[] array = ConvertUtils.toStringArray(targetStr);
+		for(String value : array) {
 			list.add(new LabelValueBean(value, value));
 		}
 		return list;

@@ -1,4 +1,4 @@
-package jp.co.nemuzuka.utils;
+package jp.co.nemuzuka.controller.validator;
 
 import org.slim3.controller.validator.Validator;
 import org.slim3.controller.validator.Validators;

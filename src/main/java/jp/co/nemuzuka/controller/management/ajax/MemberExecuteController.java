@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller.management.ajax;
 
+import jp.co.nemuzuka.controller.validator.ValidatorUtils;
 import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
@@ -9,7 +10,6 @@ import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.form.MemberForm;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.impl.MemberServiceImpl;
-import jp.co.nemuzuka.utils.ValidatorUtils;
 
 import org.slim3.controller.validator.Validators;
 import org.slim3.util.ApplicationMessage;

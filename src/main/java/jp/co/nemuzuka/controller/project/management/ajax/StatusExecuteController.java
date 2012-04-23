@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller.project.management.ajax;
 
+import jp.co.nemuzuka.controller.validator.MultiDataValidator;
 import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.ProjectAdmin;
 import jp.co.nemuzuka.core.annotation.ProjectMember;
@@ -49,8 +50,8 @@ public class StatusExecuteController extends JsonController {
 	 */
 	protected Validators validate() {
 		Validators v = new Validators(request);
-		v.add("statusName", v.required(), v.maxlength(1024));
-		v.add("closeStatusName", v.maxlength(1024));
+		v.add("statusName", v.required(), v.maxlength(1024), new MultiDataValidator(128));
+		v.add("closeStatusName", v.maxlength(1024), new MultiDataValidator(128));
 		return v;
 	}
 }

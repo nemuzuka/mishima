@@ -6,7 +6,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -159,4 +161,29 @@ public class ConvertUtils {
 		return df.format(val);
 	}
 
+	/**
+	 * String→String配列変換.
+	 * 改行コードを元に、String配列に変換します。
+	 * 空文字の場合、戻り値の文字列列配列には含みません。
+	 * @param target 変換元
+	 * @return 変換後文字列配列
+	 */
+	public static String[] toStringArray(String target) {
+		String name = target;
+		if(name == null) {
+			name="";
+		}
+		name = name.replaceAll("\r\n", "\n");
+		name = name.replaceAll("\r", "\n");
+		String[] names = name.split("\n");
+		Set<String> strSet = new LinkedHashSet<String>();
+		
+		for(String value : names) {
+			if(StringUtils.isEmpty(value)) {
+				continue;
+			}
+			strSet.add(value);
+		}
+		return strSet.toArray(new String[0]);
+	}
 }
