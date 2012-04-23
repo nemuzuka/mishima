@@ -85,6 +85,7 @@ function searchAndRender(params) {
 //一覧表示
 function render(data) {
 	$("#result_area").empty();
+	$("#listCnt").val("0");
 
 	//共通エラーチェック
 	if(errorCheck(data) == false) {
