@@ -62,6 +62,9 @@ public class TicketModel extends AbsModel {
 	/** 期限. */
 	private Date period;
 	
+	/** 親TicketKey. */
+	private Key parentTicketKey;
+	
 	/** 登録日時. */
 	@Attribute(listener = CreationDate.class, unindexed=true)
 	private Date createdAt;
@@ -124,7 +127,19 @@ public class TicketModel extends AbsModel {
 		return period;
 	}
 
-
+	/**
+	 * @return the parentTicketKey
+	 */
+	@JSONHint(ignore=true)
+	public Key getParentTicketKey() {
+		return parentTicketKey;
+	}
+	/**
+	 * @param parentTicketKey the parentTicketKey to set
+	 */
+	public void setParentTicketKey(Key parentTicketKey) {
+		this.parentTicketKey = parentTicketKey;
+	}
 	/**
 	 * @param projectKey the projectKey to set
 	 */
