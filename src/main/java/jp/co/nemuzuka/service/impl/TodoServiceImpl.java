@@ -58,7 +58,7 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	public List<TodoModelEx> getList(Param param, boolean isDashboard) {
 		
-		List<TodoModel> modelList = todoDao.getList(param);
+		List<TodoModel> modelList = null;
 		if(isDashboard) {
 			modelList = todoDao.getDashbordList(param.limit, param.email);
 		} else {

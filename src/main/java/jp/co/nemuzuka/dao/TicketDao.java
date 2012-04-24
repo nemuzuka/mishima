@@ -1,9 +1,11 @@
 package jp.co.nemuzuka.dao;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import jp.co.nemuzuka.entity.TicketMstEntity.TicketMst;
@@ -14,6 +16,7 @@ import jp.co.nemuzuka.utils.CurrentDateUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.slim3.datastore.Datastore;
+import org.slim3.datastore.FilterCriterion;
 import org.slim3.datastore.InMemoryFilterCriterion;
 import org.slim3.datastore.InMemorySortCriterion;
 import org.slim3.datastore.ModelMeta;
@@ -215,7 +218,48 @@ public class TicketDao extends AbsDao {
 		}
 		return list;
 	}
-	
+
+	/**
+	 * 子Ticket情報取得.
+	 * 自分の子どもとして登録されているTicketのKeyListを取得します。
+	 * @param self 自Key
+	 * @param projectKey プロジェクトKey
+	 * @return 子どもとして登録されているTicketのKeyList
+	 */
+	public List<Key> getChildList(Key self, Key projectKey) {
+		TicketModelMeta e = (TicketModelMeta) getModelMeta();
+		
+		return Datastore.query(e).filter(e.parentTicketKey.equal(self), e.projectKey.equal(projectKey))
+				.sortInMemory(e.key.asc).asKeyList();
+	}
+
+	/**
+	 * Map取得.
+	 * 指定したKey配列に合致するデータを取得します。
+	 * @param projectKeyString プロジェクトKey文字列
+	 * @param keys key配列
+	 * @return 該当Map
+	 */
+	public Map<Key, TicketModel> getMap(String projectKeyString, Key...keys) {
+		TicketModelMeta e = (TicketModelMeta) getModelMeta();
+		Set<FilterCriterion> filterSet = new HashSet<FilterCriterion>();
+		Map<Key, TicketModel> map = new HashMap<Key, TicketModel>();
+		if(keys != null && keys.length != 0) {
+			filterSet.add(e.key.in(keys));
+		} else {
+			return map;
+		}
+		
+		Key projectKey = Datastore.stringToKey(projectKeyString);
+		filterSet.add(e.projectKey.equal(projectKey));
+		
+		List<TicketModel> list = Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0])).asList();
+		for(TicketModel target : list) {
+			map.put(target.getKey(), target);
+		}
+		return map;
+	}
+
 	/**
 	 * Model取得.
 	 * @param key TicketModelのKey

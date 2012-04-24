@@ -1,8 +1,12 @@
 package jp.co.nemuzuka.form;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 
+import jp.co.nemuzuka.dao.TicketDao;
 import jp.co.nemuzuka.entity.TicketMstEntity.TicketMst;
+import jp.co.nemuzuka.utils.ConvertUtils;
+import jp.co.nemuzuka.utils.DateTimeUtils;
 
 /**
  * チケット検索画面の入力Form.
@@ -201,5 +205,29 @@ public class TicketSearchForm implements Serializable {
 	 */
 	public void setTicketMst(TicketMst ticketMst) {
 		this.ticketMst = ticketMst;
+	}
+	
+	/**
+	 * 検索条件作成.
+	 * @param projectKeyString 対象プロジェクトKey文字列
+	 * @param openStatus 未完了を意味するステータス
+	 * @return 検索条件
+	 */
+	public TicketDao.Param createParam(String projectKeyString, String[] openStatus) {
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		TicketDao.Param param = new TicketDao.Param();
+		param.status = status;
+		param.title = title;
+		param.kind = kind;
+		param.category = category;
+		param.version = version;
+		param.milestone = milestone;
+		param.priority = priority;
+		param.targetMember = targetMember;
+		param.projectKeyString = projectKeyString;
+		param.openStatus = openStatus;
+		param.fromPeriod = ConvertUtils.toDate(fromPeriod, sdf);
+		param.toPeriod = ConvertUtils.toDate(toPeriod, sdf);
+		return param;
 	}
 }

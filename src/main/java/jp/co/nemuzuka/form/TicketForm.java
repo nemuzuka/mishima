@@ -51,7 +51,7 @@ public class TicketForm implements Serializable {
 	/** 対応メンバーKey. */
 	public String targetMember;
 
-	/** 親チケットKey. */
+	/** 親チケットKey(id). */
 	public String parentKey;
 	
 	/** バージョンNo. */
@@ -61,6 +61,10 @@ public class TicketForm implements Serializable {
 	/** チケットマスタ情報. */
 	public TicketMst ticketMst;
 
+	//表示情報
+	/** id情報. */
+	public String id;
+	
 	/**
 	 * @return the keyToString
 	 */
@@ -269,5 +273,19 @@ public class TicketForm implements Serializable {
 	 */
 	public void setTicketMst(TicketMst ticketMst) {
 		this.ticketMst = ticketMst;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 }

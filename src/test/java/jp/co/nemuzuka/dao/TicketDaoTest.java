@@ -36,6 +36,31 @@ public class TicketDaoTest extends AppEngineTestCase4HRD {
 	List<Key> ticketKeyList = new ArrayList<Key>();
 	List<Key> projectKeyList = new ArrayList<Key>();
 	
+	//親子関係のTicket
+	Key parentKey = null;
+	Key childKey = null;
+	List<Key> grandChildKey = new ArrayList<Key>();
+
+	/**
+	 * getChildListのテスト.
+	 * @throws Exception
+	 */
+	@Test
+	public void testGetChildList() throws Exception {
+		createTestData();
+		List<Key> actual = ticketDao.getChildList(parentKey, projectKeyList.get(0));
+		assertThat(actual.size(), is(1));
+		assertThat(actual.get(0), is(childKey));
+		
+		actual = ticketDao.getChildList(childKey, projectKeyList.get(0));
+		assertThat(actual.size(), is(2));
+		assertThat(actual.get(0), is(grandChildKey.get(0)));
+		assertThat(actual.get(1), is(grandChildKey.get(1)));
+
+		actual = ticketDao.getChildList(grandChildKey.get(0), projectKeyList.get(0));
+		assertThat(actual.size(), is(0));
+	}
+	
 	/**
 	 * getListのテスト.
 	 * @throws Exception 例外
@@ -346,9 +371,40 @@ public class TicketDaoTest extends AppEngineTestCase4HRD {
 			GlobalTransaction.transaction.get().commit();
 			GlobalTransaction.transaction.get().begin();
 		}
+		
+		TicketModel parentModel = new TicketModel();
+		parentModel.setProjectKey(projectKeyList.get(0));
+		parentModel.setTitle("親Ticket");
+		ticketDao.put(parentModel);
+		parentKey = parentModel.getKey();
+		
+		TicketModel childModel = new TicketModel();
+		childModel.setProjectKey(projectKeyList.get(0));
+		childModel.setTitle("子Ticket");
+		childModel.setParentTicketKey(parentKey);
+		ticketDao.put(childModel);
+		childKey = childModel.getKey();
+		
+		TicketModel grandChildModel = new TicketModel();
+		grandChildModel.setProjectKey(projectKeyList.get(0));
+		grandChildModel.setTitle("孫Ticket1");
+		grandChildModel.setParentTicketKey(childKey);
+		ticketDao.put(grandChildModel);
+		grandChildKey.add(grandChildModel.getKey());
+		
+		grandChildModel = new TicketModel();
+		grandChildModel.setProjectKey(projectKeyList.get(0));
+		grandChildModel.setTitle("孫Ticket2");
+		grandChildModel.setParentTicketKey(childKey);
+		ticketDao.put(grandChildModel);
+		grandChildKey.add(grandChildModel.getKey());
+		
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+
 		return;
 	}
-
+	
 	/* (非 Javadoc)
 	 * @see org.slim3.tester.AppEngineTestCase#setUp()
 	 */
