@@ -137,9 +137,11 @@ function render(data) {
 	//一覧をレンダリング
 	var $table = $("<table />").addClass("table table-bordered result_table");
 	var $thead = $("<thead />").append($("<tr />")
+				.append($("<th />").text("チケットNo"))
 				.append($("<th />").text("ステータス"))
 				.append($("<th />").text("件名"))
 				.append($("<th />").text("期限"))
+				.append($("<th />").text("担当者"))
 				.append($("<th />").text("").attr({width:"50px"}))
 			);
 	$table.append($thead);
@@ -147,8 +149,10 @@ function render(data) {
 	var $tbody = $("<tbody />");
 	$.each(result, function(){
 		var keyToString = this.model.keyToString;
-		var todoStatus = this.todoStatus;
+		var status = this.model.status;
 		var title = this.model.title;
+		var memberName = this.targetMemberName;
+		var id = this.id;
 		var versionNo = this.model.version;
 		var period = this.period;
 		var createdAt = this.createdAt;
@@ -157,15 +161,15 @@ function render(data) {
 
 		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
 		$delBtn.click(function(){
-			deleteTodo(title, keyToString, versionNo);
+			deleteTicket(title, keyToString, versionNo);
 		});
 		
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(title);
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(id);
 		$a.click(function(){
-			openDetailTodoDialog(keyToString);
+			openDetailTicketDialog(keyToString);
 		});
 		
-		var $todoStatusSpan = $("<span />").text(todoStatus);
+		var $statusSpan = $("<span />").text(status);
 		var $periodStatusSpan = $("<span />");
 		if(periodStatusCode != '') {
 			$periodStatusSpan.text(periodStatusLabel);
@@ -175,12 +179,14 @@ function render(data) {
 				$periodStatusSpan = $periodStatusSpan.addClass("label label-important");
 			}
 		}
-		var $statusDiv = $("<div />").append($todoStatusSpan).append($("<br />")).append($periodStatusSpan);
+		var $statusDiv = $("<div />").append($statusSpan).append($("<br />")).append($periodStatusSpan);
 		
 		var $tr = $("<tr />");
-		$tr.append($("<td />").append($statusDiv))
-			.append($("<td />").append($a))
+		$tr.append($("<td />").append($a))
+			.append($("<td />").append($statusDiv))
+			.append($("<td />").text(title))
 			.append($("<td />").text(formatDateyyyyMMdd(period)))
+			.append($("<td />").text(memberName))
 			.append($("<td />").append($delBtn));
 		$tbody.append($tr)
 	});
@@ -235,8 +241,8 @@ function createSearchTicketParams() {
 }
 
 //Ticket削除
-function deleteTicket(keyToString, version) {
-	if(window.confirm("Ticketを削除します。本当によろしいですか？") == false) {
+function deleteTicket(title, keyToString, version) {
+	if(window.confirm("チケット「" + title + "」を削除します。本当によろしいですか？") == false) {
 		return;
 	}
 	

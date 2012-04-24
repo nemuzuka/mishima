@@ -10,31 +10,95 @@
 <div id="ticketDialog" title="チケット" class="dialog-widget">
 <div class="dialog-container form-horizontal" >
 <fieldset>
-	<div class="control-group">
-		<label class="control-label" for="edit_ticket_status">ステータス</label>
-		<div class="controls">
-			<select class="required-input" id="edit_ticket_status"></select>
-		</div>
-	</div>
 
-	<div class="control-group">
-		<label class="control-label" for="edit_ticket_title">件名</label>
-		<div class="controls">
-			<input type="text" class="input-xlarge required-input" id="edit_ticket_title">
-		</div>
-	</div>
+	<div class="scroll_area">
 
-	<div class="control-group">
-		<label class="control-label" for="edit_ticket_period">期限</label>
-		<div class="controls">
-			<input type="text" class="input-xlarge" id="edit_ticket_period">
+		<div class="control-group">
+			<label class="control-label" for="edit_ticket_status">ステータス</label>
+			<div class="controls">
+				<select class="required-input" id="edit_ticket_status"></select>
+			</div>
 		</div>
-	</div>
-
-	<div class="control-group">
-		<label class="control-label" for="edit_ticket_content">内容</label>
-		<div class="controls">
-			<textarea class="input-xlarge" cols="30" rows="8" id="edit_ticket_content"></textarea>
+	
+		<div class="control-group">
+			<label class="control-label" for="edit_ticket_title">件名</label>
+			<div class="controls">
+				<input type="text" class="input-xlarge required-input" id="edit_ticket_title">
+			</div>
+		</div>
+	
+		<div class="control-group">
+			<label class="control-label" for="edit_ticket_content">内容</label>
+			<div class="controls">
+				<textarea class="input-xxlarge" cols="30" rows="6" id="edit_ticket_content"></textarea>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="edit_ticket_endCondition">終了条件</label>
+			<div class="controls">
+				<textarea class="input-xxlarge" cols="30" rows="6" id="edit_ticket_endCondition"></textarea>
+			</div>
+		</div>
+	
+	
+		<div class="control-group">
+			<label class="control-label" for="edit_ticket_period">期限</label>
+			<div class="controls">
+				<input type="text" class="input-xlarge" id="edit_ticket_period">
+			</div>
+		</div>
+		
+		<div>
+			<div class="control-group" style="float:left;">
+				<label class="control-label" for="edit_ticket_priority">優先度</label>
+				<div class="controls">
+					<select id="edit_ticket_priority"></select>
+				</div>
+			</div>
+			<div class="control-group" style="float:left;">
+				<label class="control-label" for="edit_ticket_kind">種別</label>
+				<div class="controls">
+					<select id="edit_ticket_kind"></select>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="control-group" style="float:left;">
+				<label class="control-label" for="edit_ticket_category">カテゴリ</label>
+				<div class="controls">
+					<select id="edit_ticket_category"></select>
+				</div>
+			</div>
+			<div class="control-group" style="float:left;">
+				<label class="control-label" for="edit_ticket_targetVersion">バージョン</label>
+				<div class="controls">
+					<select id="edit_ticket_targetVersion"></select>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="control-group" style="float:left;">
+				<label class="control-label" for="edit_ticket_milestone">マイルストーン</label>
+				<div class="controls">
+					<select id="edit_ticket_milestone"></select>
+				</div>
+			</div>
+			<div class="control-group" style="float:left;">
+				<label class="control-label" for="edit_ticket_targetMember">担当者</label>
+				<div class="controls">
+					<select id="edit_ticket_targetMember"></select>
+				</div>
+			</div>
+		</div>
+		
+		<div style="clear:left;">
+			<div class="control-group">
+				<label class="control-label" for="edit_ticket_parentKey">親チケットNo</label>
+				<div class="controls">
+					<input type="text" id="edit_ticket_parentKey">
+					<p>※親のチケットNoを入力することでチケットに関連付けを行うことができます</p>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -62,7 +126,7 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_ticket_comment">コメント</label>
 		<div class="controls">
-			<textarea class="input-xlarge" cols="30" rows="8" id="edit_ticket_comment"></textarea>
+			<textarea class="input-xlarge required-input" cols="30" rows="8" id="edit_ticket_comment"></textarea>
 		</div>
 	</div>
 

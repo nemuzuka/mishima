@@ -24,6 +24,9 @@ public class TicketModelEx {
 	/** 期限ステータス. */
 	private PeriodStatus periodStatus;
 	
+	/** 担当者名. */
+	private String targetMemberName = "";
+	
 	/**
 	 * @return 期限ステータスコード値.
 	 */
@@ -106,5 +109,19 @@ public class TicketModelEx {
 	 */
 	public void setPeriodStatus(PeriodStatus periodStatus) {
 		this.periodStatus = periodStatus;
+	}
+
+	/**
+	 * @return the targetMemberName
+	 */
+	public String getTargetMemberName() {
+		return targetMemberName;
+	}
+
+	/**
+	 * @param targetMemberName the targetMemberName to set
+	 */
+	public void setTargetMemberName(String targetMemberName) {
+		this.targetMemberName = targetMemberName;
 	}
 }

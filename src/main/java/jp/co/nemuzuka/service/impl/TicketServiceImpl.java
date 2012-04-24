@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +24,10 @@ import jp.co.nemuzuka.exception.NotExistTicketException;
 import jp.co.nemuzuka.form.TicketCommentForm;
 import jp.co.nemuzuka.form.TicketDetailForm;
 import jp.co.nemuzuka.form.TicketForm;
+import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TicketModel;
 import jp.co.nemuzuka.service.CommentService;
+import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.TicketService;
 import jp.co.nemuzuka.utils.ConvertUtils;
@@ -40,6 +43,7 @@ public class TicketServiceImpl implements TicketService {
 	TicketDao ticketDao = TicketDao.getInstance();
 	CommentService commentService = CommentServiceImpl.getInstance();
 	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
+	MemberService memberService = MemberServiceImpl.getInstance();
 	
 	private static TicketServiceImpl impl = new TicketServiceImpl();
 	
@@ -68,6 +72,21 @@ public class TicketServiceImpl implements TicketService {
 			modelList = ticketDao.getList(param);
 		}
 		
+		//登録されている担当者情報を取得
+		Set<Key> memberKeySet = new LinkedHashSet<Key>();
+		for(TicketModel target : modelList) {
+			if(target.getTargetMemberKey() != null) {
+				memberKeySet.add(target.getTargetMemberKey());
+			}
+		}
+		Map<Key, MemberModel> memberMap = null;
+		if(memberKeySet.size() != 0) {
+			memberMap = memberService.getMap(memberKeySet.toArray(new Key[0]));
+		} else {
+			memberMap = new HashMap<Key, MemberModel>();
+		}
+		
+		
 		//戻りListを作成
 		Date today = CurrentDateUtils.getInstance().getCurrentDate();
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
@@ -83,6 +102,14 @@ public class TicketServiceImpl implements TicketService {
 			if(target.getPeriod() != null) {
 				entity.setPeriodStatus(
 						createPeriodStatus(today, target.getPeriod(), target.getStatus(), param.openStatus));
+			}
+			
+			//担当者が設定されている場合
+			if(target.getTargetMemberKey() != null) {
+				MemberModel member = memberMap.get(target.getTargetMemberKey());
+				if(member != null) {
+					entity.setTargetMemberName(member.getName());
+				}
 			}
 			retList.add(entity);
 		}

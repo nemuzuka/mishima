@@ -20,7 +20,7 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_todo_title">件名</label>
 		<div class="controls">
-			<input type="text" class="input-xlarge required-input" id="edit_todo_title">
+			<input type="text" class="input-xxlarge required-input" id="edit_todo_title">
 		</div>
 	</div>
 
@@ -34,7 +34,7 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_todo_content">内容</label>
 		<div class="controls">
-			<textarea class="input-xlarge" cols="30" rows="8" id="edit_todo_content"></textarea>
+			<textarea class="input-xxlarge" cols="30" rows="8" id="edit_todo_content"></textarea>
 		</div>
 	</div>
 
@@ -62,7 +62,7 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_todo_comment">コメント</label>
 		<div class="controls">
-			<textarea class="input-xlarge" cols="30" rows="8" id="edit_todo_comment"></textarea>
+			<textarea class="input-xlarge required-input" cols="30" rows="8" id="edit_todo_comment"></textarea>
 		</div>
 	</div>
 

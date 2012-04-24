@@ -1,6 +1,9 @@
 package jp.co.nemuzuka.service;
 
 import java.util.List;
+import java.util.Map;
+
+import com.google.appengine.api.datastore.Key;
 
 import jp.co.nemuzuka.form.MemberForm;
 import jp.co.nemuzuka.form.PersonForm;
@@ -70,4 +73,11 @@ public interface MemberService {
 	 */
 	void put(PersonForm form);
 
+	/**
+	 * Map取得.
+	 * 指定したKey配列に合致するデータを取得します。
+	 * @param keys key配列
+	 * @return 該当Map
+	 */
+	Map<Key, MemberModel> getMap(Key...keys);
 }

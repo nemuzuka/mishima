@@ -2,7 +2,7 @@ function initTodoDialog() {
 	$("#todoDialog").dialog({
 		modal:true,
 		autoOpen:false,
-		width:500,
+		width:750,
 		resizable:false,
 		open:function(event) {
 			document.body.style.overflow = "hidden";

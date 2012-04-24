@@ -2,7 +2,7 @@ function initTicketDialog() {
 	$("#ticketDialog").dialog({
 		modal:true,
 		autoOpen:false,
-		width:750,
+		width:850,
 		resizable:false,
 		open:function(event) {
 			document.body.style.overflow = "hidden";
@@ -54,7 +54,7 @@ function initTicketDialog() {
 	$("#detail_ticket_status").change(function(){
 		changeTicketStatus();
 	});
-	$("#todoDetail-Comment-add").click(function(){
+	$("#ticketDetail-Comment-add").click(function(){
 		openTicketDetailCommentDialog();
 	});
 	
@@ -67,20 +67,20 @@ function initTicketDialog() {
 	});
 }
 
-//TODOコメント登録
-function executeTodoComment() {
+//Ticketコメント登録
+function executeTicketComment() {
 	var params = {};
-	params["status"] = $("#edit_todo_comment_status").val();
-	params["comment"] = $("#edit_todo_comment").val();
-	params["versionNo"] = $("#edit_todo_comment_versionNo").val();
-	params["keyToString"] = $("#edit_todo_comment_keyToString").val();
+	params["status"] = $("#edit_ticket_comment_status").val();
+	params["comment"] = $("#edit_ticket_comment").val();
+	params["versionNo"] = $("#edit_ticket_comment_versionNo").val();
+	params["keyToString"] = $("#edit_ticket_comment_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/bts/todo/ajax/todoCommentExecute",
+		url: "/bts/ticket/ajax/ticketCommentExecute",
 		data: params
 	});
 	
@@ -89,7 +89,7 @@ function executeTodoComment() {
 	task.pipe(
 		function(data) {
 
-			var key = $("#edit_todo_comment_keyToString").val();
+			var key = $("#edit_ticket_comment_keyToString").val();
 			
 			//共通エラーチェック
 			if(errorCheck(data) == false) {
@@ -98,46 +98,46 @@ function executeTodoComment() {
 					return reSetToken();
 				} else {
 					//強制的にダイアログを閉じて、再検索
-					$("#todoCommentDialog").dialog("close");
-					return openDetailTodoDialog(key, true);
+					$("#ticketCommentDialog").dialog("close");
+					return openDetailTicketDialog(key, true);
 				}
 				return;
 			}
 			
 			//メッセージを表示して、戻る
 			infoCheck(data);
-			$("#todoCommentDialog").dialog("close");
+			$("#ticketCommentDialog").dialog("close");
 			
 			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
-			setTimeout(function(){ openDetailTodoDialog(key, true) }, 1000);
+			setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
 		}
 	);
 }
 
 
-//TODOコメントダイアログOpen
-function openTodoDetailCommentDialog() {
-	$("#edit_todo_comment_status").val($("#detail_todo_status").val());
-	$("#edit_todo_comment_versionNo").val($("#detail_todo_versionNo").val());
-	$("#edit_todo_comment_keyToString").val($("#detail_todo_keyToString").val());
-	$("#edit_todo_comment").val("");
-	$("#todoCommentDialog").dialog("open");
+//TicketコメントダイアログOpen
+function openTicketDetailCommentDialog() {
+	$("#edit_ticket_comment_status").val($("#detail_ticket_status").val());
+	$("#edit_ticket_comment_versionNo").val($("#detail_ticket_versionNo").val());
+	$("#edit_ticket_comment_keyToString").val($("#detail_ticket_keyToString").val());
+	$("#edit_ticket_comment").val("");
+	$("#ticketCommentDialog").dialog("open");
 }
 
 //ステータス変更
-function changeTodoStatus() {
+function changeTicketStatus() {
 	
 	var params = {};
-	params["todoStatus"] = $("#detail_todo_status").val();
-	params["versionNo"] = $("#detail_todo_versionNo").val();
-	params["keyToString"] = $("#detail_todo_keyToString").val();
+	params["status"] = $("#detail_ticket_status").val();
+	params["versionNo"] = $("#detail_ticket_versionNo").val();
+	params["keyToString"] = $("#detail_ticket_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/bts/todo/ajax/todoStatusExecute",
+		url: "/bts/ticket/ajax/ticketStatusExecute",
 		data: params
 	});
 
@@ -152,7 +152,7 @@ function changeTodoStatus() {
 					return reSetToken();
 				} else {
 					//強制的にダイアログを閉じて、再検索
-					$("#todoDetailDialog").dialog("close");
+					$("#ticketDetailDialog").dialog("close");
 					return refresh();
 				}
 				return;
@@ -161,21 +161,21 @@ function changeTodoStatus() {
 			//メッセージを表示して、戻る
 			infoCheck(data);
 			
-			var key = $("#detail_todo_keyToString").val();
+			var key = $("#detail_ticket_keyToString").val();
 			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
-			setTimeout(function(){ openDetailTodoDialog(key, true) }, 1000);
+			setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
 		}
 	);
 }
 
-//TODO登録・更新
-function executeTodo() {
-	var params = createExecuteTodoParams();
+//Ticket登録・更新
+function executeTicket() {
+	var params = createExecuteTicketParams();
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/bts/todo/ajax/todoExecute",
+		url: "/bts/ticket/ajax/ticketExecute",
 		data: params
 	});
 	
@@ -190,7 +190,7 @@ function executeTodo() {
 					return reSetToken();
 				} else {
 					//強制的にダイアログを閉じて、再検索
-					$("#todoDialog").dialog("close");
+					$("#ticketDialog").dialog("close");
 					return refresh();
 				}
 				return;
@@ -198,29 +198,39 @@ function executeTodo() {
 			
 			//メッセージを表示して、戻る
 			infoCheck(data);
-			$("#todoDialog").dialog("close");
+			$("#ticketDialog").dialog("close");
 			
-			var key = $("#edit_todo_keyToString").val();
+			var key = $("#edit_ticket_keyToString").val();
 			if(key == '') {
 				//新規の場合、一覧再描画
 				return refresh();
 			} else {
 				//更新の場合、詳細ダイアログオープン(メッセージを見せる必要上、1秒sleepしてから開く)
-				setTimeout(function(){ openDetailTodoDialog(key) }, 1000);
+				setTimeout(function(){ openDetailTicketDialog(key) }, 1000);
 			}
 		}
 	);
 }
 
-//TODO登録パラメータ設定
-function createExecuteTodoParams() {
+//Ticket登録パラメータ設定
+function createExecuteTicketParams() {
 	var params = {};
-	params["todoStatus"] = $("#edit_todo_status").val();
-	params["title"] = $("#edit_todo_title").val();
-	params["content"] = $("#edit_todo_content").val();
-	params["period"] = unFormatDate($("#edit_todo_period").val());
-	params["versionNo"] = $("#edit_todo_versionNo").val();
-	params["keyToString"] = $("#edit_todo_keyToString").val();
+	params["status"] = $("#edit_ticket_status").val();
+	params["title"] = $("#edit_ticket_title").val();
+	params["content"] = $("#edit_ticket_content").val();
+	params["endCondition"] = $("#edit_ticket_endCondition").val();
+	params["period"] = unFormatDate($("#edit_ticket_period").val());
+	
+	params["priority"] = $("#edit_ticket_priority").val();
+	params["targetKind"] = $("#edit_ticket_kind").val();
+	params["category"] = $("#edit_ticket_category").val();
+	params["targetVersion"] = $("#edit_ticket_targetVersion").val();
+	params["milestone"] = $("#edit_ticket_milestone").val();
+	params["targetMember"] = $("#edit_ticket_targetMember").val();
+	params["parentKey"] = $("#edit_ticket_parentKey").val();
+	
+	params["versionNo"] = $("#edit_ticket_versionNo").val();
+	params["keyToString"] = $("#edit_ticket_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	return params;
 }
@@ -266,27 +276,65 @@ function openEditTicketDialog(key) {
 				}
 				return;
 			}
-			
 			//tokenの設定
 			$("#token").val(data.token);
 			
 			//form情報の設定
 			var form = data.result;
 			
-			$("#edit_todo_status").empty();
-			$.each(form.statusList, function(){
-				$("#edit_todo_status").append($("<option />").attr({value:this.value}).text(this.label));
+			$("#edit_ticket_status").empty();
+			$.each(form.ticketMst.statusList, function(){
+				$("#edit_ticket_status").append($("<option />").attr({value:this.value}).text(this.label));
 			});
-			$("#edit_todo_status").val(form.todoStatus);
+			$("#edit_ticket_status").val(form.todoStatus);
 
-			$("#edit_todo_title").val(form.title);
-			$("#edit_todo_content").val(form.content);
-			$("#edit_todo_period").val(formatDateyyyyMMdd(form.period));
+			$("#edit_ticket_title").val(form.title);
+			$("#edit_ticket_content").val(form.content);
+			$("#edit_ticket_endCondition").val(form.endCondition);
+			$("#edit_ticket_period").val(formatDateyyyyMMdd(form.period));
 
-			$("#edit_todo_versionNo").val(form.versionNo);
-			$("#edit_todo_keyToString").val(form.keyToString);
+			$("#edit_ticket_priority").empty();
+			$.each(form.ticketMst.priorityList, function(){
+				$("#edit_ticket_priority").append($("<option />").attr({value:this.value}).text(this.label));
+			});
+			$("#edit_ticket_priority").val(form.priority);
+
+			$("#edit_ticket_kind").empty();
+			$.each(form.ticketMst.kindList, function(){
+				$("#edit_ticket_kind").append($("<option />").attr({value:this.value}).text(this.label));
+			});
+			$("#edit_ticket_kind").val(form.targetKind);
+
+			$("#edit_ticket_category").empty();
+			$.each(form.ticketMst.categoryList, function(){
+				$("#edit_ticket_category").append($("<option />").attr({value:this.value}).text(this.label));
+			});
+			$("#edit_ticket_category").val(form.category);
+
+			$("#edit_ticket_targetVersion").empty();
+			$.each(form.ticketMst.versionList, function(){
+				$("#edit_ticket_targetVersion").append($("<option />").attr({value:this.value}).text(this.label));
+			});
+			$("#edit_ticket_targetVersion").val(form.targetVersion);
+
+			$("#edit_ticket_milestone").empty();
+			$.each(form.ticketMst.milestoneList, function(){
+				$("#edit_ticket_milestone").append($("<option />").attr({value:this.value}).text(this.label));
+			});
+			$("#edit_ticket_milestone").val(form.milestone);
+
+			$("#edit_ticket_targetMember").empty();
+			$.each(form.ticketMst.memberList, function(){
+				$("#edit_ticket_targetMember").append($("<option />").attr({value:this.value}).text(this.label));
+			});
+			$("#edit_ticket_targetMember").val(form.targetMember);
+
+			$("#edit_ticket_parentKey").val(form.parentKey);
 			
-			$("#todoDialog").dialog("open");
+			$("#edit_ticket_versionNo").val(form.versionNo);
+			$("#edit_ticket_keyToString").val(form.keyToString);
+			
+			$("#ticketDialog").dialog("open");
 			return;
 		}
 	);

@@ -2,6 +2,7 @@ package jp.co.nemuzuka.service.impl;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.Map;
 
 import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.common.UniqueKey;
@@ -183,6 +184,15 @@ public class MemberServiceImpl implements MemberService {
 		model.setName(form.name);
 		model.setMemo(new Text(StringUtils.defaultString(form.memo)));
 		memberDao.put(model);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.MemberService#getMap(com.google.appengine.api.datastore.Key[])
+	 */
+	@Override
+	public Map<Key, MemberModel> getMap(Key... keys) {
+		return memberDao.getMap(keys);
 	}
 
 	/**

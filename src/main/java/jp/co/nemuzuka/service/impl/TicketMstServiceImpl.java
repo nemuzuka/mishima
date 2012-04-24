@@ -188,7 +188,7 @@ public class TicketMstServiceImpl implements TicketMstService {
 			statusName = form.statusName;
 			closeStatusName = form.closeStatusName;
 		}
-		mst.statusList = LabelValueBeanUtils.createList(statusName, true);
+		mst.statusList = LabelValueBeanUtils.createList(statusName, false);
 		
 		//完了とみなすステータスのSetを作成
 		List<LabelValueBean> closeList = LabelValueBeanUtils.createList(closeStatusName, true);

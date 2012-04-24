@@ -64,13 +64,12 @@ public class TicketMstServiceImplTest extends AppEngineTestCase4HRD {
 		
 		assertThat(actual, is(not(nullValue())));
 		assertThat(actual.priorityList.size(), is(4));
-		assertThat(actual.statusList.size(), is(6));
-		assertThat(actual.statusList.get(0).getValue(), is(""));
-		assertThat(actual.statusList.get(1).getValue(), is("未対応"));
-		assertThat(actual.statusList.get(2).getValue(), is("対応中"));
-		assertThat(actual.statusList.get(3).getValue(), is("対応済み"));
-		assertThat(actual.statusList.get(4).getValue(), is("完了"));
-		assertThat(actual.statusList.get(5).getValue(), is("キャンセル"));
+		assertThat(actual.statusList.size(), is(5));
+		assertThat(actual.statusList.get(0).getValue(), is("未対応"));
+		assertThat(actual.statusList.get(1).getValue(), is("対応中"));
+		assertThat(actual.statusList.get(2).getValue(), is("対応済み"));
+		assertThat(actual.statusList.get(3).getValue(), is("完了"));
+		assertThat(actual.statusList.get(4).getValue(), is("キャンセル"));
 		
 		assertThat(actual.openStatus, is(new String[]{"未対応","対応中","対応済み"}));
 		
