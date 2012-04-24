@@ -108,6 +108,7 @@
 		<input type="button" class="btn" id="ticketDialog-cancel" value="キャンセル" />
 		<input type="hidden" id="edit_ticket_versionNo" />
 		<input type="hidden" id="edit_ticket_keyToString" />
+		<input type="hidden" id="edit_ticket_base_keyToString" />
 	</div>
 </fieldset>
 </div>

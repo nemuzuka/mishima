@@ -63,6 +63,17 @@ function initTicketDialog() {
 	$("#ticketDetail-Comment-add").click(function(){
 		openTicketDetailCommentDialog();
 	});
+	$("#ticketDetail-child-add").click(function(){
+		$("#ticketDetailDialog").dialog("close");
+		var ticketNo = $("#detail_ticket_no").text();
+		var baseKey = $("#detail_ticket_keyToString").val();
+		openEditTicketDialog("", ticketNo, baseKey, "child");
+	});
+	$("#ticketDetail-copy-add").click(function(){
+		$("#ticketDetailDialog").dialog("close");
+		var baseKey = $("#detail_ticket_keyToString").val();
+		openEditTicketDialog("", "", baseKey, "copyIns");
+	});
 	
 	//Ticketコメントダイアログ
 	$("#ticketCommentDialog-add").click(function(){
@@ -218,6 +229,11 @@ function executeTicket() {
 			
 			var key = $("#edit_ticket_keyToString").val();
 			if(key == '') {
+				//基本Keyが未設定で、ベースKeyが設定されている場合、ベースKeyに紐付く詳細情報を参照する
+				//この時、詳細ダイアログは閉じているので、新たに開く
+				key = $("#edit_ticket_base_keyToString").val();
+			}
+			if(key == '') {
 				//新規の場合、一覧再描画
 				return refresh();
 			} else {
@@ -252,8 +268,15 @@ function createExecuteTicketParams() {
 }
 
 
-//ticketダイアログオープン
-function openEditTicketDialog(key) {
+/** 
+ * ticketダイアログオープン.
+ * @param key 対象Key
+ * @param ticketNo チケットNo(子Ticket作成時に使用)
+ * @param baseKey 基準Key
+ * @param type "child":子Ticket作成/"copyIns":コピー新規
+ * 
+ */
+function openEditTicketDialog(key, ticketNo, baseKey, type) {
 	var title = "";
 	var buttonLabel = "";
 	if(key == '') {
@@ -267,10 +290,21 @@ function openEditTicketDialog(key) {
 	$("#ui-dialog-title-ticketDialog").append(title);
 	$("#ticketDialog-add").attr({value:buttonLabel});
 	
-	$("#ticketDialog").dialog("open");
-	
 	var params = {};
 	params["keyToString"] = key;
+	
+	if(ticketNo == undefined) {
+		ticketNo = "";
+	}
+	if(baseKey == undefined) {
+		baseKey = "";
+	}
+	if(type == undefined) {
+		type = "";
+	}
+	if(baseKey != '') {
+		params["keyToString"] = baseKey;
+	}
 	
 	setAjaxDefault();
 	var task;
@@ -344,11 +378,25 @@ function openEditTicketDialog(key) {
 				$("#edit_ticket_targetMember").append($("<option />").attr({value:this.value}).text(this.label));
 			});
 			$("#edit_ticket_targetMember").val(form.targetMember);
-
 			$("#edit_ticket_parentKey").val(form.parentKey);
-			
+
 			$("#edit_ticket_versionNo").val(form.versionNo);
 			$("#edit_ticket_keyToString").val(form.keyToString);
+			$("#edit_ticket_base_keyToString").val("");
+
+			if(type == "child") {
+				//子チケット作成の場合
+				$("#edit_ticket_versionNo").val("");
+				$("#edit_ticket_keyToString").val("");
+				$("#edit_ticket_base_keyToString").val(baseKey);
+				$("#edit_ticket_parentKey").val(ticketNo);
+			} else if(type=="copyIns") {
+				//コピー新規の場合
+				$("#edit_ticket_versionNo").val("");
+				$("#edit_ticket_keyToString").val("");
+				$("#edit_ticket_base_keyToString").val("");
+			}
+			
 			$("#ticketDialog").dialog("open");
 			return;
 		}
@@ -362,7 +410,6 @@ function openDetailTicketDialog(key, onlyRefresh) {
 	if(onlyRefresh == undefined) {
 		onlyRefresh = false;
 	}
-	
 	var params = {};
 	params["keyToString"] = key;
 	
@@ -528,6 +575,7 @@ function openTicketSummaryDialog(key) {
 			$("#detail_summary_versionNo").val(form.versionNo);
 			$("#detail_summary_keyToString").val(form.keyToString);
 			$("#ticketSummaryDialog").dialog("open");
+			$(".scroll_area").scrollTop(0);
 			return;
 		}
 	);
