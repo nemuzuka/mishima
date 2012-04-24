@@ -299,9 +299,7 @@ public class TicketServiceImpl implements TicketService {
 			form.parentKey = ConvertUtils.toString(model.getParentTicketKey().getId());
 		}
 		form.versionNo = ConvertUtils.toString(model.getVersion());
-		if(model.getParentTicketKey() != null) {
-			form.id = ConvertUtils.toString(model.getParentTicketKey().getId());
-		}
+		form.id = ConvertUtils.toString(model.getKey().getId());
 	}
 
 	/**
@@ -389,8 +387,8 @@ public class TicketServiceImpl implements TicketService {
 		Set<Key> targetKeySet = new LinkedHashSet<Key>();
 		//自分の親が設定されている場合
 		Key parentKey = null;
-		if(StringUtils.isNotEmpty(detailForm.form.id)) {
-			parentKey = Datastore.createKey(TicketModel.class, ConvertUtils.toLong(detailForm.form.id));
+		if(StringUtils.isNotEmpty(detailForm.form.parentKey)) {
+			parentKey = Datastore.createKey(TicketModel.class, ConvertUtils.toLong(detailForm.form.parentKey));
 			targetKeySet.add(parentKey);
 		}
 		

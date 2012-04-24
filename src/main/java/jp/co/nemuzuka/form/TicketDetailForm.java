@@ -3,6 +3,9 @@ package jp.co.nemuzuka.form;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
+import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.entity.CommentModelEx;
 import jp.co.nemuzuka.model.TicketModel;
 import jp.co.nemuzuka.utils.HtmlStringUtils;
@@ -46,7 +49,39 @@ public class TicketDetailForm implements Serializable {
 		return HtmlStringUtils.escapeTextAreaString(form.endCondition);
 	}
 	
+	/**
+	 * @return マイルストーン名取得.
+	 */
+	public String getMilestone() {
+		
+		if(StringUtils.isEmpty(form.milestone)) {
+			return "";
+		}
+		
+		for(LabelValueBean target : form.ticketMst.milestoneList) {
+			if(target.getValue().equals(form.milestone)) {
+				return target.getLabel();
+			}
+		}
+		return "";
+	}
 
+	/**
+	 * @return 担当者名取得
+	 */
+	public String getTargetMember() {
+		if(StringUtils.isEmpty(form.targetMember)) {
+			return "";
+		}
+		
+		for(LabelValueBean target : form.ticketMst.memberList) {
+			if(target.getValue().equals(form.targetMember)) {
+				return target.getLabel();
+			}
+		}
+		return "";
+	}
+	
 	/**
 	 * @return the parentTicket
 	 */

@@ -153,7 +153,7 @@ function changeTodoStatus() {
 				} else {
 					//強制的にダイアログを閉じて、再検索
 					$("#todoDetailDialog").dialog("close");
-					return refresh();
+					return;
 				}
 				return;
 			}

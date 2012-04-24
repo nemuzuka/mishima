@@ -147,29 +147,60 @@
 	<div class="scroll_area">
 		<div class="dialog-area">
 			<dl class="detail_dl">
+				<dt>チケットNo</dt>
+				<dd><div id="detail_ticket_no"></div></dd>
 				<dt class="detail_dt">ステータス</dt>
-				<dd><select id="detail_todo_status"></select></dd>
+				<dd><select id="detail_ticket_status"></select></dd>
 				<dt>件名</dt>
-				<dd><div id="detail_todo_title"></div></dd>
-				<dt>期限</dt>
-				<dd><div id="detail_todo_period"></div></dd>
+				<dd><div id="detail_ticket_title"></div></dd>
 				<dt>内容</dt>
-				<dd><div id="detail_todo_content"></div></dd>
+				<dd><div id="detail_ticket_content"></div></dd>
+				<dt>終了条件</dt>
+				<dd><div id="detail_ticket_endCondition"></div></dd>
+				<dt>期限</dt>
+				<dd><div id="detail_ticket_period"></div></dd>
 			</dl>
-		
-			<div class="detail_ctrl">
-				<input type="button" class="btn" id="todoDetail-edit" value="内容変更" />
-				<input type="button" class="btn" id="todoDetail-Comment-add" value="コメント登録" />
-				<input type="hidden" id="detail_todo_versionNo" />
-				<input type="hidden" id="detail_todo_keyToString" />
+			
+			<div style="float:left;">
+				<dl class="detail_dl" style="float:left;">
+					<dt class="detail_dt">優先度</dt>
+					<dd><div id="detail_ticket_priority"></div></dd>
+					<dt class="detail_dt">カテゴリ</dt>
+					<dd><div id="detail_ticket_category"></div></dd>
+				</dl>
+			</div>
+			<div style="float:left; margin-left:15px">
+				<dl class="detail_dl" style="float:left;">
+					<dt class="detail_dt">種別</dt>
+					<dd><div id="detail_ticket_kind"></div></dd>
+					<dt class="detail_dt">バージョン</dt>
+					<dd><div id="detail_ticket_targetVersion"></div></dd>
+				</dl>
+			</div>
+			<div style="float:left; margin-left:15px">
+				<dl class="detail_dl" style="float:left;">
+					<dt class="detail_dt">マイルストーン</dt>
+					<dd><div id="detail_ticket_milestone"></div></dd>
+					<dt class="detail_dt">担当者</dt>
+					<dd><div id="detail_ticket_targetMember"></div></dd>
+				</dl>
+			</div>
+			
+			<div class="detail_ctrl" style="clear:left;">
+				<input type="button" class="btn" id="ticketDetail-edit" value="内容変更" />
+				<input type="button" class="btn" id="ticketDetail-Comment-add" value="コメント登録" />
+				<input type="button" class="btn" id="ticketDetail-child-add" value="子チケット作成" />
+				<input type="button" class="btn" id="ticketDetail-copy-add" value="コピー新規" />
+				<input type="hidden" id="detail_ticket_versionNo" />
+				<input type="hidden" id="detail_ticket_keyToString" />
 			</div>
 		</div>
 
-		<div id="todo_comment_list" class="result"></div>
+		<div id="ticket_comment_list" class="result"></div>
 	</div>
 
 	<div class="detail_close">
-		<input type="button" class="btn" id="todoDetailDialog-cancel" value="閉じる" />
+		<input type="button" class="btn" id="ticketDetailDialog-cancel" value="閉じる" />
 	</div>
 </div>
 </div>

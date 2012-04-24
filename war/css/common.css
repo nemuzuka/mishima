@@ -8,7 +8,7 @@ h2.title{
   text-shadow:1px 1px 1px #CCC;
 }
 h2.title.small{
-  font-size:120%;
+  font-size:110%;
 }
 
 td{empty-cells: show;}
@@ -62,9 +62,9 @@ td{empty-cells: show;}
 
 /* 詳細ダイアログ. */
 .dialog-detail dl dt{
-	font-size:120%;
+	font-size:110%;
 	text-shadow:1px 1px 1px #CCC;
-	font-weight: bold;
+	font-weight: normal;
 	text-indent: 12px;
 	margin-top: 1em;
 	padding-bottom: 2px;

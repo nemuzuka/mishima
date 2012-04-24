@@ -14,7 +14,7 @@ function initTicketDialog() {
 	$("#ticketDetailDialog").dialog({
 		modal:true,
 		autoOpen:false,
-		width:750,
+		width:850,
 		resizable:false,
 		open:function(event) {
 			document.body.style.overflow = "hidden";
@@ -153,7 +153,7 @@ function changeTicketStatus() {
 				} else {
 					//強制的にダイアログを閉じて、再検索
 					$("#ticketDetailDialog").dialog("close");
-					return refresh();
+					return;
 				}
 				return;
 			}
@@ -251,7 +251,7 @@ function openEditTicketDialog(key) {
 	$("#ui-dialog-title-ticketDialog").append(title);
 	$("#ticketDialog-add").attr({value:buttonLabel});
 	
-	$("#todoDialog").dialog("open");
+	$("#ticketDialog").dialog("open");
 	
 	var params = {};
 	params["keyToString"] = key;
@@ -286,7 +286,7 @@ function openEditTicketDialog(key) {
 			$.each(form.ticketMst.statusList, function(){
 				$("#edit_ticket_status").append($("<option />").attr({value:this.value}).text(this.label));
 			});
-			$("#edit_ticket_status").val(form.todoStatus);
+			$("#edit_ticket_status").val(form.status);
 
 			$("#edit_ticket_title").val(form.title);
 			$("#edit_ticket_content").val(form.content);
@@ -333,7 +333,6 @@ function openEditTicketDialog(key) {
 			
 			$("#edit_ticket_versionNo").val(form.versionNo);
 			$("#edit_ticket_keyToString").val(form.keyToString);
-			
 			$("#ticketDialog").dialog("open");
 			return;
 		}
@@ -341,8 +340,8 @@ function openEditTicketDialog(key) {
 
 }
 
-//TODO詳細ダイアログオープン
-function openDetailTodoDialog(key, onlyRefresh) {
+//Ticket詳細ダイアログオープン
+function openDetailTicketDialog(key, onlyRefresh) {
 	
 	if(onlyRefresh == undefined) {
 		onlyRefresh = false;
@@ -355,7 +354,7 @@ function openDetailTodoDialog(key, onlyRefresh) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/bts/todo/ajax/todoDetailInfo",
+		url: "/bts/ticket/ajax/ticketDetailInfo",
 		data: params
 	});
 	
@@ -378,27 +377,38 @@ function openDetailTodoDialog(key, onlyRefresh) {
 			//form情報の設定
 			var form = data.result.form;
 			
+			$("#detail_ticket_no").text(form.id);
 			//コメント用のステータス変更にもステータス構成情報を設定する
-			$("#detail_todo_status").empty();
-			$("#edit_todo_comment_status").empty();
-			$.each(form.statusList, function(){
-				$("#detail_todo_status").append($("<option />").attr({value:this.value}).text(this.label));
-				$("#edit_todo_comment_status").append($("<option />").attr({value:this.value}).text(this.label));
+			$("#detail_ticket_status").empty();
+			$("#edit_ticket_comment_status").empty();
+			$.each(form.ticketMst.statusList, function(){
+				$("#detail_ticket_status").append($("<option />").attr({value:this.value}).text(this.label));
+				$("#edit_ticket_comment_status").append($("<option />").attr({value:this.value}).text(this.label));
 			});
-			$("#detail_todo_status").val(form.todoStatus);
+			$("#detail_ticket_status").val(form.status);
 
-			$("#detail_todo_title").text(form.title);
-			$("#detail_todo_content").html(data.result.contentView);
-			$("#detail_todo_period").text(formatDateyyyyMMdd(form.period));
+			$("#detail_ticket_title").text(form.title);
+			$("#detail_ticket_content").html(data.result.contentView);
+			$("#detail_ticket_endCondition").html(data.result.endConditionView);
+			$("#detail_ticket_period").text(formatDateyyyyMMdd(form.period));
 
-			$("#detail_todo_versionNo").val(form.versionNo);
-			$("#detail_todo_keyToString").val(form.keyToString);
 			
+			$("#detail_ticket_priority").text(form.priority);
+			$("#detail_ticket_category").text(form.category);
+			
+			$("#detail_ticket_milestone").text(data.result.milestone);
+			$("#detail_ticket_kind").text(form.targetKind);
+			$("#detail_ticket_targetVersion").text(form.targetVersion);
+			$("#detail_ticket_targetMember").text(data.result.targetMember);
+
+			$("#detail_ticket_versionNo").val(form.versionNo);
+			$("#detail_ticket_keyToString").val(form.keyToString);
+
 			//コメント再描画
-			renderTodoCommentList(data.result.commentList);
+			renderTicketCommentList(data.result.commentList);
 
 			if(onlyRefresh == false) {
-				$("#todoDetailDialog").dialog("open");
+				$("#ticketDetailDialog").dialog("open");
 			}
 			return;
 		}
@@ -406,8 +416,8 @@ function openDetailTodoDialog(key, onlyRefresh) {
 }
 
 //コメント再描画
-function renderTodoCommentList(list) {
-	$("#todo_comment_list").empty();
+function renderTicketCommentList(list) {
+	$("#ticket_comment_list").empty();
 
 	if(list.length == 0) {
 		return;
@@ -422,29 +432,31 @@ function renderTodoCommentList(list) {
 		var comment = this.comment;
 		var keyToString = this.model.keyToString;
 		var versionNo = this.model.version;
+		var createMemberName = this.createMemberName;
 
 		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
 		$delBtn.click(function(){
-			deleteTodoComment(keyToString, versionNo);
+			deleteTicketComment(keyToString, versionNo);
 		});
 		
 		var $tr = $("<tr />");
 		$tr.append($("<td />").html(comment))
+		    .append($("<td />").text(createMemberName).attr({width:"120px"}))
 			.append($("<td />").text(createdAt).attr({width:"120px"}))
 			.append($("<td />").append($delBtn).attr({width:"50px"}));
 		$tbody.append($tr)
 	});
 	$table.append($tbody);
-	$("#todo_comment_list").append($h2).append($table);
+	$("#ticket_comment_list").append($h2).append($table);
 }
 
 //TODOコメント削除
-function deleteTodoComment(keyToString, versionNo) {
+function deleteTicketComment(keyToString, versionNo) {
 	if(window.confirm("コメントを削除します。本当によろしいですか？") == false) {
 		return;
 	}
 	var params = {};
-	params["keyToString"] = $("#detail_todo_keyToString").val();
+	params["keyToString"] = $("#detail_ticket_keyToString").val();
 	params["commentKeyString"] = keyToString;
 	params["commentVersionNo"] = versionNo;
 	params["jp.co.nemuzuka.token"] = $("#token").val();
@@ -453,7 +465,7 @@ function deleteTodoComment(keyToString, versionNo) {
 	var task;
 	task = $.ajax({
 		type: "POST",
-		url: "/bts/todo/ajax/todoCommentDelete",
+		url: "/bts/ticket/ajax/ticketCommentDelete",
 		data: params
 	});
 	
@@ -467,8 +479,8 @@ function deleteTodoComment(keyToString, versionNo) {
 			infoCheck(data);
 
 			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
-			var key = $("#detail_todo_keyToString").val();
-			setTimeout(function(){ openDetailTodoDialog(key, true) }, 1000);
+			var key = $("#detail_ticket_keyToString").val();
+			setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
 		}
 	);
 
