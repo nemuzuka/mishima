@@ -341,6 +341,11 @@ public class TicketServiceImpl implements TicketService {
 			if(ticketDao.getWithProjectKey(parentKey, model.getProjectKey()) == null) {
 				throw new NotExistTicketException();
 			}
+			
+			if(model.getKey() != null && parentKey.equals(model.getKey())) {
+				//自分を参照する設定になっている場合、Exception
+				throw new NotExistTicketException();
+			}
 		}
 		model.setParentTicketKey(parentKey);
 	}

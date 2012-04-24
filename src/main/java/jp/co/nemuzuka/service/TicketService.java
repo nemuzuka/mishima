@@ -45,7 +45,7 @@ public interface TicketService {
 	 * put処理.
 	 * @param form put対象Form
 	 * @param projectKeyString プロジェクトKey文字列
-	 * @exception NotExistTicketException 親チケット指定時、存在しないidを指定された
+	 * @exception NotExistTicketException 親チケット指定時、存在しないidを指定された or 自分を指定された
 	 */
 	void put(TicketForm form, String projectKeyString) throws NotExistTicketException;
 	

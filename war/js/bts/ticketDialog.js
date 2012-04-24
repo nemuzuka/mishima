@@ -31,6 +31,12 @@ function initTicketDialog() {
 		width:500,
 		resizable:false
 	});
+	$("#ticketSummaryDialog").dialog({
+		modal:true,
+		autoOpen:false,
+		width:600,
+		resizable:false
+	});
 
 	//Ticket登録・更新ダイアログ
 	$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
@@ -64,6 +70,16 @@ function initTicketDialog() {
 	});
 	$("#ticketCommentDialog-cancel").click(function(){
 		$("#ticketCommentDialog").dialog("close");
+	});
+	
+	//Ticket概要ダイアログ
+	$("#ticketSummary-detail").click(function(){
+		var key = $("#detail_summary_keyToString").val();
+		$("#ticketSummaryDialog").dialog("close");
+		openDetailTicketDialog(key);
+	});
+	$("#ticketSummaryDialog-cancel").click(function(){
+		$("#ticketSummaryDialog").dialog("close");
 	});
 }
 
@@ -407,6 +423,9 @@ function openDetailTicketDialog(key, onlyRefresh) {
 			//コメント再描画
 			renderTicketCommentList(data.result.commentList);
 
+			//関連情報描画
+			renderTicketConn(data.result);
+			
 			if(onlyRefresh == false) {
 				$("#ticketDetailDialog").dialog("open");
 			}
@@ -414,6 +433,105 @@ function openDetailTicketDialog(key, onlyRefresh) {
 		}
 	);
 }
+
+//関連情報描画
+function renderTicketConn(result) {
+	$("#detail_ticket_conn_area").empty();
+	
+	var connArray = new Array();
+	if(result.parentTicket != null) {
+		var parentTicket = result.parentTicket;
+		var obj = { 'keyToString': parentTicket.keyToString, 
+				'title': parentTicket.title, 'id':parentTicket.id, 
+				'type':"親", 'status':parentTicket.status};
+		connArray.push(obj);
+	}
+	
+	$.each(result.childTicketList, function(){
+		var obj = { 'keyToString': this.keyToString, 'title': this.title, 'id':this.id, 
+				'type':"子", 'status':this.status};
+		connArray.push(obj);
+	});
+	
+	if(connArray.length == 0) {
+		return;
+	}
+	
+	var $dl = $("<dl />");
+	var $dt = $("<dt />").text("関連");
+	
+	var $table = $("<table />").addClass("table table-bordered result_table comment_list_table");
+	var $tbody = $("<tbody />");
+	
+	
+	$.each(connArray, function(){
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(this.id).addClass("link");
+		var keyToString = this.keyToString
+		$a.click(function(){
+			openTicketSummaryDialog(keyToString);
+		});
+		
+		var $tr = $("<tr />");
+		$tr.append($("<td />").text(this.type).attr({width:"50px"}))
+		    .append($("<td />").append($a).attr({width:"100px"}))
+		    .append($("<td />").text(this.status).attr({width:"100px"}))
+			.append($("<td />").text(this.title));
+		$tbody.append($tr)
+		
+	});
+	$table.append($tbody);
+	var $div = $("<div />").append($table);
+	var $dd = $("<dd />").append($div);
+	$dl = $dl.append($dt).append($dd);
+	$("#detail_ticket_conn_area").append($dl);
+}
+
+//Ticket概要ダイアログオープン
+function openTicketSummaryDialog(key) {
+	
+	var params = {};
+	params["keyToString"] = key;
+	
+	setAjaxDefault();
+	var task;
+	task = $.ajax({
+		type: "POST",
+		url: "/bts/ticket/ajax/ticketDetailInfo",
+		data: params
+	});
+	
+	//後処理の登録
+	//表示対象データが存在せず、再検索を行える場合、再検索をします。
+	task.pipe(
+		function(data) {
+			
+			if(errorCheck(data) == false) {
+				if(data.status == -6) {
+					//表示対象データが存在しない場合、再検索して表示
+					openDetailTicketDialog($("#detail_ticket_keyToString").val(), true);
+				}
+				return;
+			}
+			
+			//tokenの設定
+			$("#token").val(data.token);
+			
+			//form情報の設定
+			var form = data.result.form;
+			$("#detail_ticket_summary_no").text(form.id);
+			$("#detail_ticket_summary_title").text(form.title);
+			$("#detail_ticket_summary_content").html(data.result.contentView);
+			$("#detail_ticket_summary_endCondition").html(data.result.endConditionView);
+			$("#detail_ticket_summary_period").text(formatDateyyyyMMdd(form.period));
+
+			$("#detail_summary_versionNo").val(form.versionNo);
+			$("#detail_summary_keyToString").val(form.keyToString);
+			$("#ticketSummaryDialog").dialog("open");
+			return;
+		}
+	);
+}
+
 
 //コメント再描画
 function renderTicketCommentList(list) {
@@ -450,7 +568,7 @@ function renderTicketCommentList(list) {
 	$("#ticket_comment_list").append($h2).append($table);
 }
 
-//TODOコメント削除
+//Ticketコメント削除
 function deleteTicketComment(keyToString, versionNo) {
 	if(window.confirm("コメントを削除します。本当によろしいですか？") == false) {
 		return;

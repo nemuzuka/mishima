@@ -85,6 +85,8 @@ td{empty-cells: show;}
 
 hr {border: 0 none; height: 2px; color: #08C;background-color: #08C;}
 
+a.link{color: #08C;}
+a:hover.link{color: #005580;}
 /* 表示順変更用 */
 .sort_to {float:left;}
 .sort_action_area {

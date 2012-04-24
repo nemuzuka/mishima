@@ -96,7 +96,8 @@
 				<label class="control-label" for="edit_ticket_parentKey">親チケットNo</label>
 				<div class="controls">
 					<input type="text" id="edit_ticket_parentKey">
-					<p>※親のチケットNoを入力することでチケットに関連付けを行うことができます</p>
+					<p>※親のチケットNoを入力することでチケットに関連付けを行うことができます。<br />
+					※プロジェクトをまたいで登録することはできません</p>
 				</div>
 			</div>
 		</div>
@@ -146,10 +147,10 @@
 
 	<div class="scroll_area">
 		<div class="dialog-area">
-			<dl class="detail_dl">
+			<dl>
 				<dt>チケットNo</dt>
 				<dd><div id="detail_ticket_no"></div></dd>
-				<dt class="detail_dt">ステータス</dt>
+				<dt>ステータス</dt>
 				<dd><select id="detail_ticket_status"></select></dd>
 				<dt>件名</dt>
 				<dd><div id="detail_ticket_title"></div></dd>
@@ -162,7 +163,7 @@
 			</dl>
 			
 			<div style="float:left;">
-				<dl class="detail_dl" style="float:left;">
+				<dl style="float:left;">
 					<dt class="detail_dt">優先度</dt>
 					<dd><div id="detail_ticket_priority"></div></dd>
 					<dt class="detail_dt">カテゴリ</dt>
@@ -186,7 +187,9 @@
 				</dl>
 			</div>
 			
-			<div class="detail_ctrl" style="clear:left;">
+			<div id="detail_ticket_conn_area" style="clear:left;"></div>
+			
+			<div class="detail_ctrl" >
 				<input type="button" class="btn" id="ticketDetail-edit" value="内容変更" />
 				<input type="button" class="btn" id="ticketDetail-Comment-add" value="コメント登録" />
 				<input type="button" class="btn" id="ticketDetail-child-add" value="子チケット作成" />
@@ -205,3 +208,35 @@
 </div>
 </div>
 
+<%-- チケット概要ダイアログ --%>
+<div id="ticketSummaryDialog" title="チケット概要" class="dialog-widget">
+<div class="dialog-container form-horizontal dialog-detail" >
+
+	<div class="scroll_area">
+		<div class="dialog-area">
+			<dl>
+				<dt>チケットNo</dt>
+				<dd><div id="detail_ticket_summary_no"></div></dd>
+				<dt>件名</dt>
+				<dd><div id="detail_ticket_summary_title"></div></dd>
+				<dt>内容</dt>
+				<dd><div id="detail_ticket_summary_content"></div></dd>
+				<dt>終了条件</dt>
+				<dd><div id="detail_ticket_summary_endCondition"></div></dd>
+				<dt>期限</dt>
+				<dd><div id="detail_ticket_summary_period"></div></dd>
+			</dl>
+
+			<div class="detail_ctrl" >
+				<input type="button" class="btn" id="ticketSummary-detail" value="詳細表示" />
+				<input type="hidden" id="detail_summary_versionNo" />
+				<input type="hidden" id="detail_summary_keyToString" />
+			</div>
+		</div>
+	</div>
+
+	<div class="detail_close">
+		<input type="button" class="btn" id="ticketSummaryDialog-cancel" value="閉じる" />
+	</div>
+</div>
+</div>

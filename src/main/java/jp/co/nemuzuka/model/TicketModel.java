@@ -134,6 +134,17 @@ public class TicketModel extends AbsModel {
 	public Key getParentTicketKey() {
 		return parentTicketKey;
 	}
+	
+	/**
+	 * @return id
+	 */
+	public Long getId() {
+		if(key != null) {
+			return key.getId();
+		}
+		return null;
+	}
+	
 	/**
 	 * @param parentTicketKey the parentTicketKey to set
 	 */

@@ -5,6 +5,7 @@ import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
+import jp.co.nemuzuka.exception.NotExistTicketException;
 import jp.co.nemuzuka.form.TicketForm;
 import jp.co.nemuzuka.service.TicketService;
 import jp.co.nemuzuka.service.impl.TicketServiceImpl;
@@ -32,11 +33,20 @@ public class TicketExecuteController extends JsonController {
 	@Validation(method="validate", input="jsonError")
 	protected Object execute() throws Exception {
 		
+		JsonResult result = null;
 		//登録・更新する
-		ticketService.put(form, getUserInfo().selectedProject);
-		
-		JsonResult result = new JsonResult();
-		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
+		try {
+			ticketService.put(form, getUserInfo().selectedProject);
+		} catch(NotExistTicketException e) {
+			//リクエストパラメータに紐付く親Keyが存在しない場合、エラーとして返却
+			result = new JsonResult();
+			result.setStatus(JsonResult.STATUS_NG);
+			result.getErrorMsg().add(ApplicationMessage.get("errors.not.exist.ticket"));
+		}
+		if(result == null) {
+			result = new JsonResult();
+			result.getInfoMsg().add(ApplicationMessage.get("info.success"));
+		}
 		return result;
 	}
 
