@@ -350,6 +350,7 @@ function openDetailTodoDialog(key, onlyRefresh) {
 			if(onlyRefresh == false) {
 				$("#todoDetailDialog").dialog("open");
 			}
+			$(".scroll_area").scrollTop(0);
 			return;
 		}
 	);

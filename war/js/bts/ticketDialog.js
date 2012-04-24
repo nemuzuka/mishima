@@ -429,6 +429,7 @@ function openDetailTicketDialog(key, onlyRefresh) {
 			if(onlyRefresh == false) {
 				$("#ticketDetailDialog").dialog("open");
 			}
+			$(".scroll_area").scrollTop(0);
 			return;
 		}
 	);
