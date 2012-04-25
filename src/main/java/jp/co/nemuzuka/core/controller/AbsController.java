@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.NoSessionCheck;
@@ -31,6 +32,9 @@ import com.google.appengine.api.users.UserServiceFactory;
  * @author kazumune
  */
 public abstract class AbsController extends Controller {
+
+	/** logger. */
+	protected final Logger logger = Logger.getLogger(getClass().getName());
 
 	/** UserInfo格納キー. */
 	protected String USER_INFO_KEY = "userInfo";

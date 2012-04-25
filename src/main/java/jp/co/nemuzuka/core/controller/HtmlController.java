@@ -2,6 +2,7 @@ package jp.co.nemuzuka.core.controller;
 
 import java.lang.reflect.Method;
 import java.util.ConcurrentModificationException;
+import java.util.logging.Level;
 
 import jp.co.nemuzuka.core.annotation.NoRegistCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
@@ -67,6 +68,9 @@ public abstract class HtmlController extends AbsController {
 			//ここに来たら設計バグ
 			super.tearDown();
 			navigation = forward(ERR_URL_SYSERROR);
+		} catch(Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			throw e;
 		}
 		return navigation;
 	}

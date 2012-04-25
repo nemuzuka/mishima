@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
@@ -34,9 +33,6 @@ public abstract class JsonController extends AbsController {
 	private String SETUP_ERROR = "jp.co.nemuzuka.setup.error";
 	/** 前処理エラー存在有無格納キー. */
 	private String SESSION_TIMEOUT_ERROR = "jp.co.nemuzuka.session.timeout.error";
-	
-	/** logger. */
-	protected final Logger logger = Logger.getLogger(getClass().getName());
 	
 	/**
 	 * メイン処理.
@@ -81,6 +77,9 @@ public abstract class JsonController extends AbsController {
 			result.setStatus(JsonResult.DUPLICATE_ERR);
 			result.getErrorMsg().add(ApplicationMessage.get("errors.duplicate"));
 			obj = result;
+		} catch(Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			throw e;
 		}
 		return writeJsonObj(obj);
 	}
