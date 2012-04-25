@@ -143,7 +143,7 @@ function writeTodoList(list) {
 	$table.append($tbody);
 	
 	var cnt = $("#dashboard_limit_cnt").val();
-	var $h = $("<h2 />").addClass("title").text("未完了のTODO(上位" + cnt + "件)");
+	var $h = $("<h2 />").addClass("title").text("未完了TODO(上位" + cnt + "件)");
 	$("#result_area").append($h).append($table);
 }
 
@@ -204,7 +204,7 @@ function writeTicketList(list) {
 
 	var selectedProjectName =  $("#targetProjects option:selected").text();
 	var cnt = $("#dashboard_limit_cnt").val();
-	var $h = $("<h2 />").addClass("title").text("「" + selectedProjectName + "」の未完了のTicket(上位" + cnt + "件)");
+	var $h = $("<h2 />").addClass("title").text("「" + selectedProjectName + "」の未完了チケット(上位" + cnt + "件)");
 	$("#result_area").append($h).append($table);
 
 }
