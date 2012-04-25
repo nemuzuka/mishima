@@ -9,7 +9,9 @@ import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.form.VersionForm;
+import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.VersionService;
+import jp.co.nemuzuka.service.impl.TicketMstServiceImpl;
 import jp.co.nemuzuka.service.impl.VersionServiceImpl;
 
 import org.slim3.controller.validator.Validators;
@@ -26,7 +28,8 @@ public class VersionExecuteController extends JsonController {
 	protected VersionForm form;
 	
 	protected VersionService versionService = VersionServiceImpl.getInstance();
-	
+	protected TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
+
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
@@ -38,7 +41,8 @@ public class VersionExecuteController extends JsonController {
 	protected Object execute() throws Exception {
 		//登録・更新する
 		versionService.put(form, getUserInfo().selectedProject);
-		
+		ticketMstService.initRefreshStartTime(getUserInfo().selectedProject);
+
 		JsonResult result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;

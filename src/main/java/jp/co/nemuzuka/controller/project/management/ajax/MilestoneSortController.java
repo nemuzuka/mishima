@@ -6,7 +6,9 @@ import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.service.MilestoneService;
+import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.impl.MilestoneServiceImpl;
+import jp.co.nemuzuka.service.impl.TicketMstServiceImpl;
 
 import org.slim3.util.ApplicationMessage;
 
@@ -19,7 +21,8 @@ public class MilestoneSortController extends JsonController {
 	private String[] sortedMilestoneKeys;
 	
 	protected MilestoneService milestoneService = MilestoneServiceImpl.getInstance();
-	
+	protected TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
+
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
@@ -36,7 +39,8 @@ public class MilestoneSortController extends JsonController {
 		
 		//登録・更新する
 		milestoneService.updateSortNum(sortedMilestoneKeys, getUserInfo().selectedProject);
-		
+		ticketMstService.initRefreshStartTime(getUserInfo().selectedProject);
+
 		JsonResult result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;

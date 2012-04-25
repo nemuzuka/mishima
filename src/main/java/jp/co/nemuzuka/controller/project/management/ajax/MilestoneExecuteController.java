@@ -12,7 +12,9 @@ import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.form.MilestoneForm;
 import jp.co.nemuzuka.service.MilestoneService;
+import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.impl.MilestoneServiceImpl;
+import jp.co.nemuzuka.service.impl.TicketMstServiceImpl;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
 
@@ -30,7 +32,8 @@ public class MilestoneExecuteController extends JsonController {
 	protected MilestoneForm form;
 	
 	protected MilestoneService milestoneService = MilestoneServiceImpl.getInstance();
-	
+	protected TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
+
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
@@ -49,7 +52,8 @@ public class MilestoneExecuteController extends JsonController {
 		
 		//登録・更新する
 		milestoneService.put(form, getUserInfo().selectedProject);
-		
+		ticketMstService.initRefreshStartTime(getUserInfo().selectedProject);
+
 		JsonResult result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;

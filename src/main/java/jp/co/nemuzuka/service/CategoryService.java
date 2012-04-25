@@ -20,7 +20,7 @@ public interface CategoryService {
 	
 	/**
 	 * put処理.
-	 * 更新後、チケットマスタのキャッシュ更新を行わせます
+	 * 更新後、チケットマスタのキャッシュ更新を行って下さい
 	 * @param form put対象Form
 	 * @param  projectKeyString キー文字列(プロジェクトKey)
 	 */

@@ -8,7 +8,6 @@ import jp.co.nemuzuka.dao.PriorityDao;
 import jp.co.nemuzuka.form.PriorityForm;
 import jp.co.nemuzuka.model.PriorityModel;
 import jp.co.nemuzuka.service.PriorityService;
-import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.LabelValueBeanUtils;
 
@@ -25,7 +24,6 @@ import com.google.appengine.api.datastore.Text;
 public class PriorityServiceImpl implements PriorityService {
 
 	PriorityDao priorityDao = PriorityDao.getInstance();
-	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 
 	private static PriorityServiceImpl impl = new PriorityServiceImpl();
 	
@@ -81,7 +79,6 @@ public class PriorityServiceImpl implements PriorityService {
 		}
 		setModel(model, form);
 		priorityDao.put(model);
-		ticketMstService.initRefreshStartTime(projectKeyString);
 	}
 
 	/* (非 Javadoc)

@@ -10,7 +10,9 @@ import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.form.KindForm;
 import jp.co.nemuzuka.service.KindService;
+import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.impl.KindServiceImpl;
+import jp.co.nemuzuka.service.impl.TicketMstServiceImpl;
 
 import org.slim3.controller.validator.Validators;
 import org.slim3.util.ApplicationMessage;
@@ -26,7 +28,8 @@ public class KindExecuteController extends JsonController {
 	protected KindForm form;
 	
 	protected KindService kindService = KindServiceImpl.getInstance();
-	
+	protected TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
+
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
@@ -38,7 +41,8 @@ public class KindExecuteController extends JsonController {
 	protected Object execute() throws Exception {
 		//登録・更新する
 		kindService.put(form, getUserInfo().selectedProject);
-		
+		ticketMstService.initRefreshStartTime(getUserInfo().selectedProject);
+
 		JsonResult result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;

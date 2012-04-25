@@ -12,7 +12,6 @@ import jp.co.nemuzuka.entity.MilestoneModelEx;
 import jp.co.nemuzuka.form.MilestoneForm;
 import jp.co.nemuzuka.model.MilestoneModel;
 import jp.co.nemuzuka.service.MilestoneService;
-import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
 
@@ -28,7 +27,6 @@ import com.google.appengine.api.datastore.Key;
 public class MilestoneServiceImpl implements MilestoneService {
 
 	MilestoneDao milestoneDao = MilestoneDao.getInstance();
-	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 
 	private static MilestoneServiceImpl impl = new MilestoneServiceImpl();
 	
@@ -82,7 +80,6 @@ public class MilestoneServiceImpl implements MilestoneService {
 		}
 		setModel(model, form, projectKeyToString);
 		milestoneDao.put(model);
-		ticketMstService.initRefreshStartTime(projectKeyToString);
 	}
 
 	/* (non-Javadoc)
@@ -99,7 +96,6 @@ public class MilestoneServiceImpl implements MilestoneService {
 			throw new ConcurrentModificationException();
 		}
 		milestoneDao.delete(model.getKey());
-		ticketMstService.initRefreshStartTime(projectKeyToString);
 	}
 
 	/* (non-Javadoc)
@@ -137,7 +133,6 @@ public class MilestoneServiceImpl implements MilestoneService {
 				sortNum++;
 			}
 		}
-		ticketMstService.initRefreshStartTime(projectKeyToString);
 	}
 
 	/**

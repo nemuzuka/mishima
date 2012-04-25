@@ -8,7 +8,9 @@ import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.form.MilestoneForm;
 import jp.co.nemuzuka.service.MilestoneService;
+import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.impl.MilestoneServiceImpl;
+import jp.co.nemuzuka.service.impl.TicketMstServiceImpl;
 
 import org.slim3.util.ApplicationMessage;
 
@@ -23,7 +25,8 @@ public class MilestoneDeleteController extends JsonController {
 	protected MilestoneForm form;
 	
 	protected MilestoneService milestoneService = MilestoneServiceImpl.getInstance();
-	
+	protected TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
+
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
@@ -34,7 +37,8 @@ public class MilestoneDeleteController extends JsonController {
 	protected Object execute() throws Exception {
 		//削除する
 		milestoneService.delete(form, getUserInfo().selectedProject);
-		
+		ticketMstService.initRefreshStartTime(getUserInfo().selectedProject);
+
 		JsonResult result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));
 		return result;

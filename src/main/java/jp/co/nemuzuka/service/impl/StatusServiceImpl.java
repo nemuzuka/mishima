@@ -14,7 +14,6 @@ import jp.co.nemuzuka.dao.StatusDao;
 import jp.co.nemuzuka.form.StatusForm;
 import jp.co.nemuzuka.model.StatusModel;
 import jp.co.nemuzuka.service.StatusService;
-import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.LabelValueBeanUtils;
 
@@ -25,7 +24,6 @@ import jp.co.nemuzuka.utils.LabelValueBeanUtils;
 public class StatusServiceImpl implements StatusService {
 
 	StatusDao statusDao = StatusDao.getInstance();
-	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 
 	private static StatusServiceImpl impl = new StatusServiceImpl();
 	
@@ -81,7 +79,6 @@ public class StatusServiceImpl implements StatusService {
 		}
 		setModel(model, form);
 		statusDao.put(model);
-		ticketMstService.initRefreshStartTime(projectKeyString);
 	}
 
 	/* (non-Javadoc)

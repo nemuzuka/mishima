@@ -8,7 +8,6 @@ import jp.co.nemuzuka.dao.KindDao;
 import jp.co.nemuzuka.form.KindForm;
 import jp.co.nemuzuka.model.KindModel;
 import jp.co.nemuzuka.service.KindService;
-import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.LabelValueBeanUtils;
 
@@ -25,7 +24,6 @@ import com.google.appengine.api.datastore.Text;
 public class KindServiceImpl implements KindService {
 
 	KindDao kindDao = KindDao.getInstance();
-	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 	
 	private static KindServiceImpl impl = new KindServiceImpl();
 	
@@ -83,7 +81,6 @@ public class KindServiceImpl implements KindService {
 		}
 		setModel(model, form);
 		kindDao.put(model);
-		ticketMstService.initRefreshStartTime(projectKeyString);
 	}
 
 

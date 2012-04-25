@@ -7,7 +7,6 @@ import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.dao.VersionDao;
 import jp.co.nemuzuka.form.VersionForm;
 import jp.co.nemuzuka.model.VersionModel;
-import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.VersionService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.LabelValueBeanUtils;
@@ -25,7 +24,6 @@ import com.google.appengine.api.datastore.Text;
 public class VersionServiceImpl implements VersionService {
 
 	VersionDao versionDao = VersionDao.getInstance();
-	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 
 	private static VersionServiceImpl impl = new VersionServiceImpl();
 	
@@ -81,7 +79,6 @@ public class VersionServiceImpl implements VersionService {
 		}
 		setModel(model, form);
 		versionDao.put(model);
-		ticketMstService.initRefreshStartTime(projectKeyString);
 	}
 
 	/* (non-Javadoc)
