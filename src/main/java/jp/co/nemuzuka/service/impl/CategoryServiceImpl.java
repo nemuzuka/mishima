@@ -8,6 +8,7 @@ import jp.co.nemuzuka.dao.CategoryDao;
 import jp.co.nemuzuka.form.CategoryForm;
 import jp.co.nemuzuka.model.CategoryModel;
 import jp.co.nemuzuka.service.CategoryService;
+import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.LabelValueBeanUtils;
 
@@ -24,6 +25,7 @@ import com.google.appengine.api.datastore.Text;
 public class CategoryServiceImpl implements CategoryService {
 
 	CategoryDao categoryDao = CategoryDao.getInstance();
+	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 
 	private static CategoryServiceImpl impl = new CategoryServiceImpl();
 	
@@ -79,7 +81,7 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		setModel(model, form);
 		categoryDao.put(model);
-		
+		ticketMstService.initRefreshStartTime(projectKeyString);
 	}
 
 	/* (non-Javadoc)

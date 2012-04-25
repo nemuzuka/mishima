@@ -19,6 +19,7 @@ public interface MilestoneService {
 	
 	/**
 	 * put処理.
+	 * 更新後、チケットマスタのキャッシュ更新を行わせます
 	 * @param form put対象Form
 	 * @param projectKeyToString プロジェクトKey文字列
 	 */
@@ -26,6 +27,7 @@ public interface MilestoneService {
 	
 	/**
 	 * delete処理.
+	 * 更新後、チケットマスタのキャッシュ更新を行わせます
 	 * keyとバージョンNoが合致するデータを削除します。
 	 * @param form delete対象Form
 	 * @param projectKeyToString プロジェクトKey文字列
@@ -42,6 +44,7 @@ public interface MilestoneService {
 	/**
 	 * ソート順更新.
 	 * 更新Key文字列配列の順番でソート順を更新します。
+	 * 更新後、チケットマスタのキャッシュ更新を行わせます
 	 * @param sortedKeyToString 更新Key文字列配列
 	 * @param projectKeyToString プロジェクトKey文字列
 	 */
