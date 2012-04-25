@@ -25,7 +25,12 @@ public class LogoutController extends HtmlController {
 		if(session != null) {
 			session.invalidate();
 		}
-		return forward(userService.createLogoutURL("/"));
+		
+		String requestURL = request.getRequestURL().toString();
+		String requestURI = request.getRequestURI();
+		String path = requestURL.replaceAll(requestURI, "/");
+		path = userService.createLogoutURL(path);
+		return redirect(path);
 	}
 
 }
