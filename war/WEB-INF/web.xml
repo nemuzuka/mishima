@@ -1,6 +1,6 @@
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-    <display-name>Archetype Created Web Application</display-name>
+<?xml version="1.0" encoding="utf-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
   
     <context-param>
         <param-name>slim3.rootPackage</param-name>
@@ -58,14 +58,6 @@
         <servlet-class>com.google.apphosting.utils.servlet.SessionCleanupServlet</servlet-class>
     </servlet>
     
-    <!--
-    <servlet>
-        <servlet-name>GWTServiceServlet</servlet-name>
-        <servlet-class>org.slim3.gwt.server.rpc.GWTServiceServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    -->
-      
     <servlet-mapping>
         <servlet-name>GlobalTransactionServlet</servlet-name>
         <url-pattern>/slim3/gtx</url-pattern>
@@ -75,13 +67,6 @@
         <servlet-name>_ah_sessioncleanup</servlet-name>
         <url-pattern>/_ah/sessioncleanup</url-pattern>
     </servlet-mapping>
-    
-    <!--
-    <servlet-mapping>
-        <servlet-name>GWTServiceServlet</servlet-name>
-        <url-pattern>*.s3gwt</url-pattern>
-    </servlet-mapping>
-    -->
     
     <security-constraint>
         <web-resource-collection>
@@ -99,7 +84,6 @@
         </auth-constraint>
     </security-constraint>
     
-    <!-- 全てのリクエストにはGoogleのログインが必要 -->
     <security-constraint>
         <web-resource-collection>
             <url-pattern>/*</url-pattern>
@@ -109,7 +93,6 @@
         </auth-constraint>
     </security-constraint>
 
-    <!-- SessionクリーンのServletは管理者権限のみ -->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>session-cleanup</web-resource-name>
@@ -120,7 +103,6 @@
         </auth-constraint>
     </security-constraint>
 
-    <!-- Sessionタイムアウトの時間設定 -->
     <session-config>
       <session-timeout>30</session-timeout>
     </session-config>
