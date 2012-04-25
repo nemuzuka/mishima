@@ -576,7 +576,13 @@ function openTicketSummaryDialog(key) {
 
 			$("#detail_summary_versionNo").val(form.versionNo);
 			$("#detail_summary_keyToString").val(form.keyToString);
+			
+			//ダイアログ表示時に、inputにフォーカスが当たってしまうので、text系の入力が無い画面には
+			//フォーカスを当てないようにする
+			prependDummyText("ticketSummaryDialog");
 			$("#ticketSummaryDialog").dialog("open");
+			removeDummyText("ticketSummaryDialog");
+			
 			$("#ticketSummaryDialog .dialog-container .scroll_area").scrollTop(0);
 			return;
 		}
