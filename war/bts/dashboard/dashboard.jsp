@@ -12,18 +12,21 @@
   
 <c:param name="content">
 
-<script type="text/javascript" src="/js/bts/dashbord.js"></script>
+<script type="text/javascript" src="/js/bts/dashboard.js"></script>
 
 <div class="widget">
 <form class="form-horizontal">
 
-	<h2 class="title">ダッシュボード<span id="selectedProjectName"></span></h2>
 	<div id="result_area">
 	</div>
 
 </form>
 </div>
 
+<c:import url="/bts/ticket/ticketDialog.jsp"/>
+<c:import url="/bts/todo/todoDialog.jsp"/>
+
+<input type="hidden" id="dashboard_limit_cnt" value="${f:h(userInfo.dashboardLimitCnt)}" />
 <input type="hidden" id="selected_sub_menu" value="sub_menu2" />
 
 </c:param>

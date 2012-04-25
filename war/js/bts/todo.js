@@ -111,9 +111,9 @@ function render(data) {
 	//一覧をレンダリング
 	var $table = $("<table />").addClass("table table-bordered result_table");
 	var $thead = $("<thead />").append($("<tr />")
-				.append($("<th />").text("ステータス"))
+				.append($("<th />").text("ステータス").attr({width:"80px"}))
 				.append($("<th />").text("件名"))
-				.append($("<th />").text("期限"))
+				.append($("<th />").text("期限").attr({width:"100px"}))
 				.append($("<th />").text("").attr({width:"50px"}))
 			);
 	$table.append($thead);

@@ -8,7 +8,6 @@ import jp.co.nemuzuka.service.DashboardService;
 import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.service.TicketService;
 import jp.co.nemuzuka.service.TodoService;
-import jp.co.nemuzuka.utils.ConvertUtils;
 
 /**
  * DashboardServiceの実装クラス.
@@ -19,8 +18,6 @@ public class DashboardServiceImpl implements DashboardService {
 	TodoService todoService = TodoServiceImpl.getInstance();
 	TicketService ticketService = TicketServiceImpl.getInstance();
 	ProjectService projectService = ProjectServiceImpl.getInstance();
-
-	int limit = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.dashboard.list.limit", "10"));
 
 	private static DashboardServiceImpl impl = new DashboardServiceImpl();
 	
@@ -38,25 +35,25 @@ public class DashboardServiceImpl implements DashboardService {
 	private DashboardServiceImpl(){}
 
 	/* (non-Javadoc)
-	 * @see jp.co.nemuzuka.service.DashboardService#getDashboardInfo(java.lang.String, java.lang.String, java.lang.String[])
+	 * @see jp.co.nemuzuka.service.DashboardService#getDashboardInfo(java.lang.String, java.lang.String, java.lang.String[], int)
 	 */
 	@Override
 	public Result getDashboardInfo(String mail, String selectedProject,
-			String[] openStatus) {
+			String[] openStatus, int limitCnt) {
 
 		Result result = new Result();
 
 		//未完了のTODOを取得する
 		TodoDao.Param todoParam = new TodoDao.Param();
 		todoParam.email = mail;
-		todoParam.limit = limit;
+		todoParam.limit = limitCnt;
 		result.todoList = todoService.getList(todoParam, true);
 		
 		//プロジェクトが指定されている場合
 		if(StringUtils.isNotEmpty(selectedProject)) {
 			//プロジェクトに紐付くTicketの一覧を取得する
 			TicketDao.Param ticketParam = new TicketDao.Param();
-			ticketParam.limit = limit;
+			ticketParam.limit = limitCnt;
 			ticketParam.projectKeyString = selectedProject;
 			ticketParam.openStatus = openStatus;
 			result.ticketList = ticketService.getList(ticketParam, mail, true);

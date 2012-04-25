@@ -20,6 +20,9 @@ public class UserInfo implements Serializable {
 	/** 更新開始時刻. */
 	//この時間を超えた場合、参照可能プロジェクトListを再設定する
 	public Date refreshStartTime;
+
+	/** ダッシュボード一覧件数. */
+	public int dashboardLimitCnt;
 	
 	/** 参照可能プロジェクトList. */
 	public List<LabelValueBean> projectList;
@@ -148,5 +151,19 @@ public class UserInfo implements Serializable {
 	 */
 	public void setSelectedProject(String selectedProject) {
 		this.selectedProject = selectedProject;
+	}
+
+	/**
+	 * @return the dashboardLimitCnt
+	 */
+	public int getDashboardLimitCnt() {
+		return dashboardLimitCnt;
+	}
+
+	/**
+	 * @param dashboardLimitCnt the dashboardLimitCnt to set
+	 */
+	public void setDashboardLimitCnt(int dashboardLimitCnt) {
+		this.dashboardLimitCnt = dashboardLimitCnt;
 	}
 }

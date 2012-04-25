@@ -65,7 +65,12 @@ public class TicketMstServiceImpl implements TicketMstService {
 	public TicketMst getTicketMst(String projectKeyString) {
 		
 		//Cash情報から指定した情報を元にTicketデータを取得する
-		return getTicketMst(projectKeyString, getTicketMst4Cash());
+		TicketMstEntity mstEntity = getTicketMst4Cash();
+		TicketMst ticketMst = getTicketMst(projectKeyString, mstEntity);
+
+		//キャッシュを反映させる
+		Memcache.put(TicketMstEntity.class.getName(), mstEntity);
+		return ticketMst;
 	}
 
 

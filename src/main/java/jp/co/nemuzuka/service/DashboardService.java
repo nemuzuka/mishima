@@ -18,9 +18,10 @@ public interface DashboardService {
 	 * @param mail ログインユーザのメールアドレス
 	 * @param selectedProject 現在選択しているプロジェクト
 	 * @param openStatus 現在選択しているプロジェクトにおける、「未完了」を意味するステータス
+	 * @param limitCnt 一覧表示件数
 	 * @return ダッシュボード表示情報
 	 */
-	Result getDashboardInfo(String mail, String selectedProject, String[] openStatus);
+	Result getDashboardInfo(String mail, String selectedProject, String[] openStatus, int limitCnt);
 	
 	/**
 	 * ダッシュボード表示情報.

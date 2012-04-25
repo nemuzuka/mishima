@@ -319,6 +319,9 @@ public abstract class AbsController extends Controller {
 		int min = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.session.refresh.min", "15"));
 		date = DateUtils.addMinutes(date, min);
 		userInfo.refreshStartTime = date;
+		
+		//ダッシュボードに表示するTODO、Ticketの一覧件数を設定
+		userInfo.dashboardLimitCnt = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.dashboard.list.limit", "5"));
 	}
 
 }

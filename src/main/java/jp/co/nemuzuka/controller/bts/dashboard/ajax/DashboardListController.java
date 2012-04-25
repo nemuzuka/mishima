@@ -34,7 +34,7 @@ public class DashboardListController extends JsonController {
 		result.setToken(this.setToken());
 		result.setResult(
 				dashboardService.getDashboardInfo(userService.getCurrentUser().getEmail(), 
-						selectedProject, openStatus));
+						selectedProject, openStatus, getUserInfo().dashboardLimitCnt));
 		return result;
 	}
 }
