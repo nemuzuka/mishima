@@ -91,6 +91,14 @@ $(function(){
 		var targetProject = $("#targetProjects").val();
 		moveUrl("/changeProject?projectKey=" + targetProject);
 	});
+	//削除されたプロジェクトを選択している際の処置
+	//プロジェクトを選択しているにもかかわらず、現在のselectの選択値が空文字の場合、
+	//削除されたプロジェクトを選択している状態と判断
+	if(selectedProject != '') {
+		if($("#targetProjects").val() == '') {
+			$("#targetProjects").change();
+		}
+	}
 
 	//システムマネージャでなければ、各種管理は参照できない
 	if(systemManager == false) {

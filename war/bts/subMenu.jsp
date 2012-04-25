@@ -11,7 +11,7 @@
 <!--
 $(function(){
 	$("#sub_menu2").click(function(){
-		moveUrl("/bts/dashBoard/");
+		moveUrl("/bts/dashboard/");
 	});
 	$("#sub_menu1").click(function(){
 		moveUrl("/bts/todo/");

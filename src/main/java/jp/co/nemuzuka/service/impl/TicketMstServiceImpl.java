@@ -79,6 +79,8 @@ public class TicketMstServiceImpl implements TicketMstService {
 		if(ticketMst != null) {
 			ticketMst.refreshStartTime = null;
 		}
+		//キャッシュを反映させる
+		Memcache.put(TicketMstEntity.class.getName(), mstEntity);
 	}
 	
 	/**
@@ -91,7 +93,6 @@ public class TicketMstServiceImpl implements TicketMstService {
 		TicketMstEntity ticketMstEntity = Memcache.get(TicketMstEntity.class.getName());
 		if(ticketMstEntity == null) {
 			ticketMstEntity = new TicketMstEntity();
-			Memcache.put(TicketMstEntity.class.getName(), ticketMstEntity);
 		}
 		return ticketMstEntity;
 	}

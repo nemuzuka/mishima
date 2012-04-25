@@ -17,6 +17,9 @@ $(function(){
 		openEditTicketDialog("");
 	});
 	
+	var selectedProjectName =  $("#targetProjects option:selected").text();
+	$("#selectedProjectName").text("(" + selectedProjectName + ")");
+
 	initTicket();
 });
 

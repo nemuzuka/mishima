@@ -1,11 +1,11 @@
-package jp.co.nemuzuka.controller.bts;
+package jp.co.nemuzuka.controller.bts.dashboard;
 
 import jp.co.nemuzuka.core.controller.HtmlController;
 
 import org.slim3.controller.Navigation;
 
 /**
- * BTSメインController.
+ * ダッシュボードメインController.
  * @author kazumune
  */
 public class IndexController extends HtmlController {
@@ -15,7 +15,7 @@ public class IndexController extends HtmlController {
 	 */
 	@Override
 	protected Navigation execute() throws Exception {
-		return forward("/bts/dashboard/");
+		return forward("/bts/dashboard/dashboard.jsp");
 	}
 
 }

@@ -26,6 +26,8 @@
     <property name="jp.co.nemuzuka.default.kind" value="機能&#xA;バグ&#xA;課題&#xA;要望&#xA;問い合わせ&#xA;メモ&#xA;" />
     <!-- Session情報(TicketMst)のリフレッシュ間隔(分単位) -->
     <property name="jp.co.nemuzuka.ticket.mst.refresh.min" value="60"/>
+    <!-- ダッシュボート表示時の一覧最大表示件数 -->
+    <property name="jp.co.nemuzuka.dashboard.list.limit" value="10"/>
   </system-properties>
   
   <sessions-enabled>true</sessions-enabled>

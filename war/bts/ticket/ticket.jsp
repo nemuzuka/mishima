@@ -17,7 +17,7 @@
 <div class="widget">
 <form class="form-horizontal">
 
-	<h2 class="title">チケット検索</h2>
+	<h2 class="title">チケット検索<span id="selectedProjectName"></span></h2>
 	<table class="search_table">
 	<tbody>
 	<tr>

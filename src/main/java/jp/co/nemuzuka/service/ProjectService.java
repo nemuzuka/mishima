@@ -54,6 +54,14 @@ public interface ProjectService {
 	TargetProjectResult getUserProjectList(String email, boolean gaeAdmin);
 	
 	/**
+	 * 所属プロジェクト取得.
+	 * ユーザが参照可能なプロジェクト一覧を取得します。
+	 * @param email ユーザのメールアドレス
+	 * @return 該当レコード
+	 */
+	List<ProjectModelEx> getUserProjectList(String email);
+	
+	/**
 	 * 全件取得.
 	 * @return 該当レコード
 	 */

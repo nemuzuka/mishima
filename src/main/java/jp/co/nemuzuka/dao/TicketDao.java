@@ -86,7 +86,9 @@ public class TicketDao extends AbsDao {
 					statusSet.add(statusValue);
 				}
 			}
-			filterSet.add(e.status.in(statusSet));
+			if(statusSet.size() != 0) {
+				filterSet.add(e.status.in(statusSet));
+			}
 		}
 		
 		//件名の検索条件

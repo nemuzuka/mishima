@@ -131,11 +131,7 @@ public class ProjectServiceImpl implements ProjectService {
 		List<ProjectModel> list = projectDao.getList(projectName);
 		List<ProjectModelEx> retList = new ArrayList<ProjectModelEx>();
 		for(ProjectModel target : list) {
-			ProjectModelEx model = new ProjectModelEx();
-			model.setModel(target);
-			model.setProjectSummaryView(HtmlStringUtils.escapeTextAreaString(target.getProjectSummary().getValue()));
-			target.setProjectSummary(null);
-			retList.add(model);
+			retList.add(createProjectModelEx(target));
 		}
 		return retList;
 	}
@@ -170,6 +166,37 @@ public class ProjectServiceImpl implements ProjectService {
 			result.projectList = createUserProjectList(projectKeySet);
 		}
 		return result;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.ProjectService#getUserProjectList(java.lang.String)
+	 */
+	@Override
+	public List<ProjectModelEx> getUserProjectList(String email) {
+		
+		List<ProjectModelEx> retList = new ArrayList<ProjectModelEx>();
+		MemberModel model = memberDao.get(email);
+		if(model == null) {
+			return retList;
+		}
+
+		//ログインユーザが紐付くプロジェクト情報を取得する
+		List<ProjectMemberModel> list = projectMemberDao.getList(null, model.getKeyToString());
+		Set<Key> projectKeySet = new LinkedHashSet<Key>();
+		for(ProjectMemberModel target : list) {
+			projectKeySet.add(target.getProjectKey());
+		}
+		if(projectKeySet.size() == 0) {
+			return retList;
+		}
+		
+		//戻りListを作成する
+		List<ProjectModel> projectList = projectDao.getList(projectKeySet.toArray(new Key[0]));
+		for(ProjectModel target : projectList) {
+			retList.add(createProjectModelEx(target));
+		}
+		return retList;
 	}
 
 	/* (非 Javadoc)
@@ -307,5 +334,19 @@ public class ProjectServiceImpl implements ProjectService {
 		model.createKey(projectKey, memberKey);
 		model.setProjectAuthority(ProjectAuthority.type1);
 		projectMemberDao.put(model);
+	}
+	
+	/**
+	 * ProjectModelEx生成.
+	 * プロジェクト概要を設定した後、Modelの値を初期化します。
+	 * @param target 生成元Model
+	 * @return 生成Model
+	 */
+	private ProjectModelEx createProjectModelEx(ProjectModel target) {
+		ProjectModelEx model = new ProjectModelEx();
+		model.setModel(target);
+		model.setProjectSummaryView(HtmlStringUtils.escapeTextAreaString(target.getProjectSummary().getValue()));
+		target.setProjectSummary(null);
+		return model;
 	}
 }
