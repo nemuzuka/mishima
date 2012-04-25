@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller.error.syserror;
 
+import jp.co.nemuzuka.core.annotation.NoRegistCheck;
 import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.controller.HtmlController;
 
@@ -15,6 +16,7 @@ public class IndexController extends HtmlController {
 	 * @see jp.co.nemuzuka.core.controller.HtmlController#execute()
 	 */
 	@NoSessionCheck
+	@NoRegistCheck
 	@Override
 	protected Navigation execute() throws Exception {
 		return forward("/error/syserror/index.jsp");
