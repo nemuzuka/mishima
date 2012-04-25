@@ -1,7 +1,7 @@
 
 function setAjaxDefault() {
 	$.ajaxSetup({
-		timeout: 10000,		//ミリ秒
+		timeout: 30000,		//ミリ秒
 		ifModified: true,
 		async: true,		//非同期通信
 
