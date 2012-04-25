@@ -66,11 +66,13 @@ public class TicketMstServiceImpl implements TicketMstService {
 		
 		//Cash情報から指定した情報を元にTicketデータを取得する
 		TicketMstEntity mstEntity = getTicketMst4Cash();
-		TicketMst ticketMst = getTicketMst(projectKeyString, mstEntity);
-
-		//キャッシュを反映させる
-		Memcache.put(TicketMstEntity.class.getName(), mstEntity);
-		return ticketMst;
+		Result result = getTicketMst(projectKeyString, mstEntity);
+		
+		if(result.needsPut) {
+			//要素に変更があった場合、キャッシュを反映させる
+			Memcache.put(TicketMstEntity.class.getName(), mstEntity);
+		}
+		return result.ticketMst;
 	}
 
 
@@ -106,19 +108,24 @@ public class TicketMstServiceImpl implements TicketMstService {
 	 * TicketMst情報取得.
 	 * @param projectKeyString キー文字列(プロジェクトKey)
 	 * @param ticketMstEntity チケット用選択肢マスタ管理オブジェクト
-	 * @return 該当TicketMst
+	 * @return 該当TicketMst情報
 	 */
-	private TicketMst getTicketMst(String projectKeyString,
+	private Result getTicketMst(String projectKeyString,
 			TicketMstEntity ticketMstEntity) {
 		
+		boolean needsPut = false;
 		TicketMst ticketMst = ticketMstEntity.map.get(projectKeyString);
 		if(ticketMst == null || ticketMst.refreshStartTime == null || 
 				DateTimeChecker.isOverRefreshStartTime(ticketMst.refreshStartTime)) {
 			//新しく作成する
 			ticketMst = createTicketMst(projectKeyString);
 			ticketMstEntity.map.put(projectKeyString, ticketMst);
+			needsPut = true;
 		}
-		return ticketMst;
+		Result result = new Result();
+		result.ticketMst = ticketMst;
+		result.needsPut = needsPut;
+		return result;
 	}
 
 	/**
@@ -223,4 +230,16 @@ public class TicketMstServiceImpl implements TicketMstService {
 		searchStatusList.add(0, new LabelValueBean(TicketMst.NO_FINISH_LABEL, TicketMst.NO_FINISH));
 		mst.searchStatusList = searchStatusList;
 	}
+	
+	/**
+	 * 戻り値.
+	 * @author k-katagiri
+	 */
+	static class Result {
+		/** TicketMst. */
+		TicketMst ticketMst;
+		/** 生成/再生成を行った場合、true. */
+		boolean needsPut;
+	}
+	
 }

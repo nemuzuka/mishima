@@ -4,6 +4,7 @@ import jp.co.nemuzuka.entity.TicketMstEntity;
 
 /**
  * チケットマスタに関するService.
+ * Memcacheを使用します。
  * @author k-katagiri
  */
 public interface TicketMstService {
