@@ -451,19 +451,19 @@ function openDetailTicketDialog(key, onlyRefresh) {
 			});
 			$("#detail_ticket_status").val(form.status);
 
-			$("#detail_ticket_title").text(form.title);
-			$("#detail_ticket_content").html(data.result.contentView);
-			$("#detail_ticket_endCondition").html(data.result.endConditionView);
-			$("#detail_ticket_period").text(formatDateyyyyMMdd(form.period));
+			$("#detail_ticket_title").text(defaultString4Init(form.title, "　"));
+			$("#detail_ticket_content").html(defaultString4Init(data.result.contentView, "　"));
+			$("#detail_ticket_endCondition").html(defaultString4Init(data.result.endConditionView, "　"));
+			$("#detail_ticket_period").text(defaultString4Init(formatDateyyyyMMdd(form.period), "　"));
 
 			
-			$("#detail_ticket_priority").text(form.priority);
-			$("#detail_ticket_category").text(form.category);
+			$("#detail_ticket_priority").text(defaultString4Init(form.priority, "　"));
+			$("#detail_ticket_category").text(defaultString4Init(form.category, "　"));
 			
-			$("#detail_ticket_milestone").text(data.result.milestone);
-			$("#detail_ticket_kind").text(form.targetKind);
-			$("#detail_ticket_targetVersion").text(form.targetVersion);
-			$("#detail_ticket_targetMember").text(data.result.targetMember);
+			$("#detail_ticket_milestone").text(defaultString4Init(data.result.milestone, "　"));
+			$("#detail_ticket_kind").text(defaultString4Init(form.targetKind, "　"));
+			$("#detail_ticket_targetVersion").text(defaultString4Init(form.targetVersion, "　"));
+			$("#detail_ticket_targetMember").text(defaultString4Init(data.result.targetMember, "　"));
 
 			$("#detail_ticket_versionNo").val(form.versionNo);
 			$("#detail_ticket_keyToString").val(form.keyToString);
@@ -570,9 +570,9 @@ function openTicketSummaryDialog(key) {
 			var form = data.result.form;
 			$("#detail_ticket_summary_no").text(form.id);
 			$("#detail_ticket_summary_title").text(form.title);
-			$("#detail_ticket_summary_content").html(data.result.contentView);
-			$("#detail_ticket_summary_endCondition").html(data.result.endConditionView);
-			$("#detail_ticket_summary_period").text(formatDateyyyyMMdd(form.period));
+			$("#detail_ticket_summary_content").html(defaultString4Init(data.result.contentView, "　"));
+			$("#detail_ticket_summary_endCondition").html(defaultString4Init(data.result.endConditionView, "　"));
+			$("#detail_ticket_summary_period").text(defaultString4Init(formatDateyyyyMMdd(form.period), "　"));
 
 			$("#detail_summary_versionNo").val(form.versionNo);
 			$("#detail_summary_keyToString").val(form.keyToString);

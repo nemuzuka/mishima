@@ -225,6 +225,16 @@ function defaultString(target) {
 }
 
 /**
+ * 引数の文字列がnullか空文字の場合、指定文字列に置き換えます
+ */
+function defaultString4Init(target, replaseStr) {
+	if(target == null || target == '') {
+		return replaseStr;
+	}
+	return target;
+}
+
+/**
  * 値取得.
  * 指定したname属性のvalue値を配列として取得します。
  */

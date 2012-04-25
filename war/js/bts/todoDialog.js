@@ -338,8 +338,8 @@ function openDetailTodoDialog(key, onlyRefresh) {
 			$("#detail_todo_status").val(form.todoStatus);
 
 			$("#detail_todo_title").text(form.title);
-			$("#detail_todo_content").html(data.result.contentView);
-			$("#detail_todo_period").text(formatDateyyyyMMdd(form.period));
+			$("#detail_todo_content").html(defaultString4Init(data.result.contentView, "　"));
+			$("#detail_todo_period").text(defaultString4Init(formatDateyyyyMMdd(form.period), "　"));
 
 			$("#detail_todo_versionNo").val(form.versionNo);
 			$("#detail_todo_keyToString").val(form.keyToString);
