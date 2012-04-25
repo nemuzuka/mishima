@@ -90,9 +90,8 @@ function infoCheck(data) {
 	if(data.infoMsg.length != 0) {
 		//メッセージが存在する場合
 		var msg = getMsgs(data.infoMsg);
-		$.toast({
-			message:msg
-		});
+		var t = $.toaster({showTime:1000, centerX:true, centerY:true});
+		t.toast(msg);
 	}
 	return;
 }

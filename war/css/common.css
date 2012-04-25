@@ -95,10 +95,20 @@ a:hover.link{color: #005580;}
 	margin-left: 10px;
 }
 
-/* toast用 */
-.toast{
-	/* border properties */
-	border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border: 2px solid #CCCCCC;
-	/* Aesthetics */
-	position: absolute; padding: 10px; color: #ffffff; background-color:rgba(0,0,0, 0.8); display:none;
+.toast-container
+{
+	position:fixed;
+	text-align: center;
+	background-color: #444;
+	border:2px solid #666;
+	padding:5px;
+	color:#FFF;
+	z-index:10000;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	
+	-webkit-box-shadow: 3px 3px 6px 1px #7a7a7a;
+	-moz-box-shadow: 3px 3px 6px 1px #7a7a7a;
+	box-shadow: 3px 3px 6px 1px #7a7a7a; 
 }
