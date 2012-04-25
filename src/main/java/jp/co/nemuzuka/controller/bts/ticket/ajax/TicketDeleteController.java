@@ -1,6 +1,7 @@
 package jp.co.nemuzuka.controller.bts.ticket.ajax;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
@@ -27,6 +28,7 @@ public class TicketDeleteController extends JsonController {
 	 */
 	@Override
 	@TokenCheck
+	@ProjectMember
 	protected Object execute() throws Exception {
 		//削除する
 		ticketService.delete(form, getUserInfo().selectedProject);

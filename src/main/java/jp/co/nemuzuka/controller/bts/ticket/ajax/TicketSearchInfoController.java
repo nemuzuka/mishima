@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller.bts.ticket.ajax;
 
+import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.entity.TicketMstEntity.TicketMst;
@@ -19,6 +20,7 @@ public class TicketSearchInfoController extends JsonController {
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
 	@Override
+	@ProjectMember
 	protected Object execute() throws Exception {
 		
 		JsonResult result = new JsonResult();

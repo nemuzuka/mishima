@@ -302,7 +302,8 @@ function openEditTicketDialog(key, ticketNo, baseKey, type) {
 	if(type == undefined) {
 		type = "";
 	}
-	if(baseKey != '') {
+	//コピー新規の場合、初期値をベースKeyに紐付くものを更新
+	if(baseKey != '' && type == 'copyIns') {
 		params["keyToString"] = baseKey;
 	}
 	
@@ -476,6 +477,7 @@ function openDetailTicketDialog(key, onlyRefresh) {
 			if(onlyRefresh == false) {
 				$("#ticketDetailDialog").dialog("open");
 			}
+			$("#ticketDetailDialog .dialog-container .scroll_area").scrollTop(0);
 			$(".scroll_area").scrollTop(0);
 			return;
 		}
@@ -575,7 +577,7 @@ function openTicketSummaryDialog(key) {
 			$("#detail_summary_versionNo").val(form.versionNo);
 			$("#detail_summary_keyToString").val(form.keyToString);
 			$("#ticketSummaryDialog").dialog("open");
-			$(".scroll_area").scrollTop(0);
+			$("#ticketSummaryDialog .dialog-container .scroll_area").scrollTop(0);
 			return;
 		}
 	);

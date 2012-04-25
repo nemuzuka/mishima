@@ -1,6 +1,7 @@
 package jp.co.nemuzuka.controller.bts.ticket.ajax;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.JsonController;
@@ -29,6 +30,7 @@ public class TicketStatusExecuteController extends JsonController {
 	 */
 	@Override
 	@TokenCheck
+	@ProjectMember
 	@Validation(method="validate", input="jsonError")
 	protected Object execute() throws Exception {
 		

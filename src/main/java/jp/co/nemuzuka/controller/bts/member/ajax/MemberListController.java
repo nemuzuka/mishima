@@ -2,6 +2,7 @@ package jp.co.nemuzuka.controller.bts.member.ajax;
 
 import java.util.List;
 
+import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.entity.ProjectMemberModelEx;
@@ -19,6 +20,7 @@ public class MemberListController extends JsonController {
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
+	@ProjectMember
 	@Override
 	protected Object execute() throws Exception {
 		

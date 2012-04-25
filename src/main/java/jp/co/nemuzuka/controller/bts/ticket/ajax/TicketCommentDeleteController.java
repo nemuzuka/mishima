@@ -1,5 +1,6 @@
 package jp.co.nemuzuka.controller.bts.ticket.ajax;
 
+import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
@@ -21,6 +22,7 @@ public class TicketCommentDeleteController extends JsonController {
 	 */
 	@Override
 	@TokenCheck
+	@ProjectMember
 	protected Object execute() throws Exception {
 		
 		String keyString = asString("keyToString");

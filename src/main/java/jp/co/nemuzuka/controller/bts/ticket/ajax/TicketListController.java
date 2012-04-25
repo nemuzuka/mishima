@@ -3,6 +3,7 @@ package jp.co.nemuzuka.controller.bts.ticket.ajax;
 import java.util.List;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
+import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
@@ -33,6 +34,7 @@ public class TicketListController extends JsonController {
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
 	@Override
+	@ProjectMember
 	@Validation(method="validate", input="jsonError")
 	protected Object execute() throws Exception {
 		
