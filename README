@@ -6,6 +6,10 @@ Google App Engine(for Java)上で動作するBTSです。
 ・slim3
 	→基底クラスを個別に作成しています
 ・jQuery
+	→jQueryのプラグインも使用しています
 ・jQuery UI
 ・jsonic
 
+
+
+site: https://yarotee.appspot.com/
