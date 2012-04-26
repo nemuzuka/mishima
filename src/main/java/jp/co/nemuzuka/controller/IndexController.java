@@ -1,10 +1,12 @@
 package jp.co.nemuzuka.controller;
 
+import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.core.annotation.NoSessionCheck;
 import jp.co.nemuzuka.core.controller.HtmlController;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.impl.MemberServiceImpl;
 
+import org.apache.commons.lang.StringUtils;
 import org.slim3.controller.Navigation;
 
 import com.google.appengine.api.users.User;
@@ -29,9 +31,17 @@ public class IndexController extends HtmlController {
 		if(userService.isUserAdmin()) {
 			//アプリケーション管理者の場合、MemberModelに登録されているかチェック
 			User currentUser = userService.getCurrentUser();
-			memberService.checkAndCreateAdminMember(
+			memberService.checkAndCreateMember(
 					currentUser.getEmail(),
-					currentUser.getNickname());
+					currentUser.getNickname(),
+					Authority.admin);
+		} else if(StringUtils.isNotEmpty((String)sessionScope(USE_TRIAL_USER))) {
+			//アプリケーション管理者でなく、trialユーザを使用する場合、MemberModelに登録されているかチェック
+			User currentUser = userService.getCurrentUser();
+			memberService.checkAndCreateMember(
+					currentUser.getEmail(),
+					currentUser.getEmail(),
+					Authority.normal);
 		}
 		return forward("/bts/");
 	}

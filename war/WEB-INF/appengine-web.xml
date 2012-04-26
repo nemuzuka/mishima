@@ -22,6 +22,7 @@
     <property name="jp.co.nemuzuka.default.kind" value="機能&#xA;バグ&#xA;課題&#xA;要望&#xA;問い合わせ&#xA;メモ&#xA;" />
     <property name="jp.co.nemuzuka.ticket.mst.refresh.min" value="60"/>
     <property name="jp.co.nemuzuka.dashboard.list.limit" value="5"/>
+    <property name="jp.co.nemuzuka.trial.mode" value="true"/>
   </system-properties>
   
   <ssl-enabled>true</ssl-enabled>

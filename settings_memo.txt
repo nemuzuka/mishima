@@ -1,0 +1,32 @@
+appengine-web.xmlのsystem-propertiesの説明
+
+java.util.logging.config.file
+	ログ出力定義ファイルの場所
+
+jp.co.nemuzuka.session.refresh.min
+	Session情報(参照可能プロジェクト、システム上の権限)のリフレッシュ間隔(分単位)
+
+jp.co.nemuzuka.default.priority
+	優先度の初期値。改行コードで項目の区切りになります
+	改行コードは&#xA;で記述して下さい
+
+jp.co.nemuzuka.default.status
+	ステータスの初期値
+	カンマ区切りで「ステータス」,「完了とみなすステータス」の項目を分割しています
+
+jp.co.nemuzuka.default.kind
+	種別の初期値
+
+jp.co.nemuzuka.ticket.mst.refresh.min
+	Session情報(チケットマスタ)のリフレッシュ間隔(分単位)
+
+jp.co.nemuzuka.dashboard.list.limit
+	ダッシュボード表示時の一覧最大表示件数
+
+jp.co.nemuzuka.trial.mode
+	trialモードの設定(true/false)
+
+	【通常モード】
+		登録されていないメールアドレスでログインされた場合、強制的にログアウトします
+	【trialモード】
+		登録されていないメールアドレスでログインされた場合、ダミーのユーザに強制的に置き換えます

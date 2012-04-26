@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.appengine.api.datastore.Key;
 
+import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.form.MemberForm;
 import jp.co.nemuzuka.form.PersonForm;
 import jp.co.nemuzuka.model.MemberModel;
@@ -16,12 +17,13 @@ import jp.co.nemuzuka.model.MemberModel;
 public interface MemberService {
 	/**
 	 * Member存在チェック.
-	 * Memberに登録されていれば管理者としてputし、
-	 * 登録されていなければ何も処理を行いません。
+	 * Memberに登録されていなければMemberとしてputし、
+	 * 登録されていれば何も処理を行いません。
 	 * @param mail メールアドレス
 	 * @param nickName ニックネーム
+	 * @param authority 権限
 	 */
-	void checkAndCreateAdminMember(String mail, String nickName);
+	void checkAndCreateMember(String mail, String nickName, Authority authority);
 	
 	/**
 	 * 詳細情報取得.

@@ -43,11 +43,11 @@ public class MemberServiceImpl implements MemberService {
 	 */
 	private MemberServiceImpl(){}
 
-	/* (非 Javadoc)
-	 * @see jp.co.nemuzuka.service.MemberService#checkAndCreateAdminMember(java.lang.String, java.lang.String)
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.MemberService#checkAndCreateMember(java.lang.String, java.lang.String, jp.co.nemuzuka.common.Authority)
 	 */
 	@Override
-	public void checkAndCreateAdminMember(String mail, String nickName) {
+	public void checkAndCreateMember(String mail, String nickName, Authority authority) {
 		MemberModel model = memberDao.get(mail);
 		if(model != null) {
 			return;
@@ -56,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
 		MemberForm form = new MemberForm();
 		form.mail = mail;
 		form.name = nickName;
-		form.authority = Authority.admin.name();
+		form.authority = authority.name();
 		put(form);
 	}
 

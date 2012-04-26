@@ -14,16 +14,22 @@ import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.core.entity.UserInfo;
+import jp.co.nemuzuka.core.entity.mock.UserServiceImpl;
+import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.slim3.controller.Controller;
+import org.slim3.datastore.Datastore;
+import org.slim3.datastore.EntityNotFoundRuntimeException;
 import org.slim3.util.BeanUtil;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -37,22 +43,28 @@ public abstract class AbsController extends Controller {
 	protected final Logger logger = Logger.getLogger(getClass().getName());
 
 	/** UserInfo格納キー. */
-	protected String USER_INFO_KEY = "userInfo";
+	protected static final String USER_INFO_KEY = "userInfo";
 	
 	/** token格納キー. */
 	//Sessionも、リクエストパラメータもこの項目であることが前提です。
-	protected String TOKEN_KEY = "jp.co.nemuzuka.token";
+	protected static final  String TOKEN_KEY = "jp.co.nemuzuka.token";
 
 	/** ログインユーザ情報. */
 	protected UserService userService;
 	
 	//遷移先URL
 	/** システムに登録されていないユーザからのアクセス. */
-	protected String ERR_URL_NO_REGIST = "/error/noregist/";
+	protected static final String ERR_URL_NO_REGIST = "/error/noregist/";
 	/** システムエラー. */
-	protected String ERR_URL_SYSERROR = "/error/syserror/";
+	protected static final String ERR_URL_SYSERROR = "/error/syserror/";
 	/** Sessionタイムアウト. */
-	protected String ERR_SESSION_TIMEOUT = "/error/timeout/";
+	protected static final String ERR_SESSION_TIMEOUT = "/error/timeout/";
+	
+	/** トライアルモードである場合、true. */
+	protected static final boolean trialMode = 
+			Boolean.valueOf(System.getProperty("jp.co.nemuzuka.trial.mode", "false"));
+	/** トライアルモードのユーザを使用するかを保持するSessionKey. */
+	protected static final  String USE_TRIAL_USER = "jp.co.nemuzuka.trial";
 	
 	/**
 	 * 終了時処理.
@@ -80,9 +92,15 @@ public abstract class AbsController extends Controller {
 	/**
 	 * ログインユーザ情報設定.
 	 * 同時にlogout用のURLを設定します。
+	 * Sessionに、trialユーザを使用すると設定されている場合、ログインユーザでなく、ダミー用のユーザを使用します。
 	 */
 	protected void setUserService() {
+		
 		userService = UserServiceFactory.getUserService();
+		if(StringUtils.isNotEmpty((String)sessionScope(USE_TRIAL_USER))) {
+			userService = new UserServiceImpl(userService);
+		}
+		
 		requestScope("logoutURL", "/logout");
 	}
 	
@@ -328,4 +346,27 @@ public abstract class AbsController extends Controller {
 		userInfo.dashboardLimitCnt = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.dashboard.list.limit", "5"));
 	}
 
+	/**
+	 * ユーザ存在チェック.
+	 * メールアドレスがシステム上に登録されているかチェックします。
+	 * @param email チェック対象メールアドレス
+	 * @return　登録されている場合、true
+	 */
+	protected boolean isExistsUser(String email) {
+		Key key = Datastore.createKey(MemberModel.class, email);
+		try {
+			Datastore.get(MemberModel.class, key);
+		} catch(EntityNotFoundRuntimeException e) {
+			
+			//trial版の場合、エラーとせず、user情報を上書きする
+			if(trialMode) {
+				userService = new UserServiceImpl(userService);
+				sessionScope(USE_TRIAL_USER, "1");
+				return true;
+			}
+			//存在しない
+			return false;
+		}
+		return true;
+	}
 }

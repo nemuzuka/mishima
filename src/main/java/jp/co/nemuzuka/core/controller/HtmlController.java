@@ -8,15 +8,11 @@ import jp.co.nemuzuka.core.annotation.NoRegistCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.entity.UserInfo;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
-import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.utils.DateTimeChecker;
 
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
-import org.slim3.datastore.Datastore;
-import org.slim3.datastore.EntityNotFoundRuntimeException;
 
-import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -148,10 +144,7 @@ public abstract class HtmlController extends AbsController {
 			return null;
 		}
 		//登録済みユーザであることを確認する
-		Key key = Datastore.createKey(MemberModel.class, service.getCurrentUser().getEmail());
-		try {
-			Datastore.get(MemberModel.class, key);
-		} catch(EntityNotFoundRuntimeException e) {
+		if(isExistsUser(service.getCurrentUser().getEmail()) == false) {
 			//存在しないので遷移先のNavigation
 			return forward(ERR_URL_NO_REGIST);
 		}

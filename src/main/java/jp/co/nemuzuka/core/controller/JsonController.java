@@ -26,13 +26,13 @@ import org.slim3.util.ApplicationMessage;
 public abstract class JsonController extends AbsController {
 
 	/** tokenエラー存在有無格納キー. */
-	private String TOKEN_ERR_KEY = "jp.co.nemuzuka.token.err";
+	private static final String TOKEN_ERR_KEY = "jp.co.nemuzuka.token.err";
 	/** サーバエラー存在有無格納キー. */
-	private String SEVERE_ERR_KEY = "jp.co.nemuzuka.severe.err";
+	private static final String SEVERE_ERR_KEY = "jp.co.nemuzuka.severe.err";
 	/** 前処理エラー存在有無格納キー. */
-	private String SETUP_ERROR = "jp.co.nemuzuka.setup.error";
+	private static final String SETUP_ERROR = "jp.co.nemuzuka.setup.error";
 	/** 前処理エラー存在有無格納キー. */
-	private String SESSION_TIMEOUT_ERROR = "jp.co.nemuzuka.session.timeout.error";
+	private static final String SESSION_TIMEOUT_ERROR = "jp.co.nemuzuka.session.timeout.error";
 	
 	/**
 	 * メイン処理.

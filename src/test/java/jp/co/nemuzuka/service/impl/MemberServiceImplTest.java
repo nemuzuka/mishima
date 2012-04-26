@@ -35,15 +35,15 @@ public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 	List<Key> memberKeyList;
 	
 	/**
-	 * checkAndCreateAdminMemberのテスト.
+	 * checkAndCreateMemberのテスト.
 	 * 該当データが存在しない場合、新しく１レコード追加される
 	 */
 	@Test
-	public void testCheckAndCreateAdminMember() {
+	public void testCheckAndCreateMember() {
 		
 		assertThat(memberDao.getAllList().size(), is(0));
 		
-		service.checkAndCreateAdminMember("hoge@hage.hige", "ニックネーム");
+		service.checkAndCreateMember("hoge@hage.hige", "ニックネーム", Authority.admin);
 		GlobalTransaction.transaction.get().commit();
 		
 		List<MemberModel> actualList = memberDao.getAllList();
@@ -56,11 +56,11 @@ public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 	}
 	
 	/**
-	 * checkAndCreateAdminMemberのテスト.
+	 * checkAndCreateMemberのテスト.
 	 * すでに存在するので、更新されない
 	 */
 	@Test
-	public void testCheckAndCreateAdminMember2() {
+	public void testCheckAndCreateMember2() {
 		
 		//テスト用のデータを作成
 		MemberModel model = new MemberModel();
@@ -72,7 +72,7 @@ public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
 		
-		service.checkAndCreateAdminMember("hoge@hige.hage", "にっくねーむ");
+		service.checkAndCreateMember("hoge@hige.hage", "にっくねーむ", Authority.admin);
 		GlobalTransaction.transaction.get().commit();
 		
 		List<MemberModel> actualList = memberDao.getAllList();
