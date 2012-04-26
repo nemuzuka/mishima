@@ -35,15 +35,16 @@ public class CurrentDateUtils {
 	 */
 	public Date getCurrentDate() {
 		
+		Date date = new Date();
+		date = DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
-		String dateStr = sdf.format(new Date());
-		Date date;
+		String dateStr = sdf.format(date);
 		try {
 			date = sdf.parse(dateStr);
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}
-		return DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
+		return date;
 	}
 
 	/**
