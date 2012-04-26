@@ -24,5 +24,6 @@
     <property name="jp.co.nemuzuka.dashboard.list.limit" value="5"/>
   </system-properties>
   
+  <ssl-enabled>true</ssl-enabled>
   <sessions-enabled>true</sessions-enabled>
 </appengine-web-app>
