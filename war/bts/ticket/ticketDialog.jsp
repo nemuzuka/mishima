@@ -23,7 +23,7 @@
 		<div class="control-group">
 			<label class="control-label" for="edit_ticket_title">件名</label>
 			<div class="controls">
-				<input type="text" class="input-xlarge required-input" id="edit_ticket_title">
+				<input type="text" class="input-xxlarge required-input" id="edit_ticket_title">
 			</div>
 		</div>
 	
