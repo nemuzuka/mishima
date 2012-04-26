@@ -8,6 +8,11 @@ function initTodoDialog() {
 			document.body.style.overflow = "hidden";
 		},
 		close:function(event) {
+			
+			//詳細ダイアログを開いている場合、overflowの変更はしない
+			if($("todoDetailDialog").dialog("isOpen") == true) {
+				return;
+			}
 			document.body.style.overflow = "visible";
 		}
 	});
@@ -48,7 +53,6 @@ function initTodoDialog() {
 		$("#todoDetailDialog").dialog("close");
 	});
 	$("#todoDetail-edit").click(function(){
-		$("#todoDetailDialog").dialog("close");
 		openEditTodoDialog($("#detail_todo_keyToString").val())
 	})
 	$("#detail_todo_status").change(function(){
@@ -206,7 +210,7 @@ function executeTodo() {
 				return refresh();
 			} else {
 				//更新の場合、詳細ダイアログオープン(メッセージを見せる必要上、1秒sleepしてから開く)
-				setTimeout(function(){ openDetailTodoDialog(key) }, 1000);
+				setTimeout(function(){ openDetailTodoDialog(key, true) }, 1000);
 			}
 		}
 	);

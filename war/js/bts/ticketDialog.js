@@ -8,6 +8,10 @@ function initTicketDialog() {
 			document.body.style.overflow = "hidden";
 		},
 		close:function(event) {
+			//詳細ダイアログを開いている場合、overflowの変更はしない
+			if($("ticketDetailDialog").dialog("isOpen") == true) {
+				return;
+			}
 			document.body.style.overflow = "visible";
 		}
 	});
@@ -54,7 +58,6 @@ function initTicketDialog() {
 		$("#ticketDetailDialog").dialog("close");
 	});
 	$("#ticketDetail-edit").click(function(){
-		$("#ticketDetailDialog").dialog("close");
 		openEditTicketDialog($("#detail_ticket_keyToString").val())
 	})
 	$("#detail_ticket_status").change(function(){
@@ -64,7 +67,6 @@ function initTicketDialog() {
 		openTicketDetailCommentDialog();
 	});
 	$("#ticketDetail-child-add").click(function(){
-		$("#ticketDetailDialog").dialog("close");
 		var ticketNo = $("#detail_ticket_no").text();
 		var baseKey = $("#detail_ticket_keyToString").val();
 		openEditTicketDialog("", ticketNo, baseKey, "child");
@@ -230,7 +232,6 @@ function executeTicket() {
 			var key = $("#edit_ticket_keyToString").val();
 			if(key == '') {
 				//基本Keyが未設定で、ベースKeyが設定されている場合、ベースKeyに紐付く詳細情報を参照する
-				//この時、詳細ダイアログは閉じているので、新たに開く
 				key = $("#edit_ticket_base_keyToString").val();
 			}
 			if(key == '') {
@@ -238,7 +239,7 @@ function executeTicket() {
 				return refresh();
 			} else {
 				//更新の場合、詳細ダイアログオープン(メッセージを見せる必要上、1秒sleepしてから開く)
-				setTimeout(function(){ openDetailTicketDialog(key) }, 1000);
+				setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
 			}
 		}
 	);
