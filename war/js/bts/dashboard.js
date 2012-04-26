@@ -42,16 +42,32 @@ function render(data) {
 	//tokenの設定
 	$("#token").val(data.token);
 	
+	var viewMsg = false;
 	if(data.result.viewProjectList == true) {
 		//TODOListを書き込む
 		writeTodoList(data.result.todoList);
 		//プロジェクトListを書き込む
 		writeProjectList(data.result.projectList);
+		
+		if(data.result.todoList.length == 0 && data.result.projectList.length == 0) {
+			viewMsg = true;
+		}
+		
 	} else {
 		//TicketListを書き込む
 		writeTicketList(data.result.ticketList);
 		//TODOListを書き込む
 		writeTodoList(data.result.todoList);
+		if(data.result.ticketList.length == 0 && data.result.todoList.length == 0) {
+			viewMsg = true;
+		}
+	}
+
+	//1件も表示するデータが存在しない場合、メッセージを表示
+	if(viewMsg == true) {
+		msg = "表示するデータは存在しません。";
+		var t = $.toaster({showTime:1000, centerX:true, centerY:true});
+		t.toast(msg);
 	}
 }
 
