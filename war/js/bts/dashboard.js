@@ -169,7 +169,7 @@ function writeTicketList(list) {
 		var status = this.model.status;
 		var title = this.model.title;
 		var memberName = this.targetMemberName;
-		var id = this.id;
+		var id = this.model.no;
 		var versionNo = this.model.version;
 		var period = this.period;
 		var createdAt = this.createdAt;
