@@ -117,7 +117,17 @@ public class MemberDao extends AbsDao {
 			return new ArrayList<MemberModel>();
 		}
 
-		return Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0])).asList();
+		return Datastore.query(e).filter(filterSet.toArray(new FilterCriterion[0]))
+				.sortInMemory(e.authority.asc, e.key.asc).asList();
 	}
 	
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.dao.AbsDao#getAllList()
+	 */
+	@SuppressWarnings("unchecked")
+	public List<MemberModel> getAllList() {
+		MemberModelMeta e = (MemberModelMeta) getModelMeta();
+		List<MemberModel> list = super.getAllList(e.authority.asc, e.key.asc);
+		return list;
+	}
 }

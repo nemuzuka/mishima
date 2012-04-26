@@ -144,7 +144,9 @@ public class MemberServiceImplTest extends AppEngineTestCase4HRD {
 		List<MemberModel> actualList = service.getAllList();
 		assertThat(actualList.size(), is(4));
 		assertThat(actualList.get(0).getAuthorityLabel(), is("管理者"));
-		assertThat(actualList.get(1).getAuthorityLabel(), is("一般"));
+		assertThat(actualList.get(1).getAuthorityLabel(), is("管理者"));
+		assertThat(actualList.get(2).getAuthorityLabel(), is("一般"));
+		assertThat(actualList.get(3).getAuthorityLabel(), is("一般"));
 	}
 	
 	

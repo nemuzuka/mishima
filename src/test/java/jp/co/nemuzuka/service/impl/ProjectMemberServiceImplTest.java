@@ -93,13 +93,13 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(actual.member.getMail(), is(""));
 		
 		actual = actualList.get(1);
-		assertThat(actual.projectMember, is(true));
-		assertThat(actual.authorityCode, is(ProjectAuthority.type1.getCode()));
+		assertThat(actual.projectMember, is(false));
+		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
 		assertThat(actual.member.getMail(), is(""));
 
 		actual = actualList.get(2);
-		assertThat(actual.projectMember, is(false));
-		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
+		assertThat(actual.projectMember, is(true));
+		assertThat(actual.authorityCode, is(ProjectAuthority.type1.getCode()));
 		assertThat(actual.member.getMail(), is(""));
 
 		actual = actualList.get(3);
@@ -124,12 +124,12 @@ public class ProjectMemberServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(actual.member.getMail(), is(""));
 		
 		actual = actualList.get(1);
-		assertThat(actual.projectMember, is(false));
+		assertThat(actual.projectMember, is(true));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
 		assertThat(actual.member.getMail(), is(""));
 
 		actual = actualList.get(2);
-		assertThat(actual.projectMember, is(true));
+		assertThat(actual.projectMember, is(false));
 		assertThat(actual.authorityCode, is(ProjectAuthority.type3.getCode()));
 		assertThat(actual.member.getMail(), is(""));
 

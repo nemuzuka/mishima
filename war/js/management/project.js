@@ -24,7 +24,7 @@ function initDialog(){
 	$("#projectDialog").dialog({
 		modal:true,
 		autoOpen:false,
-		width:500,
+		width:600,
 		resizable:false,
 		open:function(event) {
 			document.body.style.overflow = "hidden";
