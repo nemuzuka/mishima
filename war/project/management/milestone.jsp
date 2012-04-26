@@ -78,8 +78,12 @@
 				<select id="milestone_to" size="10" multiple="multiple"></select>
 			</div>
 			<div class="sort_action_area">
-				<input type="button" class="btn sort_up_button" id="sort_up" value="↑" style="float:left;margin-bottom: 50px;" /><br/>
-				<input type="button" class="btn" id="sort_down" value="↓" />
+				<div  style="margin-bottom: 50px;">
+					<input type="button" class="btn sort_up_button" id="sort_up" value="↑" />
+				</div>
+				<div>
+					<input type="button" class="btn" id="sort_down" value="↓" />
+				</div>
 			</div>
 		</div>
 	</div>
