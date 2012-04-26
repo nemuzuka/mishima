@@ -5,6 +5,7 @@ import java.util.List;
 import jp.co.nemuzuka.dao.TicketDao;
 import jp.co.nemuzuka.entity.TicketModelEx;
 import jp.co.nemuzuka.exception.NotExistTicketException;
+import jp.co.nemuzuka.exception.ParentSelfTicketException;
 import jp.co.nemuzuka.form.TicketCommentForm;
 import jp.co.nemuzuka.form.TicketDetailForm;
 import jp.co.nemuzuka.form.TicketForm;
@@ -45,9 +46,10 @@ public interface TicketService {
 	 * put処理.
 	 * @param form put対象Form
 	 * @param projectKeyString プロジェクトKey文字列
-	 * @exception NotExistTicketException 親チケット指定時、存在しないidを指定された or 自分を指定された
+	 * @exception NotExistTicketException 親チケット指定時、存在しないnoを指定された
+	 * @exception ParentSelfTicketException 親チケット指定時、自分を指定された
 	 */
-	void put(TicketForm form, String projectKeyString) throws NotExistTicketException;
+	void put(TicketForm form, String projectKeyString) throws NotExistTicketException, ParentSelfTicketException;
 	
 	/**
 	 * delete処理.

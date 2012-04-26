@@ -21,6 +21,7 @@ import jp.co.nemuzuka.dao.TicketDao;
 import jp.co.nemuzuka.dao.TicketDao.Param;
 import jp.co.nemuzuka.entity.TicketModelEx;
 import jp.co.nemuzuka.exception.NotExistTicketException;
+import jp.co.nemuzuka.exception.ParentSelfTicketException;
 import jp.co.nemuzuka.form.TicketCommentForm;
 import jp.co.nemuzuka.form.TicketDetailForm;
 import jp.co.nemuzuka.form.TicketForm;
@@ -41,6 +42,7 @@ import jp.co.nemuzuka.utils.DateTimeUtils;
 public class TicketServiceImpl implements TicketService {
 
 	TicketDao ticketDao = TicketDao.getInstance();
+	
 	CommentService commentService = CommentServiceImpl.getInstance();
 	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 	MemberService memberService = MemberServiceImpl.getInstance();
@@ -151,11 +153,8 @@ public class TicketServiceImpl implements TicketService {
 		return detailForm;
 	}
 
-	/* (non-Javadoc)
-	 * @see jp.co.nemuzuka.service.TicketService#put(jp.co.nemuzuka.form.TicketForm, java.lang.String)
-	 */
 	@Override
-	public void put(TicketForm form, String projectKeyString) throws NotExistTicketException {
+	public void put(TicketForm form, String projectKeyString) throws NotExistTicketException, ParentSelfTicketException {
 		TicketModel model = null;
 		Key projectKey = Datastore.stringToKey(projectKeyString);
 		if(StringUtils.isNotEmpty(form.keyToString)) {
@@ -296,19 +295,26 @@ public class TicketServiceImpl implements TicketService {
 			form.targetMember = Datastore.keyToString(model.getTargetMemberKey());
 		}
 		if(model.getParentTicketKey() != null) {
-			form.parentKey = ConvertUtils.toString(model.getParentTicketKey().getId());
+			
+			//親Keyに紐付くNoを変換して、設定
+			TicketModel parentModel = ticketDao.getWithProjectKey(
+					model.getParentTicketKey(), model.getProjectKey());
+			if(parentModel != null) {
+				form.parentKey = ConvertUtils.toString(parentModel.getNo());
+			}
 		}
 		form.versionNo = ConvertUtils.toString(model.getVersion());
-		form.id = ConvertUtils.toString(model.getKey().getId());
+		form.id = ConvertUtils.toString(model.getNo());
 	}
 
 	/**
 	 * Model情報設定.
 	 * @param model 設定対象Model
 	 * @param form 設定Form
-	 * @throws NotExistTicketException 親チケット指定時、存在しないチケットIDを指定された
+	 * @throws NotExistTicketException 親チケット指定時、存在しないチケットNoを指定された
+	 * @throws ParentSelfTicketException 親チケット指定時、自分のチケットNoを指定された
 	 */
-	private void setModel(TicketModel model, TicketForm form) throws NotExistTicketException {
+	private void setModel(TicketModel model, TicketForm form) throws NotExistTicketException, ParentSelfTicketException {
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		model.setTitle(form.title);
 		model.setContent(new Text(StringUtils.defaultString(form.content)));
@@ -336,15 +342,16 @@ public class TicketServiceImpl implements TicketService {
 		
 		Key parentKey = null;
 		if(StringUtils.isNotEmpty(form.parentKey)) {
-			parentKey = Datastore.createKey(TicketModel.class, ConvertUtils.toLong(form.parentKey));
-			//Ticketを存在チェックし、存在なければ、Exception
-			if(ticketDao.getWithProjectKey(parentKey, model.getProjectKey()) == null) {
+			//入力されたNoに紐付くTicketを存在チェックし、存在なければ、Exception
+			parentKey = ticketDao.getWithNoAndProjectKey(
+					ConvertUtils.toLong(form.parentKey), model.getProjectKey());
+			if(parentKey == null) {
 				throw new NotExistTicketException();
 			}
 			
-			if(model.getKey() != null && parentKey.equals(model.getKey())) {
+			if(parentKey.equals(model.getKey())) {
 				//自分を参照する設定になっている場合、Exception
-				throw new NotExistTicketException();
+				throw new ParentSelfTicketException();
 			}
 		}
 		model.setParentTicketKey(parentKey);
@@ -388,18 +395,24 @@ public class TicketServiceImpl implements TicketService {
 	private void setTicketConn(TicketDetailForm detailForm, String projectKeyString) {
 		
 		detailForm.childTicketList = new ArrayList<TicketModel>();
+		Key projectKey = Datastore.stringToKey(projectKeyString);
 
 		Set<Key> targetKeySet = new LinkedHashSet<Key>();
 		//自分の親が設定されている場合
 		Key parentKey = null;
 		if(StringUtils.isNotEmpty(detailForm.form.parentKey)) {
-			parentKey = Datastore.createKey(TicketModel.class, ConvertUtils.toLong(detailForm.form.parentKey));
-			targetKeySet.add(parentKey);
+			
+			//Noからデータを取得
+			parentKey = ticketDao.getWithNoAndProjectKey(
+					ConvertUtils.toLong(detailForm.form.parentKey), 
+					projectKey);
+			if(parentKey != null) {
+				targetKeySet.add(parentKey);
+			}
 		}
 		
 		//自分が親になっているTicketを取得
 		Key self = Datastore.stringToKey(detailForm.form.keyToString);
-		Key projectKey = Datastore.stringToKey(projectKeyString);
 		List<Key> childKeyList = ticketDao.getChildList(self, projectKey);
 		targetKeySet.addAll(childKeyList);
 		if(targetKeySet.size() == 0) {

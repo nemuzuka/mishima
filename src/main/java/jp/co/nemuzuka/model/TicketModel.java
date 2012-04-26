@@ -65,6 +65,9 @@ public class TicketModel extends AbsModel {
 	/** 親TicketKey. */
 	private Key parentTicketKey;
 	
+	/** チケットNo. */
+	private Long no;
+	
 	/** 登録日時. */
 	@Attribute(listener = CreationDate.class, unindexed=true)
 	private Date createdAt;
@@ -133,16 +136,6 @@ public class TicketModel extends AbsModel {
 	@JSONHint(ignore=true)
 	public Key getParentTicketKey() {
 		return parentTicketKey;
-	}
-	
-	/**
-	 * @return id
-	 */
-	public Long getId() {
-		if(key != null) {
-			return key.getId();
-		}
-		return null;
 	}
 	
 	/**
@@ -287,6 +280,18 @@ public class TicketModel extends AbsModel {
 	 */
 	public void setKey(Key key) {
 		this.key = key;
+	}
+	/**
+	 * @return the no
+	 */
+	public Long getNo() {
+		return no;
+	}
+	/**
+	 * @param no the no to set
+	 */
+	public void setNo(Long no) {
+		this.no = no;
 	}
 
 }

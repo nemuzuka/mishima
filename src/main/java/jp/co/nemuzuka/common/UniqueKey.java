@@ -9,5 +9,7 @@ public enum UniqueKey {
 	member,
 	/** ProjectMemberModel用. */
 	projectMember,
+	/** TocketModel用. */
+	ticketSeq,
 	;
 }

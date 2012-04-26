@@ -51,7 +51,7 @@ public class TicketForm implements Serializable {
 	/** 対応メンバーKey. */
 	public String targetMember;
 
-	/** 親チケットKey(id). */
+	/** 親チケットKey(no). */
 	public String parentKey;
 	
 	/** バージョンNo. */

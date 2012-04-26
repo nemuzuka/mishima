@@ -10,7 +10,7 @@ function initTodoDialog() {
 		close:function(event) {
 			
 			//詳細ダイアログを開いている場合、overflowの変更はしない
-			if($("todoDetailDialog").dialog("isOpen") == true) {
+			if($("#todoDetailDialog").dialog("isOpen") == true) {
 				return;
 			}
 			document.body.style.overflow = "visible";

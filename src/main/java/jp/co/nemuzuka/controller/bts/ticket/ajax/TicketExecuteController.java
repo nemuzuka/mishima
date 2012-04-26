@@ -7,6 +7,7 @@ import jp.co.nemuzuka.core.annotation.Validation;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.exception.NotExistTicketException;
+import jp.co.nemuzuka.exception.ParentSelfTicketException;
 import jp.co.nemuzuka.form.TicketForm;
 import jp.co.nemuzuka.service.TicketService;
 import jp.co.nemuzuka.service.impl.TicketServiceImpl;
@@ -44,6 +45,11 @@ public class TicketExecuteController extends JsonController {
 			result = new JsonResult();
 			result.setStatus(JsonResult.STATUS_NG);
 			result.getErrorMsg().add(ApplicationMessage.get("errors.not.exist.ticket"));
+		} catch(ParentSelfTicketException e) {
+			//自分を親として指定した場合、エラーとして返却
+			result = new JsonResult();
+			result.setStatus(JsonResult.STATUS_NG);
+			result.getErrorMsg().add(ApplicationMessage.get("errors.parent.self.ticket"));
 		}
 		if(result == null) {
 			result = new JsonResult();

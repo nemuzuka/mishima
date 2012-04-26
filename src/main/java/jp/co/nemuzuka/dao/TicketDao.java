@@ -48,6 +48,8 @@ public class TicketDao extends AbsDao {
 		return TicketModel.class;
 	}
 
+	TicketSeqDao ticketSeqDao = TicketSeqDao.getInstance();
+
 	private static TicketDao ticketDao = new TicketDao();
 	
 	/**
@@ -63,6 +65,19 @@ public class TicketDao extends AbsDao {
 	 */
 	private TicketDao() {}
 
+	/**
+	 * put処理.
+	 * 新規登録の場合、Noを設定します。
+	 * @param model 対象Model
+	 */
+	public void put(TicketModel model){
+		if(model.getKey() == null) {
+			//新規の場合
+			model.setNo(ticketSeqDao.createMaxTicketSeqModel().getNo());
+		}
+		super.put(model);
+	}
+	
 	/**
 	 * List取得.
 	 * @param param 検索条件
@@ -146,7 +161,7 @@ public class TicketDao extends AbsDao {
 			//期限の昇順でソートする
 			sortSet.add(e.period.asc);
 		}
-		sortSet.add(e.key.asc);
+		sortSet.add(e.no.asc);
 		
 		//プロジェクトの検索条件
 		Key projectKey = Datastore.stringToKey(param.projectKeyString);
@@ -277,6 +292,21 @@ public class TicketDao extends AbsDao {
 			}
 		}
 		return model;
+	}
+	
+	/**
+	 * Model取得.
+	 * @param no TicketModelのNo
+	 * @param projectKey ProjectModelのKey
+	 * @return 存在すればModelのKey
+	 */
+	public Key getWithNoAndProjectKey(Long no, Key projectKey) {
+		TicketModelMeta e = (TicketModelMeta) getModelMeta();
+		List<Key> list = Datastore.query(e).filter(e.no.equal(no)).sortInMemory(e.key.asc).asKeyList();
+		if(list.size() != 0) {
+			return list.get(0);
+		}
+		return null;
 	}
 	
 	/**

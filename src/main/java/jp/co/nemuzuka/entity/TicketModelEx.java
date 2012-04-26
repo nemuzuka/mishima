@@ -54,14 +54,6 @@ public class TicketModelEx {
 		return periodStatus;
 	}
 
-
-	/**
-	 * @return ID
-	 */
-	public Long getId() {
-		return model.getKey().getId();
-	}
-
 	/**
 	 * @return the model
 	 */

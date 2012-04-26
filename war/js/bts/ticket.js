@@ -155,7 +155,7 @@ function render(data) {
 		var status = this.model.status;
 		var title = this.model.title;
 		var memberName = this.targetMemberName;
-		var id = this.id;
+		var no = this.model.no;
 		var versionNo = this.model.version;
 		var period = this.period;
 		var createdAt = this.createdAt;
@@ -167,7 +167,7 @@ function render(data) {
 			deleteTicket(title, keyToString, versionNo);
 		});
 		
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(id);
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(no);
 		$a.click(function(){
 			openDetailTicketDialog(keyToString);
 		});

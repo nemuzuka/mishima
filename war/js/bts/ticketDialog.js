@@ -9,7 +9,7 @@ function initTicketDialog() {
 		},
 		close:function(event) {
 			//詳細ダイアログを開いている場合、overflowの変更はしない
-			if($("ticketDetailDialog").dialog("isOpen") == true) {
+			if($("#ticketDetailDialog").dialog("isOpen") == true) {
 				return;
 			}
 			document.body.style.overflow = "visible";
@@ -493,13 +493,13 @@ function renderTicketConn(result) {
 	if(result.parentTicket != null) {
 		var parentTicket = result.parentTicket;
 		var obj = { 'keyToString': parentTicket.keyToString, 
-				'title': parentTicket.title, 'id':parentTicket.id, 
+				'title': parentTicket.title, 'id':parentTicket.no, 
 				'type':"親", 'status':parentTicket.status};
 		connArray.push(obj);
 	}
 	
 	$.each(result.childTicketList, function(){
-		var obj = { 'keyToString': this.keyToString, 'title': this.title, 'id':this.id, 
+		var obj = { 'keyToString': this.keyToString, 'title': this.title, 'id':this.no, 
 				'type':"子", 'status':this.status};
 		connArray.push(obj);
 	});

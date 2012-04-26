@@ -17,6 +17,7 @@ import jp.co.nemuzuka.dao.TicketDao;
 import jp.co.nemuzuka.entity.TicketModelEx;
 import jp.co.nemuzuka.entity.TicketMstEntity.TicketMst;
 import jp.co.nemuzuka.exception.NotExistTicketException;
+import jp.co.nemuzuka.exception.ParentSelfTicketException;
 import jp.co.nemuzuka.form.TicketCommentForm;
 import jp.co.nemuzuka.form.TicketDetailForm;
 import jp.co.nemuzuka.form.TicketForm;
@@ -44,12 +45,17 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 	TicketDao ticketDao = TicketDao.getInstance();
 	ProjectDao projectDao = ProjectDao.getInstance();
 	List<Key> ticketKeyList = new ArrayList<Key>();
+	List<Long> ticketNoList = new ArrayList<Long>();
 	List<Key> projectKeyList = new ArrayList<Key>();
 	
 	//親子関係のTicket
 	Key parentKey = null;
 	Key childKey = null;
 	List<Key> grandChildKey = new ArrayList<Key>();
+
+	Long parentNo = null;
+	Long childNo = null;
+	List<Long> grandChildNo = new ArrayList<Long>();
 
 	/**
 	 * putCommentのテスト.
@@ -210,7 +216,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		form.milestone = Datastore.keyToString(Datastore.createKey(MilestoneModel.class, 30L));
 		form.targetVersion = "1.0.9";
 		form.targetMember = Datastore.keyToString(Datastore.createKey(MemberModel.class, 900L));
-		form.parentKey = ConvertUtils.toString(ticketKeyList.get(0).getId());
+		form.parentKey = ConvertUtils.toString(ticketNoList.get(0));
 		service.put(form, projectKeyString);
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
@@ -224,6 +230,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		param.openStatus = openStatus;
 		List<TicketModelEx> actualList = service.getList(param, "", false);
 		Key createTicketKey = actualList.get(0).getModel().getKey();
+		Long createTicketNo = actualList.get(0).getModel().getNo();
 
 		form = service.get(Datastore.keyToString(createTicketKey), projectKeyString);
 		assertThat(form.keyToString, is(Datastore.keyToString(createTicketKey)));
@@ -238,7 +245,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(form.milestone, is(Datastore.keyToString(Datastore.createKey(MilestoneModel.class, 30L))));
 		assertThat(form.targetVersion, is("1.0.9"));
 		assertThat(form.targetMember, is(Datastore.keyToString(Datastore.createKey(MemberModel.class, 900L))));
-		assertThat(form.parentKey, is(ConvertUtils.toString(ticketKeyList.get(0).getId())));
+		assertThat(form.parentKey, is(ConvertUtils.toString(ticketNoList.get(0))));
 		assertThat(form.versionNo, is("1"));
 		
 		//更新
@@ -253,7 +260,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		form.milestone = Datastore.keyToString(Datastore.createKey(MilestoneModel.class, 32L));
 		form.targetVersion = "1.0.9.2";
 		form.targetMember = Datastore.keyToString(Datastore.createKey(MemberModel.class, 902L));
-		form.parentKey = ConvertUtils.toString(ticketKeyList.get(1).getId());
+		form.parentKey = ConvertUtils.toString(ticketNoList.get(1));
 		service.put(form, projectKeyString);
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
@@ -271,7 +278,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(form.milestone, is(Datastore.keyToString(Datastore.createKey(MilestoneModel.class, 32L))));
 		assertThat(form.targetVersion, is("1.0.9.2"));
 		assertThat(form.targetMember, is(Datastore.keyToString(Datastore.createKey(MemberModel.class, 902L))));
-		assertThat(form.parentKey, is(ConvertUtils.toString(ticketKeyList.get(1).getId())));
+		assertThat(form.parentKey, is(ConvertUtils.toString(ticketNoList.get(1))));
 		assertThat(form.versionNo, is("2"));
 		
 		//空に更新
@@ -316,13 +323,22 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 			fail();
 		}catch(ConcurrentModificationException e) {}
 		
-		//親に指定したチケットが存在しない(違うプロジェクトのチケット)
+		//親に指定したチケットが存在しない
 		form = service.get(Datastore.keyToString(createTicketKey), projectKeyString);
-		form.parentKey = ConvertUtils.toString(ticketKeyList.get(9).getId());
+		form.parentKey = "-1";
 		try {
 			service.put(form, projectKeyString);
 			fail();
 		}catch(NotExistTicketException e) {}
+		
+		
+		//自分を親として登録しようとした
+		form = service.get(Datastore.keyToString(createTicketKey), projectKeyString);
+		form.parentKey = ConvertUtils.toString(createTicketNo);
+		try {
+			service.put(form, projectKeyString);
+			fail();
+		}catch(ParentSelfTicketException e) {}
 	}
 	
 	/**
@@ -377,7 +393,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		//親の設定がある場合
 		actual = service.get(Datastore.keyToString(childKey), projectKeyString);
 		assertThat(actual.keyToString, is(Datastore.keyToString(childKey)));
-		assertThat(actual.parentKey, is(ConvertUtils.toString(parentKey.getId())));
+		assertThat(actual.parentKey, is(ConvertUtils.toString(parentNo)));
 		assertThat(actual.targetMember, 
 				is(Datastore.keyToString(
 						Datastore.createKey(MemberModel.class, 2L))));
@@ -541,6 +557,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 			
 			ticketDao.put(model);
 			ticketKeyList.add(model.getKey());
+			ticketNoList.add(model.getNo());
 			
 			GlobalTransaction.transaction.get().commit();
 			GlobalTransaction.transaction.get().begin();
@@ -551,6 +568,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		parentModel.setTitle("親Ticket");
 		ticketDao.put(parentModel);
 		parentKey = parentModel.getKey();
+		parentNo = parentModel.getNo();
 		
 		TicketModel childModel = new TicketModel();
 		childModel.setProjectKey(projectKeyList.get(0));
@@ -560,6 +578,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		childModel.setTargetMemberKey(Datastore.createKey(MemberModel.class, 2L));
 		ticketDao.put(childModel);
 		childKey = childModel.getKey();
+		childNo = childModel.getNo();
 		
 		TicketModel grandChildModel = new TicketModel();
 		grandChildModel.setProjectKey(projectKeyList.get(0));
@@ -567,6 +586,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		grandChildModel.setParentTicketKey(childKey);
 		ticketDao.put(grandChildModel);
 		grandChildKey.add(grandChildModel.getKey());
+		grandChildNo.add(grandChildModel.getNo());
 		
 		grandChildModel = new TicketModel();
 		grandChildModel.setProjectKey(projectKeyList.get(0));
@@ -574,6 +594,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		grandChildModel.setParentTicketKey(childKey);
 		ticketDao.put(grandChildModel);
 		grandChildKey.add(grandChildModel.getKey());
+		grandChildNo.add(grandChildModel.getNo());
 		
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
