@@ -96,78 +96,34 @@ function render(data) {
 	//tokenの設定
 	$("#token").val(data.token);
 	
-	var result = data.result;
-	$("#listCnt").val(result.length);
-	if(result.length == 0) {
+	var ticketList = data.result.ticketList;
+	$("#listCnt").val(ticketList.length);
+	if(ticketList.length == 0) {
 		return;
 	}
 
-	var $msgDiv = $("<div />");
-	if(result.length >= 1000) {
-		$msgDiv.append($("<span />").text("1000件以上存在します").addClass("label label-warning"));
-	} else {
-		$msgDiv.append($("<span />").text("該当件数：" + result.length + "件").addClass("label label-info"));
-	}
-	
-	//一覧をレンダリング
-	var $table = $("<table />").addClass("table table-bordered result_table");
-	var $thead = $("<thead />").append($("<tr />")
-				.append($("<th />").text("チケットNo").attr({width:"80px"}))
-				.append($("<th />").text("ステータス"))
-				.append($("<th />").text("件名"))
-				.append($("<th />").text("期限").attr({width:"100px"}))
-				.append($("<th />").text("担当者"))
-				.append($("<th />").text("").attr({width:"50px"}))
-			);
-	$table.append($thead);
-	
-	var $tbody = $("<tbody />");
-	$.each(result, function(){
-		var keyToString = this.model.keyToString;
-		var status = this.model.status;
-		var title = this.model.title;
-		var memberName = this.targetMemberName;
-		var no = this.model.no;
-		var versionNo = this.model.version;
-		var period = this.period;
-		var createdAt = this.createdAt;
-		var periodStatusLabel = this.periodStatusLabel;
-		var periodStatusCode = this.periodStatusCode;
-
-		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
-		$delBtn.click(function(){
-			deleteTicket(title, keyToString, versionNo);
-		});
+	//ガントチャート作成用のデータを作成する
+	var gantList = new Array();
+	$.each(ticketList, function(){
+		var obj = {};
+		obj.id = this.model.keyToString;
+		obj.name = this.model.title;
 		
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(no);
-		$a.click(function(){
-			openDetailTicketDialog(keyToString);
-		});
+		var serie = {};
+		serie.name = this.targetMemberName;
+		serie.start = parseDate(this.startDate);
+		serie.end = parseDate(this.period);
+		var series = new Array();
+		series.push(serie);
+		obj.series = series;
 		
-		var $statusSpan = $("<span />").text(status);
-		var $periodStatusSpan = $("<span />");
-		if(periodStatusCode != '') {
-			$periodStatusSpan.text(periodStatusLabel);
-			if(periodStatusCode == '1') {
-				$periodStatusSpan = $periodStatusSpan.addClass("label label-warning");
-			} else {
-				$periodStatusSpan = $periodStatusSpan.addClass("label label-important");
-			}
-		}
-		var $statusDiv = $("<div />").append($statusSpan).append($("<br />")).append($periodStatusSpan);
-		
-		var $tr = $("<tr />");
-		$tr.append($("<td />").append($a))
-			.append($("<td />").append($statusDiv))
-			.append($("<td />").text(title))
-			.append($("<td />").text(formatDateyyyyMMdd(period)))
-			.append($("<td />").text(memberName))
-			.append($("<td />").append($delBtn));
-		$tbody.append($tr)
+		gantList.push(obj);
 	});
-	$table.append($tbody);
-	
-	$("#result_area").append($("<hr />")).append($msgDiv).append($table);
+
+	$("#result_area").ganttView({
+		data: gantList,
+		slideWidth: 400
+	});
 }
 
 //再検索判断処理

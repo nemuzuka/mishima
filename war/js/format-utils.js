@@ -92,6 +92,28 @@ function executeFormatDateyyyyMM(str, formatPattern1, formatPattern2) {
 	return dataFormat2.format(date);
 }
 
+/**
+ * 日付変換処理.
+ * yyyyMMddの文字列である想定です
+ * @param source 日付文字列(yyyyMMdd形式)
+ * @returns 変換後Dateオブジェクト(空文字 or 不正データの場合、null)
+ */
+function parseDate(source) {
+	if(source == null) {
+		return null;
+	}
+	if(source == '') {
+		return null;
+	}
+	var regex = /^\d{8}$/;
+	if (regex.test(source) == false) {
+		return null;
+	}
+	//日付フォーマット
+	var dataFormat = new DateFormat("yyyyMMdd");
+	return dataFormat.parse(source);
+
+}
 
 /**
  * 引数の文字列が、空文字でなければDateオブジェクトに変換し
