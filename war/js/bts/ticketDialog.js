@@ -49,6 +49,7 @@ function initTicketDialog() {
 
 	//Ticket登録・更新ダイアログ
 	$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
+	$("#edit_ticket_startDate").datepicker();
 	$("#edit_ticket_period").datepicker();
 
 	$("#ticketDialog-add").click(function(){
@@ -260,6 +261,7 @@ function createExecuteTicketParams() {
 	params["title"] = $("#edit_ticket_title").val();
 	params["content"] = $("#edit_ticket_content").val();
 	params["endCondition"] = $("#edit_ticket_endCondition").val();
+	params["startDate"] = unFormatDate($("#edit_ticket_startDate").val());
 	params["period"] = unFormatDate($("#edit_ticket_period").val());
 	
 	params["priority"] = $("#edit_ticket_priority").val();
@@ -351,6 +353,7 @@ function openEditTicketDialog(key, ticketNo, baseKey, type) {
 			$("#edit_ticket_title").val(form.title);
 			$("#edit_ticket_content").val(form.content);
 			$("#edit_ticket_endCondition").val(form.endCondition);
+			$("#edit_ticket_startDate").val(formatDateyyyyMMdd(form.startDate));
 			$("#edit_ticket_period").val(formatDateyyyyMMdd(form.period));
 
 			$("#edit_ticket_priority").empty();
@@ -463,6 +466,7 @@ function openDetailTicketDialog(key, onlyRefresh) {
 			$("#detail_ticket_title").text(defaultString4Init(form.title, "　"));
 			$("#detail_ticket_content").html(defaultString4Init(data.result.contentView, "　"));
 			$("#detail_ticket_endCondition").html(defaultString4Init(data.result.endConditionView, "　"));
+			$("#detail_ticket_startDate").text(defaultString4Init(formatDateyyyyMMdd(form.startDate), "　"));
 			$("#detail_ticket_period").text(defaultString4Init(formatDateyyyyMMdd(form.period), "　"));
 
 			
@@ -581,6 +585,7 @@ function openTicketSummaryDialog(key) {
 			$("#detail_ticket_summary_title").text(form.title);
 			$("#detail_ticket_summary_content").html(defaultString4Init(data.result.contentView, "　"));
 			$("#detail_ticket_summary_endCondition").html(defaultString4Init(data.result.endConditionView, "　"));
+			$("#detail_ticket_summary_startDate").text(defaultString4Init(formatDateyyyyMMdd(form.startDate), "　"));
 			$("#detail_ticket_summary_period").text(defaultString4Init(formatDateyyyyMMdd(form.period), "　"));
 
 			$("#detail_summary_versionNo").val(form.versionNo);

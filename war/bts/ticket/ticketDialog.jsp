@@ -49,6 +49,12 @@
 	
 	
 		<div class="control-group">
+			<label class="control-label" for="edit_ticket_startDate">開始日</label>
+			<div class="controls">
+				<input type="text" class="input-xlarge" id="edit_ticket_startDate">
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label" for="edit_ticket_period">期限</label>
 			<div class="controls">
 				<input type="text" class="input-xlarge" id="edit_ticket_period">
@@ -166,6 +172,8 @@
 				<dd><div id="detail_ticket_content"></div></dd>
 				<dt>終了条件</dt>
 				<dd><div id="detail_ticket_endCondition"></div></dd>
+				<dt>開始日</dt>
+				<dd><div id="detail_ticket_startDate"></div></dd>
 				<dt>期限</dt>
 				<dd><div id="detail_ticket_period"></div></dd>
 			</dl>
@@ -231,6 +239,8 @@
 				<dd><div id="detail_ticket_summary_content"></div></dd>
 				<dt>終了条件</dt>
 				<dd><div id="detail_ticket_summary_endCondition"></div></dd>
+				<dt>開始日</dt>
+				<dd><div id="detail_ticket_summary_startDate"></div></dd>
 				<dt>期限</dt>
 				<dd><div id="detail_ticket_summary_period"></div></dd>
 			</dl>

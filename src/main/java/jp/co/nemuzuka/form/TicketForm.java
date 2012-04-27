@@ -45,6 +45,9 @@ public class TicketForm implements Serializable {
 	/** 終了条件. */
 	public String endCondition;
 
+	/** 開始日. */
+	public String startDate;
+	
 	/** 期限. */
 	public String period;
 	
@@ -80,6 +83,20 @@ public class TicketForm implements Serializable {
 	/** id情報. */
 	public String id;
 	
+	/**
+	 * @return the startDate
+	 */
+	public String getStartDate() {
+		return startDate;
+	}
+
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
 	/**
 	 * @return the keyToString
 	 */

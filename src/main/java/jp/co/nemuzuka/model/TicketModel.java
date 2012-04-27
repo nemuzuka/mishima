@@ -74,6 +74,10 @@ public class TicketModel extends AbsModel {
 	/** 対応メンバーKey. */
 	private Key targetMemberKey;
 	
+	/** 開始日. */
+	@Attribute(unindexed=true)
+	private Date startDate;
+	
 	/** 期限. */
 	private Date period;
 	
@@ -153,6 +157,19 @@ public class TicketModel extends AbsModel {
 		return parentTicketKey;
 	}
 	
+	/**
+	 * @return the startDate
+	 */
+	@JSONHint(ignore=true)
+	public Date getStartDate() {
+		return startDate;
+	}
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 	/**
 	 * @param parentTicketKey the parentTicketKey to set
 	 */

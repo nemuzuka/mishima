@@ -298,6 +298,7 @@ public class TicketServiceImpl implements TicketService {
 		if(model.getEndCondition() != null) {
 			form.endCondition = model.getEndCondition().getValue();
 		}
+		form.startDate = ConvertUtils.toString(model.getStartDate(), sdf);
 		form.period = ConvertUtils.toString(model.getPeriod(), sdf);
 		form.priority = model.getPriority();
 		form.targetKind = model.getTargetKind();
@@ -353,6 +354,7 @@ public class TicketServiceImpl implements TicketService {
 		}
 		model.setTargetMemberKey(targetMemberKey);
 		
+		model.setStartDate(ConvertUtils.toDate(form.startDate, sdf));
 		model.setPeriod(ConvertUtils.toDate(form.period, sdf));
 		
 		Key parentKey = null;
