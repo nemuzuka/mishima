@@ -113,6 +113,7 @@ function executeTodoComment() {
 			$("#todoCommentDialog").dialog("close");
 			
 			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
+			viewLoadingMsg();
 			setTimeout(function(){ openDetailTodoDialog(key, true) }, 1000);
 		}
 	);
@@ -167,6 +168,7 @@ function changeTodoStatus() {
 			
 			var key = $("#detail_todo_keyToString").val();
 			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
+			viewLoadingMsg();
 			setTimeout(function(){ openDetailTodoDialog(key, true) }, 1000);
 		}
 	);
@@ -210,6 +212,7 @@ function executeTodo() {
 				return refresh();
 			} else {
 				//更新の場合、詳細ダイアログオープン(メッセージを見せる必要上、1秒sleepしてから開く)
+				viewLoadingMsg();
 				setTimeout(function(){ openDetailTodoDialog(key, true) }, 1000);
 			}
 		}
@@ -423,6 +426,7 @@ function deleteTodoComment(keyToString, versionNo) {
 
 			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
 			var key = $("#detail_todo_keyToString").val();
+			viewLoadingMsg();
 			setTimeout(function(){ openDetailTodoDialog(key, true) }, 1000);
 		}
 	);

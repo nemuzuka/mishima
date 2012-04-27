@@ -138,6 +138,7 @@ function executeTicketComment() {
 			$("#ticketCommentDialog").dialog("close");
 			
 			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
+			viewLoadingMsg();
 			setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
 		}
 	);
@@ -192,6 +193,7 @@ function changeTicketStatus() {
 			
 			var key = $("#detail_ticket_keyToString").val();
 			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
+			viewLoadingMsg();
 			setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
 		}
 	);
@@ -239,6 +241,7 @@ function executeTicket() {
 				return refresh();
 			} else {
 				//更新の場合、詳細ダイアログオープン(メッセージを見せる必要上、1秒sleepしてから開く)
+				viewLoadingMsg();
 				setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
 			}
 		}
@@ -656,6 +659,7 @@ function deleteTicketComment(keyToString, versionNo) {
 
 			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
 			var key = $("#detail_ticket_keyToString").val();
+			viewLoadingMsg();
 			setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
 		}
 	);
