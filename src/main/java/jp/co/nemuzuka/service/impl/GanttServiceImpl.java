@@ -19,8 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import jp.co.nemuzuka.dao.MilestoneDao;
 import jp.co.nemuzuka.dao.TicketDao.Param;
 import jp.co.nemuzuka.entity.TicketModelEx;
@@ -30,6 +28,8 @@ import jp.co.nemuzuka.service.TicketService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * GanttServiceの実装クラス.
@@ -75,26 +75,29 @@ public class GanttServiceImpl implements GanttService {
 			startDate = milestone.getStartDate();
 			endDate = milestone.getEndDate();
 			result.milestoneName = milestone.getMilestoneName();
+			SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+			result.startDate = ConvertUtils.toString(startDate, sdf);
+			result.endDate = ConvertUtils.toString(endDate, sdf);
 		}
-		
+
 		//チケットの日付を再設定する
-		setDate(ticketList, startDate, endDate);
+		setDate(result, startDate, endDate);
 		return result;
 	}
 
 	/**
 	 * チケット開始、終了日付再設定.
-	 * @param ticketList チケット一覧
+	 * @param result ガントチャート出力情報
 	 * @param startDate マイルストーン開始日
 	 * @param endDate マイルストーン終了日
 	 */
-	private void setDate(List<TicketModelEx> ticketList, Date startDate,
+	private void setDate(Result result, Date startDate,
 			Date endDate) {
 		
 		Date targetStartDate = startDate;
 		Date targetEndDate = endDate;
-		
-		for(TicketModelEx target : ticketList) {
+
+		for(TicketModelEx target : result.ticketList) {
 			targetStartDate = checkDate(target.getModel().getStartDate(), targetStartDate, true);
 			targetEndDate = checkDate(target.getModel().getPeriod(), targetEndDate, false);
 		}
@@ -103,17 +106,35 @@ public class GanttServiceImpl implements GanttService {
 		if(targetStartDate == null) {
 			targetStartDate = CurrentDateUtils.getInstance().getCurrentDate();
 		}
-		//終了日がnullの場合、システム日付の翌月最終日を設定する
+		//終了日がnullの場合、システム日付の1ヶ月後を設定する
 		if(targetEndDate == null) {
 			Date currentDate = CurrentDateUtils.getInstance().getCurrentDate();
-			Date nextMonthDate = DateTimeUtils.addMonth(currentDate, 1);
-			SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMM");
-			List<Date> startEndList = DateTimeUtils.getStartEndDate(sdf.format(nextMonthDate));
-			targetEndDate = startEndList.get(1);
+			targetEndDate = DateTimeUtils.addMonth(currentDate, 1);
+		}
+		
+		//日数を算出して、開始日〜終了日までの期間が15日以下の場合、終了日を開始日から15日後に設定
+		if(DateTimeUtils.getDays(targetStartDate, targetEndDate) < 15) {
+			targetEndDate = DateTimeUtils.addDay(targetStartDate, 15);
 		}
 		
 		//Ticketの開始日、期限がnullのものに対して値を設定する
-		replaceNullDate(ticketList, targetStartDate, targetEndDate);
+		replaceNullDate(result.ticketList, targetStartDate, targetEndDate);
+		
+		//チャートの開始日・終了日を設定
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		result.startDate = ConvertUtils.toString(targetStartDate, sdf);
+		result.endDate = ConvertUtils.toString(targetEndDate, sdf);
+		
+		//マイルストーンの開始日・終了日が空の場合、設定
+		if(StringUtils.isEmpty(result.milestoneStartDate)) {
+			result.milestoneStartDate = result.startDate;
+			result.updateStartDate = true;
+		}
+		
+		if(StringUtils.isEmpty(result.milestoneEndDate)) {
+			result.milestoneEndDate = result.endDate;
+			result.updateEndDate = true;
+		}
 	}
 
 	/**
@@ -132,9 +153,11 @@ public class GanttServiceImpl implements GanttService {
 		for(TicketModelEx target : ticketList) {
 			if(StringUtils.isEmpty(target.getStartDate())) {
 				target.setStartDate(start);
+				target.setUpdateStartDate(true);
 			}
 			if(StringUtils.isEmpty(target.getPeriod())) {
 				target.setPeriod(end);
+				target.setUpdatePeriod(true);
 			}
 		}
 	}

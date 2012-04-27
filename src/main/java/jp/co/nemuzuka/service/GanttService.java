@@ -40,7 +40,19 @@ public interface GanttService {
 	class Result{
 		/** マイルストーン名. */
 		public String milestoneName;
+		/** マイルストーン開始日. */
+		public String milestoneStartDate;
+		/** マイルストーン開始日がnullだった場合、true. */
+		public boolean updateStartDate;
+		/** マイルストーン終了日. */
+		public String milestoneEndDate;
+		/** マイルストーン終了日がnullだった場合、true. */
+		public boolean updateEndDate;
 		
+		/** ガントチャート開始日. */
+		public String startDate;
+		/** ガントチャート終了日. */
+		public String endDate;
 		/** 表示対象Ticket情報 */
 		public List<TicketModelEx> ticketList;
 	}

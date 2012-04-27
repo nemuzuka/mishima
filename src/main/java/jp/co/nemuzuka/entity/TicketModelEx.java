@@ -15,9 +15,9 @@
  */
 package jp.co.nemuzuka.entity;
 
-import net.arnx.jsonic.JSONHint;
 import jp.co.nemuzuka.common.PeriodStatus;
 import jp.co.nemuzuka.model.TicketModel;
+import net.arnx.jsonic.JSONHint;
 
 /**
  * Ticket画面表示用Entity.
@@ -31,10 +31,14 @@ public class TicketModelEx {
 	/** 開始日. */
 	//yyyyMMddフォーマット
 	private String startDate;
+	/** 上書きされた場合、true. */
+	private boolean updateStartDate;
 
 	/** 期限. */
 	//yyyyMMddフォーマット
 	private String period;
+	/** 上書きされた場合、true. */
+	private boolean updatePeriod;
 	
 	/** 登録日時. */
 	//yyyy/MM/dd HH:mmフォーマット
@@ -148,5 +152,33 @@ public class TicketModelEx {
 	 */
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
+	}
+
+	/**
+	 * @return updateStartDate
+	 */
+	public boolean isUpdateStartDate() {
+		return updateStartDate;
+	}
+
+	/**
+	 * @param updateStartDate セットする updateStartDate
+	 */
+	public void setUpdateStartDate(boolean updateStartDate) {
+		this.updateStartDate = updateStartDate;
+	}
+
+	/**
+	 * @return updatePeriod
+	 */
+	public boolean isUpdatePeriod() {
+		return updatePeriod;
+	}
+
+	/**
+	 * @param updatePeriod セットする updatePeriod
+	 */
+	public void setUpdatePeriod(boolean updatePeriod) {
+		this.updatePeriod = updatePeriod;
 	}
 }

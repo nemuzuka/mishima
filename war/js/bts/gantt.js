@@ -120,9 +120,14 @@ function render(data) {
 		gantList.push(obj);
 	});
 
+	var startDate = parseDate(data.result.startDate);
+	var endDate = parseDate(data.result.endDate);
+	
 	$("#result_area").ganttView({
 		data: gantList,
-		slideWidth: 400,
+		start: startDate,
+		end: endDate,
+		slideWidth: 450,
 		behavior: {
 			clickable: false,
 			draggable: false,

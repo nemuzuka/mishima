@@ -47,6 +47,8 @@ behavior: {
             cellHeight: 31,
             slideWidth: 400,
             vHeaderWidth: 100,
+            start: null,
+            end: null,
             behavior: {
             	clickable: true,
             	draggable: true,
@@ -66,9 +68,12 @@ behavior: {
 			
 			var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
 			var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
-			opts.start = startEnd[0];
-			opts.end = startEnd[1];
-			
+			if(opts.start == undefined) {
+				opts.start = startEnd[0];
+			}
+			if(opts.end == undefined) {
+				opts.end = startEnd[1];
+			}
 	        els.each(function () {
 
 	            var container = jQuery(this);
