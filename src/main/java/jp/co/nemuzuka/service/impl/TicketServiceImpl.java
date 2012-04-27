@@ -112,6 +112,7 @@ public class TicketServiceImpl implements TicketService {
 		for(TicketModel target : modelList) {
 			TicketModelEx entity = new TicketModelEx();
 			entity.setModel(target);
+			entity.setStartDate(ConvertUtils.toString(target.getStartDate(), sdf));
 			entity.setPeriod(ConvertUtils.toString(target.getPeriod(), sdf));
 			entity.setCreatedAt(ConvertUtils.toString(target.getCreatedAt(), sdf2));
 			
@@ -168,6 +169,9 @@ public class TicketServiceImpl implements TicketService {
 		return detailForm;
 	}
 
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.TicketService#put(jp.co.nemuzuka.form.TicketForm, java.lang.String)
+	 */
 	@Override
 	public void put(TicketForm form, String projectKeyString) throws NotExistTicketException, ParentSelfTicketException {
 		TicketModel model = null;

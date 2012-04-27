@@ -15,6 +15,7 @@
  */
 package jp.co.nemuzuka.controller.bts.ticket.ajax;
 
+import jp.co.nemuzuka.controller.validator.DateRangeValidator;
 import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
@@ -83,12 +84,15 @@ public class TicketExecuteController extends JsonController {
 		v.add("title", v.required(), v.maxlength(128));
 		v.add("content", v.maxlength(1024));
 		v.add("endCondition", v.maxlength(1024));
+		v.add("startDate", v.dateType("yyyyMMdd"));
 		v.add("period", v.dateType("yyyyMMdd"));
 		v.add("priority", v.maxlength(128));
 		v.add("targetKind", v.maxlength(128));
 		v.add("category", v.maxlength(128));
 		v.add("targetVersion", v.maxlength(128));
 		v.add("parentKey", v.longType());
+		//2値の相関チェック
+		v.add("startDate,period", new DateRangeValidator());
 		return v;
 	}
 }

@@ -14,22 +14,18 @@ $(function(){
 
 	initTicketDialog();
 
-	$("#searchTicketBtn").click(function(){
-		searchTicket();
-	});
-	
-	$("#addTicketBtn").click(function(){
-		openEditTicketDialog("");
+	$("#exportGantttBtn").click(function(){
+		exportGanttt();
 	});
 	
 	var selectedProjectName =  $("#targetProjects option:selected").text();
 	$("#selectedProjectName").text("(" + selectedProjectName + ")");
 
-	initTicket();
+	initGanttSearchInfo();
 });
 
 //初期表示時処理
-function initTicket() {
+function initGanttSearchInfo() {
 	setAjaxDefault();
 	return $.ajax({
 		type: "POST",
@@ -52,22 +48,6 @@ function renderSearchInfo(data) {
 	
 	setStatusCheckBoc($("#status_area"), ticketMst.searchStatusList);
 	
-	$("#search_priority").empty();
-	$.each(ticketMst.priorityList, function(){
-		$("#search_priority").append($("<option />").attr({value:this.value}).text(this.label));
-	});
-	$("#search_kind").empty();
-	$.each(ticketMst.kindList, function(){
-		$("#search_kind").append($("<option />").attr({value:this.value}).text(this.label));
-	});
-	$("#search_category").empty();
-	$.each(ticketMst.categoryList, function(){
-		$("#search_category").append($("<option />").attr({value:this.value}).text(this.label));
-	});
-	$("#search_version").empty();
-	$.each(ticketMst.versionList, function(){
-		$("#search_version").append($("<option />").attr({value:this.value}).text(this.label));
-	});
 	$("#search_milestone").empty();
 	$.each(ticketMst.milestoneList, function(){
 		$("#search_milestone").append($("<option />").attr({value:this.value}).text(this.label));
@@ -76,19 +56,15 @@ function renderSearchInfo(data) {
 	$.each(ticketMst.memberList, function(){
 		$("#search_targetMember").append($("<option />").attr({value:this.value}).text(this.label));
 	});
-	
-	$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
-	$("#search_fromPeriod").datepicker();
-	$("#search_toPeriod").datepicker();
 
 	var form = data.result;
 	$("input[type='checkbox'][name='search_status']").val(form.status);
 }
 
 
-//Ticket検索
-function searchTicket() {
-	var params = createSearchTicketParams();
+//チャート出力
+function exportGanttt() {
+	var params = createSearchGanttParams();
 	g_searchParams = params;
 	searchAndRender(params);
 }
@@ -98,7 +74,7 @@ function searchAndRender(params) {
 	setAjaxDefault();
 	return $.ajax({
 		type: "POST",
-		url: "/bts/ticket/ajax/ticketList",
+		url: "/bts/gantt/ajax/ganttList",
 		data: params
 	}).then(
 		function(data) {
@@ -107,7 +83,7 @@ function searchAndRender(params) {
 	);
 }
 
-//一覧表示
+//チャート表示
 function render(data) {
 	$("#result_area").empty();
 	$("#listCnt").val("0");
@@ -218,18 +194,11 @@ function reSearchAndRender() {
 }
 
 //Ticket検索条件設定
-function createSearchTicketParams() {
+function createSearchGanttParams() {
 	var params = {};
-	params["kind"] = $("#search_kind").val();
-	params["priority"] = $("#search_priority").val();
-	params["category"] = $("#search_category").val();
-	params["version"] = $("#search_version").val();
 	params["milestone"] = $("#search_milestone").val();
 	params["targetMember"] = $("#search_targetMember").val();
-	
-	params["title"] = $("#search_title").val();
-	params["fromPeriod"] = unFormatDate($("#search_fromPeriod").val());
-	params["toPeriod"] = unFormatDate($("#search_toPeriod").val());
+
 	params["status"] = new Array();
 	$("input[type='checkbox'][name='search_status']").each(function(index){
 		if($(this).prop("checked") == true) {
@@ -237,36 +206,4 @@ function createSearchTicketParams() {
 		}
 	});
 	return params;
-}
-
-//Ticket削除
-function deleteTicket(title, keyToString, version) {
-	if(window.confirm("チケット「" + title + "」を削除します。本当によろしいですか？") == false) {
-		return;
-	}
-	
-	var params = {};
-	params["keyToString"] = keyToString;
-	params["versionNo"] = version;
-	params["jp.co.nemuzuka.token"] = $("#token").val();
-	
-	setAjaxDefault();
-	var task;
-	task = $.ajax({
-		type: "POST",
-		url: "/bts/ticket/ajax/ticketDelete",
-		data: params
-	});
-	
-	//後処理の登録
-	//
-	task.pipe(
-		function(data) {
-			//共通エラーチェック
-			errorCheck(data);
-			//メッセージを表示して、戻る
-			infoCheck(data);
-			return reSearchAndRender();
-		}
-	);
 }

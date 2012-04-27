@@ -27,7 +27,11 @@ public class TicketModelEx {
 
 	/** Ticket情報. */
 	private TicketModel model;
-	
+
+	/** 開始日. */
+	//yyyyMMddフォーマット
+	private String startDate;
+
 	/** 期限. */
 	//yyyyMMddフォーマット
 	private String period;
@@ -130,5 +134,19 @@ public class TicketModelEx {
 	 */
 	public void setTargetMemberName(String targetMemberName) {
 		this.targetMemberName = targetMemberName;
+	}
+
+	/**
+	 * @return the startDate
+	 */
+	public String getStartDate() {
+		return startDate;
+	}
+
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 }

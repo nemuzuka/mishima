@@ -19,13 +19,16 @@
   
 <c:param name="content">
 
-<script type="text/javascript" src="/js/bts/ticket.js"></script>
+<script type="text/javascript" src="/js/date.js"></script>
+<script type="text/javascript" src="/js/jquery.ganttView.js"></script>
+<script type="text/javascript" src="/js/bts/gantt.js"></script>
 <script type="text/javascript" src="/js/bts/ticket_status.js"></script>
+<link href="/css/jquery.ganttView.css" rel="stylesheet">
 
 <div class="widget">
 <form class="form-horizontal">
 
-	<h2 class="title">チケット検索<span id="selectedProjectName"></span></h2>
+	<h2 class="title">チャート出力<span id="selectedProjectName"></span></h2>
 	<table class="search_table">
 	<tbody>
 	<tr>
@@ -33,40 +36,15 @@
 		<td id="status_area" class="controls" colspan="3"></td>
 	</tr>
 	<tr>
-		<th>件名</th>
-		<td  colspan="3"><input type="text" id="search_title" class="input-xlarge" /></td>
-	</tr>
-
-	<tr>
-		<th>優先度</th>
-		<td><select id="search_priority"></select></td>
-		<th>種別</th>
-		<td><select id="search_kind"></select></td>
-	</tr>
-
-	<tr>
-		<th>カテゴリ</th>
-		<td><select id="search_category"></select></td>
-		<th>バージョン</th>
-		<td><select id="search_version"></select></td>
-	</tr>
-
-	<tr>
 		<th>マイルストーン</th>
 		<td><select id="search_milestone"></select></td>
 		<th>担当者</th>
 		<td><select id="search_targetMember"></select></td>
 	</tr>
-
-	<tr>
-		<th>期限</th>
-		<td  colspan="3"><input type="text" id="search_fromPeriod" />　〜　<input type="text" id="search_toPeriod" /></td>
-	</tr>
 	</tbody>
 	</table>
 	<div class="search_ctrl">
-		<input type="button" class="btn btn-primary" id="searchTicketBtn" value="検索" />
-		<input type="button" class="btn" value="新規登録" id="addTicketBtn" />
+		<input type="button" class="btn btn-primary" id="exportGantttBtn" value="チャート出力" />
 	</div>
 	
 	<div id="result_area" class="result">
@@ -80,7 +58,7 @@
 
 <c:import url="/bts/ticket/ticketDialog.jsp"/>
 
-<input type="hidden" id="selected_sub_menu" value="sub_menu3" />
+<input type="hidden" id="selected_sub_menu" value="sub_menu5" />
 
 </c:param>
 
