@@ -11,6 +11,10 @@ h2.title.small{
   font-size:110%;
 }
 
+.disabled{
+  display: none;
+}
+
 td{empty-cells: show;}
 
 /* 必須項目 */
