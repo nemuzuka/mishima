@@ -122,7 +122,12 @@ function render(data) {
 
 	$("#result_area").ganttView({
 		data: gantList,
-		slideWidth: 400
+		slideWidth: 400,
+		behavior: {
+			clickable: false,
+			draggable: false,
+			resizable: false,
+		}
 	});
 }
 
