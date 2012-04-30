@@ -103,28 +103,33 @@ function render(data) {
 	}
 
 	//ガントチャート作成用のデータを作成する
-	var gantList = new Array();
-	$.each(ticketList, function(){
+	var ganttList = new Array();
+	//マイルストーンが設定されている場合、ガントチャートに追加
+	if(data.result.milestoneName != null && data.result.milestoneName != '') {
 		var obj = {};
-		obj.id = this.model.keyToString;
-		obj.name = this.model.title;
-		
-		var serie = {};
-		serie.name = this.targetMemberName;
-		serie.start = parseDate(this.startDate);
-		serie.end = parseDate(this.period);
-		var series = new Array();
-		series.push(serie);
-		obj.series = series;
-		
-		gantList.push(obj);
+		obj.model = {};
+		obj.model.keyToString = "";
+		obj.model.title = data.result.milestoneName;
+		obj.model.status = "";
+		obj.targetMemberName = "";
+		obj.startDate = data.result.startDate;
+		obj.period = data.result.endDate;
+		obj.periodStatusLabel = "";
+		obj.periodStatusCode = "";
+		obj.updateStartDate = data.result.updateStartDate;
+		obj.updatePeriod = data.result.updateEndDate;
+		ganttList.push(createGanttEntity(obj, true));
+	}
+
+	$.each(ticketList, function(){
+		ganttList.push(createGanttEntity(this, false));
 	});
 
 	var startDate = parseDate(data.result.startDate);
 	var endDate = parseDate(data.result.endDate);
 	
 	$("#result_area").ganttView({
-		data: gantList,
+		data: ganttList,
 		start: startDate,
 		end: endDate,
 		slideWidth: 450,
@@ -134,6 +139,66 @@ function render(data) {
 			resizable: false,
 		}
 	});
+}
+
+/**
+ * ガントチャート要素作成.
+ * 開始日、終了日の入力は必須の想定です。
+ */
+function createGanttEntity(param, isMilestone) {
+	var obj = {};
+	obj.id = param.model.keyToString;
+	obj.name = param.model.title;
+	
+	var serie = {};
+	serie.name = param.targetMemberName;
+	serie.status = param.model.status;
+	serie.start = parseDate(param.startDate);
+	serie.end = parseDate(param.period);
+	serie.periodStatusLabel = param.periodStatusLabel;
+	serie.periodStatusCode = param.periodStatusCode;
+	//背景色の設定
+	if(isMilestone) {
+		//マイルストーンの場合
+		if(param.updateStartDate == false && param.updatePeriod == false) {
+			//開始日・終了日両方設定されている場合
+			serie.color = "milestone-both";
+		} else if(param.updateStartDate == false) {
+			//開始日のみ設定されている場合
+			serie.color = "milestone-onlyStart";
+		} else if(param.updatePeriod == false) {
+			//終了日のみ設定されている場合
+			serie.color = "milestone-onlyEnd";
+		} else {
+			//両方共設定されていない場合
+			serie.color = "milestone-transparent";
+		}
+	} else {
+		//Ticketの場合
+		var colorCss = "openStatus";
+		if(param.closeStatus == true) {
+			colorCss = "closeStatus"
+		}
+		if(param.updateStartDate == false && param.updatePeriod == false) {
+			//開始日・終了日両方設定されている場合
+			colorCss = colorCss + " ticket-both";
+		} else if(param.updateStartDate == false) {
+			//開始日のみ設定されている場合
+			colorCss = colorCss + " ticket-onlyStart";
+		} else if(param.updatePeriod == false) {
+			//終了日のみ設定されている場合
+			colorCss = colorCss + " ticket-onlyEnd";
+		} else {
+			//両方共設定されていない場合
+			colorCss = colorCss + " ticket-transparent";
+		}
+		serie.color = colorCss;
+	}
+	
+	var series = new Array();
+	series.push(serie);
+	obj.series = series;
+	return obj;
 }
 
 //再検索判断処理

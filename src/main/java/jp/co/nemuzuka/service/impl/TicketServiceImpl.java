@@ -25,12 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.slim3.datastore.Datastore;
-
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Text;
-
 import jp.co.nemuzuka.common.PeriodStatus;
 import jp.co.nemuzuka.dao.TicketDao;
 import jp.co.nemuzuka.dao.TicketDao.Param;
@@ -49,6 +43,12 @@ import jp.co.nemuzuka.service.TicketService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
+
+import org.apache.commons.lang.StringUtils;
+import org.slim3.datastore.Datastore;
+
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * TicketServiceの実装クラス.
@@ -129,9 +129,31 @@ public class TicketServiceImpl implements TicketService {
 					entity.setTargetMemberName(member.getName());
 				}
 			}
+			
+			//ステータスが完了しているかを設定
+			entity.setCloseStatus(isCloseStatus(target.getStatus(), param.openStatus));
 			retList.add(entity);
 		}
 		return retList;
+	}
+
+	/**
+	 * ステータスがクローズ状態かを判断します。
+	 * @param status ステータス
+	 * @param openStatus 未完了を意味するステータス配列
+	 * @return ステータスがクローズ状態の場合、true
+	 */
+	private boolean isCloseStatus(String status, String[] openStatus) {
+		
+		if(openStatus == null || openStatus.length == 0) {
+			return true;
+		}
+		for(String targetStatus : openStatus) {
+			if(targetStatus.equals(status)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/* (non-Javadoc)

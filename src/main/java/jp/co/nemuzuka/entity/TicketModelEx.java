@@ -50,6 +50,9 @@ public class TicketModelEx {
 	/** 担当者名. */
 	private String targetMemberName = "";
 	
+	/** 終了状態のステータスの場合、true. */
+	private boolean closeStatus;
+
 	/**
 	 * @return 期限ステータスコード値.
 	 */
@@ -180,5 +183,19 @@ public class TicketModelEx {
 	 */
 	public void setUpdatePeriod(boolean updatePeriod) {
 		this.updatePeriod = updatePeriod;
+	}
+
+	/**
+	 * @return closeStatus
+	 */
+	public boolean isCloseStatus() {
+		return closeStatus;
+	}
+
+	/**
+	 * @param closeStatus セットする closeStatus
+	 */
+	public void setCloseStatus(boolean closeStatus) {
+		this.closeStatus = closeStatus;
 	}
 }
