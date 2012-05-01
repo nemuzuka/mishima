@@ -239,7 +239,7 @@ behavior: {
                     });
                     addBlockData(block, data[i], series);
                     if (data[i].series[j].color) {
-                        block.css("background-color", data[i].series[j].color);
+                        block.addClass(data[i].series[j].color);
                     }
                     block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
                     jQuery(rows[rowIdx]).append(block);

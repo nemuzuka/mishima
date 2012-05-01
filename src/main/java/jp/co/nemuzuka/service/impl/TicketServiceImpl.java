@@ -150,10 +150,10 @@ public class TicketServiceImpl implements TicketService {
 		}
 		for(String targetStatus : openStatus) {
 			if(targetStatus.equals(status)) {
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	/* (non-Javadoc)

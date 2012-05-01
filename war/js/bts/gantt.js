@@ -112,8 +112,8 @@ function render(data) {
 		obj.model.title = data.result.milestoneName;
 		obj.model.status = "";
 		obj.targetMemberName = "";
-		obj.startDate = data.result.startDate;
-		obj.period = data.result.endDate;
+		obj.startDate = data.result.milestoneStartDate;
+		obj.period = data.result.milestoneEndDate;
 		obj.periodStatusLabel = "";
 		obj.periodStatusCode = "";
 		obj.updateStartDate = data.result.updateStartDate;
@@ -177,8 +177,14 @@ function createGanttEntity(param, isMilestone) {
 		//Ticketの場合
 		var colorCss = "openStatus";
 		if(param.closeStatus == true) {
-			colorCss = "closeStatus"
+			colorCss = "closeStatus";
 		}
+		if(param.periodStatusCode == '1') {
+			colorCss = colorCss + " today";
+		} else if(param.periodStatusCode == '2') {
+			colorCss = colorCss + " periodDate";
+		}
+		
 		if(param.updateStartDate == false && param.updatePeriod == false) {
 			//開始日・終了日両方設定されている場合
 			colorCss = colorCss + " ticket-both";

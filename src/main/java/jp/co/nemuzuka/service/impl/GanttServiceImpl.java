@@ -78,6 +78,8 @@ public class GanttServiceImpl implements GanttService {
 			SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 			result.startDate = ConvertUtils.toString(startDate, sdf);
 			result.endDate = ConvertUtils.toString(endDate, sdf);
+			result.milestoneStartDate = ConvertUtils.toString(startDate, sdf);
+			result.milestoneEndDate = ConvertUtils.toString(endDate, sdf);
 		}
 
 		//チケットの日付を再設定する
@@ -110,6 +112,11 @@ public class GanttServiceImpl implements GanttService {
 		if(targetEndDate == null) {
 			Date currentDate = CurrentDateUtils.getInstance().getCurrentDate();
 			targetEndDate = DateTimeUtils.addMonth(currentDate, 1);
+		}
+		
+		//開始日 > 終了日の場合開始日を設定
+		if(targetStartDate.getTime() > targetEndDate.getTime()) {
+			targetStartDate = targetEndDate;
 		}
 		
 		//日数を算出して、開始日〜終了日までの期間が15日以下の場合、終了日を開始日から15日後に設定
