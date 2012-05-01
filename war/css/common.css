@@ -126,33 +126,33 @@ div.milestone-transparent {
 	background-color: transparent;
 }
 .milestone-both {
-	background-color:#08C ;
+	background-color:#8FECFF ;
 }
 .milestone-onlyEnd{
 	/* IE10 */ 
-	background-image: -ms-linear-gradient(top left, #FFFFFF 0%, #0088CC 100%);
+	background-image: -ms-linear-gradient(top left, #FFFFFF 0%, #8FECFF 100%);
 	/* Mozilla Firefox */ 
-	background-image: -moz-linear-gradient(top left, #FFFFFF 0%, #0088CC 100%);
+	background-image: -moz-linear-gradient(top left, #FFFFFF 0%, #8FECFF 100%);
 	/* Opera */ 
-	background-image: -o-linear-gradient(top left, #FFFFFF 0%, #0088CC 100%);
+	background-image: -o-linear-gradient(top left, #FFFFFF 0%, #8FECFF 100%);
 	/* Webkit (Safari/Chrome 10) */ 
-	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #0088CC));
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #8FECFF));
 	/* Webkit (Chrome 11+) */ 
-	background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #0088CC 100%);
+	background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #8FECFF 100%);
 	/* Proposed W3C Markup */ 
-	background-image: linear-gradient(top left, #FFFFFF 0%, #0088CC 100%);
+	background-image: linear-gradient(top left, #FFFFFF 0%, #8FECFF 100%);
 }
 .milestone-onlyStart{
 	/* IE10 */ 
-	background-image: -ms-linear-gradient(top left, #0088CC 0%, #FFFFFF 100%);
+	background-image: -ms-linear-gradient(top left, #8FECFF 0%, #FFFFFF 100%);
 	/* Mozilla Firefox */ 
-	background-image: -moz-linear-gradient(top left, #0088CC 0%, #FFFFFF 100%);
+	background-image: -moz-linear-gradient(top left, #8FECFF 0%, #FFFFFF 100%);
 	/* Opera */ 
-	background-image: -o-linear-gradient(top left, #0088CC 0%, #FFFFFF 100%);
+	background-image: -o-linear-gradient(top left, #8FECFF 0%, #FFFFFF 100%);
 	/* Webkit (Safari/Chrome 10) */ 
-	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #0088CC), color-stop(1, #FFFFFF));
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #8FECFF), color-stop(1, #FFFFFF));
 	/* Webkit (Chrome 11+) */ 
-	background-image: -webkit-linear-gradient(top left, #0088CC 0%, #FFFFFF 100%);
+	background-image: -webkit-linear-gradient(top left, #8FECFF 0%, #FFFFFF 100%);
 	/* Proposed W3C Markup */ 
-	background-image: linear-gradient(top left, #0088CC 0%, #FFFFFF 100%);
+	background-image: linear-gradient(top left, #8FECFF 0%, #FFFFFF 100%);
 }
