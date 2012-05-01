@@ -149,6 +149,7 @@ function createGanttEntity(param, isMilestone) {
 	var obj = {};
 	obj.id = param.model.keyToString;
 	obj.name = param.model.title;
+	obj.milestone = false;
 	
 	var serie = {};
 	serie.name = param.targetMemberName;
@@ -160,6 +161,7 @@ function createGanttEntity(param, isMilestone) {
 	//背景色の設定
 	if(isMilestone) {
 		//マイルストーンの場合
+		obj.milestone = true;
 		if(param.updateStartDate == false && param.updatePeriod == false) {
 			//開始日・終了日両方設定されている場合
 			serie.color = "milestone-both";
@@ -171,32 +173,34 @@ function createGanttEntity(param, isMilestone) {
 			serie.color = "milestone-onlyEnd";
 		} else {
 			//両方共設定されていない場合
-			serie.color = "milestone-transparent";
+			serie.color = "gantt-transparent";
 		}
 	} else {
 		//Ticketの場合
-		var colorCss = "openStatus";
+		var colorCss = "";
 		if(param.closeStatus == true) {
-			colorCss = "closeStatus";
-		}
-		if(param.periodStatusCode == '1') {
-			colorCss = colorCss + " today";
-		} else if(param.periodStatusCode == '2') {
-			colorCss = colorCss + " periodDate";
+			colorCss = "close";
+		} else {
+			colorCss = "open";
+			if(param.periodStatusCode == '1') {
+				colorCss = "today";
+			} else if(param.periodStatusCode == '2') {
+				colorCss = "periodDate";
+			}
 		}
 		
 		if(param.updateStartDate == false && param.updatePeriod == false) {
 			//開始日・終了日両方設定されている場合
-			colorCss = colorCss + " ticket-both";
+			colorCss = colorCss + "-ticket-both";
 		} else if(param.updateStartDate == false) {
 			//開始日のみ設定されている場合
-			colorCss = colorCss + " ticket-onlyStart";
+			colorCss = colorCss + "-ticket-onlyStart";
 		} else if(param.updatePeriod == false) {
 			//終了日のみ設定されている場合
-			colorCss = colorCss + " ticket-onlyEnd";
+			colorCss = colorCss + "-ticket-onlyEnd";
 		} else {
 			//両方共設定されていない場合
-			colorCss = colorCss + " ticket-transparent";
+			colorCss = "gantt-transparent";
 		}
 		serie.color = colorCss;
 	}

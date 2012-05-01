@@ -5,10 +5,13 @@ Google App Engine(for Java)上で動作するBTSです。
 【使用フレームワーク】
 ・slim3
 	→基底クラスを個別に作成しています
-・jQuery
-	→jQueryのプラグインも使用しています
-・jQuery UI
 ・jsonic
+・jQuery
+	・jQuery UI
+	・jQuery blockUI plugin
+	・Elastic
+	・jQuery.ganttView
+	・jquery.toaster
 
 
 

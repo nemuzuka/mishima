@@ -121,10 +121,12 @@ a:hover.link{color: #005580;}
 	box-shadow: 3px 3px 6px 1px #7a7a7a; 
 }
 
-/* ガントチャート表示用(マイルストーン). */
-div.milestone-transparent {
+/* ガントチャート表示用. */
+.gantt-transparent {
 	background-color: transparent;
 }
+
+/* ガントチャート表示用(マイルストーン). */
 .milestone-both {
 	background-color:#8FECFF ;
 }
@@ -155,4 +157,136 @@ div.milestone-transparent {
 	background-image: -webkit-linear-gradient(top left, #8FECFF 0%, #FFFFFF 100%);
 	/* Proposed W3C Markup */ 
 	background-image: linear-gradient(top left, #8FECFF 0%, #FFFFFF 100%);
+}
+
+/* ガントチャート表示用(未完了＆期限日チケット). */
+.today-ticket-both {
+	background-color:#F89406 ;
+}
+.today-ticket-onlyEnd{
+	/* IE10 */ 
+	background-image: -ms-linear-gradient(top left, #FFFFFF 0%, #F89406 100%);
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top left, #FFFFFF 0%, #F89406 100%);
+	/* Opera */ 
+	background-image: -o-linear-gradient(top left, #FFFFFF 0%, #F89406 100%);
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #F89406));
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #F89406 100%);
+	/* Proposed W3C Markup */ 
+	background-image: linear-gradient(top left, #FFFFFF 0%, #F89406 100%);
+}
+.today-ticket-onlyStart{
+	/* IE10 */ 
+	background-image: -ms-linear-gradient(top right, #FFFFFF 0%, #F89406 100%);
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top right, #FFFFFF 0%, #F89406 100%);
+	/* Opera */ 
+	background-image: -o-linear-gradient(top right, #FFFFFF 0%, #F89406 100%);
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, right top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #F89406));
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top right, #FFFFFF 0%, #F89406 100%);
+	/* Proposed W3C Markup */ 
+	background-image: linear-gradient(top right, #FFFFFF 0%, #F89406 100%);
+}
+
+/* ガントチャート表示用(未完了＆期限切れチケット). */
+.periodDate-ticket-both {
+	background-color:#B94A48 ;
+}
+.periodDate-ticket-onlyEnd{
+	/* IE10 */ 
+	background-image: -ms-linear-gradient(top left, #FFFFFF 0%, #B94A48 100%);
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top left, #FFFFFF 0%, #B94A48 100%);
+	/* Opera */ 
+	background-image: -o-linear-gradient(top left, #FFFFFF 0%, #B94A48 100%);
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #B94A48));
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #B94A48 100%);
+	/* Proposed W3C Markup */ 
+	background-image: linear-gradient(top left, #FFFFFF 0%, #B94A48 100%);
+}
+.periodDate-ticket-onlyStart{
+	/* IE10 */ 
+	background-image: -ms-linear-gradient(top right, #FFFFFF 0%, #B94A48 100%);
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top right, #FFFFFF 0%, #B94A48 100%);
+	/* Opera */ 
+	background-image: -o-linear-gradient(top right, #FFFFFF 0%, #B94A48 100%);
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, right top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #B94A48));
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top right, #FFFFFF 0%, #B94A48 100%);
+	/* Proposed W3C Markup */ 
+	background-image: linear-gradient(top right, #FFFFFF 0%, #B94A48 100%);
+}
+
+/* ガントチャート表示用(完了チケット). */
+.close-ticket-both {
+	background-color:#E2E2E2 ;
+}
+.close-ticket-onlyEnd{
+	/* IE10 */ 
+	background-image: -ms-linear-gradient(top left, #FFFFFF 0%, #E2E2E2 100%);
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top left, #FFFFFF 0%, #E2E2E2 100%);
+	/* Opera */ 
+	background-image: -o-linear-gradient(top left, #FFFFFF 0%, #E2E2E2 100%);
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #E2E2E2));
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #E2E2E2 100%);
+	/* Proposed W3C Markup */ 
+	background-image: linear-gradient(top left, #FFFFFF 0%, #E2E2E2 100%);
+}
+.close-ticket-onlyStart{
+	/* IE10 */ 
+	background-image: -ms-linear-gradient(top right, #FFFFFF 0%, #E2E2E2 100%);
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top right, #FFFFFF 0%, #E2E2E2 100%);
+	/* Opera */ 
+	background-image: -o-linear-gradient(top right, #FFFFFF 0%, #E2E2E2 100%);
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, right top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #E2E2E2));
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top right, #FFFFFF 0%, #E2E2E2 100%);
+	/* Proposed W3C Markup */ 
+	background-image: linear-gradient(top right, #FFFFFF 0%, #E2E2E2 100%);
+}
+
+/* ガントチャート表示用(未完了チケット). */
+.open-ticket-both {
+	background-color:#90ee90 ;
+}
+.open-ticket-onlyEnd{
+	/* IE10 */ 
+	background-image: -ms-linear-gradient(top left, #FFFFFF 0%, #90EE90 100%);
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top left, #FFFFFF 0%, #90EE90 100%);
+	/* Opera */ 
+	background-image: -o-linear-gradient(top left, #FFFFFF 0%, #90EE90 100%);
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #90EE90));
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #90EE90 100%);
+	/* Proposed W3C Markup */ 
+	background-image: linear-gradient(top left, #FFFFFF 0%, #90EE90 100%);
+}
+.open-ticket-onlyStart{
+	/* IE10 */ 
+	background-image: -ms-linear-gradient(top right, #FFFFFF 0%, #90EE90 100%);
+	/* Mozilla Firefox */ 
+	background-image: -moz-linear-gradient(top right, #FFFFFF 0%, #90EE90 100%);
+	/* Opera */ 
+	background-image: -o-linear-gradient(top right, #FFFFFF 0%, #90EE90 100%);
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(linear, right top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #90EE90));
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-linear-gradient(top right, #FFFFFF 0%, #90EE90 100%);
+	/* Proposed W3C Markup */ 
+	background-image: linear-gradient(top right, #FFFFFF 0%, #90EE90 100%);
 }
