@@ -158,6 +158,9 @@ a:hover.link{color: #005580;}
 	/* Proposed W3C Markup */ 
 	background-image: linear-gradient(top left, #8FECFF 0%, #FFFFFF 100%);
 }
+div.ganttview-block-container .milestone {
+	border: 1px dashed black;;
+}
 
 /* ガントチャート表示用(未完了＆期限日チケット). */
 .today-ticket-both {

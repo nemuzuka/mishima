@@ -4,6 +4,10 @@ Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
 
+div.ganttview{
+	font-size: 100%
+}
+
 div.ganttview-hzheader-month,
 div.ganttview-hzheader-day,
 div.ganttview-vtheader,
@@ -64,14 +68,14 @@ div.ganttview-vtheader-item {
 }
 
 div.ganttview-vtheader-item-name {
-	width: 100px;
+	width: 130px;
 	padding-left: 5px;
 	border-top: 1px solid #d0d0d0;
 	line-height: 16px;
 }
 
 div.ganttview-vtheader-series-name {
-	width: 130px;
+	width: 100px;
 	height: 31px;
 	border-top: 1px solid #d0d0d0;
 	line-height: 16px;
@@ -100,6 +104,10 @@ div.ganttview-grid-row-cell.ganttview-weekend {
 	background-color: #fafafa;
 }
 
+div.ganttview-grid-row-cell.ganttview-currentDate {
+	background-color: #FFFF00;
+}
+
 
 /* Blocks */
 
@@ -115,7 +123,7 @@ div.ganttview-block-container {
 div.ganttview-block {
 	position: relative;
 	height: 25px;
-	border: 1px solid #c0c0c0;
+	border: 1px solid #000;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;

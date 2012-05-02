@@ -100,8 +100,16 @@ public class GanttServiceImpl implements GanttService {
 		Date targetEndDate = endDate;
 
 		for(TicketModelEx target : result.ticketList) {
-			targetStartDate = checkDate(target.getModel().getStartDate(), targetStartDate, true);
-			targetEndDate = checkDate(target.getModel().getPeriod(), targetEndDate, false);
+			
+			Date ticketStartDate = target.getModel().getStartDate();
+			Date ticketEndDate = target.getModel().getPeriod();
+			if(ticketEndDate != null && ticketStartDate == null) {
+				//開始日が未設定で終了日が設定されている場合、とりあえず終了日を設定する
+				ticketStartDate = ticketEndDate;
+			}
+			
+			targetStartDate = checkDate(ticketStartDate, targetStartDate, true);
+			targetEndDate = checkDate(ticketEndDate, targetEndDate, false);
 		}
 		
 		//開始日がnullの場合、システム日付を設定する
@@ -166,6 +174,11 @@ public class GanttServiceImpl implements GanttService {
 				target.setPeriod(end);
 				target.setUpdatePeriod(true);
 			}
+			
+			if(target.getStartDate().compareTo(target.getPeriod()) > 0) {
+				target.setStartDate(target.getPeriod());
+			}
+			
 		}
 	}
 

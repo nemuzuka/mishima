@@ -108,6 +108,7 @@ function render(data) {
 	if(data.result.milestoneName != null && data.result.milestoneName != '') {
 		var obj = {};
 		obj.model = {};
+		obj.model.no = null;
 		obj.model.keyToString = "";
 		obj.model.title = data.result.milestoneName;
 		obj.model.status = "";
@@ -149,7 +150,7 @@ function createGanttEntity(param, isMilestone) {
 	var obj = {};
 	obj.id = param.model.keyToString;
 	obj.name = param.model.title;
-	obj.milestone = false;
+	obj.no = param.model.no;
 	
 	var serie = {};
 	serie.name = param.targetMemberName;
@@ -158,22 +159,25 @@ function createGanttEntity(param, isMilestone) {
 	serie.end = parseDate(param.period);
 	serie.periodStatusLabel = param.periodStatusLabel;
 	serie.periodStatusCode = param.periodStatusCode;
+	serie.milestone = isMilestone;
+	serie.updateStartDate = param.updateStartDate;
+	serie.updatePeriod = param.updatePeriod;
+	
 	//背景色の設定
 	if(isMilestone) {
 		//マイルストーンの場合
-		obj.milestone = true;
 		if(param.updateStartDate == false && param.updatePeriod == false) {
 			//開始日・終了日両方設定されている場合
-			serie.color = "milestone-both";
+			serie.color = "milestone milestone-both";
 		} else if(param.updateStartDate == false) {
 			//開始日のみ設定されている場合
-			serie.color = "milestone-onlyStart";
+			serie.color = "milestone milestone-onlyStart";
 		} else if(param.updatePeriod == false) {
 			//終了日のみ設定されている場合
-			serie.color = "milestone-onlyEnd";
+			serie.color = "milestone milestone-onlyEnd";
 		} else {
 			//両方共設定されていない場合
-			serie.color = "gantt-transparent";
+			serie.color = "milestone gantt-transparent";
 		}
 	} else {
 		//Ticketの場合
@@ -223,7 +227,8 @@ function isReRender() {
 //再表示処理
 //ダイアログからの最表示時に呼び出されます
 function refresh() {
-	reSearchAndRender();
+	//何もしない
+//	reSearchAndRender();
 }
 
 //再検索処理

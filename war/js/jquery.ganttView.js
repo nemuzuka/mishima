@@ -121,7 +121,7 @@ behavior: {
             applyLastClass(div.parent());
 		}
 		
-		var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+		var monthNames = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
 
 		// Creates a 3 dimensional array [year][month][day] of every day 
 		// between the given start and end dates
@@ -144,20 +144,33 @@ behavior: {
 
         function addVtHeader(div, data, cellHeight) {
             var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
-            for (var i = 0; i < data.length; i++) {
+            
+            $.each(data, function(i){
+                var $a = jQuery("<a />").attr({href:"javascript:void(0)"}).text(data[i].name);
+                var no = data[i].no;
+                var id = data[i].id;
+                $a.click(function(){
+           			openDetailTicketDialog(id);
+                });
+                if(id == null || id == '') {
+                	$a = jQuery("<span />").text(data[i].name);
+                }
                 var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item" });
                 itemDiv.append(jQuery("<div>", {
                     "class": "ganttview-vtheader-item-name",
                     "css": { "height": (data[i].series.length * cellHeight) + "px" }
-                }).append(data[i].name));
+                }).append($a));
+                
                 var seriesDiv = jQuery("<div>", { "class": "ganttview-vtheader-series" });
                 for (var j = 0; j < data[i].series.length; j++) {
+                	
+                    var $targetName = jQuery("<div />").text(data[i].series[j].name);
                     seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
-						.append(data[i].series[j].name));
+						.append($targetName));
                 }
                 itemDiv.append(seriesDiv);
                 headerDiv.append(itemDiv);
-            }
+        	});
             div.append(headerDiv);
         }
 
@@ -173,7 +186,7 @@ behavior: {
 					monthsDiv.append(jQuery("<div>", {
 						"class": "ganttview-hzheader-month",
 						"css": { "width": (w - 1) + "px" }
-					}).append(monthNames[m] + "/" + y));
+					}).append(y + "年" + monthNames[m]));
 					for (var d in dates[y][m]) {
 						daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
 							.append(dates[y][m][d].getDate()));
@@ -189,12 +202,19 @@ behavior: {
         function addGrid(div, data, dates, cellWidth, showWeekends) {
             var gridDiv = jQuery("<div>", { "class": "ganttview-grid" });
             var rowDiv = jQuery("<div>", { "class": "ganttview-grid-row" });
+			var dataFormat = new DateFormat("yyyy/MM/dd");
+            var currentDate = dataFormat.format(new Date());
+
 			for (var y in dates) {
 				for (var m in dates[y]) {
 					for (var d in dates[y][m]) {
 						var cellDiv = jQuery("<div>", { "class": "ganttview-grid-row-cell" });
 						if (DateUtils.isWeekend(dates[y][m][d]) && showWeekends) { 
 							cellDiv.addClass("ganttview-weekend"); 
+						}
+						if(currentDate == dataFormat.format(dates[y][m][d])) {
+							cellDiv.removeClass("ganttview-weekend");
+							cellDiv.addClass("ganttview-currentDate"); 
 						}
 						rowDiv.append(cellDiv);
 					}
@@ -224,28 +244,96 @@ behavior: {
         function addBlocks(div, data, cellWidth, start) {
             var rows = jQuery("div.ganttview-blocks div.ganttview-block-container", div);
             var rowIdx = 0;
-            for (var i = 0; i < data.length; i++) {
-                for (var j = 0; j < data[i].series.length; j++) {
+            
+            $.each(data, function(i){
+            	var targetData = this;
+            	var id = this.id;
+            	var name = this.name;
+            	$.each(targetData.series, function(j){
                     var series = data[i].series[j];
                     var size = DateUtils.daysBetween(series.start, series.end) + 1;
 					var offset = DateUtils.daysBetween(start, series.start);
+					
+					var title = "";
+					if(series.milestone == false) {
+						title = "【件名】" + name;
+						
+						if(series.name != null && series.name != "") {
+							title = title + "\n" + "【担当者】" + series.name;
+						}						
+						
+						if(series.status != null && series.status != '') {
+							if(title != null && title != '') {
+								title = title + "\n";
+							}
+							title = title + "【ステータス】" + series.status;
+						}
+						if(series.periodStatusLabel != null && series.periodStatusLabel != '') {
+							title = title + "(" + series.periodStatusLabel + ")";
+						}
+					} else {
+						//マイルストーンの場合
+						//開始日、終了日を設定
+						title = "【マイルストーン】";
+					}
+					
+					var dataFormat = new DateFormat("yyyy年M月d日");
+					var startDate = null;
+					if(series.start != null) {
+						if(series.updateStartDate == false) {
+							startDate = dataFormat.format(series.start);
+						}
+					}
+					var endDate = null;
+					if(series.end != null) {
+						if(series.updatePeriod == false) {
+							endDate = dataFormat.format(series.end);
+						}
+					}
+					var dateStr = "";
+					if(startDate != null) {
+						dateStr = startDate + "～";
+					}
+					
+					if(endDate != null) {
+						if(dateStr == '') {
+							dateStr = "～";
+						}
+						dateStr = dateStr + endDate;
+					}
+					if(dateStr != '') {
+						dateStr = "【期間】" + dateStr;
+					}
+					title = title + "\n" +  dateStr;
+					
+					var cursor = "pointer";
+					if(id == null || id == '') {
+						cursor = "default";
+					}
 					var block = jQuery("<div>", {
                         "class": "ganttview-block",
-                        "title": series.name + ", " + size + " days",
+                        "title": title,
                         "css": {
                             "width": ((size * cellWidth) - 9) + "px",
-                            "margin-left": ((offset * cellWidth) + 3) + "px"
+                            "margin-left": ((offset * cellWidth) + 3) + "px",
+                            "cursor": cursor
                         }
                     });
+					if(id != null && id != '') {
+						block.click(function(){
+								openDetailTicketDialog(id);
+						});
+					}
+					
                     addBlockData(block, data[i], series);
                     if (data[i].series[j].color) {
                         block.addClass(data[i].series[j].color);
                     }
-                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }));
                     jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
-                }
-            }
+            	});
+            });
         }
         
         function addBlockData(block, data, series) {
