@@ -21,9 +21,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-import org.slim3.datastore.Datastore;
-
 import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.common.ProjectAuthority;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
@@ -32,11 +29,15 @@ import jp.co.nemuzuka.core.entity.UserInfo;
 import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.dao.ProjectDao;
 import jp.co.nemuzuka.dao.ProjectMemberDao;
+import jp.co.nemuzuka.entity.ProjectModelEx;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.ProjectMemberModel;
 import jp.co.nemuzuka.model.ProjectModel;
 import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.tester.AppEngineTestCase4HRD;
+
+import org.junit.Test;
+import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
@@ -56,6 +57,30 @@ public class ProjectServiceImpl2Test extends AppEngineTestCase4HRD {
 	List<Key> projectKeyList;
 	List<Key> memberKeyList;
 
+	/**
+	 * getUserProjectListのテスト.
+	 * @throws Exception
+	 */
+	@Test
+	public void testGetUserProjectListOnlyMail() throws Exception {
+		createInitData();
+
+		//GAE管理者であっても、所属するプロジェクトのみ
+		List<ProjectModelEx> actualList = service.getUserProjectList("mail0@gmail.com");
+		assertThat(actualList.size(), is(2));
+		assertThat(actualList.get(0).getModel().getProjectName(), is("project_name_0"));
+		assertThat(actualList.get(1).getModel().getProjectName(), is("project_name_1"));
+		
+		//存在しないユーザからのアクセス
+		actualList = service.getUserProjectList("noRegist@gmail.com");
+		assertThat(actualList.size(), is(0));
+		
+		//参加プロジェクトが1件も存在しない場合
+		actualList = service.getUserProjectList("mail3@gmail.com");
+		assertThat(actualList.size(), is(0));
+		
+	}
+	
 	/**
 	 * getUserProjectListのテスト.
 	 */

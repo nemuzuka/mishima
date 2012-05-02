@@ -104,7 +104,8 @@ public class GanttServiceImpl implements GanttService {
 			Date ticketStartDate = target.getModel().getStartDate();
 			Date ticketEndDate = target.getModel().getPeriod();
 			if(ticketEndDate != null && ticketStartDate == null) {
-				//開始日が未設定で終了日が設定されている場合、とりあえず終了日を設定する
+				//開始日が未設定で終了日が設定されている場合、比較対象として終了日を設定する
+				//このケースの時に開始日の最小値の可能性があるため
 				ticketStartDate = ticketEndDate;
 			}
 			
