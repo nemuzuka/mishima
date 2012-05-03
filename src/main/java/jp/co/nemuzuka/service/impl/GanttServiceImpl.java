@@ -93,7 +93,7 @@ public class GanttServiceImpl implements GanttService {
 	 * @param startDate マイルストーン開始日
 	 * @param endDate マイルストーン終了日
 	 */
-	private void setDate(Result result, Date startDate,
+	void setDate(Result result, Date startDate,
 			Date endDate) {
 		
 		Date targetStartDate = startDate;
@@ -117,15 +117,9 @@ public class GanttServiceImpl implements GanttService {
 		if(targetStartDate == null) {
 			targetStartDate = CurrentDateUtils.getInstance().getCurrentDate();
 		}
-		//終了日がnullの場合、システム日付の1ヶ月後を設定する
+		//終了日がnullの場合、開始日の1ヶ月後を設定する
 		if(targetEndDate == null) {
-			Date currentDate = CurrentDateUtils.getInstance().getCurrentDate();
-			targetEndDate = DateTimeUtils.addMonth(currentDate, 1);
-		}
-		
-		//開始日 > 終了日の場合開始日を設定
-		if(targetStartDate.getTime() > targetEndDate.getTime()) {
-			targetStartDate = targetEndDate;
+			targetEndDate = DateTimeUtils.addMonth(targetStartDate, 1);
 		}
 		
 		//日数を算出して、開始日〜終了日までの期間が15日以下の場合、終了日を開始日から15日後に設定
@@ -175,11 +169,6 @@ public class GanttServiceImpl implements GanttService {
 				target.setPeriod(end);
 				target.setUpdatePeriod(true);
 			}
-			
-			if(target.getStartDate().compareTo(target.getPeriod()) > 0) {
-				target.setStartDate(target.getPeriod());
-			}
-			
 		}
 	}
 
