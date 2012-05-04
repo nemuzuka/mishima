@@ -55,11 +55,11 @@ public class GanttServiceImpl implements GanttService {
 	 */
 	private GanttServiceImpl(){}
 
-	/* (non-Javadoc)
-	 * @see jp.co.nemuzuka.service.GanttService#getList(jp.co.nemuzuka.dao.TicketDao.Param, java.lang.String)
+	/* (非 Javadoc)
+	 * @see jp.co.nemuzuka.service.GanttService#getList(jp.co.nemuzuka.dao.TicketDao.Param)
 	 */
 	@Override
-	public Result getList(Param param, String projectKeyString) {
+	public Result getList(Param param) {
 
 		//一覧取得
 		List<TicketModelEx> ticketList = ticketService.getList(param, "", false);
@@ -72,14 +72,16 @@ public class GanttServiceImpl implements GanttService {
 		Date endDate = null;
 		if(StringUtils.isNotEmpty(param.milestone)) {
 			MilestoneModel milestone = milestoneDao.get(param.milestone);
-			startDate = milestone.getStartDate();
-			endDate = milestone.getEndDate();
-			result.milestoneName = milestone.getMilestoneName();
-			SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
-			result.startDate = ConvertUtils.toString(startDate, sdf);
-			result.endDate = ConvertUtils.toString(endDate, sdf);
-			result.milestoneStartDate = ConvertUtils.toString(startDate, sdf);
-			result.milestoneEndDate = ConvertUtils.toString(endDate, sdf);
+			if(milestone != null) {
+				startDate = milestone.getStartDate();
+				endDate = milestone.getEndDate();
+				result.milestoneName = milestone.getMilestoneName();
+				SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+				result.startDate = ConvertUtils.toString(startDate, sdf);
+				result.endDate = ConvertUtils.toString(endDate, sdf);
+				result.milestoneStartDate = ConvertUtils.toString(startDate, sdf);
+				result.milestoneEndDate = ConvertUtils.toString(endDate, sdf);
+			}
 		}
 
 		//チケットの日付を再設定する
@@ -135,15 +137,18 @@ public class GanttServiceImpl implements GanttService {
 		result.startDate = ConvertUtils.toString(targetStartDate, sdf);
 		result.endDate = ConvertUtils.toString(targetEndDate, sdf);
 		
+		//マイルストーンが設定されていて、
 		//マイルストーンの開始日・終了日が空の場合、設定
-		if(StringUtils.isEmpty(result.milestoneStartDate)) {
-			result.milestoneStartDate = result.startDate;
-			result.updateStartDate = true;
-		}
-		
-		if(StringUtils.isEmpty(result.milestoneEndDate)) {
-			result.milestoneEndDate = result.endDate;
-			result.updateEndDate = true;
+		if(StringUtils.isNotEmpty(result.milestoneName)) {
+			if(StringUtils.isEmpty(result.milestoneStartDate)) {
+				result.milestoneStartDate = result.startDate;
+				result.updateStartDate = true;
+			}
+			
+			if(StringUtils.isEmpty(result.milestoneEndDate)) {
+				result.milestoneEndDate = result.endDate;
+				result.updateEndDate = true;
+			}
 		}
 	}
 

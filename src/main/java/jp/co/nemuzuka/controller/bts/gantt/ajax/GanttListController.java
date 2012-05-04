@@ -15,8 +15,6 @@
  */
 package jp.co.nemuzuka.controller.bts.gantt.ajax;
 
-import org.slim3.util.ApplicationMessage;
-
 import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.controller.JsonController;
@@ -26,6 +24,8 @@ import jp.co.nemuzuka.service.GanttService;
 import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.impl.GanttServiceImpl;
 import jp.co.nemuzuka.service.impl.TicketMstServiceImpl;
+
+import org.slim3.util.ApplicationMessage;
 
 /**
  * チャート一覧Contoroller.
@@ -54,8 +54,7 @@ public class GanttListController extends JsonController {
 		//検索結果を返す
 		GanttService.Result ganttResult = gantService.getList(
 				form.createParam(getUserInfo().selectedProject, 
-						ticketMstService.getTicketMst(getUserInfo().selectedProject).openStatus),
-				getUserInfo().selectedProject);
+						ticketMstService.getTicketMst(getUserInfo().selectedProject).openStatus));
 		result.setResult(ganttResult);
 
 		if(ganttResult.ticketList.size() == 0) {

@@ -28,10 +28,9 @@ public interface GanttService {
 	/**
 	 * ガントチャート出力情報取得.
 	 * @param param 検索条件
-	 * @param projectKeyString キー文字列(プロジェクトKey)
 	 * @return ガントチャート出力情報
 	 */
-	Result getList(TicketDao.Param param, String projectKeyString);
+	Result getList(TicketDao.Param param);
 	
 	/**
 	 * ガントチャート出力情報

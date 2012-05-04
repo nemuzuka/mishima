@@ -18,6 +18,7 @@ package jp.co.nemuzuka.service.impl;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,7 +26,12 @@ import java.util.List;
 
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
+import jp.co.nemuzuka.dao.MilestoneDao;
+import jp.co.nemuzuka.dao.ProjectDao;
+import jp.co.nemuzuka.dao.TicketDao.Param;
 import jp.co.nemuzuka.entity.TicketModelEx;
+import jp.co.nemuzuka.model.MilestoneModel;
+import jp.co.nemuzuka.model.ProjectModel;
 import jp.co.nemuzuka.model.TicketModel;
 import jp.co.nemuzuka.service.GanttService;
 import jp.co.nemuzuka.service.GanttService.Result;
@@ -35,6 +41,10 @@ import jp.co.nemuzuka.utils.CurrentDateUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
 
 import org.junit.Test;
+import org.slim3.datastore.Datastore;
+
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * GanttServiceImplのテストクラス.
@@ -44,6 +54,47 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 
 	GanttServiceImpl service = GanttServiceImpl.getInstance();
 	SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+	MilestoneDao milestoneDao = MilestoneDao.getInstance();
+	ProjectDao projectDao = ProjectDao.getInstance();
+	
+	List<Key> milestoneKeyList;
+	Key projectKey;
+
+	/**
+	 * getListのテスト.
+	 * @throws Exception
+	 */
+	@Test
+	public void testGetList() throws Exception {
+		createTestData();
+		
+		//マイルストーンが設定されている場合
+		Param param = new Param();
+		param.milestone = Datastore.keyToString(milestoneKeyList.get(0));
+		param.projectKeyString = Datastore.keyToString(projectKey);
+		Result actual = service.getList(param);
+		assertThat(actual.milestoneName, is("マイルストン_0"));
+		assertThat(actual.milestoneStartDate, is("20120401"));
+		assertThat(actual.milestoneEndDate, is("20120430"));
+		
+		//マイルストーンが設定されていない場合
+		param = new Param();
+		param.projectKeyString = Datastore.keyToString(projectKey);
+		actual = service.getList(param);
+		assertThat(actual.milestoneName, is(nullValue()));
+		assertThat(actual.milestoneStartDate, is(nullValue()));
+		assertThat(actual.milestoneEndDate, is(nullValue()));
+		
+		//設定されているが、存在しない場合
+		param = new Param();
+		param.milestone = Datastore.keyToString(Datastore.createKey(MilestoneModel.class, -1L));
+		param.projectKeyString = Datastore.keyToString(projectKey);
+		actual = service.getList(param);
+		assertThat(actual.milestoneName, is(nullValue()));
+		assertThat(actual.milestoneStartDate, is(nullValue()));
+		assertThat(actual.milestoneEndDate, is(nullValue()));
+		
+	}
 	
 	/**
 	 * setDateのテスト.
@@ -276,6 +327,7 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 	 */
 	private Result createTestData7() {
 		GanttService.Result result = new GanttService.Result();
+		result.milestoneName = "a";
 		result.milestoneStartDate = "20120103";
 		result.milestoneEndDate = "20120110";
 		result.ticketList = createTicketModelEx4();
@@ -290,6 +342,7 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 	 */
 	private Result createTestData6() {
 		GanttService.Result result = new GanttService.Result();
+		result.milestoneName = "a";
 		result.ticketList = createTicketModelEx6();
 		return result;
 	}
@@ -339,6 +392,7 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 	 */
 	private Result createTestData5() {
 		GanttService.Result result = new GanttService.Result();
+		result.milestoneName = "a";
 		result.ticketList = createTicketModelEx5();
 		return result;
 	}
@@ -366,6 +420,7 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 	 */
 	private Result createTestData4() {
 		GanttService.Result result = new GanttService.Result();
+		result.milestoneName = "a";
 		result.ticketList = createTicketModelEx4();
 		return result;
 	}
@@ -395,6 +450,7 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 	 */
 	private Result createTestData3() {
 		GanttService.Result result = new GanttService.Result();
+		result.milestoneName = "a";
 		result.ticketList = createTicketModelEx3();
 		return result;
 	}
@@ -422,6 +478,7 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 	 */
 	private Result createTestData2() {
 		GanttService.Result result = new GanttService.Result();
+		result.milestoneName = "a";
 		result.ticketList = createTicketModelEx2();
 		return result;
 	}
@@ -449,6 +506,7 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 	 */
 	private Result createTestData1() {
 		GanttService.Result result = new GanttService.Result();
+		result.milestoneName = "a";
 		result.ticketList = createTicketModelEx1();
 		return result;
 	}
@@ -464,6 +522,46 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 		list.add(model);
 		model.setModel(new TicketModel());
 		return list;
+	}
+
+	/**
+	 * テストデータ作成.
+	 * プロジェクト1件
+	 * マイルストーン3件を作成します。
+	 * @throws ParseException 例外
+	 */
+	private void createTestData() throws ParseException {
+		
+		ProjectModel model = new ProjectModel();
+		model.setProjectId("test_project");
+		model.setProjectName("テストプロジェクト");
+		model.setProjectSummary(new Text("テスト用プロジェクトですってば"));
+		projectDao.put(model);
+		projectKey = model.getKey();
+		
+		milestoneKeyList = new ArrayList<Key>();
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		for(int i = 0; i < 3; i++) {
+			MilestoneModel milestoneModel = new MilestoneModel();
+			milestoneModel.setMilestoneName("マイルストン_" + i);
+			Date startDate = null;
+			if(i == 0 || i == 2) {
+				startDate = sdf.parse("20120401");
+			}
+			milestoneModel.setStartDate(startDate);
+			Date endDate = null;
+			if(i == 0 || i == 1) {
+				endDate = sdf.parse("20120430");
+			}
+			milestoneModel.setEndDate(endDate);
+			milestoneModel.setProjectKey(projectKey);
+			milestoneModel.setSortNum(Long.MAX_VALUE);
+			milestoneDao.put(milestoneModel);
+			milestoneKeyList.add(milestoneModel.getKey());
+		}
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+		return;
 	}
 
 	/* (非 Javadoc)
