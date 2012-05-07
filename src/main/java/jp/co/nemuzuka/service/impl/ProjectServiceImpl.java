@@ -360,7 +360,12 @@ public class ProjectServiceImpl implements ProjectService {
 	private ProjectModelEx createProjectModelEx(ProjectModel target) {
 		ProjectModelEx model = new ProjectModelEx();
 		model.setModel(target);
-		model.setProjectSummaryView(HtmlStringUtils.escapeTextAreaString(target.getProjectSummary().getValue()));
+		String summaryString = "";
+		Text summary = target.getProjectSummary();
+		if(summary != null) {
+			summaryString = summary.getValue();
+		}
+		model.setProjectSummaryView(HtmlStringUtils.escapeTextAreaString(summaryString));
 		target.setProjectSummary(null);
 		return model;
 	}
