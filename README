@@ -14,5 +14,8 @@ Google App Engine(for Java)上で動作するBTSです。
 	・jquery.toaster
 
 
+License
+	Copyright (C) 2012 Kazumune Katagiri
+	Distributed under the Apache License v2.0. See the file copyright/LICENSE.txt.
 
 site: https://yarotee.appspot.com/
