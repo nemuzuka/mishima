@@ -43,7 +43,9 @@ public class TransactionEntity {
 	 * ロールバック.
 	 */
 	public void rollback() {
-		transaction.rollback();
+		if(transaction.isActive()) {
+			transaction.rollback();
+		}
 	}
 	
 	/**
