@@ -27,7 +27,7 @@ body {
   float: right;
   font-weight: bold;
   color: #FFF;
-  text-shadow: 0 1px 0 rgba(0,255,0,.1), 0 0 30px rgba(0,255,0,.125);
+  text-shadow: 1px 1px 0px #aaa,2px 2px 0px #aaa,3px 3px 0px #777;
   -webkit-transition: all .2s linear;
      -moz-transition: all .2s linear;
           transition: all .2s linear;
