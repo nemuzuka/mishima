@@ -485,6 +485,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 			projectModel = new ProjectModel();
 			projectModel.setProjectName("プロジェクト" + i);
 			projectModel.setProjectId("id" + i);
+			projectModel.setProjectSummary(new Text("概要" + i));
 			projectDao.put(projectModel);
 			projectKeyList.add(projectModel.getKey());
 			GlobalTransaction.transaction.get().commit();
