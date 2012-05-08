@@ -28,7 +28,6 @@ import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import net.arnx.jsonic.JSON;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
@@ -280,11 +279,7 @@ public abstract class JsonController extends AbsController {
 		TokenCheck tokenCheck = target.getAnnotation(TokenCheck.class);
 		if(tokenCheck != null) {
 
-			//SessionのTokenとリクエストパラメータのTokenが合致しているかチェック
-			String reqToken = asString(TOKEN_KEY);
-			String sessionToken = sessionScope(TOKEN_KEY);
-			removeSessionScope(TOKEN_KEY);
-			if(ObjectUtils.equals(reqToken, sessionToken) == false) {
+			if(isTokenCheck() == false) {
 				//requestスコープにエラーメッセージを設定し、JSONエラー時のメソッドを呼び出す
 				errors.put("message", ApplicationMessage.get("errors.token"));
 				requestScope(TOKEN_ERR_KEY, "1");

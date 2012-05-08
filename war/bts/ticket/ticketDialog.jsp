@@ -210,6 +210,7 @@
 				<input type="button" class="btn" id="ticketDetail-Comment-add" value="コメント登録" />
 				<input type="button" class="btn" id="ticketDetail-child-add" value="子チケット作成" />
 				<input type="button" class="btn" id="ticketDetail-copy-add" value="コピー新規" />
+				<input type="button" class="btn" id="ticketDetail-add-file" value="ファイル追加" />
 				<input type="hidden" id="detail_ticket_versionNo" />
 				<input type="hidden" id="detail_ticket_keyToString" />
 			</div>
@@ -258,3 +259,29 @@
 	</div>
 </div>
 </div>
+
+<%-- ファイルアップロードダイアログ --%>
+<div id="ticketFileUploadDialog" title="ファイルアップロード" class="dialog-widget">
+<form id="fileUploadForm" method="post" enctype="multipart/form-data" target="fileUploader">
+<input type="hidden" id="fileUploadToken" name="jp.co.nemuzuka.token" />
+<input type="hidden" id="ticket_file_upload_keyToString" name="keyToString" />
+<div class="dialog-container form-horizontal dialog-detail" >
+
+<fieldset>
+	<div class="control-group">
+		<label class="control-label" for="ticket_upload_file">ファイル</label>
+		<div class="controls">
+			<input type="file" id="ticket_upload_file" name="uploadFile" />
+		</div>
+	</div>
+
+	<div class="edit_ctrl">
+		<input type="button" class="btn btn-primary" id="ticketFileUploadDialog-add" value="アップロード" />
+		<input type="button" class="btn" id="ticketFileUploadDialog-cancel" value="キャンセル" />
+	</div>
+</fieldset>
+</div>
+</form>
+</div>
+<%-- アップロード結果取得用iframe --%>
+<iframe name="fileUploader" src="" style="width:0px;height:0px;border:0px;"></iframe>

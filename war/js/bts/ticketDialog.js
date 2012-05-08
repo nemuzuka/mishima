@@ -46,6 +46,12 @@ function initTicketDialog() {
 		width:600,
 		resizable:false
 	});
+	$("#ticketFileUploadDialog").dialog({
+		modal:true,
+		autoOpen:false,
+		width:500,
+		resizable:false
+	});
 
 	//Ticket登録・更新ダイアログ
 	$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
@@ -82,6 +88,14 @@ function initTicketDialog() {
 		var baseKey = $("#detail_ticket_keyToString").val();
 		openEditTicketDialog("", "", baseKey, "copyIns");
 	});
+	$("#ticketDetail-add-file").click(function(){
+		var key = $("#detail_ticket_keyToString").val();
+		$("#ticket_file_upload_keyToString").val(key);
+		$("#fileUploadToken").val($("#token").val());
+		//fileの入力値を初期化
+		$("#ticket_upload_file").replaceWith($("#ticket_upload_file").clone());
+		$("#ticketFileUploadDialog").dialog("open");
+	});
 	
 	//Ticketコメントダイアログ
 	$("#ticketCommentDialog-add").click(function(){
@@ -99,6 +113,14 @@ function initTicketDialog() {
 	});
 	$("#ticketSummaryDialog-cancel").click(function(){
 		$("#ticketSummaryDialog").dialog("close");
+	});
+	
+	//ファイルアップロードダイアログ
+	$("#ticketFileUploadDialog-cancel").click(function(){
+		$("#ticketFileUploadDialog").dialog("close");
+	});
+	$("#ticketFileUploadDialog-add").click(function(){
+		executeTicketFileUploadCheck();
 	});
 }
 
@@ -687,5 +709,45 @@ function deleteTicketComment(keyToString, versionNo) {
 			setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
 		}
 	);
+}
 
+//Ticketに紐付くファイル添付(validation)
+function executeTicketFileUploadCheck() {
+	viewLoadingMsg();
+	$("#fileUploadForm").attr({"action":"/bts/ticket/uploadCheck"});
+	$("#fileUploadForm")[0].submit(function () {
+		return false;
+	});
+}
+
+//添付ファイルupload後の処理
+function afterUploadCheck(token, isError) {
+	unBlockLoadingMsg();
+	$("#token").val(token);
+	$("#fileUploadToken").val(token);
+	if(isError == false) {
+		executeTicketFileUpload();
+	}
+}
+
+//Ticketに紐付くファイル添付
+function executeTicketFileUpload() {
+	viewLoadingMsg();
+	$("#fileUploadForm").attr({"action":"/bts/ticket/upload"});
+	$("#fileUploadForm")[0].submit(function () {
+		return false;
+	});
+}
+
+//添付ファイルupload後の処理
+function afterUpload(msg) {
+	unBlockLoadingMsg();
+	$("#ticketFileUploadDialog").dialog("close");
+	
+	if(msg != '') {
+		viewToastMsg(msg);
+	}
+	
+	//詳細ダイアログ再描画
+	openDetailTicketDialog($("#detail_ticket_keyToString").val(), true);
 }

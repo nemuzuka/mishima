@@ -36,6 +36,7 @@ import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -384,4 +385,21 @@ public abstract class AbsController extends Controller {
 		}
 		return true;
 	}
+
+	/**
+	 * Tokenチェック.
+	 * リクエストパラメータとSession上のTokenが合致するかチェックします。
+	 * @return 合致する場合、true
+	 */
+	protected boolean isTokenCheck() {
+		String reqToken = asString(TOKEN_KEY);
+		String sessionToken = sessionScope(TOKEN_KEY);
+		removeSessionScope(TOKEN_KEY);
+		if(ObjectUtils.equals(reqToken, sessionToken) == false) {
+			return false;
+		}
+		return true;
+	}
+	
+
 }

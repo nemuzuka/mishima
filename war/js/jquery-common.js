@@ -95,10 +95,15 @@ function infoCheck(data) {
 	if(data.infoMsg.length != 0) {
 		//メッセージが存在する場合
 		var msg = getMsgs(data.infoMsg);
-		var t = $.toaster({showTime:1000, centerX:true, centerY:true});
-		t.toast(msg);
+		viewToastMsg(msg);
 	}
 	return;
+}
+
+//メッセージtoast表示
+function viewToastMsg(msg) {
+	var t = $.toaster({showTime:1000, centerX:true, centerY:true});
+	t.toast(msg);
 }
 
 //Token再設定

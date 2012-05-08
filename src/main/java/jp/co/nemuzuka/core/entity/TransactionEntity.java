@@ -36,7 +36,9 @@ public class TransactionEntity {
 	 * コミット.
 	 */
 	public void commit() {
-		transaction.commit();
+		if(transaction.isActive()) {
+			transaction.commit();
+		}
 	}
 	
 	/**
