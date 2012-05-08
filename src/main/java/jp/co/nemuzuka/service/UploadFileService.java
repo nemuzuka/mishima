@@ -48,6 +48,16 @@ public interface UploadFileService {
 	void delete(String uploadFileKeyString, String ticketKeyToString, String projectKeyString, Long version);
 	
 	/**
+	 * ファイル情報取得.
+	 * 引数の情報でアップロードファイル情報を取得します。
+	 * @param keyString アップロードKey文字列
+	 * @param ticketKeyToString チケットKey文字列
+	 * @param projectKeyString プロジェクトKey文字列
+	 * @return 該当データ（存在しない場合、null）
+	 */
+	UploadFileModel get(String keyString, String ticketKeyToString, String projectKeyString);
+	
+	/**
 	 * ファイル一覧取得.
 	 * 引数に合致するファイル一覧情報を取得します。
 	 * @param ticketKeyToString チケットKey文字列

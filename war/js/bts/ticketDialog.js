@@ -664,7 +664,7 @@ function renderTicketUploadFileList(list) {
 
 		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(filename).addClass("link");
 		$a.click(function(){
-			alert("押したな！");
+			downloadTicketUploadFile(keyToString);
 		});
 
 		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
@@ -794,4 +794,13 @@ function afterUpload(msg) {
 	
 	//詳細ダイアログ再描画
 	openDetailTicketDialog($("#detail_ticket_keyToString").val(), true);
+}
+//添付ファイルダウンロード
+function downloadTicketUploadFile(keyString) {
+	$("#uploadFileKeyString").val(keyString);
+	$("#uploadFileTicketKeyString").val($("#detail_ticket_keyToString").val());
+	$("#fileUploadForm").attr({"action":"/bts/ticket/downLoad"});
+	$("#fileUploadForm")[0].submit(function () {
+		return false;
+	});
 }

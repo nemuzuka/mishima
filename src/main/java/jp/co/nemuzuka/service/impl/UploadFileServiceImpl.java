@@ -19,6 +19,10 @@ import java.nio.ByteBuffer;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
+import jp.co.nemuzuka.dao.UploadFileDao;
+import jp.co.nemuzuka.model.UploadFileModel;
+import jp.co.nemuzuka.service.UploadFileService;
+
 import org.slim3.controller.upload.FileItem;
 import org.slim3.datastore.Datastore;
 import org.slim3.util.BeanUtil;
@@ -29,14 +33,11 @@ import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.files.AppEngineFile;
 import com.google.appengine.api.files.FileService;
 import com.google.appengine.api.files.FileServiceFactory;
 import com.google.appengine.api.files.FileWriteChannel;
-
-import jp.co.nemuzuka.dao.UploadFileDao;
-import jp.co.nemuzuka.model.UploadFileModel;
-import jp.co.nemuzuka.service.UploadFileService;
 
 /**
  * UploadFileServiceの実装クラス.
@@ -127,5 +128,23 @@ public class UploadFileServiceImpl implements UploadFileService {
 	public List<UploadFileModel> getList(String ticketKeyToString,
 			String projectKeyString) {
 		return uploadFileDao.getList(ticketKeyToString, projectKeyString);
+	}
+
+	/* (非 Javadoc)
+	 * @see jp.co.nemuzuka.service.UploadFileService#get(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public UploadFileModel get(String keyString, String ticketKeyToString,
+			String projectKeyString) {
+		Key key = Datastore.stringToKey(keyString);
+		Key parentKey = Datastore.stringToKey(ticketKeyToString);
+		Key projectKey = Datastore.stringToKey(projectKeyString);
+		UploadFileModel model = uploadFileDao.get(key);
+		if(model == null || 
+				model.getParentKey().equals(parentKey) == false ||
+				model.getProjectKey().equals(projectKey) == false) {
+			return null;
+		}
+		return model;
 	}
 }

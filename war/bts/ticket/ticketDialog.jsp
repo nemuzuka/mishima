@@ -287,3 +287,8 @@
 </div>
 <%-- アップロード結果取得用iframe --%>
 <iframe name="fileUploader" src="" style="width:0px;height:0px;border:0px;"></iframe>
+<%-- ダウンロード取得用frame --%>
+<form name="fileDownloader" id="fileDownloader" method="post" target="_self" style="width:0px;height:0px;border:0px;">
+	<input type="hidden" id="uploadFileKeyString" name="keyString" />
+	<input type="hidden" id="uploadFileTicketKeyString" name="ticketKeyString" />
+</form>
