@@ -22,10 +22,7 @@ import net.arnx.jsonic.JSONHint;
 import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Model;
 
-import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
 
 /**
  * アップロードされたファイルを管理するModel.
@@ -195,16 +192,5 @@ public class UploadFileModel extends AbsModel {
 	 */
 	public void setProjectKey(Key projectKey) {
 		this.projectKey = projectKey;
-	}
-
-	/**
-	 * イメージURL.
-	 * このURLを使用することで、ファイルをダウンロードできます。
-	 * @return イメージURL
-	 */
-	public String getImageURL() {
-		BlobKey blobKey = new BlobKey(this.blobKey);
-		ImagesService imagesService = ImagesServiceFactory.getImagesService();
-		return imagesService.getServingUrl(blobKey);
 	}
 }

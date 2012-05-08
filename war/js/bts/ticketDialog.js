@@ -513,6 +513,9 @@ function openDetailTicketDialog(key, onlyRefresh) {
 			$("#detail_ticket_versionNo").val(form.versionNo);
 			$("#detail_ticket_keyToString").val(form.keyToString);
 
+			//ファイルアップロード再描画
+			renderTicketUploadFileList(data.result.uploadFileList);
+			
 			//コメント再描画
 			renderTicketCommentList(data.result.commentList);
 
@@ -639,6 +642,47 @@ function openTicketSummaryDialog(key) {
 	);
 }
 
+//アップロードファイル再描画
+function renderTicketUploadFileList(list) {
+	$("#ticket_upload_file_list").empty();
+
+	if(list.length == 0) {
+		return;
+	}
+	
+	var $dl = $("<dl />");
+	var $dt = $("<dt />").text("ファイル");
+
+	var $table = $("<table />").addClass("table table-bordered result_table comment_list_table");
+	var $tbody = $("<tbody />");
+	$.each(list, function(){
+		
+		var keyToString = this.keyToString;
+		var versionNo = this.version;
+		var createMemberName = this.createMemberName;
+		var filename = this.filename;
+
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(filename).addClass("link");
+		$a.click(function(){
+			alert("押したな！");
+		});
+
+		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
+		$delBtn.click(function(){
+			deleteTicketUploadFile(keyToString, versionNo);
+		});
+		
+		var $tr = $("<tr />");
+		$tr.append($("<td />").append($a))
+			.append($("<td />").append($delBtn).attr({width:"50px"}));
+		$tbody.append($tr)
+	});
+	$table.append($tbody);
+	var $div = $("<div />").append($table);
+	var $dd = $("<dd />").append($div);
+	$dl = $dl.append($dt).append($dd);
+	$("#ticket_upload_file_list").append($dl);
+}
 
 //コメント再描画
 function renderTicketCommentList(list) {

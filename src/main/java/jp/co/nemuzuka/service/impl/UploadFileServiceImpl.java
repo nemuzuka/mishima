@@ -90,6 +90,7 @@ public class UploadFileServiceImpl implements UploadFileService {
         BeanUtil.copy(blobInfo, model, new CopyOptions().exclude("blobKey"));
 		model.setParentKey(Datastore.stringToKey(ticketKeyToString));
 		model.setProjectKey(Datastore.stringToKey(projectKeyString));
+		model.setFilename(fileItem.getFileName());
         
 		//登録
 		Datastore.put(model);

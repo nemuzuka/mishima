@@ -42,6 +42,7 @@ import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.TicketService;
+import jp.co.nemuzuka.service.UploadFileService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
@@ -64,6 +65,7 @@ public class TicketServiceImpl implements TicketService {
 	CommentService commentService = CommentServiceImpl.getInstance();
 	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 	MemberService memberService = MemberServiceImpl.getInstance();
+	UploadFileService uploadFileService = UploadFileServiceImpl.getInstance();
 	
 	private static TicketServiceImpl impl = new TicketServiceImpl();
 	
@@ -207,6 +209,7 @@ public class TicketServiceImpl implements TicketService {
 		TicketDetailForm detailForm = new TicketDetailForm();
 		detailForm.setForm(form);
 		detailForm.commentList = commentService.getList(Datastore.stringToKey(form.keyToString));
+		detailForm.uploadFileList = uploadFileService.getList(keyString, projectKeyString);
 		setTicketConn(detailForm, projectKeyString);
 		return detailForm;
 	}

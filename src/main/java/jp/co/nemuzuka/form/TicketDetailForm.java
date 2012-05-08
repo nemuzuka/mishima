@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.entity.CommentModelEx;
 import jp.co.nemuzuka.model.TicketModel;
+import jp.co.nemuzuka.model.UploadFileModel;
 import jp.co.nemuzuka.utils.HtmlStringUtils;
 
 /**
@@ -47,6 +48,9 @@ public class TicketDetailForm implements Serializable {
 	
 	/** 子チケット情報. */
 	public List<TicketModel> childTicketList;
+	
+	/** 添付ファイル情報. */
+	public List<UploadFileModel> uploadFileList;
 	
 	/**
 	 * 表示用内容取得.
@@ -151,5 +155,19 @@ public class TicketDetailForm implements Serializable {
 	 */
 	public void setCommentList(List<CommentModelEx> commentList) {
 		this.commentList = commentList;
+	}
+
+	/**
+	 * @return the uploadFileList
+	 */
+	public List<UploadFileModel> getUploadFileList() {
+		return uploadFileList;
+	}
+
+	/**
+	 * @param uploadFileList the uploadFileList to set
+	 */
+	public void setUploadFileList(List<UploadFileModel> uploadFileList) {
+		this.uploadFileList = uploadFileList;
 	}
 }

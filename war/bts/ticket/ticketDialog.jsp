@@ -203,6 +203,8 @@
 				</dl>
 			</div>
 			
+			<div id="ticket_upload_file_list" style="clear:left;" class="result"></div>
+			
 			<div id="detail_ticket_conn_area" style="clear:left;"></div>
 			
 			<div class="detail_ctrl" >
