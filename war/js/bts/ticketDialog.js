@@ -73,7 +73,7 @@ function initTicketDialog() {
 		openTicketDetailCommentDialog();
 	});
 	$("#ticketDetail-child-add").click(function(){
-		var ticketNo = $("#detail_ticket_no").text();
+		var ticketNo = $("#detail_ticket_no_val").val();
 		var baseKey = $("#detail_ticket_keyToString").val();
 		openEditTicketDialog("", ticketNo, baseKey, "child");
 	});
@@ -393,6 +393,11 @@ function openEditTicketDialog(key, ticketNo, baseKey, type) {
 			$("#edit_ticket_targetMember").val(form.targetMember);
 			$("#edit_ticket_parentKey").val(form.parentKey);
 
+			$("#edit_ticket_project_id").text("");
+			if(form.projectId != null && form.projectId != '' ) {
+				$("#edit_ticket_project_id").text(form.projectId + "-");
+			}
+			
 			$("#edit_ticket_versionNo").val(form.versionNo);
 			$("#edit_ticket_keyToString").val(form.keyToString);
 			$("#edit_ticket_base_keyToString").val("");
@@ -453,7 +458,12 @@ function openDetailTicketDialog(key, onlyRefresh) {
 			//form情報の設定
 			var form = data.result.form;
 			
-			$("#detail_ticket_no").text(form.id);
+			var ticketNo = "";
+			if(form.projectId != null && form.projectId != '') {
+				ticketNo = ticketNo + form.projectId + "-";
+			}
+			$("#detail_ticket_no").text(ticketNo + form.id);
+			$("#detail_ticket_no_val").val(form.id);
 			//コメント用のステータス変更にもステータス構成情報を設定する
 			$("#detail_ticket_status").empty();
 			$("#edit_ticket_comment_status").empty();
@@ -485,7 +495,7 @@ function openDetailTicketDialog(key, onlyRefresh) {
 			renderTicketCommentList(data.result.commentList);
 
 			//関連情報描画
-			renderTicketConn(data.result);
+			renderTicketConn(data.result, ticketNo);
 			
 			if(onlyRefresh == false) {
 				$("#ticketDetailDialog").dialog("open");
@@ -498,7 +508,7 @@ function openDetailTicketDialog(key, onlyRefresh) {
 }
 
 //関連情報描画
-function renderTicketConn(result) {
+function renderTicketConn(result, prefix) {
 	$("#detail_ticket_conn_area").empty();
 	
 	var connArray = new Array();
@@ -528,7 +538,7 @@ function renderTicketConn(result) {
 	
 	
 	$.each(connArray, function(){
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(this.id).addClass("link");
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(prefix + this.id).addClass("link");
 		var keyToString = this.keyToString
 		$a.click(function(){
 			openTicketSummaryDialog(keyToString);
@@ -581,7 +591,11 @@ function openTicketSummaryDialog(key) {
 			
 			//form情報の設定
 			var form = data.result.form;
-			$("#detail_ticket_summary_no").text(form.id);
+			var ticketNo = "";
+			if(form.projectId != null && form.projectId != '') {
+				ticketNo = ticketNo + form.projectId + "-";
+			}
+			$("#detail_ticket_summary_no").text(ticketNo + form.id);
 			$("#detail_ticket_summary_title").text(form.title);
 			$("#detail_ticket_summary_content").html(defaultString4Init(data.result.contentView, "　"));
 			$("#detail_ticket_summary_endCondition").html(defaultString4Init(data.result.endConditionView, "　"));

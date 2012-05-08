@@ -31,6 +31,7 @@ import jp.co.nemuzuka.dao.TicketDao.Param;
 import jp.co.nemuzuka.entity.TicketModelEx;
 import jp.co.nemuzuka.exception.NotExistTicketException;
 import jp.co.nemuzuka.exception.ParentSelfTicketException;
+import jp.co.nemuzuka.form.ProjectForm;
 import jp.co.nemuzuka.form.TicketCommentForm;
 import jp.co.nemuzuka.form.TicketDetailForm;
 import jp.co.nemuzuka.form.TicketForm;
@@ -38,6 +39,7 @@ import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TicketModel;
 import jp.co.nemuzuka.service.CommentService;
 import jp.co.nemuzuka.service.MemberService;
+import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.service.TicketMstService;
 import jp.co.nemuzuka.service.TicketService;
 import jp.co.nemuzuka.utils.ConvertUtils;
@@ -58,6 +60,7 @@ public class TicketServiceImpl implements TicketService {
 
 	TicketDao ticketDao = TicketDao.getInstance();
 	
+	ProjectService projectService = ProjectServiceImpl.getInstance();
 	CommentService commentService = CommentServiceImpl.getInstance();
 	TicketMstService ticketMstService = TicketMstServiceImpl.getInstance();
 	MemberService memberService = MemberServiceImpl.getInstance();
@@ -88,6 +91,14 @@ public class TicketServiceImpl implements TicketService {
 		} else {
 			modelList = ticketDao.getList(param);
 		}
+		
+		//プロジェクト情報を取得
+		ProjectForm projectForm = projectService.get(param.projectKeyString);
+		if(StringUtils.isEmpty(projectForm.keyToString)) {
+			//存在しない場合、一覧はサイズ0のTicket
+			return new ArrayList<TicketModelEx>();
+		}
+		String projectId = projectForm.projectId;
 		
 		//登録されている担当者情報を取得
 		Set<Key> memberKeySet = new LinkedHashSet<Key>();
@@ -132,6 +143,13 @@ public class TicketServiceImpl implements TicketService {
 			
 			//ステータスが完了しているかを設定
 			entity.setCloseStatus(isCloseStatus(target.getStatus(), param.openStatus));
+			
+			//Noを表示する
+			if(StringUtils.isNotEmpty(projectId)) {
+				entity.setViewNo(projectId + "-" + target.getNo());
+			} else {
+				entity.setViewNo(String.valueOf(target.getNo()));
+			}
 			retList.add(entity);
 		}
 		return retList;
@@ -170,6 +188,8 @@ public class TicketServiceImpl implements TicketService {
 			TicketModel model = ticketDao.getWithProjectKey(key, projectKey);
 			setForm(form, model);
 		}
+		ProjectForm projectForm = projectService.get(projectKeyString);
+		form.setProjectId(projectForm.projectId);
 		form.ticketMst = ticketMstService.getTicketMst(projectKeyString);
 		return form;
 	}

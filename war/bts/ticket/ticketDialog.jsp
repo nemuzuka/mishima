@@ -108,7 +108,7 @@
 			<div class="control-group">
 				<label class="control-label" for="edit_ticket_parentKey">親チケットNo</label>
 				<div class="controls">
-					<input type="text" id="edit_ticket_parentKey">
+					<span id="edit_ticket_project_id"></span><input type="text" class="input-mini" id="edit_ticket_parentKey">
 					<p>※親のチケットNoを入力することでチケットに関連付けを行うことができます。<br />
 					※プロジェクトをまたいで登録することはできません</p>
 				</div>
@@ -163,7 +163,7 @@
 		<div class="dialog-area">
 			<dl>
 				<dt>チケットNo</dt>
-				<dd><div id="detail_ticket_no"></div></dd>
+				<dd><div id="detail_ticket_no"></div><input type="hidden" id="detail_ticket_no_val" /></dd>
 				<dt>ステータス</dt>
 				<dd><select id="detail_ticket_status"></select></dd>
 				<dt>件名</dt>

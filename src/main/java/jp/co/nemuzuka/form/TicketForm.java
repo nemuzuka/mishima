@@ -83,6 +83,9 @@ public class TicketForm implements Serializable {
 	/** id情報. */
 	public String id;
 	
+	/** プロジェクト識別子. */
+	public String projectId;
+	
 	/**
 	 * @return the startDate
 	 */
@@ -319,5 +322,19 @@ public class TicketForm implements Serializable {
 	 */
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the projectId
+	 */
+	public String getProjectId() {
+		return projectId;
+	}
+
+	/**
+	 * @param projectId the projectId to set
+	 */
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 }

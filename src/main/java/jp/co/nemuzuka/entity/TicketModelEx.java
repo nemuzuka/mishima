@@ -53,6 +53,12 @@ public class TicketModelEx {
 	/** 終了状態のステータスの場合、true. */
 	private boolean closeStatus;
 
+	/** 
+	 * 表示用TicketNo.
+	 * プロジェクト識別子 + no
+	 */
+	private String viewNo;
+	
 	/**
 	 * @return 期限ステータスコード値.
 	 */
@@ -197,5 +203,19 @@ public class TicketModelEx {
 	 */
 	public void setCloseStatus(boolean closeStatus) {
 		this.closeStatus = closeStatus;
+	}
+
+	/**
+	 * @return the viewNo
+	 */
+	public String getViewNo() {
+		return viewNo;
+	}
+
+	/**
+	 * @param viewNo the viewNo to set
+	 */
+	public void setViewNo(String viewNo) {
+		this.viewNo = viewNo;
 	}
 }

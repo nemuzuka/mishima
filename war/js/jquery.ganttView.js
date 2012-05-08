@@ -179,6 +179,9 @@ behavior: {
             var monthsDiv = jQuery("<div>", { "class": "ganttview-hzheader-months" });
             var daysDiv = jQuery("<div>", { "class": "ganttview-hzheader-days" });
             var totalW = 0;
+			var dataFormat = new DateFormat("yyyy/MM/dd");
+            var currentDate = dataFormat.format(new Date());
+
 			for (var y in dates) {
 				for (var m in dates[y]) {
 					var w = dates[y][m].length * cellWidth;
@@ -188,7 +191,12 @@ behavior: {
 						"css": { "width": (w - 1) + "px" }
 					}).append(y + "年" + monthNames[m]));
 					for (var d in dates[y][m]) {
-						daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
+						var addClass = "";
+						if(currentDate == dataFormat.format(dates[y][m][d])) {
+							addClass = "ganttview-currentDate"; 
+						}
+
+						daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" }).addClass(addClass)
 							.append(dates[y][m][d].getDate()));
 					}
 				}
@@ -274,7 +282,7 @@ behavior: {
 					} else {
 						//マイルストーンの場合
 						//開始日、終了日を設定
-						title = "【マイルストーン】";
+						title = "【マイルストーン】" + name;
 					}
 					
 					var dataFormat = new DateFormat("yyyy年M月d日");

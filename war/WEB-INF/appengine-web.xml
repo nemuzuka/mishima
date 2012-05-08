@@ -2,6 +2,7 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application>yarotee</application>
   <version>1</version>
+  <threadsafe>false</threadsafe>
 
   <static-files>
     <include path="/**.*"/>

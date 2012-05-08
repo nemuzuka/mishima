@@ -190,14 +190,14 @@ function writeTicketList(list) {
 		var status = this.model.status;
 		var title = this.model.title;
 		var memberName = this.targetMemberName;
-		var id = this.model.no;
+		var viewNo = this.viewNo;
 		var versionNo = this.model.version;
 		var period = this.period;
 		var createdAt = this.createdAt;
 		var periodStatusLabel = this.periodStatusLabel;
 		var periodStatusCode = this.periodStatusCode;
 
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(id);
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(viewNo);
 		$a.click(function(){
 			openDetailTicketDialog(keyToString);
 		});

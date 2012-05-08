@@ -104,6 +104,7 @@ div.ganttview-grid-row-cell.ganttview-weekend {
 	background-color: #fafafa;
 }
 
+div.ganttview-hzheader-day.ganttview-currentDate,
 div.ganttview-grid-row-cell.ganttview-currentDate {
 	background-color: #FFFF00;
 }

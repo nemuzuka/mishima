@@ -152,6 +152,7 @@ function render(data) {
 		var title = this.model.title;
 		var memberName = this.targetMemberName;
 		var no = this.model.no;
+		var viewNo = this.viewNo;
 		var versionNo = this.model.version;
 		var period = this.period;
 		var createdAt = this.createdAt;
@@ -163,7 +164,7 @@ function render(data) {
 			deleteTicket(title, keyToString, versionNo);
 		});
 		
-		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(no);
+		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(viewNo);
 		$a.click(function(){
 			openDetailTicketDialog(keyToString);
 		});
