@@ -113,7 +113,7 @@ public abstract class AbsController extends Controller {
 	protected void setUserService() {
 		
 		userService = UserServiceFactory.getUserService();
-		if(StringUtils.isNotEmpty((String)sessionScope(USE_TRIAL_USER))) {
+		if(StringUtils.isNotEmpty((String)requestScope(USE_TRIAL_USER))) {
 			userService = new UserServiceImpl(userService);
 		}
 		
@@ -377,7 +377,7 @@ public abstract class AbsController extends Controller {
 			//trial版の場合、エラーとせず、user情報を上書きする
 			if(trialMode) {
 				userService = new UserServiceImpl(userService);
-				sessionScope(USE_TRIAL_USER, "1");
+				requestScope(USE_TRIAL_USER, "1");
 				return true;
 			}
 			//存在しない
