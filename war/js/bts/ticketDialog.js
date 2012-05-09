@@ -799,8 +799,10 @@ function afterUpload(msg) {
 function downloadTicketUploadFile(keyString) {
 	$("#uploadFileKeyString").val(keyString);
 	$("#uploadFileTicketKeyString").val($("#detail_ticket_keyToString").val());
-	$("#fileUploadForm").attr({"action":"/bts/ticket/downLoad"});
-	$("#fileUploadForm")[0].submit(function () {
+	alert($("#uploadFileKeyString").val());
+	alert($("#uploadFileTicketKeyString").val());
+	$("#fileDownloader").attr({"action":"/bts/ticket/downLoad"});
+	$("#fileDownloader")[0].submit(function () {
 		return false;
 	});
 }
