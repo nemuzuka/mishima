@@ -68,6 +68,11 @@
         <url-pattern>/_ah/sessioncleanup</url-pattern>
     </servlet-mapping>
     
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/index.html</location>
+    </error-page>
+    
     <security-constraint>
         <web-resource-collection>
             <url-pattern>*.jsp</url-pattern>
