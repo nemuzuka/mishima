@@ -61,8 +61,10 @@ public class UploadController extends HtmlController {
 		String keyToString = asString("keyToString");
 		//プロジェクトのKey情報を取得
 		String projectKeyString = getUserInfo().selectedProject;
+		//コメントの情報を取得
+		String comment = asString("comment");
 		try {
-			uploadFileService.put(fileItem, keyToString, projectKeyString);
+			uploadFileService.put(fileItem, comment, keyToString, projectKeyString);
 			infoMsgs.add(ApplicationMessage.get("info.success"));
 		} catch(Exception e) {
 			isError = true;

@@ -30,12 +30,14 @@ public interface UploadFileService {
 	/**
 	 * ファイル情報登録.
 	 * 引数の情報でアップロード対象データを登録します。
+	 * ※トランザクションは終了させておく必要があります。
 	 * @param fileItem FileItemインスタンス
+	 * @param comment コメント
 	 * @param ticketKeyToString チケットKey文字列
 	 * @param projectKeyString プロジェクトKey文字列
 	 * @return 登録後Key文字列
 	 */
-	String put(FileItem fileItem, String ticketKeyToString, String projectKeyString);
+	String put(FileItem fileItem, String comment, String ticketKeyToString, String projectKeyString);
 	
 	/**
 	 * ファイル情報削除.
@@ -46,6 +48,14 @@ public interface UploadFileService {
 	 * @param version バージョンNo
 	 */
 	void delete(String uploadFileKeyString, String ticketKeyToString, String projectKeyString, Long version);
+	
+	/**
+	 * ファイル情報削除.
+	 * 引数の情報でアップロード対象データを削除します。
+	 * @param ticketKeyToString チケットKey文字列
+	 * @param projectKeyString プロジェクトKey文字列
+	 */
+	void delete4ticketKeyString(String ticketKeyToString, String projectKeyString);
 	
 	/**
 	 * ファイル情報取得.

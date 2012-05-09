@@ -141,7 +141,7 @@
 	<div class="control-group">
 		<label class="control-label" for="edit_ticket_comment">コメント</label>
 		<div class="controls">
-			<textarea class="input-xlarge required-input" cols="30" rows="8" id="edit_ticket_comment"></textarea>
+			<textarea class="input-xlarge required-input" cols="20" rows="8" id="edit_ticket_comment"></textarea>
 		</div>
 	</div>
 
@@ -274,6 +274,12 @@
 		<label class="control-label" for="ticket_upload_file">ファイル</label>
 		<div class="controls">
 			<input type="file" id="ticket_upload_file" name="uploadFile" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="ticket_upload_file_comment">コメント</label>
+		<div class="controls">
+			<textarea id="ticket_upload_file_comment" name="comment" class="input-xlarge" cols="30" rows="6"></textarea>
 		</div>
 	</div>
 

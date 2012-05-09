@@ -15,31 +15,22 @@
  */
 package jp.co.nemuzuka.controller.bts.ticket.ajax;
 
-import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
-import jp.co.nemuzuka.form.TicketForm;
-import jp.co.nemuzuka.service.TicketService;
 import jp.co.nemuzuka.service.UploadFileService;
-import jp.co.nemuzuka.service.impl.TicketServiceImpl;
 import jp.co.nemuzuka.service.impl.UploadFileServiceImpl;
 
 import org.slim3.util.ApplicationMessage;
 
 /**
- * Ticket削除Controller.
+ * アップロードファイル削除Controller.
  * @author kazumune
  */
-public class TicketDeleteController extends JsonController {
+public class TicketUploadFileDeleteController extends JsonController {
 
-	/** ActionForm. */
-	@ActionForm
-	protected TicketForm form;
-	
-	protected TicketService ticketService = TicketServiceImpl.getInstance();
-	protected UploadFileService UploadFileService = UploadFileServiceImpl.getInstance();
+	protected UploadFileService uploadFileService = UploadFileServiceImpl.getInstance();
 	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
@@ -48,11 +39,14 @@ public class TicketDeleteController extends JsonController {
 	@TokenCheck
 	@ProjectMember
 	protected Object execute() throws Exception {
-		//削除する
-		ticketService.delete(form, getUserInfo().selectedProject);
 		
-		//チケットに紐付くアップロードファイルも削除する
-		UploadFileService.delete4ticketKeyString(form.keyToString, getUserInfo().selectedProject);
+		String ticketKeyString = asString("keyToString");
+		Long uploadFileVersion = asLong("version");
+		String uploadFileKeyString = asString("uploadFileKeyToString");
+		
+		//削除する
+		uploadFileService.delete(uploadFileKeyString, ticketKeyString, 
+				getUserInfo().selectedProject, uploadFileVersion);
 		
 		JsonResult result = new JsonResult();
 		result.getInfoMsg().add(ApplicationMessage.get("info.success"));

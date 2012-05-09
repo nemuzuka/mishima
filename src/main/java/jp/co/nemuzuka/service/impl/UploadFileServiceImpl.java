@@ -23,6 +23,7 @@ import jp.co.nemuzuka.dao.UploadFileDao;
 import jp.co.nemuzuka.model.UploadFileModel;
 import jp.co.nemuzuka.service.UploadFileService;
 
+import org.apache.commons.lang.StringUtils;
 import org.slim3.controller.upload.FileItem;
 import org.slim3.datastore.Datastore;
 import org.slim3.util.BeanUtil;
@@ -34,6 +35,7 @@ import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.files.AppEngineFile;
 import com.google.appengine.api.files.FileService;
 import com.google.appengine.api.files.FileServiceFactory;
@@ -63,11 +65,11 @@ public class UploadFileServiceImpl implements UploadFileService {
 	private UploadFileServiceImpl(){}
 
 	/* (non-Javadoc)
-	 * @see jp.co.nemuzuka.service.UploadFileService#put(org.slim3.controller.upload.FileItem, java.lang.String, java.lang.String)
+	 * @see jp.co.nemuzuka.service.UploadFileService#put(org.slim3.controller.upload.FileItem, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public String put(FileItem fileItem, String ticketKeyToString,
-			String projectKeyString) {
+	public String put(FileItem fileItem, String comment, 
+			String ticketKeyToString, String projectKeyString) {
 		
 		BlobKey blobKey = null;
 		try {
@@ -92,6 +94,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 		model.setParentKey(Datastore.stringToKey(ticketKeyToString));
 		model.setProjectKey(Datastore.stringToKey(projectKeyString));
 		model.setFilename(fileItem.getFileName());
+		model.setComment(new Text(StringUtils.defaultString(comment)));
         
 		//登録
 		Datastore.put(model);
@@ -112,13 +115,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 			//該当レコードが存在しない場合、Exception
 			throw new ConcurrentModificationException();
 		}
-		
-		//blobKeyから削除し、Entityから削除
-		BlobKey blobKey = new BlobKey(model.getBlobKey());
-        BlobstoreService bs = BlobstoreServiceFactory.getBlobstoreService();
-        bs.delete(blobKey);
-		
-		uploadFileDao.delete(model.getKey());
+		delete(model);
 	}
 
 	/* (non-Javadoc)
@@ -146,5 +143,33 @@ public class UploadFileServiceImpl implements UploadFileService {
 			return null;
 		}
 		return model;
+	}
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.UploadFileService#delete4ticketKeyString(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void delete4ticketKeyString(String ticketKeyToString,
+			String projectKeyString) {
+		//該当レコードを全て取得
+		List<UploadFileModel> list = getList(ticketKeyToString, projectKeyString);
+		for(UploadFileModel target : list) {
+			//該当レコードに紐付くデータを削除
+			delete(target);
+		}
+	}
+
+	/**
+	 * データ削除.
+	 * Modelとblobデータを削除します。
+	 * @param model 削除対象Model
+	 */
+	void delete(UploadFileModel model) {
+		//blobKeyから削除し、Entityから削除
+		BlobKey blobKey = new BlobKey(model.getBlobKey());
+        BlobstoreService bs = BlobstoreServiceFactory.getBlobstoreService();
+        bs.delete(blobKey);
+		
+		uploadFileDao.delete(model.getKey());
 	}
 }

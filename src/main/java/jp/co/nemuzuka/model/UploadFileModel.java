@@ -15,7 +15,12 @@
  */
 package jp.co.nemuzuka.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import jp.co.nemuzuka.utils.ConvertUtils;
+import jp.co.nemuzuka.utils.DateTimeUtils;
+import jp.co.nemuzuka.utils.HtmlStringUtils;
 
 import net.arnx.jsonic.JSONHint;
 
@@ -23,6 +28,7 @@ import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * アップロードされたファイルを管理するModel.
@@ -61,6 +67,9 @@ public class UploadFileModel extends AbsModel {
 	/** ハッシュ値. */
 	private String md5Hash;
 
+	/** コメント. */
+	private Text comment;
+	
 	/**
 	 * @return key
 	 */
@@ -193,4 +202,40 @@ public class UploadFileModel extends AbsModel {
 	public void setProjectKey(Key projectKey) {
 		this.projectKey = projectKey;
 	}
+
+	/**
+	 * @return the comment
+	 */
+	@JSONHint(ignore=true)
+	public Text getComment() {
+		return comment;
+	}
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(Text comment) {
+		this.comment = comment;
+	}
+	
+	/**
+	 * 表示用コメント取得.
+	 * @return 表示用コメント
+	 */
+	public String getViewComment() {
+		if(this.comment == null) {
+			return "";
+		}
+		return HtmlStringUtils.escapeTextAreaString(comment.getValue());
+	}
+	
+	/**
+	 * 表示用作成日取得.
+	 * @return 表示用作成日
+	 */
+	public String getViewCreation() {
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		return ConvertUtils.toString(creation, sdf);
+	}
+	
 }

@@ -49,7 +49,7 @@ function initTicketDialog() {
 	$("#ticketFileUploadDialog").dialog({
 		modal:true,
 		autoOpen:false,
-		width:500,
+		width:600,
 		resizable:false
 	});
 
@@ -94,6 +94,7 @@ function initTicketDialog() {
 		$("#fileUploadToken").val($("#token").val());
 		//fileの入力値を初期化
 		$("#ticket_upload_file").replaceWith($("#ticket_upload_file").clone());
+		$("#ticket_upload_file_comment").val("");
 		$("#ticketFileUploadDialog").dialog("open");
 	});
 	
@@ -661,6 +662,8 @@ function renderTicketUploadFileList(list) {
 		var versionNo = this.version;
 		var createMemberName = this.createMemberName;
 		var filename = this.filename;
+		var viewComment = this.viewComment;
+		var viewCreation = formatDateyyyyMMdd(this.viewCreation);
 
 		var $a = $("<a />").attr({href:"javascript:void(0)"}).text(filename).addClass("link");
 		$a.click(function(){
@@ -674,6 +677,8 @@ function renderTicketUploadFileList(list) {
 		
 		var $tr = $("<tr />");
 		$tr.append($("<td />").append($a))
+			.append($("<td />").html(viewComment))
+			.append($("<td />").text(viewCreation).attr({width:"80px"}))
 			.append($("<td />").append($delBtn).attr({width:"50px"}));
 		$tbody.append($tr)
 	});
@@ -799,10 +804,44 @@ function afterUpload(msg) {
 function downloadTicketUploadFile(keyString) {
 	$("#uploadFileKeyString").val(keyString);
 	$("#uploadFileTicketKeyString").val($("#detail_ticket_keyToString").val());
-	alert($("#uploadFileKeyString").val());
-	alert($("#uploadFileTicketKeyString").val());
 	$("#fileDownloader").attr({"action":"/bts/ticket/downLoad"});
 	$("#fileDownloader")[0].submit(function () {
 		return false;
 	});
+}
+
+//アップロードファイル削除
+function deleteTicketUploadFile(keyToString, versionNo) {
+	if(window.confirm("ファイルを削除します。本当によろしいですか？") == false) {
+		return;
+	}
+	var params = {};
+	params["keyToString"] = $("#detail_ticket_keyToString").val();
+	params["version"] = versionNo;
+	params["uploadFileKeyToString"] = keyToString;
+	params["jp.co.nemuzuka.token"] = $("#token").val();
+	
+	setAjaxDefault();
+	var task;
+	task = $.ajax({
+		type: "POST",
+		url: "/bts/ticket/ajax/ticketUploadFileDelete",
+		data: params
+	});
+	
+	//後処理の登録
+	//
+	task.pipe(
+		function(data) {
+			//共通エラーチェック
+			errorCheck(data);
+			//メッセージを表示して、戻る
+			infoCheck(data);
+
+			//詳細ダイアログリフレッシュ(メッセージを見せる必要上、1秒sleepしてから実行)
+			var key = $("#detail_ticket_keyToString").val();
+			viewLoadingMsg();
+			setTimeout(function(){ openDetailTicketDialog(key, true) }, 1000);
+		}
+	);
 }

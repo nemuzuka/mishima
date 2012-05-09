@@ -55,13 +55,27 @@ public class UploadCheckController extends HtmlController {
 			FileItem fileItem = requestScope("uploadFile");
 			//チケットのKey情報を取得
 			String keyToString = asString("keyToString");
+			//コメントの情報を取得
+			String comment = asString("comment");
+			
 			if(fileItem == null) {
 				String uploadFileName = ApplicationMessage.get("label.uploadFile");
 				errorMsgs.add(ApplicationMessage.get("validator.required", uploadFileName));
 				isError = true;
+			} else {
+				if(fileItem.getData().length > 1024 * 1024 * 1) {
+					String uploadFileName = ApplicationMessage.get("label.uploadFile");
+					errorMsgs.add(ApplicationMessage.get("validator.over.file.size", uploadFileName, "1"));
+					isError = true;
+				}
 			}
 			if(StringUtils.isEmpty(keyToString)) {
 				errorMsgs.add(ApplicationMessage.get("validator.required", "keyToString"));
+				isError = true;
+			}
+			if(StringUtils.isNotEmpty(comment) && comment.length() > 1024) {
+				String commentLabel = ApplicationMessage.get("label.comment");
+				errorMsgs.add(ApplicationMessage.get("validator.maxlength", commentLabel, 1024));
 				isError = true;
 			}
 		}
