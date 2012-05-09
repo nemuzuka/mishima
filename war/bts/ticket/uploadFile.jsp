@@ -22,7 +22,7 @@ window.onload = function() {
 
 		var msg = "";
 		<c:forEach var="msg" items="${errorMsgs}" >
-			msg += "${f:h(msg)}" + "\n";
+			msg = msg + "${f:h(msg)}" + "\n";
 		</c:forEach>
 		if(msg != '') {
 			alert(msg);
@@ -30,12 +30,12 @@ window.onload = function() {
 		
 		msg = "";
 		<c:forEach var="msg" items="${infoMsgs}" >
-			msg += "${f:h(msg)}" + "\n";
+			msg = msg + "${f:h(msg)}" + "\n";
 		</c:forEach>
 		
 		setTimeout(
-			window.parent.afterUpload(msg),
-			2000
+			function(){ window.parent.afterUpload(msg) },
+			500
 		);
 	}
 

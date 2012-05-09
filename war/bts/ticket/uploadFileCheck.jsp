@@ -22,14 +22,14 @@ window.onload = function() {
 
 		var msg = "";
 		<c:forEach var="msg" items="${errorMsgs}" >
-			msg += "${f:h(msg)}" + "\n";
+			msg = msg + "${f:h(msg)}" + "\n";
 		</c:forEach>
 		if(msg != "") {
 			alert(msg);
 		}
 		setTimeout(
-			window.parent.afterUploadCheck("${f:h(token)}",${f:h(isError)}),
-			2000
+			function(){ window.parent.afterUploadCheck("${f:h(token)}",${f:h(isError)}) },
+			500
 		);
 	}
 }

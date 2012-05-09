@@ -94,7 +94,7 @@ public class DownLoadController extends HtmlController {
 			tmpFile = "download-" + sdf.format(CurrentDateUtils.getInstance().getCurrentDateTime()) + suffix;
 		}
 		
-		response.setHeader("Content-Disposition", "inline;filename=\""+ tmpFile + "\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\""+ tmpFile + "\"");
 		response.setContentType("application/octet-stream");
 		response.setContentLength(model.getSize().intValue());
 
