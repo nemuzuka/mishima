@@ -28,7 +28,7 @@ function setAjaxDefault() {
 
 //読み込み中のメッセージを表示
 function viewLoadingMsg() {
-	viewMsg("読み込み中...");
+	viewMsg("処理中...");
 }
 
 //メッセージ表示
@@ -40,6 +40,7 @@ function viewMsg(msg) {
 		showOverlay: true,
 		centerY: false,
 		centerX: false,
+		baseZ: 100000,
 		css: {
 			top: '85px', 
 			left: '', 
