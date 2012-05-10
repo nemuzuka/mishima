@@ -28,6 +28,7 @@ import jp.co.nemuzuka.common.PeriodStatus;
 import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
+import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.dao.TodoDao;
 import jp.co.nemuzuka.entity.TodoModelEx;
 import jp.co.nemuzuka.form.TodoCommentForm;
@@ -35,6 +36,7 @@ import jp.co.nemuzuka.form.TodoDetailForm;
 import jp.co.nemuzuka.form.TodoForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TodoModel;
+import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.tester.AppEngineTestCase4HRD;
 import jp.co.nemuzuka.utils.DateTimeUtils;
 
@@ -52,6 +54,9 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 
 	TodoServiceImpl service = TodoServiceImpl.getInstance();
 	TodoDao todoDao = TodoDao.getInstance();
+	MemberDao memberDao = MemberDao.getInstance();
+	MemberService memberService = MemberServiceImpl.getInstance();
+
 	List<Key> todoKeyList = new ArrayList<Key>();
 
 	
@@ -186,7 +191,8 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		createTestData();
 		
 		TodoDao.Param param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		String memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		List<TodoModel> todoList = todoDao.getList(param);
 		assertThat(todoList.size(), is(6));
 
@@ -213,7 +219,8 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		GlobalTransaction.transaction.get().begin();
 		
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		todoList = todoDao.getList(param);
 		assertThat(todoList.size(), is(7));
 		
@@ -272,7 +279,8 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		GlobalTransaction.transaction.get().begin();
 		
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		todoList = todoDao.getList(param);
 		assertThat(todoList.size(), is(6));
 
@@ -287,7 +295,8 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		createTestData();
 		
 		TodoDao.Param param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		String memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		List<TodoModelEx> todoExList = service.getList(param, false);
 		assertThat(todoExList.size(), is(6));
 		
@@ -311,7 +320,8 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		createTestData();
 		
 		TodoDao.Param param = new TodoDao.Param();
-		param.email = "hoge2@hige.hage";
+		String memberKeyString = memberService.getKeyString("hoge2@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.limit = 1;
 		List<TodoModelEx> todoExList = service.getList(param, true);
 		assertThat(todoExList.size(), is(1));
@@ -396,6 +406,18 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 			GlobalTransaction.transaction.get().commit();
 			GlobalTransaction.transaction.get().begin();
 		}
+		
+		MemberModel memberModel = new MemberModel();
+		memberModel.createKey("hoge@hige.hage");
+		memberDao.put(memberModel);
+		
+		memberModel = new MemberModel();
+		memberModel.createKey("hoge2@hige.hage");
+		memberDao.put(memberModel);
+		
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
+		
 		return;
 	}
 

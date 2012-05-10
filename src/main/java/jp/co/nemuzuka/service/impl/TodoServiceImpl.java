@@ -35,9 +35,9 @@ import jp.co.nemuzuka.entity.TodoModelEx;
 import jp.co.nemuzuka.form.TodoCommentForm;
 import jp.co.nemuzuka.form.TodoDetailForm;
 import jp.co.nemuzuka.form.TodoForm;
-import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TodoModel;
 import jp.co.nemuzuka.service.CommentService;
+import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.TodoService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
@@ -51,6 +51,7 @@ public class TodoServiceImpl implements TodoService {
 
 	TodoDao todoDao = TodoDao.getInstance();
 	CommentService commentService = CommentServiceImpl.getInstance();
+	MemberService memberService = MemberServiceImpl.getInstance();
 	
 	private static TodoServiceImpl impl = new TodoServiceImpl();
 	
@@ -75,7 +76,7 @@ public class TodoServiceImpl implements TodoService {
 		
 		List<TodoModel> modelList = null;
 		if(isDashboard) {
-			modelList = todoDao.getDashbordList(param.limit, param.email);
+			modelList = todoDao.getDashbordList(param.limit, param.targetMemberKeyString);
 		} else {
 			modelList = todoDao.getList(param);
 		}
@@ -111,7 +112,7 @@ public class TodoServiceImpl implements TodoService {
 		if(StringUtils.isNotEmpty(keyString)) {
 			//Key情報が設定されていた場合
 			Key key = Datastore.stringToKey(keyString);
-			Key memberKey = Datastore.createKey(MemberModel.class, mail);
+			Key memberKey = memberService.getKey(mail);
 			TodoModel model = todoDao.getWithMemberKey(key, memberKey);
 			setForm(form, model);
 		}
@@ -143,7 +144,7 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	public void updateTodoStatus(TodoForm form, String email) {
 		TodoModel model = null;
-		Key memberKey = Datastore.createKey(MemberModel.class, email);
+		Key memberKey = memberService.getKey(email);
 		Key key = Datastore.stringToKey(form.keyToString);
 		Long version = ConvertUtils.toLong(form.versionNo);
 		//keyとバージョンとメンバーKeyでデータを取得
@@ -168,7 +169,7 @@ public class TodoServiceImpl implements TodoService {
 	public void put(TodoForm form, String mail) {
 		
 		TodoModel model = null;
-		Key memberKey = Datastore.createKey(MemberModel.class, mail);
+		Key memberKey = memberService.getKey(mail);
 		if(StringUtils.isNotEmpty(form.keyToString)) {
 			//更新の場合
 			Key key = Datastore.stringToKey(form.keyToString);
@@ -195,7 +196,7 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	public void delete(TodoForm form, String mail) {
 		Key key = Datastore.stringToKey(form.keyToString);
-		Key memberKey = Datastore.createKey(MemberModel.class, mail);
+		Key memberKey = memberService.getKey(mail);
 		Long version = ConvertUtils.toLong(form.versionNo);
 		//keyとバージョンとメンバーKeyでデータを取得
 		TodoModel model = todoDao.get(key, version, memberKey);
@@ -213,7 +214,7 @@ public class TodoServiceImpl implements TodoService {
 	public void putComment(TodoCommentForm form, String email) {
 		//ステータスが変更されていないかチェックする
 		Key todoModelKey = Datastore.stringToKey(form.keyToString);
-		Key memberKey = Datastore.createKey(MemberModel.class, email);
+		Key memberKey = memberService.getKey(email);
 		
 		//KeyとメンバーKeyでデータを取得
 		TodoModel model = todoDao.getWithMemberKey(todoModelKey, memberKey);
@@ -251,7 +252,7 @@ public class TodoServiceImpl implements TodoService {
 
 		//TODOの存在チェック
 		Key todoModelKey = Datastore.stringToKey(keyString);
-		Key memberKey = Datastore.createKey(MemberModel.class, email);
+		Key memberKey = memberService.getKey(email);
 		
 		//KeyとメンバーKeyでデータを取得
 		TodoModel model = todoDao.getWithMemberKey(todoModelKey, memberKey);

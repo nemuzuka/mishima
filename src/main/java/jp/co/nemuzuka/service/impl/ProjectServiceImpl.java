@@ -25,7 +25,6 @@ import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.common.ProjectAuthority;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.core.entity.UserInfo;
-import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.dao.ProjectDao;
 import jp.co.nemuzuka.dao.ProjectMemberDao;
 import jp.co.nemuzuka.entity.ProjectModelEx;
@@ -33,6 +32,7 @@ import jp.co.nemuzuka.form.ProjectForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.ProjectMemberModel;
 import jp.co.nemuzuka.model.ProjectModel;
+import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.HtmlStringUtils;
@@ -46,8 +46,8 @@ import com.google.appengine.api.datastore.Text;
 public class ProjectServiceImpl implements ProjectService {
 
 	ProjectDao projectDao = ProjectDao.getInstance();
-	MemberDao memberDao = MemberDao.getInstance();
 	ProjectMemberDao projectMemberDao = ProjectMemberDao.getInstance();
+	MemberService memberService = MemberServiceImpl.getInstance();
 	
 	private static ProjectServiceImpl impl = new ProjectServiceImpl();
 	
@@ -104,7 +104,7 @@ public class ProjectServiceImpl implements ProjectService {
 			isAdd = true;
 		}
 		setModel(model, form);
-		memberDao.put(model);
+		projectDao.put(model);
 		
 		//新規の場合、管理者情報としてメンバーを登録する
 		if(isAdd) {
@@ -159,7 +159,7 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		TargetProjectResult result = new TargetProjectResult();
 		
-		MemberModel model = memberDao.get(email);
+		MemberModel model = memberService.getModel(email);
 		if(model == null) {
 			return result;
 		}
@@ -191,7 +191,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<ProjectModelEx> getUserProjectList(String email) {
 		
 		List<ProjectModelEx> retList = new ArrayList<ProjectModelEx>();
-		MemberModel model = memberDao.get(email);
+		MemberModel model = memberService.getModel(email);
 		if(model == null) {
 			return retList;
 		}
@@ -238,7 +238,7 @@ public class ProjectServiceImpl implements ProjectService {
 			return;
 		}
 		
-		MemberModel memberModel = memberDao.get(mail);
+		MemberModel memberModel = memberService.getModel(mail);
 		if(memberModel == null) {
 			return;
 		}
@@ -318,7 +318,7 @@ public class ProjectServiceImpl implements ProjectService {
 		List<LabelValueBean> targetList = new ArrayList<LabelValueBean>();
 		
 		//登録されているメンバー情報を取得
-		List<MemberModel> list = memberDao.getAllList();
+		List<MemberModel> list = memberService.getAllList();
 		for(MemberModel target : list) {
 			targetList.add(new LabelValueBean(target.getName(), target.getKeyToString()));
 		}

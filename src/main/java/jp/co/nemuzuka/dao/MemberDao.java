@@ -72,17 +72,6 @@ public class MemberDao extends AbsDao {
 	private MemberDao() {}
 
 	/**
-	 * get処理.
-	 * 引数の情報に合致するModelを取得します。
-	 * @param email メールアドレス
-	 * @return 該当データが存在する場合、Modelインスタンス。該当データが存在しない場合、null
-	 */
-	public MemberModel get(String email) {
-		Key key = Datastore.createKey(MemberModel.class, email);
-		return get(key);
-	}
-	
-	/**
 	 * List取得.
 	 * @param name 氏名(前方一致)
 	 * @param mail メール(前方一致)

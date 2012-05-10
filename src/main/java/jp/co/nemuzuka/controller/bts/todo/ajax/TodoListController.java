@@ -23,7 +23,9 @@ import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.entity.TodoModelEx;
 import jp.co.nemuzuka.form.TodoSearchForm;
+import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.TodoService;
+import jp.co.nemuzuka.service.impl.MemberServiceImpl;
 import jp.co.nemuzuka.service.impl.TodoServiceImpl;
 
 import org.slim3.controller.validator.Validators;
@@ -36,6 +38,7 @@ import org.slim3.util.ApplicationMessage;
 public class TodoListController extends JsonController {
 
 	protected TodoService todoService = TodoServiceImpl.getInstance();
+	protected MemberService memberService = MemberServiceImpl.getInstance();
 	
 	/** ActionForm. */
 	@ActionForm
@@ -54,7 +57,7 @@ public class TodoListController extends JsonController {
 		result.setToken(this.setToken());
 		//検索結果を返す
 		List<TodoModelEx> list = todoService.getList(
-				form.createParam(userService.getCurrentUser().getEmail()), false);
+				form.createParam(userService.getCurrentUser().getEmail(), memberService), false);
 		result.setResult(list);
 		
 		if(list.size() == 0) {

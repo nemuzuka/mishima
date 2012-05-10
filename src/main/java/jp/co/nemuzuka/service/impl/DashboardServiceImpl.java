@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import jp.co.nemuzuka.dao.TicketDao;
 import jp.co.nemuzuka.dao.TodoDao;
 import jp.co.nemuzuka.service.DashboardService;
+import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.ProjectService;
 import jp.co.nemuzuka.service.TicketService;
 import jp.co.nemuzuka.service.TodoService;
@@ -33,6 +34,7 @@ public class DashboardServiceImpl implements DashboardService {
 	TodoService todoService = TodoServiceImpl.getInstance();
 	TicketService ticketService = TicketServiceImpl.getInstance();
 	ProjectService projectService = ProjectServiceImpl.getInstance();
+	MemberService memberService = MemberServiceImpl.getInstance();
 
 	private static DashboardServiceImpl impl = new DashboardServiceImpl();
 	
@@ -60,7 +62,8 @@ public class DashboardServiceImpl implements DashboardService {
 
 		//未完了のTODOを取得する
 		TodoDao.Param todoParam = new TodoDao.Param();
-		todoParam.email = mail;
+		String targetMemberKey = memberService.getKeyString(mail);
+		todoParam.targetMemberKeyString = targetMemberKey;
 		todoParam.limit = limitCnt;
 		result.todoList = todoService.getList(todoParam, true);
 		

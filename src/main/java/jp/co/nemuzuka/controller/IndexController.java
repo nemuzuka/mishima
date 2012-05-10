@@ -50,7 +50,7 @@ public class IndexController extends HtmlController {
 					currentUser.getEmail(),
 					currentUser.getNickname(),
 					Authority.admin);
-		} else if(StringUtils.isNotEmpty((String)requestScope(USE_TRIAL_USER))) {
+		} else if(StringUtils.isNotEmpty((String)sessionScope(USE_TRIAL_USER))) {
 			//アプリケーション管理者でなく、trialユーザを使用する場合、MemberModelに登録されているかチェック
 			User currentUser = userService.getCurrentUser();
 			memberService.checkAndCreateMember(

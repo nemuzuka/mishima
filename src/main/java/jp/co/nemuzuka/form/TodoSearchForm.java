@@ -23,6 +23,7 @@ import java.util.List;
 import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.dao.TodoDao;
+import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
 
@@ -120,16 +121,18 @@ public class TodoSearchForm implements Serializable {
 	/**
 	 * 検索条件作成.
 	 * @param email ログインユーザのemailアドレス
+	 * @param memberService MemberServiceインスタンス
 	 * @return 生成検索条件インスタンス
 	 */
-	public TodoDao.Param createParam(String email) {
+	public TodoDao.Param createParam(String email, MemberService memberService) {
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		TodoDao.Param param = new TodoDao.Param();
 		param.status = status;
 		param.title = title;
 		param.fromPeriod = ConvertUtils.toDate(fromPeriod, sdf);
 		param.toPeriod = ConvertUtils.toDate(toPeriod, sdf);
-		param.email = email;
+		String memberKeyString = memberService.getKeyString(email);
+		param.targetMemberKeyString = memberKeyString;
 		return param;
 	}
 }

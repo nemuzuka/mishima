@@ -20,6 +20,9 @@ jp.co.nemuzuka.default.kind
 jp.co.nemuzuka.ticket.mst.refresh.min
 	Session情報(チケットマスタ)のリフレッシュ間隔(分単位)
 
+jp.co.nemuzuka.member.map.refresh.min
+	Memcash情報(mail-Member Key変換Map)のリフレッシュ間隔(分単位)
+
 jp.co.nemuzuka.dashboard.list.limit
 	ダッシュボード表示時の一覧最大表示件数
 

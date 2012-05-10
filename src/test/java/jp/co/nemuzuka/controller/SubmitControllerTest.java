@@ -23,11 +23,13 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import jp.co.nemuzuka.entity.MemberKeyEntity;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.tester.ControllerTestCase4HRD;
 
 import org.junit.Test;
 import org.slim3.datastore.Datastore;
+import org.slim3.memcache.Memcache;
 
 public class SubmitControllerTest extends ControllerTestCase4HRD {
 
@@ -116,7 +118,13 @@ public class SubmitControllerTest extends ControllerTestCase4HRD {
 
 		MemberModel model = new MemberModel();
 		model.setKey(Datastore.createKey(MemberModel.class, "hage@example.com"));
+		model.setMail("hage@example.com");
 		Datastore.put(model);
 		
+		MemberKeyEntity entity = Memcache.get(MemberKeyEntity.class.getName());
+		if(entity != null) {
+			entity = new MemberKeyEntity();
+			Memcache.put(MemberKeyEntity.class.getName(), entity);
+		}
 	}
 }

@@ -22,6 +22,8 @@ import com.google.appengine.api.users.UserService;
 
 public class UserServiceImpl implements UserService {
 
+	public static final String DUMMY_EMAIL = "hoge@hoge.hoge";
+	
 	private UserService userService;
 	
 	/**
@@ -78,7 +80,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public User getCurrentUser() {
-		User user = new User("hoge@hoge.hoge", "");
+		User user = new User(DUMMY_EMAIL, "");
 		return user;
 	}
 

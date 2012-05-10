@@ -25,7 +25,6 @@ import java.util.Set;
 
 import jp.co.nemuzuka.entity.TicketMstEntity.TicketMst;
 import jp.co.nemuzuka.meta.TicketModelMeta;
-import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TicketModel;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 
@@ -209,12 +208,12 @@ public class TicketDao extends AbsDao {
 	 * ・期限が未設定のもの(登録順)
 	 * の順番でソートされます。
 	 * @param limit 取得件数
-	 * @param mail ログインユーザのメールアドレス
+	 * @param memberKeyString ログインユーザのメールアドレスのKey文字列
 	 * @param projectKeyString プロジェクトKey文字列
 	 * @param openStatus 未完了を意味するステータス配列
 	 * @return 該当レコード
 	 */
-	public List<TicketModel> getDashbordList(int limit, String mail, String projectKeyString,
+	public List<TicketModel> getDashbordList(int limit, String memberKeyString, String projectKeyString,
 			String[] openStatus) {
 		
 		//ステータスが未完了で、指定したLimit分取得する
@@ -224,8 +223,7 @@ public class TicketDao extends AbsDao {
 		param.status = new String[]{TicketMst.NO_FINISH};
 		param.openStatus = openStatus;
 		param.limit = limit;
-		param.targetMember = Datastore.keyToString(
-				Datastore.createKey(MemberModel.class, mail));
+		param.targetMember = memberKeyString;
 		param.projectKeyString = projectKeyString;
 		param.toPeriod = CurrentDateUtils.getInstance().getMaxDate();
 		param.orderByPeriod = true;

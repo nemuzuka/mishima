@@ -89,7 +89,9 @@ public class TicketServiceImpl implements TicketService {
 	public List<TicketModelEx> getList(Param param, String mail, boolean isDashboard) {
 		List<TicketModel> modelList = null;
 		if(isDashboard) {
-			modelList = ticketDao.getDashbordList(param.limit, mail, param.projectKeyString, param.openStatus);
+			String memberKeyString = memberService.getKeyString(mail);
+			modelList = ticketDao.getDashbordList(param.limit, memberKeyString, 
+					param.projectKeyString, param.openStatus);
 		} else {
 			modelList = ticketDao.getList(param);
 		}

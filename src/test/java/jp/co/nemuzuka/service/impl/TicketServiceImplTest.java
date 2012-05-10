@@ -27,6 +27,7 @@ import java.util.List;
 import jp.co.nemuzuka.common.PeriodStatus;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
+import jp.co.nemuzuka.dao.MemberDao;
 import jp.co.nemuzuka.dao.ProjectDao;
 import jp.co.nemuzuka.dao.TicketDao;
 import jp.co.nemuzuka.entity.TicketModelEx;
@@ -58,6 +59,7 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 
 	TicketServiceImpl service = TicketServiceImpl.getInstance();
 	TicketDao ticketDao = TicketDao.getInstance();
+	MemberDao memberDao = MemberDao.getInstance();
 	ProjectDao projectDao = ProjectDao.getInstance();
 	List<Key> ticketKeyList = new ArrayList<Key>();
 	List<Long> ticketNoList = new ArrayList<Long>();
@@ -611,6 +613,10 @@ public class TicketServiceImplTest extends AppEngineTestCase4HRD {
 		ticketDao.put(grandChildModel);
 		grandChildKey.add(grandChildModel.getKey());
 		grandChildNo.add(grandChildModel.getNo());
+		
+		MemberModel memberModel = new MemberModel();
+		memberModel.createKey("hige@hoge.hage");
+		memberDao.put(memberModel);
 		
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();

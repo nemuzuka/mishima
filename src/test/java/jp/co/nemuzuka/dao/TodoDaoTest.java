@@ -28,6 +28,8 @@ import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TodoModel;
+import jp.co.nemuzuka.service.MemberService;
+import jp.co.nemuzuka.service.impl.MemberServiceImpl;
 import jp.co.nemuzuka.tester.AppEngineTestCase4HRD;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
@@ -45,6 +47,8 @@ import com.google.appengine.api.datastore.Text;
 public class TodoDaoTest extends AppEngineTestCase4HRD {
 
 	TodoDao todoDao = TodoDao.getInstance();
+	MemberDao memberDao = MemberDao.getInstance();
+	MemberService memberService = MemberServiceImpl.getInstance();
 	List<Key> todoKeyList = new ArrayList<Key>();
 	
 	/**
@@ -59,13 +63,15 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 
 		//メールアドレスが違うので取得できない
 		TodoDao.Param param = new TodoDao.Param();
-		param.email = "hoge3@hige.hage";
+		String memberKeyString = memberService.getKeyString("hoge3@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		List<TodoModel> actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(0));
 		
 		//取得可能(検索条件未設定)
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(6));
 		assertThat(actualList.get(0).getKey(), is(todoKeyList.get(0)));
@@ -77,7 +83,8 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 		
 		//limit指定
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.limit = 3;
 		actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(3));
@@ -87,7 +94,8 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 		
 		//件名指定
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.title = "Like用件名";
 		actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(2));
@@ -96,14 +104,16 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 		
 		//期限From指定
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.fromPeriod = ConvertUtils.toDate("20120106", sdf);
 		actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(1));
 		assertThat(actualList.get(0).getKey(), is(todoKeyList.get(2)));
 
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.fromPeriod = ConvertUtils.toDate("20120105", sdf);
 		actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(3));
@@ -113,7 +123,8 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 
 		//期限To設定
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.toPeriod = ConvertUtils.toDate("20120105", sdf);
 		actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(2));
@@ -122,7 +133,8 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 		
 		//期間From～To設定
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.fromPeriod = ConvertUtils.toDate("20120106", sdf);
 		param.toPeriod = ConvertUtils.toDate("20120106", sdf);
 		actualList = todoDao.getList(param);
@@ -135,7 +147,8 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 				TodoStatus.finish.getCode(),
 				TodoStatus.doing.getCode()};
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.status = status;
 		actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(3));
@@ -146,7 +159,8 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 		//未完了を選択された場合
 		status = new String[]{TodoStatus.NO_FINISH};
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.status = status;
 		actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(4));
@@ -158,7 +172,8 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 		//存在しないステータスコードを指定された
 		status = new String[]{"4989"};
 		param = new TodoDao.Param();
-		param.email = "hoge@hige.hage";
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
 		param.status = status;
 		actualList = todoDao.getList(param);
 		assertThat(actualList.size(), is(6));
@@ -172,27 +187,31 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 	public void testGetDashbordList() throws Exception {
 		createTestData();
 
-		List<TodoModel> actualList = todoDao.getDashbordList(20, "hoge2@hige.hage");
+		String memberKeyString = memberService.getKeyString("hoge2@hige.hage");
+		List<TodoModel> actualList = todoDao.getDashbordList(20, memberKeyString);
 		assertThat(actualList.size(), is(3));
 		assertThat(actualList.get(0).getKey(), is(todoKeyList.get(6)));
 		assertThat(actualList.get(1).getKey(), is(todoKeyList.get(8)));
 		assertThat(actualList.get(2).getKey(), is(todoKeyList.get(7)));
 		
 		//期限ありのものだけで取得件数を満たした場合
-		actualList = todoDao.getDashbordList(2, "hoge2@hige.hage");
+		memberKeyString = memberService.getKeyString("hoge2@hige.hage");
+		actualList = todoDao.getDashbordList(2, memberKeyString);
 		assertThat(actualList.size(), is(2));
 		assertThat(actualList.get(0).getKey(), is(todoKeyList.get(6)));
 		assertThat(actualList.get(1).getKey(), is(todoKeyList.get(8)));
 
 		//期限ありのもの＋期限なしのもので取得件数を満たした場合
-		actualList = todoDao.getDashbordList(3, "hoge2@hige.hage");
+		memberKeyString = memberService.getKeyString("hoge2@hige.hage");
+		actualList = todoDao.getDashbordList(3, memberKeyString);
 		assertThat(actualList.size(), is(3));
 		assertThat(actualList.get(0).getKey(), is(todoKeyList.get(6)));
 		assertThat(actualList.get(1).getKey(), is(todoKeyList.get(8)));
 		assertThat(actualList.get(2).getKey(), is(todoKeyList.get(7)));
 		
 		//該当レコードが存在しない場合
-		actualList = todoDao.getDashbordList(4, "hoge3@hige.hage");
+		memberKeyString = memberService.getKeyString("hoge3@hige.hage");
+		actualList = todoDao.getDashbordList(4, memberKeyString);
 		assertThat(actualList.size(), is(0));
 		
 	}
@@ -250,6 +269,17 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 			GlobalTransaction.transaction.get().commit();
 			GlobalTransaction.transaction.get().begin();
 		}
+		
+		MemberModel memberModel = new MemberModel();
+		memberModel.createKey("hoge@hige.hage");
+		memberDao.put(memberModel);
+		
+		memberModel = new MemberModel();
+		memberModel.createKey("hoge2@hige.hage");
+		memberDao.put(memberModel);
+		
+		GlobalTransaction.transaction.get().commit();
+		GlobalTransaction.transaction.get().begin();
 		return;
 	}
 

@@ -30,8 +30,9 @@ import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.core.entity.UserInfo;
 import jp.co.nemuzuka.core.entity.mock.UserServiceImpl;
-import jp.co.nemuzuka.model.MemberModel;
+import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.ProjectService;
+import jp.co.nemuzuka.service.impl.MemberServiceImpl;
 import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
@@ -41,8 +42,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.slim3.controller.Controller;
-import org.slim3.datastore.Datastore;
-import org.slim3.datastore.EntityNotFoundRuntimeException;
 import org.slim3.util.BeanUtil;
 
 import com.google.appengine.api.datastore.Key;
@@ -77,7 +76,7 @@ public abstract class AbsController extends Controller {
 	protected static final String ERR_SESSION_TIMEOUT = "/error/timeout/";
 	
 	/** トライアルモードである場合、true. */
-	protected static final boolean trialMode = 
+	public static final boolean trialMode = 
 			Boolean.valueOf(System.getProperty("jp.co.nemuzuka.trial.mode", "false"));
 	/** トライアルモードのユーザを使用するかを保持するSessionKey. */
 	protected static final  String USE_TRIAL_USER = "jp.co.nemuzuka.trial";
@@ -113,7 +112,7 @@ public abstract class AbsController extends Controller {
 	protected void setUserService() {
 		
 		userService = UserServiceFactory.getUserService();
-		if(StringUtils.isNotEmpty((String)requestScope(USE_TRIAL_USER))) {
+		if(StringUtils.isNotEmpty((String)sessionScope(USE_TRIAL_USER))) {
 			userService = new UserServiceImpl(userService);
 		}
 		
@@ -369,17 +368,19 @@ public abstract class AbsController extends Controller {
 	 * @return　登録されている場合、true
 	 */
 	protected boolean isExistsUser(String email) {
-		Key key = Datastore.createKey(MemberModel.class, email);
-		try {
-			Datastore.get(MemberModel.class, key);
-		} catch(EntityNotFoundRuntimeException e) {
-			
-			//trial版の場合、エラーとせず、user情報を上書きする
+		
+		removeSessionScope(USE_TRIAL_USER);
+		MemberService service = MemberServiceImpl.getInstance();
+		Key key = service.getKey(email);
+		if(key == null) {
+			//トライアル版の場合、ダミーユーザのKeyを返却
 			if(trialMode) {
+				key = service.getKey(UserServiceImpl.DUMMY_EMAIL);
 				userService = new UserServiceImpl(userService);
-				requestScope(USE_TRIAL_USER, "1");
-				return true;
+				sessionScope(USE_TRIAL_USER, "1");
 			}
+		}
+		if(key == null) {
 			//存在しない
 			return false;
 		}

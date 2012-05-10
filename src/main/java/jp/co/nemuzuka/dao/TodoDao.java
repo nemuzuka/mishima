@@ -15,6 +15,7 @@
  */
 package jp.co.nemuzuka.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -23,7 +24,6 @@ import java.util.Set;
 
 import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.meta.TodoModelMeta;
-import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.model.TodoModel;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 
@@ -83,6 +83,10 @@ public class TodoDao extends AbsDao {
 	public List<TodoModel> getList(Param param) {
 		TodoModelMeta e = (TodoModelMeta) getModelMeta();
 		
+		if(StringUtils.isEmpty(param.targetMemberKeyString)) {
+			return new ArrayList<TodoModel>();
+		}
+		
 		Set<InMemoryFilterCriterion> filterSet = new HashSet<InMemoryFilterCriterion>();
 		//ステータスの検索条件
 		String[] status = param.status;
@@ -136,7 +140,7 @@ public class TodoDao extends AbsDao {
 		sortSet.add(e.key.asc);
 		
 		//参照可能ユーザの検索条件
-		Key createMemberKey = Datastore.createKey(MemberModel.class, param.email);
+		Key createMemberKey = Datastore.stringToKey(param.targetMemberKeyString);
 		filterSet.add(e.createMemberKey.equal(createMemberKey));
 		
 		ModelQuery<TodoModel> query = Datastore.query(e).filterInMemory(filterSet.toArray(new InMemoryFilterCriterion[0]))
@@ -165,10 +169,10 @@ public class TodoDao extends AbsDao {
 	 * ・期限が未設定のもの(登録順)
 	 * の順番でソートされます。
 	 * @param limit 取得件数
-	 * @param email メールアドレス
+	 * @param targetMemberKeyString 参照可能ユーザのKey文字列
 	 * @return 該当レコード
 	 */
-	public List<TodoModel> getDashbordList(int limit, String email) {
+	public List<TodoModel> getDashbordList(int limit, String targetMemberKeyString) {
 		
 		//ステータスが未完了で、指定したLimit分取得する
 		
@@ -176,7 +180,7 @@ public class TodoDao extends AbsDao {
 		Param param = new Param();
 		param.status = new String[]{TodoStatus.NO_FINISH};
 		param.limit = limit;
-		param.email = email;
+		param.targetMemberKeyString = targetMemberKeyString;
 		param.toPeriod = CurrentDateUtils.getInstance().getMaxDate();
 		param.orderByPeriod = true;
 		
@@ -254,8 +258,8 @@ public class TodoDao extends AbsDao {
 
 		/** 取得上限件数. */
 		public Integer limit;
-		/** メールアドレス. */
-		public String email;
+		/** MemberModelのKey文字列. */
+		public String targetMemberKeyString;
 		
 		/** 期限の昇順でソートする場合、true */
 		boolean orderByPeriod;

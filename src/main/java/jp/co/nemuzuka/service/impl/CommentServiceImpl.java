@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
@@ -35,6 +34,7 @@ import jp.co.nemuzuka.entity.CommentModelEx;
 import jp.co.nemuzuka.model.CommentModel;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.service.CommentService;
+import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
 
@@ -46,6 +46,7 @@ public class CommentServiceImpl implements CommentService {
 
 	CommentDao commentDao = CommentDao.getInstance();
 	MemberDao memberDao = MemberDao.getInstance();
+	MemberService memberService = MemberServiceImpl.getInstance();
 	
 	private static CommentServiceImpl impl = new CommentServiceImpl();
 	
@@ -108,7 +109,8 @@ public class CommentServiceImpl implements CommentService {
 		
 		CommentModel model = new CommentModel();
 		model.setComment(new Text(StringUtils.defaultString(comment)));
-		model.setCreateMemberKey(Datastore.createKey(MemberModel.class, email));
+		Key memberKey = memberService.getKey(email);
+		model.setCreateMemberKey(memberKey);
 		model.setRefsKey(refsKey);
 		commentDao.put(model);
 	}

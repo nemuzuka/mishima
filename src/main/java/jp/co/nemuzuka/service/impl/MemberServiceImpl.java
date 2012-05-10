@@ -16,21 +16,29 @@
 package jp.co.nemuzuka.service.impl;
 
 import java.util.ConcurrentModificationException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.common.UniqueKey;
+import jp.co.nemuzuka.core.controller.AbsController;
+import jp.co.nemuzuka.core.entity.mock.UserServiceImpl;
 import jp.co.nemuzuka.dao.MemberDao;
+import jp.co.nemuzuka.entity.MemberKeyEntity;
 import jp.co.nemuzuka.exception.AlreadyExistKeyException;
 import jp.co.nemuzuka.form.MemberForm;
 import jp.co.nemuzuka.form.PersonForm;
 import jp.co.nemuzuka.model.MemberModel;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.utils.ConvertUtils;
+import jp.co.nemuzuka.utils.CurrentDateUtils;
+import jp.co.nemuzuka.utils.DateTimeChecker;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.slim3.datastore.Datastore;
+import org.slim3.memcache.Memcache;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
@@ -63,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
 	 */
 	@Override
 	public void checkAndCreateMember(String mail, String nickName, Authority authority) {
-		MemberModel model = memberDao.get(mail);
+		MemberModel model = getModel(mail);
 		if(model != null) {
 			return;
 		}
@@ -96,8 +104,7 @@ public class MemberServiceImpl implements MemberService {
 	 */
 	@Override
 	public List<MemberModel> getList(String name, String mail) {
-		List<MemberModel> list = memberDao.getList(name, mail);
-		return list;
+		return memberDao.getList(name, mail);
 	}
 
 	/* (非 Javadoc)
@@ -123,6 +130,7 @@ public class MemberServiceImpl implements MemberService {
 				throw new AlreadyExistKeyException();
 			}
 			model = new MemberModel();
+			reSetMemberKeyEntity();
 		}
 		
 		//取得した情報に対してプロパティを更新
@@ -165,8 +173,7 @@ public class MemberServiceImpl implements MemberService {
 	public PersonForm getPersonForm(String email) {
 		
 		PersonForm form = new PersonForm();
-		
-		MemberModel model = memberDao.get(email);
+		MemberModel model = getModel(email);
 		if(model == null) {
 			return form;
 		}
@@ -210,6 +217,93 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.getMap(keys);
 	}
 
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.MemberService#getKey(java.lang.String)
+	 */
+	@Override
+	public Key getKey(String mail) {
+		return getMemberKeyEntity().map.get(mail);
+	}
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.MemberService#getKeyString(java.lang.String)
+	 */
+	@Override
+	public String getKeyString(String mail) {
+		return getMemberKeyEntity().keyStringMap.get(mail);
+	}
+
+	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.MemberService#getModel(java.lang.String)
+	 */
+	@Override
+	public MemberModel getModel(String mail) {
+		Key key = getKey(mail);
+		return memberDao.get(key);
+	}
+
+	/**
+	 * MemberKeyEntityリセット.
+	 * 更新時刻をリセットし、次回アクセスには最新情報を取得するようにします。
+	 * 新規ユーザ登録時に呼ばれることを想定しています。
+	 */
+	private void reSetMemberKeyEntity() {
+		MemberKeyEntity entity = Memcache.get(MemberKeyEntity.class.getName());
+		if(entity == null) {
+			return;
+		}
+		entity.refreshStartTime = null;
+		Memcache.put(MemberKeyEntity.class.getName(), entity);
+	}
+	
+	/**
+	 * MemberKeyEntity取得.
+	 * Memcacheよりデータを取得し、存在ない or 期限切れの場合、最新情報に更新します。
+	 * @return MemberKeyEntityインスタンス
+	 */
+	private MemberKeyEntity getMemberKeyEntity() {
+		//Memcacheよりデータを取得する
+		MemberKeyEntity entity = Memcache.get(MemberKeyEntity.class.getName());
+		if(entity == null || entity.refreshStartTime == null || 
+				DateTimeChecker.isOverRefreshStartTime(entity.refreshStartTime)) {
+			//存在しない or 更新期限切れの場合、リフレッシュ
+			entity = createMemberKeyEntity();
+			Memcache.put(MemberKeyEntity.class.getName(), entity);
+		}
+		return entity;
+	}
+
+	/**
+	 * MemberKeyEntity生成.
+	 * @return MemberKeyEntityインスタンス
+	 */
+	private MemberKeyEntity createMemberKeyEntity() {
+		MemberKeyEntity entity = new MemberKeyEntity();
+		
+		//登録されているMember情報を取得
+		List<MemberModel> list = getList("", "");
+		for(MemberModel target : list) {
+			entity.map.put(target.getMail(), target.getKey());
+			entity.keyStringMap.put(target.getMail(), target.getKeyToString());
+		}
+		
+		//トライアル版でかつ、ダミーユーザが未アクセスの場合、ダミーユーザのKeyを追加
+		if(AbsController.trialMode) {
+			if(entity.map.get(UserServiceImpl.DUMMY_EMAIL) == null) {
+				//まだダミーユーザがMemberModelに登録されていない状態を想定
+				entity.map.put(UserServiceImpl.DUMMY_EMAIL, 
+						Datastore.createKey(MemberModel.class, UserServiceImpl.DUMMY_EMAIL));
+			}
+		}
+		
+		//現在時刻に加算分の時刻(分)を加算し、設定する
+		Date date = CurrentDateUtils.getInstance().getCurrentDateTime();
+		int min = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.member.map.refresh.min", "15"));
+		date = DateUtils.addMinutes(date, min);
+		entity.refreshStartTime = date;
+		return entity;
+	}
+	
 	/**
 	 * Form情報設定.
 	 * @param form 設定対象Form

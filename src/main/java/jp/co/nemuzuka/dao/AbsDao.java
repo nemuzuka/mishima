@@ -72,6 +72,9 @@ public abstract class AbsDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public <M> M get(Key key) {
+		if(key == null) {
+			return null;
+		}
 		try {
 			return (M) GlobalTransaction.transaction.get().getTransaction().get(
 					getModelClass(), key);

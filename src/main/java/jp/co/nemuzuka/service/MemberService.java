@@ -97,4 +97,29 @@ public interface MemberService {
 	 * @return 該当Map
 	 */
 	Map<Key, MemberModel> getMap(Key...keys);
+	
+	
+	/**
+	 * Key取得.
+	 * 指定したメールアドレスに合致するMemberModelのKeyを取得します。
+	 * @param mail メールアドレス
+	 * @return 該当MemberKey(存在しない場合、null)
+	 */
+	Key getKey(String mail);
+	
+	/**
+	 * Key文字列取得.
+	 * 指定したメールアドレスに合致するMemberModelのKey文字列を取得します。
+	 * @param mail メールアドレス
+	 * @return 該当MemberKey文字列(存在しない場合、null)
+	 */
+	String getKeyString(String mail);
+	
+	/**
+	 * Model取得.
+	 * 該当するレコードを取得します。
+	 * @param mail メールアドレス
+	 * @return MemberModel(存在しない場合、null)
+	 */
+	MemberModel getModel(String mail);
 }

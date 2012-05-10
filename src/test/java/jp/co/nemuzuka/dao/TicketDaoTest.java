@@ -263,22 +263,30 @@ public class TicketDaoTest extends AppEngineTestCase4HRD {
 		String projectKeyString = Datastore.keyToString(projectKeyList.get(0));
 		String[] openStatus = new String[]{"未対応","完了"};
 
-		List<TicketModel> actualList = ticketDao.getDashbordList(10, "hige@hoge.hage", projectKeyString, openStatus);
+		String targetMemberKeyString = Datastore.keyToString(
+				Datastore.createKey(MemberModel.class, "hige@hoge.hage"));
+		List<TicketModel> actualList = ticketDao.getDashbordList(10, targetMemberKeyString, projectKeyString, openStatus);
 		assertThat(actualList.size(), is(2));
 		assertThat(actualList.get(0).getKey(), is(ticketKeyList.get(2)));
 		assertThat(actualList.get(1).getKey(), is(ticketKeyList.get(3)));
 
-		actualList = ticketDao.getDashbordList(1, "hige@hoge.hage", projectKeyString, openStatus);
+		targetMemberKeyString = Datastore.keyToString(
+				Datastore.createKey(MemberModel.class, "hige@hoge.hage"));
+		actualList = ticketDao.getDashbordList(1, targetMemberKeyString, projectKeyString, openStatus);
 		assertThat(actualList.size(), is(1));
 		assertThat(actualList.get(0).getKey(), is(ticketKeyList.get(2)));
 		
-		actualList = ticketDao.getDashbordList(2, "hige@hoge.hage", projectKeyString, openStatus);
+		targetMemberKeyString = Datastore.keyToString(
+				Datastore.createKey(MemberModel.class, "hige@hoge.hage"));
+		actualList = ticketDao.getDashbordList(2, targetMemberKeyString, projectKeyString, openStatus);
 		assertThat(actualList.size(), is(2));
 		assertThat(actualList.get(0).getKey(), is(ticketKeyList.get(2)));
 		assertThat(actualList.get(1).getKey(), is(ticketKeyList.get(3)));
 		
+		targetMemberKeyString = Datastore.keyToString(
+				Datastore.createKey(MemberModel.class, "hige@hoge.hage"));
 		projectKeyString = Datastore.keyToString(projectKeyList.get(1));
-		actualList = ticketDao.getDashbordList(3, "hige@hoge.hage", projectKeyString, openStatus);
+		actualList = ticketDao.getDashbordList(3, targetMemberKeyString, projectKeyString, openStatus);
 		assertThat(actualList.size(), is(2));
 		assertThat(actualList.get(0).getKey(), is(ticketKeyList.get(8)));
 		assertThat(actualList.get(1).getKey(), is(ticketKeyList.get(9)));
