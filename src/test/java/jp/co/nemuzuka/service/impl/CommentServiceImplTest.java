@@ -90,12 +90,9 @@ public class CommentServiceImplTest extends AppEngineTestCase4HRD {
 		service.put(todoKey, "コメントでんがな2", "hoge2@hige.hage");
 		GlobalTransaction.transaction.get().commit();
 		GlobalTransaction.transaction.get().begin();
-
+		//処理は終了するが、登録されない
 		actualList = service.getList(todoKey);
-		assertThat(actualList.size(), is(1));
-		assertThat(actualList.get(0).getComment(), is("コメントでんがな2"));
-		assertThat(actualList.get(0).getCreateMemberName(), is(""));
-		assertThat(actualList.get(0).getCreatedAt(), is(not(nullValue())));
+		assertThat(actualList.size(), is(0));
 
 		
 	}

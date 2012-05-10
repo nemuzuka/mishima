@@ -110,6 +110,9 @@ public class CommentServiceImpl implements CommentService {
 		CommentModel model = new CommentModel();
 		model.setComment(new Text(StringUtils.defaultString(comment)));
 		Key memberKey = memberService.getKey(email);
+		if(memberKey == null) {
+			return;
+		}
 		model.setCreateMemberKey(memberKey);
 		model.setRefsKey(refsKey);
 		commentDao.put(model);
