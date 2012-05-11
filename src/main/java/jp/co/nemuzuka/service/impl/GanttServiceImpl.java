@@ -17,10 +17,14 @@ package jp.co.nemuzuka.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import jp.co.nemuzuka.dao.MilestoneDao;
 import jp.co.nemuzuka.dao.TicketDao.Param;
+import jp.co.nemuzuka.entity.ChildKeyListEntity;
 import jp.co.nemuzuka.entity.TicketModelEx;
 import jp.co.nemuzuka.model.MilestoneModel;
 import jp.co.nemuzuka.service.GanttService;
@@ -30,6 +34,8 @@ import jp.co.nemuzuka.utils.CurrentDateUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.google.appengine.api.datastore.Key;
 
 /**
  * GanttServiceの実装クラス.
@@ -63,6 +69,7 @@ public class GanttServiceImpl implements GanttService {
 
 		//一覧取得
 		List<TicketModelEx> ticketList = ticketService.getList(param, "", false);
+		reCreateTicketList(ticketList);
 		
 		Result result = new Result();
 		result.ticketList = ticketList;
@@ -87,6 +94,53 @@ public class GanttServiceImpl implements GanttService {
 		//チケットの日付を再設定する
 		setDate(result, startDate, endDate);
 		return result;
+	}
+
+	/**
+	 * チケット一覧再作成.
+	 * 子チケットを意識してチケット一覧を最生成します。
+	 * @param ticketList チケット一覧
+	 */
+	void reCreateTicketList(List<TicketModelEx> ticketList) {
+		
+		//Keyに紐付くTicketMapと、親Keyに紐付く子Ticket管理用Entityを生成
+		Map<Key, TicketModelEx> map = new HashMap<Key, TicketModelEx>();
+		Map<Key, ChildKeyListEntity> parentMap = new LinkedHashMap<Key, ChildKeyListEntity>();
+		for(TicketModelEx target : ticketList) {
+			Key key = target.getModel().getKey();
+			map.put(key, target);
+			
+			Key parentKey = target.getModel().getParentTicketKey();
+			ChildKeyListEntity entity = parentMap.get(parentKey);
+			if(entity == null) {
+				entity = new ChildKeyListEntity();
+				parentMap.put(parentKey, entity);
+			}
+			int index = entity.childKeys.size();
+			entity.childKeys.add(key);
+			entity.childMap.put(key, index);
+			entity.grandchildList.add(null);
+		}
+		
+		int beforeSize = 0;
+		int afterSize = -1;
+		while(true) {
+			if(beforeSize == afterSize) {
+				//処理してもサイズに変更がなければ終了
+				break;
+			}
+			
+			beforeSize = parentMap.size();
+			for(Map.Entry<Key, ChildKeyListEntity> e : parentMap.entrySet()) {
+				
+				//TODOソート処理
+			}
+			afterSize = parentMap.size();
+		}
+		
+		//ソートしたMapを元に、ネストを設定する
+		//TODO
+		
 	}
 
 	/**

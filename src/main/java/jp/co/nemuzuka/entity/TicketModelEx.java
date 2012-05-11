@@ -54,6 +54,14 @@ public class TicketModelEx {
 	private boolean closeStatus;
 
 	/** 
+	 * ネストの深さ.
+	 * 0:親チケット
+	 * 1以降子チケットのネスト数
+	 * ※ガントチャート用です
+	 */
+	private int nestingLevel;
+	
+	/** 
 	 * 表示用TicketNo.
 	 * プロジェクト識別子 + no
 	 */
@@ -217,5 +225,19 @@ public class TicketModelEx {
 	 */
 	public void setViewNo(String viewNo) {
 		this.viewNo = viewNo;
+	}
+
+	/**
+	 * @return the nestingLevel
+	 */
+	public int getNestingLevel() {
+		return nestingLevel;
+	}
+
+	/**
+	 * @param nestingLevel the nestingLevel to set
+	 */
+	public void setNestingLevel(int nestingLevel) {
+		this.nestingLevel = nestingLevel;
 	}
 }
