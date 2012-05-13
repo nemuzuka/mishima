@@ -18,9 +18,11 @@ package jp.co.nemuzuka.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jp.co.nemuzuka.dao.MilestoneDao;
 import jp.co.nemuzuka.dao.TicketDao.Param;
@@ -93,6 +95,7 @@ public class GanttServiceImpl implements GanttService {
 
 		//チケットの日付を再設定する
 		setDate(result, startDate, endDate);
+		reCreateTicketList(result.ticketList);
 		return result;
 	}
 
@@ -122,25 +125,144 @@ public class GanttServiceImpl implements GanttService {
 			entity.grandchildList.add(null);
 		}
 		
-		int beforeSize = 0;
-		int afterSize = -1;
-		while(true) {
-			if(beforeSize == afterSize) {
-				//処理してもサイズに変更がなければ終了
-				break;
-			}
-			
-			beforeSize = parentMap.size();
+		boolean isContinue = true;
+		Set<Key> doneParentKeySet = new HashSet<Key>();
+		while(isContinue) {
+			int beforeSize = parentMap.size();
 			for(Map.Entry<Key, ChildKeyListEntity> e : parentMap.entrySet()) {
+				Key parentKey = e.getKey();
+				if(parentKey == null) {
+					//親Keyが存在しないTicket群の場合、次のレコードへ
+					continue;
+				}
+				if(doneParentKeySet.contains(parentKey)) {
+					//処理済みのKeyの場合、次のレコードへ
+					continue;
+				}
 				
-				//TODOソート処理
+				//処理対象の親Keyが子供になる箇所を検索し、移動する
+				if(moveParentKey(parentMap, parentKey, e.getValue())) {
+					//存在したので、Mapから削除し、loop終了
+					parentMap.remove(parentKey);
+					break;
+				} else {
+					//処理対象の親Keyが存在しなかったので、次のレコードが処理対象
+					doneParentKeySet.add(parentKey);
+				}
 			}
-			afterSize = parentMap.size();
+			int afterSize = parentMap.size();
+			
+			if(beforeSize == afterSize) {
+				//処理前と処理後のMapのサイズが等しい場合、処理終了
+				isContinue = false;
+			}
 		}
 		
 		//ソートしたMapを元に、ネストを設定する
-		//TODO
+		createList(ticketList, map, parentMap);
+		return;
+	}
+
+
+	/**
+	 * TicketList再設定.
+	 * 親Ticket管理Mapを元に、ソート済みのListを再設定します。
+	 * @param ticketList 設定対象TicketList
+	 * @param map 全Ticket管理Map
+	 * @param parentMap 親Ticket管理Map
+	 */
+	private void createList(List<TicketModelEx> ticketList,
+			Map<Key, TicketModelEx> map, Map<Key, ChildKeyListEntity> parentMap) {
 		
+		ticketList.clear();
+		
+		for(Map.Entry<Key, ChildKeyListEntity> e : parentMap.entrySet()) {
+			ChildKeyListEntity targetEntity = e.getValue();
+			int nestingLevel = 0;
+			setTicketList(targetEntity, nestingLevel, ticketList, map);
+		}
+	}
+
+	/**
+	 * List設定.
+	 * 子TicketKeyListを元に戻り値Listを再設定します。
+	 * 孫Ticketが存在する場合、戻り値Listに含めます。
+	 * ※再帰呼び出しします。
+	 * @param targetEntity 対象子Ticket管理用Entity
+	 * @param nestingLevel ネストの深さ
+	 * @param ticketList 設定対象TicketList
+	 * @param map 全Ticket管理Map
+	 */
+	void setTicketList(ChildKeyListEntity targetEntity, int nestingLevel,
+			List<TicketModelEx> ticketList, Map<Key, TicketModelEx> map) {
+		//子TicketKeyListを元に設定
+		for(Key key : targetEntity.childKeys) {
+			TicketModelEx targetModelEx = map.get(key);
+			targetModelEx.setNestingLevel(nestingLevel);
+			ticketList.add(targetModelEx);
+			
+			//孫TicketKeyに対して設定
+			for(ChildKeyListEntity grandchild : targetEntity.grandchildList) {
+				if(grandchild == null) {
+					continue;
+				}
+				setTicketList(grandchild, (nestingLevel + 1), ticketList, map);
+			}
+		}
+	}
+
+	/**
+	 * 子要素参照変更.
+	 * 対象のKey情報が子要素となる位置を参照し、存在する場合参照を変更します。
+	 * @param parentMap 元Map
+	 * @param targetKey 対象Key
+	 * @param targetEntity 対象参照元
+	 * @return 対象のKey要素が子要素となる箇所が存在した場合、true
+	 */
+	boolean moveParentKey(Map<Key, ChildKeyListEntity> parentMap,
+			Key targetKey, ChildKeyListEntity targetEntity) {
+		for(Map.Entry<Key, ChildKeyListEntity> e : parentMap.entrySet()) {
+			//自分の要素の場合は次の処理へ
+			if(e.getKey() != null && e.getKey().equals(targetKey)) {
+				continue;
+			}
+			ChildKeyListEntity entity = e.getValue();
+			if(moveParentKey(targetKey, entity, targetEntity)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 子要素参照設定.
+	 * 引数の対象Key情報が子要素となる位置を参照し、
+	 * 存在する場合参照を設定します。
+	 * 存在しない場合、孫要素に対して同処理を行います。
+	 * @param targetKey 対象Key
+	 * @param checkTarget チェック対象子Ticket管理用Entity
+	 * @param targetEntity 対象参照元
+	 * @return 対象のKey要素が子要素となる箇所が存在した場合、true
+	 */
+	boolean moveParentKey(Key targetKey, ChildKeyListEntity checkTarget, 
+			ChildKeyListEntity targetEntity) {
+		
+		//対象要素の中に、自分の親Keyが存在する場合参照を変更する
+		Integer index = checkTarget.childMap.get(targetKey);
+		if(index != null) {
+			checkTarget.grandchildList.set(index, targetEntity);
+			return true;
+		} else {
+			//対象要素の孫Ticket管理用EntityListに対して同じ処理を繰り返し行う
+			for(ChildKeyListEntity target : checkTarget.grandchildList) {
+				if(target != null) {
+					if(moveParentKey(targetKey, target, targetEntity)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	/**

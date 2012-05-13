@@ -59,6 +59,306 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 	
 	List<Key> milestoneKeyList;
 	Key projectKey;
+	
+	/**
+	 * reCreateTicketListのテスト.
+	 * ・親-子の関係
+	 * ・親Ticketの指定はあるが、親Ticketが存在しない
+	 * パターンの混在
+	 */
+	@Test
+	public void testReCreateTicketList6() {
+		List<TicketModelEx> ticketList = createTicketList6();
+		service.reCreateTicketList(ticketList);
+		
+		assertThat(ticketList.size(), is(5));
+		assertThat(ticketList.get(0).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 1L)));
+		assertThat(ticketList.get(0).getNestingLevel(), is(0));
+		assertThat(ticketList.get(1).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 2L)));
+		assertThat(ticketList.get(1).getNestingLevel(), is(1));
+		assertThat(ticketList.get(2).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 3L)));
+		assertThat(ticketList.get(2).getNestingLevel(), is(0));
+		assertThat(ticketList.get(3).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 10L)));
+		assertThat(ticketList.get(3).getNestingLevel(), is(0));
+		assertThat(ticketList.get(4).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 4L)));
+		assertThat(ticketList.get(4).getNestingLevel(), is(1));
+	}
+	
+	/**
+	 * テスト用List作成.
+	 * @return テスト用List
+	 */
+	private List<TicketModelEx> createTicketList6() {
+		List<TicketModelEx> list = new ArrayList<TicketModelEx>();
+		TicketModelEx model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 1L));
+		model.getModel().setParentTicketKey(null);
+		
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 2L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 1L));
+
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 3L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 9L));
+
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 4L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 10L));
+
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 10L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 11L));
+
+		return list;
+	}
+
+	/**
+	 * reCreateTicketListのテスト.
+	 * 親Ticketの指定はあるが、親Ticketが存在しないパターン
+	 */
+	@Test
+	public void testReCreateTicketList5() {
+		List<TicketModelEx> ticketList = createTicketList5();
+		service.reCreateTicketList(ticketList);
+		
+		assertThat(ticketList.size(), is(3));
+		assertThat(ticketList.get(0).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 1L)));
+		assertThat(ticketList.get(0).getNestingLevel(), is(0));
+		assertThat(ticketList.get(1).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 2L)));
+		assertThat(ticketList.get(1).getNestingLevel(), is(0));
+		assertThat(ticketList.get(2).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 3L)));
+		assertThat(ticketList.get(2).getNestingLevel(), is(0));
+	}
+	
+	/**
+	 * テスト用List作成.
+	 * @return テスト用List
+	 */
+	private List<TicketModelEx> createTicketList5() {
+		List<TicketModelEx> list = new ArrayList<TicketModelEx>();
+		TicketModelEx model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 1L));
+		model.getModel().setParentTicketKey(null);
+		
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 2L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 5L));
+
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 3L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 9L));
+
+		return list;
+	}
+
+	/**
+	 * reCreateTicketListのテスト.
+	 * 親-子-孫-曾孫Ticketが存在するパターン
+	 */
+	@Test
+	public void testReCreateTicketList4() {
+		List<TicketModelEx> ticketList = createTicketList4();
+		service.reCreateTicketList(ticketList);
+		
+		assertThat(ticketList.size(), is(4));
+		assertThat(ticketList.get(0).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 1L)));
+		assertThat(ticketList.get(0).getNestingLevel(), is(0));
+		assertThat(ticketList.get(1).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 2L)));
+		assertThat(ticketList.get(1).getNestingLevel(), is(1));
+		assertThat(ticketList.get(2).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 3L)));
+		assertThat(ticketList.get(2).getNestingLevel(), is(2));
+		assertThat(ticketList.get(3).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 4L)));
+		assertThat(ticketList.get(3).getNestingLevel(), is(3));
+	}
+	
+	/**
+	 * テスト用List作成.
+	 * @return テスト用List
+	 */
+	private List<TicketModelEx> createTicketList4() {
+		List<TicketModelEx> list = new ArrayList<TicketModelEx>();
+		TicketModelEx model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 1L));
+		model.getModel().setParentTicketKey(null);
+		
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 2L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 1L));
+		
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 3L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 2L));
+
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 4L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 3L));
+
+		return list;
+	}
+
+	/**
+	 * reCreateTicketListのテスト.
+	 * 親-子-孫Ticketが存在するパターン
+	 */
+	@Test
+	public void testReCreateTicketList3() {
+		List<TicketModelEx> ticketList = createTicketList3();
+		service.reCreateTicketList(ticketList);
+		
+		assertThat(ticketList.size(), is(3));
+		assertThat(ticketList.get(0).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 1L)));
+		assertThat(ticketList.get(0).getNestingLevel(), is(0));
+		assertThat(ticketList.get(1).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 2L)));
+		assertThat(ticketList.get(1).getNestingLevel(), is(1));
+		assertThat(ticketList.get(2).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 3L)));
+		assertThat(ticketList.get(2).getNestingLevel(), is(2));
+	}
+	
+	/**
+	 * テスト用List作成.
+	 * @return テスト用List
+	 */
+	private List<TicketModelEx> createTicketList3() {
+		List<TicketModelEx> list = new ArrayList<TicketModelEx>();
+		TicketModelEx model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 1L));
+		model.getModel().setParentTicketKey(null);
+		
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 2L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 1L));
+		
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 3L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 2L));
+
+		return list;
+	}
+
+	/**
+	 * reCreateTicketListのテスト.
+	 * 親-子Ticketが存在するパターン
+	 */
+	@Test
+	public void testReCreateTicketList2() {
+		List<TicketModelEx> ticketList = createTicketList2();
+		service.reCreateTicketList(ticketList);
+		
+		assertThat(ticketList.size(), is(2));
+		assertThat(ticketList.get(0).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 1L)));
+		assertThat(ticketList.get(0).getNestingLevel(), is(0));
+		assertThat(ticketList.get(1).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 2L)));
+		assertThat(ticketList.get(1).getNestingLevel(), is(1));
+	}
+	
+	/**
+	 * テスト用List作成.
+	 * @return テスト用List
+	 */
+	private List<TicketModelEx> createTicketList2() {
+		List<TicketModelEx> list = new ArrayList<TicketModelEx>();
+		TicketModelEx model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 1L));
+		model.getModel().setParentTicketKey(null);
+		
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 2L));
+		model.getModel().setParentTicketKey(Datastore.createKey(TicketModel.class, 1L));
+		
+		return list;
+	}
+
+	/**
+	 * reCreateTicketListのテスト.
+	 * 親Ticketのみ存在するパターン
+	 */
+	@Test
+	public void testReCreateTicketList1() {
+		//nullのものしか存在しないパターン
+		List<TicketModelEx> ticketList = createTicketList1();
+		service.reCreateTicketList(ticketList);
+		
+		assertThat(ticketList.size(), is(2));
+		assertThat(ticketList.get(0).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 1L)));
+		assertThat(ticketList.get(0).getNestingLevel(), is(0));
+		assertThat(ticketList.get(1).getModel().getKey(), 
+				is(Datastore.createKey(TicketModel.class, 2L)));
+		assertThat(ticketList.get(1).getNestingLevel(), is(0));
+	}
+	
+	/**
+	 * テスト用List作成.
+	 * @return テスト用List
+	 */
+	private List<TicketModelEx> createTicketList1() {
+		List<TicketModelEx> list = new ArrayList<TicketModelEx>();
+		TicketModelEx model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 1L));
+		model.getModel().setParentTicketKey(null);
+		
+		model = new TicketModelEx();
+		list.add(model);
+		model.setModel(new TicketModel());
+		model.getModel().setKey(Datastore.createKey(TicketModel.class, 2L));
+		model.getModel().setParentTicketKey(null);
+		
+		return list;
+	}
 
 	/**
 	 * getListのテスト.
