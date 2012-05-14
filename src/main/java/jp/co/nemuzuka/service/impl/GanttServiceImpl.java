@@ -196,18 +196,19 @@ public class GanttServiceImpl implements GanttService {
 	void setTicketList(ChildKeyListEntity targetEntity, int nestingLevel,
 			List<TicketModelEx> ticketList, Map<Key, TicketModelEx> map) {
 		//子TicketKeyListを元に設定
+		int index = 0;
 		for(Key key : targetEntity.childKeys) {
 			TicketModelEx targetModelEx = map.get(key);
 			targetModelEx.setNestingLevel(nestingLevel);
 			ticketList.add(targetModelEx);
 			
 			//孫TicketKeyに対して設定
-			for(ChildKeyListEntity grandchild : targetEntity.grandchildList) {
-				if(grandchild == null) {
-					continue;
-				}
-				setTicketList(grandchild, (nestingLevel + 1), ticketList, map);
+			ChildKeyListEntity grandchild = targetEntity.grandchildList.get(index);
+			index++;
+			if(grandchild == null) {
+				continue;
 			}
+			setTicketList(grandchild, (nestingLevel + 1), ticketList, map);
 		}
 	}
 
