@@ -165,8 +165,16 @@ behavior: {
                 for (var j = 0; j < data[i].series.length; j++) {
                 	
                     var $targetName = jQuery("<div />").text(data[i].series[j].name);
+                    
+                    var $ticketNest = "";
+                    if(data[i].series[j].nestingLevel != 0) {
+                    	var nestingLevel = "子" + data[i].series[j].nestingLevel;
+                        $ticketNest = jQuery("<div />").text(nestingLevel).css({"height":"12px"}).addClass("child-ticket-label child-ticket-label-info");
+                    }
                     seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
 						.append($targetName));
+                    seriesDiv.append($ticketNest);
+                    
                 }
                 itemDiv.append(seriesDiv);
                 headerDiv.append(itemDiv);

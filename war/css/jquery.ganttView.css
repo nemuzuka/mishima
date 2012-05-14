@@ -76,10 +76,11 @@ div.ganttview-vtheader-item-name {
 
 div.ganttview-vtheader-series-name {
 	width: 100px;
-	height: 31px;
+	height: 16px;
 	border-top: 1px solid #d0d0d0;
 	line-height: 16px;
 	padding-left: 5px;
+	overflow: hidden;
 }
 
 
@@ -144,3 +145,29 @@ div.ganttview-block-text {
 div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 	bottom: -0;
 }
+
+/* 子チケット情報表示. */
+
+.child-ticket-label {
+  padding: 0px 4px 3px;
+  font-size: 80%;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #999999;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.child-ticket-label:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.child-ticket-label-info {
+  background-color: #3a87ad;
+}
+.child-ticket-label-info:hover {
+  background-color: #2d6987;
+}
+

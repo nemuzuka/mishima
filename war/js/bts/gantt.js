@@ -119,6 +119,7 @@ function render(data) {
 		obj.periodStatusCode = "";
 		obj.updateStartDate = data.result.updateStartDate;
 		obj.updatePeriod = data.result.updateEndDate;
+		obj.nestingLevel = 0;
 		ganttList.push(createGanttEntity(obj, true));
 	}
 
@@ -162,6 +163,7 @@ function createGanttEntity(param, isMilestone) {
 	serie.milestone = isMilestone;
 	serie.updateStartDate = param.updateStartDate;
 	serie.updatePeriod = param.updatePeriod;
+	serie.nestingLevel = param.nestingLevel;
 	
 	//背景色の設定
 	if(isMilestone) {
