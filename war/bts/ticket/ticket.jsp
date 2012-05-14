@@ -60,7 +60,12 @@
 
 	<tr>
 		<th>期限</th>
-		<td  colspan="3"><input type="text" id="search_fromPeriod" />　〜　<input type="text" id="search_toPeriod" /></td>
+		<td colspan="3"><input type="text" id="search_fromPeriod" />　〜　<input type="text" id="search_toPeriod" /></td>
+	</tr>
+
+	<tr>
+		<th>チケットNo</th>
+		<td colspan="3"><span id="target-project-id">${f:h(selectedProjectId)}</span><input type="text" id="search_no" class="input-mini" /></td>
 	</tr>
 	</tbody>
 	</table>

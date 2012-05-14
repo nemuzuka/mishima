@@ -151,6 +151,10 @@ public class TicketDao extends AbsDao {
 			Key targetMemberKey = Datastore.stringToKey(param.targetMember);
 			filterSet.add(e.targetMemberKey.equal(targetMemberKey));
 		}
+		//チケットNoの検索条件
+		if(param.no != null) {
+			filterSet.add(e.no.equal(param.no));
+		}
 
 		//期限Fromの検索条件
 		if(param.fromPeriod != null) {
@@ -367,6 +371,9 @@ public class TicketDao extends AbsDao {
 		
 		/** 担当者. */
 		public String targetMember;
+		
+		/** チケットNo. */
+		public Long no;
 		
 		/** 期限From. */
 		public Date fromPeriod;

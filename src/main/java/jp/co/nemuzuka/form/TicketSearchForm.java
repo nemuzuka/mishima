@@ -58,6 +58,9 @@ public class TicketSearchForm implements Serializable {
 	/** 担当者. */
 	public String targetMember;
 	
+	/** チケットNo. */
+	public String no;
+	
 	/** 期限From. */
 	public String fromPeriod;
 	
@@ -223,6 +226,20 @@ public class TicketSearchForm implements Serializable {
 	}
 	
 	/**
+	 * @return the no
+	 */
+	public String getNo() {
+		return no;
+	}
+
+	/**
+	 * @param no the no to set
+	 */
+	public void setNo(String no) {
+		this.no = no;
+	}
+
+	/**
 	 * 検索条件作成.
 	 * @param projectKeyString 対象プロジェクトKey文字列
 	 * @param openStatus 未完了を意味するステータス
@@ -243,6 +260,7 @@ public class TicketSearchForm implements Serializable {
 		param.openStatus = openStatus;
 		param.fromPeriod = ConvertUtils.toDate(fromPeriod, sdf);
 		param.toPeriod = ConvertUtils.toDate(toPeriod, sdf);
+		param.no = ConvertUtils.toLong(no);
 		return param;
 	}
 }

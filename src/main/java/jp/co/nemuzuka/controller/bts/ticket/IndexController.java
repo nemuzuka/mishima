@@ -17,7 +17,11 @@ package jp.co.nemuzuka.controller.bts.ticket;
 
 import jp.co.nemuzuka.core.annotation.ProjectMember;
 import jp.co.nemuzuka.core.controller.HtmlController;
+import jp.co.nemuzuka.form.ProjectForm;
+import jp.co.nemuzuka.service.ProjectService;
+import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
 
+import org.apache.commons.lang.StringUtils;
 import org.slim3.controller.Navigation;
 
 /**
@@ -26,12 +30,19 @@ import org.slim3.controller.Navigation;
  */
 public class IndexController extends HtmlController {
 	
+	ProjectService projectService = ProjectServiceImpl.getInstance();
+	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.HtmlController#execute()
 	 */
 	@ProjectMember
 	@Override
 	protected Navigation execute() throws Exception {
+		
+		ProjectForm form = projectService.get(getUserInfo().selectedProject);
+		if(StringUtils.isNotEmpty(form.keyToString)) {
+			requestScope("selectedProjectId", form.projectId + "-");
+		}
 		return forward("/bts/ticket/ticket.jsp");
 	}
 

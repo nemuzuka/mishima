@@ -227,6 +227,7 @@ function createSearchTicketParams() {
 	params["version"] = $("#search_version").val();
 	params["milestone"] = $("#search_milestone").val();
 	params["targetMember"] = $("#search_targetMember").val();
+	params["no"] = $("#search_no").val();
 	
 	params["title"] = $("#search_title").val();
 	params["fromPeriod"] = unFormatDate($("#search_fromPeriod").val());
