@@ -25,7 +25,7 @@
       <div class="nav-collapse" style="float: right;">
         <ul class="nav">
           <li class="" id="main_menu1">
-            <a href="javascript:void(0)" id="dash_board_menu" title="あなたのTODOやプロジェクトのチケットを参照します">BTS/ITS</a>
+            <a href="javascript:void(0)" id="dash_board_menu" title="あなたのTODOやプロジェクトのチケットを参照します">課題管理</a>
           </li>
           <li class="divider-vertical"></li>
           <li class="" id="main_menu3">
