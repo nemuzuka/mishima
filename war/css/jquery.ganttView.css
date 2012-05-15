@@ -152,6 +152,7 @@ div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
   padding: 0px 4px 3px;
   font-size: 80%;
   font-weight: bold;
+  width: 45px;
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #999999;
@@ -165,9 +166,6 @@ div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 }
 
 .child-ticket-label-info {
-  background-color: #3a87ad;
-}
-.child-ticket-label-info:hover {
-  background-color: #2d6987;
+  background-color: #ff69b4;
 }
 
