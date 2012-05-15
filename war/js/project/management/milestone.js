@@ -35,7 +35,9 @@ function initDialog(){
 		},
 		close:function(event) {
 			document.body.style.overflow = "visible";
-		}
+		},
+		show: 'clip',
+        hide: 'clip'
 	});
 
 	$("#milestoneSortDialog").dialog({
@@ -48,7 +50,9 @@ function initDialog(){
 		},
 		close:function(event) {
 			document.body.style.overflow = "visible";
-		}
+		},
+		show: 'clip',
+        hide: 'clip'
 	});
 
 	$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));

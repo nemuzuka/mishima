@@ -19,7 +19,9 @@ function initTodoDialog() {
 				return;
 			}
 			document.body.style.overflow = "visible";
-		}
+		},
+		show: 'clip',
+        hide: 'clip'
 	});
 	$("#todoDetailDialog").dialog({
 		modal:true,
@@ -33,13 +35,17 @@ function initTodoDialog() {
 			document.body.style.overflow = "visible";
 			//詳細ダイアログを閉じたタイミングで一覧再描画
 			refresh();
-		}
+		},
+		show: 'clip',
+        hide: 'clip'
 	});
 	$("#todoCommentDialog").dialog({
 		modal:true,
 		autoOpen:false,
 		width:500,
-		resizable:false
+		resizable:false,
+		show: 'clip',
+        hide: 'clip'
 	});
 
 	//TODO登録・更新ダイアログ

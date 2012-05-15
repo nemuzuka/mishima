@@ -15,7 +15,9 @@ $(function(){
 		},
 		close:function(event) {
 			document.body.style.overflow = "visible";
-		}
+		},
+		show: 'clip',
+        hide: 'clip'
 	});
 	
 	$("#personalDialog-update").click(function(){

@@ -36,7 +36,9 @@ function initDialog(){
 		},
 		close:function(event) {
 			document.body.style.overflow = "visible";
-		}
+		},
+		show: 'clip',
+        hide: 'clip'
 	});
 	
 	$("#memberDialog-add").click(function(){

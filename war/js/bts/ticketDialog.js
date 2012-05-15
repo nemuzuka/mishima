@@ -18,7 +18,9 @@ function initTicketDialog() {
 				return;
 			}
 			document.body.style.overflow = "visible";
-		}
+		},
+		show: 'clip',
+        hide: 'clip'
 	});
 	$("#ticketDetailDialog").dialog({
 		modal:true,
@@ -32,25 +34,33 @@ function initTicketDialog() {
 			document.body.style.overflow = "visible";
 			//詳細ダイアログを閉じたタイミングで一覧再描画
 			refresh();
-		}
+		},
+		show: 'clip',
+        hide: 'clip'
 	});
 	$("#ticketCommentDialog").dialog({
 		modal:true,
 		autoOpen:false,
 		width:500,
-		resizable:false
+		resizable:false,
+		show: 'clip',
+        hide: 'clip'
 	});
 	$("#ticketSummaryDialog").dialog({
 		modal:true,
 		autoOpen:false,
 		width:600,
-		resizable:false
+		resizable:false,
+		show: 'clip',
+        hide: 'clip'
 	});
 	$("#ticketFileUploadDialog").dialog({
 		modal:true,
 		autoOpen:false,
 		width:600,
-		resizable:false
+		resizable:false,
+		show: 'clip',
+        hide: 'clip'
 	});
 
 	//Ticket登録・更新ダイアログ
@@ -86,7 +96,7 @@ function initTicketDialog() {
 	$("#ticketDetail-copy-add").click(function(){
 		$("#ticketDetailDialog").dialog("close");
 		var baseKey = $("#detail_ticket_keyToString").val();
-		openEditTicketDialog("", "", baseKey, "copyIns");
+		setTimeout(function(){ openEditTicketDialog("", "", baseKey, "copyIns") }, 600);
 	});
 	$("#ticketDetail-add-file").click(function(){
 		var key = $("#detail_ticket_keyToString").val();
