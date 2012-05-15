@@ -25,14 +25,14 @@
       <div class="nav-collapse" style="float: right;">
         <ul class="nav">
           <li class="" id="main_menu1">
-            <a href="#" id="dash_board_menu" title="あなたのTODOやプロジェクトのチケットを参照します">BTS/ITS</a>
+            <a href="javascript:void(0)" id="dash_board_menu" title="あなたのTODOやプロジェクトのチケットを参照します">BTS/ITS</a>
           </li>
           <li class="divider-vertical"></li>
           <li class="" id="main_menu3">
-            <a href="#" id="project_menu" title="プロジェクトに関する設定を行います">プロジェクト設定</a>
+            <a href="javascript:void(0)" id="project_menu" title="プロジェクトに関する設定を行います">プロジェクト設定</a>
           </li>
           <li class="" id="main_menu4">
-            <a href="#" id="admin_menu" title="システムに関する設定を行います">システム管理</a>
+            <a href="javascript:void(0)" id="admin_menu" title="システムに関する設定を行います">システム管理</a>
           </li>
 
           <li class="divider-vertical"></li>
@@ -46,10 +46,10 @@
             </div>
           </li>
           <li class="">
-            <a href="#" id="personal_settings" title="個人の情報を設定します">個人設定</a>
+            <a href="javascript:void(0)" id="personal_settings" title="個人の情報を設定します">個人設定</a>
           </li>
           <li>
-            <a href="#" id="logout_link" title="ログアウトしてシステムを終了します">ログアウト</a>
+            <a href="javascript:void(0)" id="logout_link" title="ログアウトしてシステムを終了します">ログアウト</a>
           </li>
         </ul>
       </div>
