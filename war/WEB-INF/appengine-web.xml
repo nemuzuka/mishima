@@ -24,7 +24,7 @@
     <property name="jp.co.nemuzuka.ticket.mst.refresh.min" value="60"/>
     <property name="jp.co.nemuzuka.member.map.refresh.min" value="60"/>
     <property name="jp.co.nemuzuka.dashboard.list.limit" value="5"/>
-    <property name="jp.co.nemuzuka.trial.mode" value="true"/>
+    <property name="jp.co.nemuzuka.trial.mode" value="false"/>
   </system-properties>
   
   <ssl-enabled>true</ssl-enabled>
