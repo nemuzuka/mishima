@@ -11,7 +11,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <c:import url="/layout.jsp">
-<c:param name="title" value="Mishima BTS/ITS"/>
+<c:param name="title" value="ITS [Mishima]"/>
 
 <c:param name="subMenu">
 <c:import url="/bts/subMenu.jsp" />
