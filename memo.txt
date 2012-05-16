@@ -11,3 +11,7 @@ gitコミット→githubにup
 githubから取込→ワークスペース反映
 リモート→fetch
 Pull
+
+
+trial版へのモジュールアップロード
+jp.co.nemuzuka.trial.modeをtrueに！
