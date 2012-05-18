@@ -149,7 +149,7 @@ div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 /* 子チケット情報表示. */
 
 .child-ticket-label {
-  padding: 0px 4px 3px;
+  padding: 0px 2px;
   font-size: 80%;
   font-weight: bold;
   width: 45px;
@@ -159,6 +159,8 @@ div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  height:"12px";
+  line-height:"12px";
 }
 .child-ticket-label:hover {
   color: #ffffff;
@@ -169,3 +171,6 @@ div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
   background-color: #ff69b4;
 }
 
+.child-ticket-label-warning {
+  background-color: #ff0000;
+}

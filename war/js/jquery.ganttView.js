@@ -169,11 +169,16 @@ behavior: {
                     var $ticketNest = "";
                     if(data[i].series[j].nestingLevel != 0) {
                     	var nestingLevel = "子" + data[i].series[j].nestingLevel;
-                        $ticketNest = jQuery("<div />").text(nestingLevel).css({"height":"12px"}).addClass("child-ticket-label child-ticket-label-info");
+                        $ticketNest = jQuery("<span />").text(nestingLevel).css({"margin-right":"3px"}).addClass("child-ticket-label child-ticket-label-info");
+                    }
+                    var $closeTicket = "";
+                    if(data[i].series[j].closeTicket == false) {
+                    	$closeTicket = jQuery("<span />").text("未完了").addClass("child-ticket-label child-ticket-label-warning");
                     }
                     seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
 						.append($targetName));
-                    seriesDiv.append($ticketNest);
+                    var $infoDiv = jQuery("<div />").css({"height":"12px", "line-height":"12px"}).append($ticketNest).append($closeTicket);
+                    seriesDiv.append($infoDiv);
                     
                 }
                 itemDiv.append(seriesDiv);
