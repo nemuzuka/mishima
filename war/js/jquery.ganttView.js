@@ -188,6 +188,7 @@ behavior: {
             var daysDiv = jQuery("<div>", { "class": "ganttview-hzheader-days" });
             var totalW = 0;
 			var dataFormat = new DateFormat("yyyy/MM/dd");
+			var dataFormat2 = new DateFormat("yyyyMMdd");
             var currentDate = dataFormat.format(new Date());
 
 			for (var y in dates) {
@@ -203,6 +204,7 @@ behavior: {
 						if(currentDate == dataFormat.format(dates[y][m][d])) {
 							addClass = "ganttview-currentDate"; 
 						}
+						addClass = addClass + " date_" + dataFormat2.format(dates[y][m][d]);
 
 						daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" }).addClass(addClass)
 							.append(dates[y][m][d].getDate()));

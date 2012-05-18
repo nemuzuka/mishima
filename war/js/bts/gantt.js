@@ -141,7 +141,30 @@ function render(data) {
 			resizable: false,
 		}
 	});
+	
+	var left_size = getMoveLeft();
+	if(left_size != 0) {
+		//スクロールバーを移動
+		var $targetDiv = $(".ganttview-slide-container");
+		var offset = $targetDiv.offset();
+		$targetDiv.scrollLeft(left_size - (offset.left + 30));
+	}
 }
+
+//チャートの中に当日が存在する場合、その位置を返却します
+//当日が存在しない場合、0を返却します
+function getMoveLeft() {
+	var dataFormat = new DateFormat("yyyyMMdd");
+	var nowDate = new Date();
+	var className = "date_" + dataFormat.format(nowDate);
+	var $target = 
+		$("." + className).offset();
+	if($target == null) {
+		return 0;
+	}
+	return $target.left;
+}
+
 
 /**
  * ガントチャート要素作成.
