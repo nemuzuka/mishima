@@ -10,14 +10,10 @@ function initTicketDialog() {
 		width:850,
 		resizable:false,
 		open:function(event) {
-			document.body.style.overflow = "hidden";
+			openModalDialog();
 		},
 		close:function(event) {
-			//詳細ダイアログを開いている場合、overflowの変更はしない
-			if($("#ticketDetailDialog").dialog("isOpen") == true) {
-				return;
-			}
-			document.body.style.overflow = "visible";
+			closeModelDialog();
 		},
 		show: 'clip',
         hide: 'clip'
@@ -28,10 +24,10 @@ function initTicketDialog() {
 		width:850,
 		resizable:false,
 		open:function(event) {
-			document.body.style.overflow = "hidden";
+			openModalDialog();
 		},
 		close:function(event) {
-			document.body.style.overflow = "visible";
+			closeModelDialog();
 			//詳細ダイアログを閉じたタイミングで一覧再描画
 			refresh();
 		},
@@ -44,7 +40,13 @@ function initTicketDialog() {
 		width:500,
 		resizable:false,
 		show: 'clip',
-        hide: 'clip'
+        hide: 'clip',
+		open:function(event) {
+			openModalDialog();
+		},
+		close:function(event) {
+			closeModelDialog();
+		}
 	});
 	$("#ticketSummaryDialog").dialog({
 		modal:true,
@@ -52,7 +54,13 @@ function initTicketDialog() {
 		width:600,
 		resizable:false,
 		show: 'clip',
-        hide: 'clip'
+        hide: 'clip',
+		open:function(event) {
+			openModalDialog();
+		},
+		close:function(event) {
+			closeModelDialog();
+		}
 	});
 	$("#ticketFileUploadDialog").dialog({
 		modal:true,
@@ -60,7 +68,13 @@ function initTicketDialog() {
 		width:600,
 		resizable:false,
 		show: 'clip',
-        hide: 'clip'
+        hide: 'clip',
+		open:function(event) {
+			openModalDialog();
+		},
+		close:function(event) {
+			closeModelDialog();
+		}
 	});
 
 	//Ticket登録・更新ダイアログ

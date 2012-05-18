@@ -10,15 +10,10 @@ function initTodoDialog() {
 		width:750,
 		resizable:false,
 		open:function(event) {
-			document.body.style.overflow = "hidden";
+			openModalDialog();
 		},
 		close:function(event) {
-			
-			//詳細ダイアログを開いている場合、overflowの変更はしない
-			if($("#todoDetailDialog").dialog("isOpen") == true) {
-				return;
-			}
-			document.body.style.overflow = "visible";
+			closeModelDialog();
 		},
 		show: 'clip',
         hide: 'clip'
@@ -29,10 +24,10 @@ function initTodoDialog() {
 		width:600,
 		resizable:false,
 		open:function(event) {
-			document.body.style.overflow = "hidden";
+			openModalDialog();
 		},
 		close:function(event) {
-			document.body.style.overflow = "visible";
+			closeModelDialog();
 			//詳細ダイアログを閉じたタイミングで一覧再描画
 			refresh();
 		},
@@ -45,7 +40,13 @@ function initTodoDialog() {
 		width:500,
 		resizable:false,
 		show: 'clip',
-        hide: 'clip'
+        hide: 'clip',
+		open:function(event) {
+			openModalDialog();
+		},
+		close:function(event) {
+			closeModelDialog();
+		}
 	});
 
 	//TODO登録・更新ダイアログ

@@ -4,6 +4,26 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
+var g_openDialog_cnt = 0;
+
+//モーダルダイアログを開く時に呼び出します。
+//初めて開く場合、スクロールバーを非表示にします。
+function openModalDialog() {
+	if(g_openDialog_cnt == 0) {
+		document.body.style.overflow = "hidden";
+	}
+	g_openDialog_cnt++;
+}
+
+//モーダルダイアログを閉じる時に呼び出します。
+//開いているモーダルダイアログが全て閉じられた場合、スクロールバーを表示します。
+function closeModelDialog() {
+	g_openDialog_cnt--;
+	if(g_openDialog_cnt == 0) {
+		document.body.style.overflow = "visible";
+	}
+}
+
 function setAjaxDefault() {
 	$.ajaxSetup({
 		timeout: 30000,		//ミリ秒

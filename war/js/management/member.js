@@ -32,10 +32,10 @@ function initDialog(){
 		width:600,
 		resizable:false,
 		open:function(event) {
-			document.body.style.overflow = "hidden";
+			openModalDialog();
 		},
 		close:function(event) {
-			document.body.style.overflow = "visible";
+			closeModelDialog();
 		},
 		show: 'clip',
         hide: 'clip'

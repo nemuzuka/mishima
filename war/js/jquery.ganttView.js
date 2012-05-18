@@ -290,7 +290,7 @@ behavior: {
 					} else {
 						//マイルストーンの場合
 						//開始日、終了日を設定
-						title = "【マイルストーン】" + name;
+						title = name;
 					}
 					
 					var dataFormat = new DateFormat("yyyy年M月d日");
