@@ -172,5 +172,8 @@ div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 }
 
 .child-ticket-label-warning {
-  background-color: #ff0000;
+  background-color: #f89406;
+}
+.child-ticket-label-important {
+  background-color: #b94a48;
 }

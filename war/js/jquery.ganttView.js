@@ -169,13 +169,19 @@ behavior: {
 					var $ticketNest = "";
 					if(data[i].series[j].nestingLevel != 0) {
 						var nestingLevel = "子" + data[i].series[j].nestingLevel;
-						$ticketNest = jQuery("<span />").text(nestingLevel).css({"margin-right":"3px"}).addClass("child-ticket-label child-ticket-label-info");
+						var margin_left = 4 * parseInt(data[i].series[j].nestingLevel, 10);
+						$ticketNest = jQuery("<span />").text(nestingLevel).css({"margin-left":margin_left + "px", "margin-right":"3px"}).addClass("child-ticket-label child-ticket-label-info");
 					}
 					var $closeTicket = "";
 					if(data[i].series[j].periodStatusCode == "1" || 
 							data[i].series[j].periodStatusCode == "2") {
 						$closeTicket = jQuery("<span />").text(data[i].series[j].periodStatusLabel)
 							.addClass("child-ticket-label child-ticket-label-warning");
+						if(data[i].series[j].periodStatusCode == "1") {
+							$closeTicket.addClass("child-ticket-label-warning");
+						} else {
+							$closeTicket.addClass("child-ticket-label-important");
+						}
 					}
 					seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
 						.append($targetName));
@@ -327,9 +333,9 @@ behavior: {
 						dateStr = dateStr + endDate;
 					}
 					if(dateStr != '') {
-						dateStr = "【期間】" + dateStr;
+						dateStr = "\n【期間】" + dateStr;
 					}
-					title = title + "\n" +  dateStr;
+					title = title +  dateStr;
 					
 					var cursor = "pointer";
 					if(id == null || id == '') {
