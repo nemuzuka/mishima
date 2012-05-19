@@ -187,7 +187,6 @@ function createGanttEntity(param, isMilestone) {
 	serie.updateStartDate = param.updateStartDate;
 	serie.updatePeriod = param.updatePeriod;
 	serie.nestingLevel = param.nestingLevel;
-	serie.closeTicket = true;
 	
 	//背景色の設定
 	if(isMilestone) {
@@ -212,7 +211,6 @@ function createGanttEntity(param, isMilestone) {
 			colorCss = "close";
 		} else {
 			colorCss = "open";
-			serie.closeTicket = false;
 			if(param.periodStatusCode == '1') {
 				colorCss = "today";
 			} else if(param.periodStatusCode == '2') {
