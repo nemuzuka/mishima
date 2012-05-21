@@ -221,7 +221,9 @@ function openEditDialog(keyToString) {
 			$("#edit_versionNo").val(form.versionNo);
 			$("#edit_keyToString").val(form.keyToString);
 			
+			prependDummyText("milestoneDialog");
 			$("#milestoneDialog").dialog("open");
+			removeDummyText("milestoneDialog");
 			return;
 		}
 	);
@@ -360,7 +362,10 @@ function renderSortDialog(data) {
 		$("#milestone_to").append($('<option />').attr({value:keyToString }).text(milestoneName));
 	});
 	reWriteSelect("milestone_to", new Array());
+	
+	prependDummyText("milestoneSortDialog");
 	$("#milestoneSortDialog").dialog("open");
+	removeDummyText("milestoneSortDialog");
 }
 
 //ソート情報変更

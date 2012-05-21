@@ -119,7 +119,10 @@ function initTicketDialog() {
 		//fileの入力値を初期化
 		$("#ticket_upload_file").replaceWith($("#ticket_upload_file").clone());
 		$("#ticket_upload_file_comment").val("");
+		
+		prependDummyText("ticketFileUploadDialog");
 		$("#ticketFileUploadDialog").dialog("open");
+		removeDummyText("ticketFileUploadDialog");
 	});
 	
 	//Ticketコメントダイアログ
@@ -204,7 +207,10 @@ function openTicketDetailCommentDialog() {
 	$("#edit_ticket_comment_versionNo").val($("#detail_ticket_versionNo").val());
 	$("#edit_ticket_comment_keyToString").val($("#detail_ticket_keyToString").val());
 	$("#edit_ticket_comment").val("");
+	prependDummyText("ticketCommentDialog");
 	$("#ticketCommentDialog").dialog("open");
+	removeDummyText("ticketCommentDialog");
+
 }
 
 //ステータス変更
@@ -461,8 +467,9 @@ function openEditTicketDialog(key, ticketNo, baseKey, type) {
 				$("#edit_ticket_keyToString").val("");
 				$("#edit_ticket_base_keyToString").val("");
 			}
-			
+			prependDummyText("ticketDialog");
 			$("#ticketDialog").dialog("open");
+			removeDummyText("ticketDialog");
 			return;
 		}
 	);
@@ -548,7 +555,9 @@ function openDetailTicketDialog(key, onlyRefresh) {
 			renderTicketConn(data.result, ticketNo);
 			
 			if(onlyRefresh == false) {
+				prependDummyText("ticketDetailDialog");
 				$("#ticketDetailDialog").dialog("open");
+				removeDummyText("ticketDetailDialog");
 			}
 			$("#ticketDetailDialog .dialog-container .scroll_area").scrollTop(0);
 			$(".scroll_area").scrollTop(0);

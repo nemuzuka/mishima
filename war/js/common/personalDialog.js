@@ -59,7 +59,9 @@ function openPersonalDialog() {
 			$("#edit_person_versionNo").val(form.versionNo);
 			$("#edit_person_keyToString").val(form.keyToString);
 			
+			prependDummyText("personalDialog");
 			$("#personalDialog").dialog("open");
+			removeDummyText("personalDialog");
 			return;
 		}
 	);

@@ -273,7 +273,7 @@
 	<div class="control-group">
 		<label class="control-label" for="ticket_upload_file">ファイル</label>
 		<div class="controls">
-			<input type="file" id="ticket_upload_file" name="uploadFile" />
+			<input type="file" id="ticket_upload_file" class="required-input" name="uploadFile" />
 		</div>
 	</div>
 	<div class="control-group">

@@ -138,7 +138,9 @@ function openTodoDetailCommentDialog() {
 	$("#edit_todo_comment_versionNo").val($("#detail_todo_versionNo").val());
 	$("#edit_todo_comment_keyToString").val($("#detail_todo_keyToString").val());
 	$("#edit_todo_comment").val("");
+	prependDummyText("todoCommentDialog");
 	$("#todoCommentDialog").dialog("open");
+	removeDummyText("todoCommentDialog");
 }
 
 //ステータス変更
@@ -303,7 +305,9 @@ function openEditTodoDialog(key) {
 			$("#edit_todo_versionNo").val(form.versionNo);
 			$("#edit_todo_keyToString").val(form.keyToString);
 			
+			prependDummyText("todoDialog");
 			$("#todoDialog").dialog("open");
+			removeDummyText("todoDialog");
 			return;
 		}
 	);
@@ -367,7 +371,9 @@ function openDetailTodoDialog(key, onlyRefresh) {
 			renderTodoCommentList(data.result.commentList);
 
 			if(onlyRefresh == false) {
+				prependDummyText("todoDetailDialog");
 				$("#todoDetailDialog").dialog("open");
+				removeDummyText("todoDetailDialog");
 			}
 			$(".scroll_area").scrollTop(0);
 			return;

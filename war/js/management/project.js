@@ -196,7 +196,9 @@ function openEditDialog(keyToString) {
 			$("#edit_versionNo").val(form.versionNo);
 			$("#edit_keyToString").val(form.keyToString);
 			
+			prependDummyText("projectDialog");
 			$("#projectDialog").dialog("open");
+			removeDummyText("projectDialog");
 			return;
 		}
 	);
