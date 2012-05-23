@@ -17,7 +17,6 @@ package jp.co.nemuzuka.utils;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -52,13 +51,6 @@ public class CurrentDateUtils {
 		
 		Date date = new Date();
 		date = DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
-		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
-		String dateStr = sdf.format(date);
-		try {
-			date = sdf.parse(dateStr);
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
 		return date;
 	}
 
