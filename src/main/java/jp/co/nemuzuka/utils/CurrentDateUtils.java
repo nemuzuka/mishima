@@ -17,6 +17,7 @@ package jp.co.nemuzuka.utils;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -48,10 +49,30 @@ public class CurrentDateUtils {
 	 * @return 現在日付
 	 */
 	public Date getCurrentDate() {
-		
+		//US時間を取得
 		Date date = new Date();
-		date = DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
-		return date;
+		
+		//日本時間に設定
+		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		String jpDateStr = sdf.format(date);
+		Date jpDate;
+		try {
+			jpDate = sdf.parse(jpDateStr);
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+		jpDate = DateUtils.truncate(jpDate, Calendar.DAY_OF_MONTH);
+		
+		//日本時間をUS時間に変更
+		sdf = new SimpleDateFormat("yyyyMMdd");
+		String usDateStr = sdf.format(jpDate);
+		Date usDate;
+		try {
+			usDate = sdf.parse(usDateStr);
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+		return usDate;
 	}
 
 	/**
