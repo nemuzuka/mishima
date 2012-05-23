@@ -21,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.commons.lang.time.DateUtils;
-
 /**
  * 現在日付、現在日時を取得するUtils.
  * ※本プロジェクトでは、本Utilsを使用して日付を取得することとします。
@@ -50,29 +48,18 @@ public class CurrentDateUtils {
 	 */
 	public Date getCurrentDate() {
 		//US時間を取得
-		Date date = new Date();
-		
-		//日本時間に設定
+		Date date = getCurrentDateTime();
+
+		//時間を切り捨て
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
 		String jpDateStr = sdf.format(date);
-		Date jpDate;
+		Date jpDate = null;
 		try {
 			jpDate = sdf.parse(jpDateStr);
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}
-		jpDate = DateUtils.truncate(jpDate, Calendar.DAY_OF_MONTH);
-		
-		//日本時間をUS時間に変更
-		sdf = new SimpleDateFormat("yyyyMMdd");
-		String usDateStr = sdf.format(jpDate);
-		Date usDate;
-		try {
-			usDate = sdf.parse(usDateStr);
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
-		return usDate;
+		return jpDate;
 	}
 
 	/**
@@ -81,7 +68,7 @@ public class CurrentDateUtils {
 	 * @return 現在日付
 	 */
 	public Date getCurrentDateTime() {
-		return new Date();
+		return Calendar.getInstance().getTime();
 	}
 
 	/**
