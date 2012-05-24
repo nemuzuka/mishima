@@ -28,11 +28,11 @@
             <a href="javascript:void(0)" id="dash_board_menu" title="あなたのTODOやプロジェクトのチケットを参照します">課題管理</a>
           </li>
           <li class="divider-vertical"></li>
-          <li class="" id="main_menu3">
-            <a href="javascript:void(0)" id="project_menu" title="プロジェクトに関する設定を行います">プロジェクト設定</a>
+          <li style="display:none" id="main_menu3">
+            <a style="display:none" href="javascript:void(0)" id="project_menu" title="プロジェクトに関する設定を行います">プロジェクト設定</a>
           </li>
-          <li class="" id="main_menu4">
-            <a href="javascript:void(0)" id="admin_menu" title="システムに関する設定を行います">システム管理</a>
+          <li style="display:none" id="main_menu4">
+            <a style="display:none" href="javascript:void(0)" id="admin_menu" title="システムに関する設定を行います">システム管理</a>
           </li>
 
           <li class="divider-vertical"></li>
@@ -108,18 +108,16 @@ $(function(){
 	}
 
 	//システムマネージャでなければ、各種管理は参照できない
-	if(systemManager == false) {
-		$("#admin_menu").hide();
+	if(systemManager == true) {
+		$("#main_menu4").show();
+		$("#admin_menu").show();
 	}
 
-	//プロジェクトを選択していなければ、プロジェクト設定は参照できない
-	if(selectedProject == "") {
-		$("#project_menu").hide();
-	}
-
-	//プロジェクト管理者でなければ、プロジェクト設定は参照できない
-	if(projectManager == false) {
-		$("#project_menu").hide();
+	//プロジェクト設定メニューの設定
+	if(selectedProject != "" && projectManager == true) {
+		//プロジェクトを選択しており、かつ、プロジェクト管理者であれば、プロジェクト設定は参照できる
+		$("#main_menu3").show();
+		$("#project_menu").show();
 	}
 
 });
