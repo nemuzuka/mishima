@@ -90,6 +90,11 @@ function getInitData() {
 //優先度登録・更新
 function execute() {
 	var params = createExecuteParams();
+	
+	if(validate(params) == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -130,4 +135,12 @@ function createExecuteParams() {
 	params["keyToString"] = $("#edit_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	return params;
+}
+
+//登録validate
+function validate(params) {
+	var v = new Validate();
+	v.addRules({value:params["priorityName"],option:'required',error_args:"優先度"});
+	v.addRules({value:params["priorityName"],option:'maxLength',error_args:"優先度", size:1024});
+	return v.execute();
 }

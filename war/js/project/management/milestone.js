@@ -232,6 +232,11 @@ function openEditDialog(keyToString) {
 //マイルストーン登録・更新
 function execute() {
 	var params = createExecuteParams();
+	
+	if(validate(params) == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -308,6 +313,18 @@ function createExecuteParams() {
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	return params;
 }
+
+//登録validate
+function validate(params) {
+	var v = new Validate();
+	v.addRules({value:params["milestoneName"],option:'required',error_args:"マイルストーン名"});
+	v.addRules({value:params["milestoneName"],option:'maxLength',error_args:"マイルストーン名", size:128});
+
+	v.addRules({value:params["startDate"],option:'date',error_args:"開始日"});
+	v.addRules({value:params["endDate"],option:'date',error_args:"開始日"});
+	return v.execute();
+}
+
 
 //再検索判断処理
 //一覧に表示されている場合、再検索する、と判断します。

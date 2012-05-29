@@ -61,6 +61,11 @@ function getInitData() {
 //カテゴリ登録・更新
 function execute() {
 	var params = createExecuteParams();
+	
+	if(validate(params) == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -101,4 +106,12 @@ function createExecuteParams() {
 	params["keyToString"] = $("#edit_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	return params;
+}
+
+//登録validate
+function validate(params) {
+	var v = new Validate();
+	v.addRules({value:params["categoryName"],option:'required',error_args:"カテゴリ"});
+	v.addRules({value:params["categoryName"],option:'maxLength',error_args:"カテゴリ", size:1024});
+	return v.execute();
 }

@@ -93,6 +93,11 @@ function getInitData() {
 //ステータス登録・更新
 function execute() {
 	var params = createExecuteParams();
+	
+	if(validate(params) == false) {
+		return;
+	}
+
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -134,4 +139,14 @@ function createExecuteParams() {
 	params["keyToString"] = $("#edit_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	return params;
+}
+
+//登録validate
+function validate(params) {
+	var v = new Validate();
+	v.addRules({value:params["statusName"],option:'required',error_args:"ステータス"});
+	v.addRules({value:params["statusName"],option:'maxLength',error_args:"ステータス", size:1024});
+
+	v.addRules({value:params["closeStatusName"],option:'maxLength',error_args:"完了とみなすステータス", size:1024});
+	return v.execute();
 }

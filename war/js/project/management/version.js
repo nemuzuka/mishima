@@ -61,6 +61,11 @@ function getInitData() {
 //バージョン登録・更新
 function execute() {
 	var params = createExecuteParams();
+	
+	if(validate(params) == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -101,4 +106,12 @@ function createExecuteParams() {
 	params["keyToString"] = $("#edit_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	return params;
+}
+
+//登録validate
+function validate(params) {
+	var v = new Validate();
+	v.addRules({value:params["versionName"],option:'required',error_args:"バージョン"});
+	v.addRules({value:params["versionName"],option:'maxLength',error_args:"バージョン", size:1024});
+	return v.execute();
 }
