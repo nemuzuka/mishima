@@ -89,6 +89,16 @@ function renderSearchInfo(data) {
 //Ticket検索
 function searchTicket() {
 	var params = createSearchTicketParams();
+	
+	//validate
+	var v = new Validate();
+	v.addRules({value:params["fromPeriod"],option:'date',error_args:"期限From"});
+	v.addRules({value:params["toPeriod"],option:'date',error_args:"期限To"});
+	v.addRules({value:params["no"],option:'number',error_args:"チケットNo"});
+	if(v.execute() == false) {
+		return;
+	}
+	
 	g_searchParams = params;
 	searchAndRender(params);
 }

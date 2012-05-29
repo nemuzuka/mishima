@@ -200,6 +200,11 @@ function openEditDialog(keyToString) {
 //メンバー登録・更新
 function execute() {
 	var params = createExecuteParams();
+	
+	if(validate(params) == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -284,6 +289,19 @@ function createExecuteParams() {
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	return params;
 }
+
+//登録validate
+function validate(params) {
+	var v = new Validate();
+	v.addRules({value:params["name"],option:'required',error_args:"ニックネーム"});
+	v.addRules({value:params["name"],option:'maxLength',error_args:"ニックネーム", size:64});
+
+	v.addRules({value:params["mail"],option:'required',error_args:"メールアドレス"});
+	v.addRules({value:params["mail"],option:'maxLength',error_args:"メールアドレス", size:256});
+
+	return v.execute();
+}
+
 
 //再検索判断処理
 //一覧に表示されている場合、再検索する、と判断します。

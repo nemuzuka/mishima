@@ -69,6 +69,15 @@ function renderSearchInfo(data) {
 //TODO検索
 function searchTodo() {
 	var params = createSearchTodoParams();
+	
+	//validate
+	var v = new Validate();
+	v.addRules({value:params["fromPeriod"],option:'date',error_args:"期限From"});
+	v.addRules({value:params["toPeriod"],option:'date',error_args:"期限To"});
+	if(v.execute() == false) {
+		return;
+	}
+	
 	g_searchParams = params;
 	searchAndRender(params);
 }

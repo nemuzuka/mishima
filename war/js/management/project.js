@@ -204,9 +204,14 @@ function openEditDialog(keyToString) {
 	);
 }
 
-//メンバー登録・更新
+//プロジェクト登録・更新
 function execute() {
 	var params = createExecuteParams();
+	
+	if(validate(params) == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -291,6 +296,19 @@ function createExecuteParams() {
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	return params;
 }
+
+//登録validate
+function validate(params) {
+	var v = new Validate();
+	v.addRules({value:params["projectName"],option:'required',error_args:"プロジェクト名"});
+	v.addRules({value:params["projectName"],option:'maxLength',error_args:"プロジェクト名", size:64});
+	v.addRules({value:params["projectId"],option:'required',error_args:"プロジェクト識別子"});
+	v.addRules({value:params["projectId"],option:'maxLength',error_args:"プロジェクト識別子", size:24});
+	v.addRules({value:params["projectSummary"],option:'maxLength',error_args:"プロジェクト概要", size:1024});
+
+	return v.execute();
+}
+
 
 //再検索判断処理
 //一覧に表示されている場合、再検索する、と判断します。

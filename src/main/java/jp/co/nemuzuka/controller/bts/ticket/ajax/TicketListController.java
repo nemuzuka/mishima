@@ -78,6 +78,7 @@ public class TicketListController extends JsonController {
 	 */
 	protected Validators validate() {
 		Validators v = new Validators(request);
+		v.add("no", v.longType());
 		v.add("fromPeriod", v.dateType("yyyyMMdd"));
 		v.add("toPeriod", v.dateType("yyyyMMdd"));
 		return v;

@@ -42,6 +42,7 @@
 <script type="text/javascript" src="/js/i18n/ui.datepicker-ja.js"></script>
 <script type="text/javascript" src="/js/dateformat.js"></script>
 <script type="text/javascript" src="/js/format-utils.js"></script>
+<script type="text/javascript" src="/js/validate-utils.js"></script>
 
 </head>
 <body>

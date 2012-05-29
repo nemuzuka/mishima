@@ -76,6 +76,14 @@ function updatePersonal() {
 	params["keyToString"] = $("#edit_person_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	
+	var v = new Validate();
+	v.addRules({value:params["name"],option:'required',error_args:"ニックネーム"});
+	v.addRules({value:params["name"],option:'maxLength',error_args:"ニックネーム", size:64});
+	v.addRules({value:params["memo"],option:'maxLength',error_args:"メモ", size:1024});
+	if(v.execute() == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({

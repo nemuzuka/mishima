@@ -161,6 +161,14 @@ function executeTicketComment() {
 	params["keyToString"] = $("#edit_ticket_comment_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	
+	//validateチェック
+	var v = new Validate();
+	v.addRules({value:params["comment"],option:'required',error_args:"コメント"});
+	v.addRules({value:params["comment"],option:'maxLength',error_args:"コメント", size:1024});
+	if(v.execute() == false) {
+		return;
+	}
+
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -261,6 +269,11 @@ function changeTicketStatus() {
 //Ticket登録・更新
 function executeTicket() {
 	var params = createExecuteTicketParams();
+	
+	if(ticketValidate(params) == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -331,6 +344,21 @@ function createExecuteTicketParams() {
 	return params;
 }
 
+//Ticket登録validate
+function ticketValidate(params) {
+	var v = new Validate();
+	v.addRules({value:params["title"],option:'required',error_args:"件名"});
+	v.addRules({value:params["title"],option:'maxLength',error_args:"件名", size:128});
+
+	v.addRules({value:params["content"],option:'maxLength',error_args:"内容", size:1024});
+	v.addRules({value:params["endCondition"],option:'maxLength',error_args:"終了条件", size:1024});
+
+	v.addRules({value:params["startDate"],option:'date',error_args:"開始日"});
+	v.addRules({value:params["period"],option:'date',error_args:"期限"});
+
+	v.addRules({value:params["parentKey"],option:'number',error_args:"親チケットNo"});
+	return v.execute();
+}
 
 /** 
  * ticketダイアログオープン.
@@ -795,6 +823,18 @@ function deleteTicketComment(keyToString, versionNo) {
 
 //Ticketに紐付くファイル添付(validation)
 function executeTicketFileUploadCheck() {
+
+	var comment = $("#ticket_upload_file_comment").val();
+	var file = $("#ticket_upload_file").val();
+
+	//validate
+	var v = new Validate();
+	v.addRules({value:file,option:'required',error_args:"ファイル"});
+	v.addRules({value:comment,option:'maxLength',error_args:"コメント", size:1024});
+	if(v.execute() == false) {
+		return;
+	}
+	
 	viewLoadingMsg();
 	$("#fileUploadForm").attr({"action":"/bts/ticket/uploadCheck"});
 	$("#fileUploadForm")[0].submit(function () {

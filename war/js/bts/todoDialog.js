@@ -92,6 +92,14 @@ function executeTodoComment() {
 	params["keyToString"] = $("#edit_todo_comment_keyToString").val();
 	params["jp.co.nemuzuka.token"] = $("#token").val();
 	
+	//validateチェック
+	var v = new Validate();
+	v.addRules({value:params["comment"],option:'required',error_args:"コメント"});
+	v.addRules({value:params["comment"],option:'maxLength',error_args:"コメント", size:1024});
+	if(v.execute() == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -191,6 +199,11 @@ function changeTodoStatus() {
 //TODO登録・更新
 function executeTodo() {
 	var params = createExecuteTodoParams();
+	
+	if(todoValidate(params) == false) {
+		return;
+	}
+	
 	setAjaxDefault();
 	var task;
 	task = $.ajax({
@@ -246,6 +259,15 @@ function createExecuteTodoParams() {
 	return params;
 }
 
+//TODO登録validate
+function todoValidate(params) {
+	var v = new Validate();
+	v.addRules({value:params["title"],option:'required',error_args:"件名"});
+	v.addRules({value:params["title"],option:'maxLength',error_args:"件名", size:128});
+	v.addRules({value:params["period"],option:'date',error_args:"期限"});
+	v.addRules({value:params["content"],option:'maxLength',error_args:"内容", size:1024});
+	return v.execute();
+}
 
 //TODOダイアログオープン
 function openEditTodoDialog(key) {
