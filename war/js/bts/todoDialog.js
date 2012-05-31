@@ -330,6 +330,10 @@ function openEditTodoDialog(key) {
 			$("#edit_todo_versionNo").val(form.versionNo);
 			$("#edit_todo_keyToString").val(form.keyToString);
 			
+			//suggest情報を設定
+			new Suggest.LocalMulti("edit_todo_tag", "suggest", form.tagList, 
+					{dispAllKey: true, prefix:true, delim:","});
+			
 			prependDummyText("todoDialog");
 			$("#todoDialog").dialog("open");
 			removeDummyText("todoDialog");

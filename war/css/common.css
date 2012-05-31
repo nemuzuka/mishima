@@ -293,3 +293,25 @@ div.ganttview-block-container .milestone {
 	/* Proposed W3C Markup */ 
 	background-image: linear-gradient(top right, #FFFFFF 0%, #90EE90 100%);
 }
+
+/* suggestのスタイル */
+#suggest {
+    position: absolute;
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCFF;
+    font-size: 90%;
+    width: 200px;
+}
+#suggest div {
+    display: block;
+    width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#suggest div.select{ /* キー上下で選択した場合のスタイル */
+    color: #FFFFFF;
+    background-color: #3366FF;
+}
+#suggest div.over{ /* マウスオーバ時のスタイル */
+    background-color: #99CCFF;
+}

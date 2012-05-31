@@ -28,7 +28,7 @@
 
 <link href="/css/docs.css" rel="stylesheet">
 <link href="/css/jquery-ui-1.8.18.custom.css" rel="stylesheet">
-<link href="/css/common.css" rel="stylesheet">
+<link href="/css/common.css?version=1.1" rel="stylesheet">
 
 <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>

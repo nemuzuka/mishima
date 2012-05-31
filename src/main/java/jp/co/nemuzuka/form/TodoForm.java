@@ -74,10 +74,10 @@ public class TodoForm implements Serializable {
 	 * ユーザが登録したTODOタグListを全て返却します。
 	 * @return 登録済みTODOタグList
 	 */
-	public List<LabelValueBean> getTagList() {
-		List<LabelValueBean> list = new ArrayList<LabelValueBean>();
+	public List<String> getTagList() {
+		List<String> list = new ArrayList<String>();
 		for(TodoTagModel target : tagList) {
-			list.add(new LabelValueBean(target.getTagName(), target.getKeyToString()));
+			list.add(target.getTagName());
 		}
 		return list;
 	}

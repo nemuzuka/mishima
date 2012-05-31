@@ -360,9 +360,32 @@ public class TodoServiceImpl implements TodoService {
 		}
 		model.setStatus(status);
 		model.setTitle(form.title);
-		model.setTag(form.tag);
+		model.setTag(reCreateTag(form.tag));
 		model.setContent(new Text(StringUtils.defaultString(form.content)));
 		model.setPeriod(ConvertUtils.toDate(form.period, sdf));
 		model.setVersion(ConvertUtils.toLong(form.versionNo));
+	}
+
+	/**
+	 * Tag情報再設定.
+	 * 引数のTag情報を成型します。
+	 * @param tag Tag情報
+	 * @return 成型後Tag
+	 */
+	private String reCreateTag(String tag) {
+		
+		if(StringUtils.isEmpty(tag)) {
+			return "";
+		}
+		
+		String[] array = ConvertUtils.toStringArray(tag, ",");
+		StringBuilder sb = new StringBuilder();
+		for(String target : array) {
+			if(sb.length() != 0) {
+				sb.append(",");
+			}
+			sb.append(target);
+		}
+		return sb.toString();
 	}
 }

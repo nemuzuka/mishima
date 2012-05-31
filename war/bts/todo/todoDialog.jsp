@@ -12,6 +12,7 @@
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 
 <script type="text/javascript" src="/js/bts/todoDialog.js?version=1.1"></script>
+<script type="text/javascript" src="/js/suggest.js"></script>
 
 <%-- TODOダイアログ --%>
 <div id="todoDialog" title="TODO" class="dialog-widget">
@@ -35,6 +36,7 @@
 		<label class="control-label" for="edit_todo_tag">タグ</label>
 		<div class="controls">
 			<input type="text" class="input-xxlarge" id="edit_todo_tag">
+			<div id="suggest" style="display:none;"></div>
 		</div>
 	</div>
 
