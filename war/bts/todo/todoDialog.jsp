@@ -11,7 +11,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 
-<script type="text/javascript" src="/js/bts/todoDialog.js"></script>
+<script type="text/javascript" src="/js/bts/todoDialog.js?version=1.1"></script>
 
 <%-- TODOダイアログ --%>
 <div id="todoDialog" title="TODO" class="dialog-widget">
@@ -28,6 +28,13 @@
 		<label class="control-label" for="edit_todo_title">件名</label>
 		<div class="controls">
 			<input type="text" class="input-xxlarge required-input" id="edit_todo_title">
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="edit_todo_tag">タグ</label>
+		<div class="controls">
+			<input type="text" class="input-xxlarge" id="edit_todo_tag">
 		</div>
 	</div>
 
@@ -94,6 +101,8 @@
 				<dd><select id="detail_todo_status"></select></dd>
 				<dt>件名</dt>
 				<dd><div id="detail_todo_title"></div></dd>
+				<dt>タグ</dt>
+				<dd><div id="detail_todo_tag"></div></dd>
 				<dt>期限</dt>
 				<dd><div id="detail_todo_period"></div></dd>
 				<dt>内容</dt>

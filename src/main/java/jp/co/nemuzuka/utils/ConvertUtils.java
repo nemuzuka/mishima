@@ -191,13 +191,45 @@ public class ConvertUtils {
 		name = name.replaceAll("\r\n", "\n");
 		name = name.replaceAll("\r", "\n");
 		String[] names = name.split("\n");
+		return createTrimStrArray(names);
+	}
+
+	/**
+	 * String→String配列変換.
+	 * 分割文字列を元に、String配列に変換します。
+	 * 空文字の場合、戻り値の文字列列配列には含みません。
+	 * @param s 変換元
+	 * @param splitStr 分割文字列
+	 * @return 変換後文字列配列
+	 */
+	public static String[] toStringArray(String s, String splitStr) {
+		
+		String target = s;
+		if(target == null) {
+			target = "";
+		}
+		String[] array = target.split(splitStr);
+		return createTrimStrArray(array);
+	}
+
+	/**
+	 * String配列再作成.
+	 * ・全て半角SPの文字
+	 * ・空文字
+	 * ・重複文字
+	 * は除外してString配列を作成します。
+	 * @param array 作成元String配列
+	 * @return 作成String配列
+	 */
+	private static String[] createTrimStrArray(String[] array) {
 		Set<String> strSet = new LinkedHashSet<String>();
 		
-		for(String value : names) {
-			if(StringUtils.isEmpty(value)) {
+		for(String value : array) {
+			String target = StringUtils.trimToEmpty(value);
+			if(StringUtils.isEmpty(target)) {
 				continue;
 			}
-			strSet.add(value);
+			strSet.add(target);
 		}
 		return strSet.toArray(new String[0]);
 	}

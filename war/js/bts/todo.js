@@ -58,6 +58,11 @@ function renderSearchInfo(data) {
 	});
 	$("#status_area").append($statusDiv);
 	
+	$("#search_tag").empty();
+	$.each(form.tagList, function(){
+		$("#search_tag").append($("<option />").attr({value:this.value}).text(this.label));
+	});
+	
 	$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
 	$("#search_fromPeriod").datepicker();
 	$("#search_toPeriod").datepicker();
@@ -127,6 +132,7 @@ function render(data) {
 	var $thead = $("<thead />").append($("<tr />")
 				.append($("<th />").text("ステータス").attr({width:"80px"}))
 				.append($("<th />").text("件名"))
+				.append($("<th />").text("タグ"))
 				.append($("<th />").text("期限").attr({width:"100px"}))
 				.append($("<th />").text("").attr({width:"50px"}))
 			);
@@ -142,6 +148,7 @@ function render(data) {
 		var createdAt = this.createdAt;
 		var periodStatusLabel = this.periodStatusLabel;
 		var periodStatusCode = this.periodStatusCode;
+		var tag = this.tag;
 
 		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
 		$delBtn.click(function(){
@@ -168,6 +175,7 @@ function render(data) {
 		var $tr = $("<tr />");
 		$tr.append($("<td />").append($statusDiv))
 			.append($("<td />").append($a))
+			.append($("<td />").text(tag))
 			.append($("<td />").text(formatDateyyyyMMdd(period)))
 			.append($("<td />").append($delBtn));
 		$tbody.append($tr)
@@ -204,6 +212,7 @@ function reSearchAndRender() {
 function createSearchTodoParams() {
 	var params = {};
 	params["title"] = $("#search_title").val();
+	params["tag"] = $("#search_tag").val();
 	params["fromPeriod"] = unFormatDate($("#search_fromPeriod").val());
 	params["toPeriod"] = unFormatDate($("#search_toPeriod").val());
 	params["status"] = new Array();

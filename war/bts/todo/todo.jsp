@@ -19,7 +19,7 @@
   
 <c:param name="content">
 
-<script type="text/javascript" src="/js/bts/todo.js"></script>
+<script type="text/javascript" src="/js/bts/todo.js?version=1.1"></script>
 
 <div class="widget">
 <form class="form-horizontal">
@@ -34,6 +34,10 @@
 	<tr>
 		<th>件名</th>
 		<td><input type="text" id="search_title" class="input-xlarge" /></td>
+	</tr>
+	<tr>
+		<th>タグ</th>
+		<td><select id="search_tag"></select></td>
 	</tr>
 	<tr>
 		<th>期限</th>

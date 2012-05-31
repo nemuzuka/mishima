@@ -49,6 +49,12 @@ public class TodoModel extends AbsModel {
 	/** 件名. */
 	private String title;
 	
+	/** 
+	 * タグ.
+	 * 入力値そのまま設定
+	 */
+	private String tag;
+	
 	/** 内容. */
 	@Attribute(unindexed=true)
 	private Text content;
@@ -111,7 +117,14 @@ public class TodoModel extends AbsModel {
 	public Date getCreatedAt() {
 		return createdAt;
 	}
-	
+	/**
+	 * @return the tag
+	 */
+	@JSONHint(ignore=true)
+	public String getTag() {
+		return tag;
+	}
+
 	/**
 	 * @param key the key to set
 	 */
@@ -160,5 +173,12 @@ public class TodoModel extends AbsModel {
 	 */
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	/**
+	 * @param tag the tag to set
+	 */
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 }

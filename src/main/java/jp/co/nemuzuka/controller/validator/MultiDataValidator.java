@@ -33,22 +33,36 @@ public class MultiDataValidator extends AbstractValidator {
      */
     protected int maxlength;
 
+    /** 分割文字列. */
+    protected String splitStr = null;
+    
 	/**
 	 * コンストラクタ.
-	 * @param maxlength 1要素の文字数
+	 * @param maxlength 1要素の最大文字数
 	 */
 	public MultiDataValidator(int maxlength) {
-        this(maxlength, null);
+        this(maxlength, null, null);
 	}
-	
+
+	/**
+	 * コンストラクタ.
+	 * @param maxlength 1要素の最大文字数
+	 * @param splitStr 分割文字列
+	 */
+	public MultiDataValidator(int maxlength, String splitStr) {
+        this(maxlength, splitStr, null);
+	}
+
 	/**
      * コンストラクタ.
-     * 
+     * @param maxlength 1要素の最大文字数
+     * @param splitStr 分割文字列
      * @param message the error messsage
      */
-    public MultiDataValidator(int maxlength, String message) {
+    public MultiDataValidator(int maxlength, String splitStr, String message) {
         super(message);
         this.maxlength = maxlength;
+        this.splitStr = splitStr;
     }
 	
 	/* (non-Javadoc)
@@ -62,7 +76,12 @@ public class MultiDataValidator extends AbstractValidator {
         }
         try {
             String s = (String) value;
-            String[] array = ConvertUtils.toStringArray(s);
+            String[] array = null;
+            if(splitStr == null) {
+            	array = ConvertUtils.toStringArray(s);
+            } else {
+            	array = ConvertUtils.toStringArray(s, splitStr);
+            }
             boolean isError = false;
             for(String target : array) {
             	if(target.length() > maxlength) {

@@ -211,6 +211,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		actual.keyToString = null;
 		actual.todoStatus = TodoStatus.finish.getCode();
 		actual.title = "新規登録タイトル";
+		actual.tag = "ほげ,ひげ,  はげ ,,さ る";
 		actual.content = "詳細情報";
 		actual.period = "20150101";
 		
@@ -230,6 +231,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(actual.getKeyToString(), is(keyToString));
 		assertThat(actual.getTodoStatus(), is(TodoStatus.finish.getCode()));
 		assertThat(actual.getTitle(), is("新規登録タイトル"));
+		assertThat(actual.getTag(), is("ほげ,ひげ,  はげ ,,さ る"));
 		assertThat(actual.getContent(), is("詳細情報"));
 		assertThat(actual.getPeriod(), is("20150101"));
 		assertThat(actual.getVersionNo(), is("1"));
@@ -237,6 +239,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		//更新
 		actual.todoStatus = "4989";
 		actual.title = "新規登録タイトル1";
+		actual.tag = "";
 		actual.content = "詳細情報2";
 		actual.period = "20150103";
 		
@@ -248,6 +251,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(actual.getKeyToString(), is(keyToString));
 		assertThat(actual.getTodoStatus(), is(TodoStatus.nothing.getCode()));
 		assertThat(actual.getTitle(), is("新規登録タイトル1"));
+		assertThat(actual.getTag(), is(""));
 		assertThat(actual.getContent(), is("詳細情報2"));
 		assertThat(actual.getPeriod(), is("20150103"));
 		assertThat(actual.getVersionNo(), is("2"));

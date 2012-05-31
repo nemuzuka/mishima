@@ -251,6 +251,7 @@ function createExecuteTodoParams() {
 	var params = {};
 	params["todoStatus"] = $("#edit_todo_status").val();
 	params["title"] = $("#edit_todo_title").val();
+	params["tag"] = $("#edit_todo_tag").val();
 	params["content"] = $("#edit_todo_content").val();
 	params["period"] = unFormatDate($("#edit_todo_period").val());
 	params["versionNo"] = $("#edit_todo_versionNo").val();
@@ -264,6 +265,7 @@ function todoValidate(params) {
 	var v = new Validate();
 	v.addRules({value:params["title"],option:'required',error_args:"件名"});
 	v.addRules({value:params["title"],option:'maxLength',error_args:"件名", size:128});
+	v.addRules({value:params["tag"],option:'maxLength',error_args:"タグ", size:500});
 	v.addRules({value:params["period"],option:'date',error_args:"期限"});
 	v.addRules({value:params["content"],option:'maxLength',error_args:"内容", size:1024});
 	return v.execute();
@@ -321,6 +323,7 @@ function openEditTodoDialog(key) {
 			$("#edit_todo_status").val(form.todoStatus);
 
 			$("#edit_todo_title").val(form.title);
+			$("#edit_todo_tag").val(form.tag);
 			$("#edit_todo_content").val(form.content);
 			$("#edit_todo_period").val(formatDateyyyyMMdd(form.period));
 
@@ -383,6 +386,7 @@ function openDetailTodoDialog(key, onlyRefresh) {
 			$("#detail_todo_status").val(form.todoStatus);
 
 			$("#detail_todo_title").text(form.title);
+			$("#detail_todo_tag").text(defaultString4Init(form.tag, "　"));
 			$("#detail_todo_content").html(defaultString4Init(data.result.contentView, "　"));
 			$("#detail_todo_period").text(defaultString4Init(formatDateyyyyMMdd(form.period), "　"));
 

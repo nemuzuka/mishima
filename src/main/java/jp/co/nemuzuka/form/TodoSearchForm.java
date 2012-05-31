@@ -23,6 +23,7 @@ import java.util.List;
 import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
 import jp.co.nemuzuka.dao.TodoDao;
+import jp.co.nemuzuka.model.TodoTagModel;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
@@ -44,6 +45,9 @@ public class TodoSearchForm implements Serializable {
 	/** 件名. */
 	public String title;
 
+	/** タグ. */
+	public String tag;
+	
 	/** 期限From. */
 	public String fromPeriod;
 	
@@ -58,6 +62,23 @@ public class TodoSearchForm implements Serializable {
 		TodoStatus[] statusList = TodoStatus.values();
 		for(TodoStatus target : statusList) {
 			list.add(new LabelValueBean(target.getLabel(), target.getCode()));
+		}
+		return list;
+	}
+	
+	/** TODOタグList. */
+	private List<TodoTagModel> tagList;
+	
+	/**
+	 * 登録済みTODOタグList取得
+	 * ユーザが登録したTODOタグListを全て返却します。
+	 * @return 登録済みTODOタグList
+	 */
+	public List<LabelValueBean> getTagList() {
+		List<LabelValueBean> list = new ArrayList<LabelValueBean>();
+		list.add(new LabelValueBean("", ""));
+		for(TodoTagModel target : tagList) {
+			list.add(new LabelValueBean(target.getTagName(), target.getTagName()));
 		}
 		return list;
 	}
@@ -119,6 +140,27 @@ public class TodoSearchForm implements Serializable {
 	}
 	
 	/**
+	 * @param tagList the tagList to set
+	 */
+	public void setTagList(List<TodoTagModel> tagList) {
+		this.tagList = tagList;
+	}
+
+	/**
+	 * @return the tag
+	 */
+	public String getTag() {
+		return tag;
+	}
+
+	/**
+	 * @param tag the tag to set
+	 */
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	/**
 	 * 検索条件作成.
 	 * @param email ログインユーザのemailアドレス
 	 * @param memberService MemberServiceインスタンス
@@ -129,6 +171,7 @@ public class TodoSearchForm implements Serializable {
 		TodoDao.Param param = new TodoDao.Param();
 		param.status = status;
 		param.title = title;
+		param.tag = tag;
 		param.fromPeriod = ConvertUtils.toDate(fromPeriod, sdf);
 		param.toPeriod = ConvertUtils.toDate(toPeriod, sdf);
 		String memberKeyString = memberService.getKeyString(email);

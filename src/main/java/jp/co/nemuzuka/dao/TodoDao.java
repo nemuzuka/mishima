@@ -26,6 +26,7 @@ import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.meta.TodoModelMeta;
 import jp.co.nemuzuka.model.TodoModel;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
+import jp.co.nemuzuka.utils.TagStringUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.slim3.datastore.Datastore;
@@ -114,6 +115,16 @@ public class TodoDao extends AbsDao {
 			filterSet.add(e.title.startsWith(param.title));
 		}
 		
+		boolean tagSearch = false;
+		String searchTagName = "";
+		//タグの検索条件
+		if(StringUtils.isNotEmpty(param.tag)) {
+			//ひとまず文字列の中間一致とする
+			filterSet.add(e.tag.contains(param.tag));
+			tagSearch = true;
+			searchTagName = param.tag;
+		}
+		
 		//期限Fromの検索条件
 		if(param.fromPeriod != null) {
 			filterSet.add(e.period.isNotNull());
@@ -147,6 +158,19 @@ public class TodoDao extends AbsDao {
 				.sortInMemory(sortSet.toArray(new InMemorySortCriterion[0]));
 		
 		List<TodoModel> retList =  query.asList();
+		
+		//検索条件にtagが指定されている場合、該当レコードのtagを分解し、完全一致のものだけ戻り値とする
+		//Datastoreへの問い合わせは、中間一致なので、設定値によっては、余計なものが取得される可能性がある為
+		if(tagSearch) {
+			List<TodoModel> list = new ArrayList<TodoModel>();
+			for(TodoModel target : retList) {
+				if(TagStringUtils.matchTag(target.getTag(), searchTagName)) {
+					list.add(target);
+				}
+			}
+			retList = list;
+		}
+		
 		if(param.limit != null) {
 			
 			int toIndex = param.limit;
@@ -158,7 +182,6 @@ public class TodoDao extends AbsDao {
 			return retList.subList(0, toIndex);
 		}
 		return retList;
-		
 	}
 	
 	/**
@@ -249,6 +272,8 @@ public class TodoDao extends AbsDao {
 		public String[] status;
 		/** 件名. */
 		public String title;
+		/** タグ. */
+		public String tag;
 		/** 期限From. */
 		public Date fromPeriod;
 		/** 期限To. */

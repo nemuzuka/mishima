@@ -102,6 +102,16 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 		assertThat(actualList.get(0).getKey(), is(todoKeyList.get(0)));
 		assertThat(actualList.get(1).getKey(), is(todoKeyList.get(2)));
 		
+		
+		//タグ名指定
+		param = new TodoDao.Param();
+		memberKeyString = memberService.getKeyString("hoge@hige.hage");
+		param.targetMemberKeyString = memberKeyString;
+		param.tag = "名";
+		actualList = todoDao.getList(param);
+		assertThat(actualList.size(), is(1));
+		assertThat(actualList.get(0).getKey(), is(todoKeyList.get(1)));
+		
 		//期限From指定
 		param = new TodoDao.Param();
 		memberKeyString = memberService.getKeyString("hoge@hige.hage");
@@ -259,6 +269,14 @@ public class TodoDaoTest extends AppEngineTestCase4HRD {
 				model.setTitle("Like用件名" + i);
 			} else {
 				model.setTitle("件名1" + i);
+			}
+			
+			if(i == 0) {
+				model.setTag("タグ名");
+			} else if(i == 1) {
+				model.setTag("名");
+			} else {
+				model.setTag(",さる名");
 			}
 			
 			model.setContent(new Text("詳細" + i));

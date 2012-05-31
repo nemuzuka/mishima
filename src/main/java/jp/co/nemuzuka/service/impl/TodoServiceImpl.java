@@ -19,7 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.slim3.datastore.Datastore;
@@ -39,6 +41,7 @@ import jp.co.nemuzuka.model.TodoModel;
 import jp.co.nemuzuka.service.CommentService;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.TodoService;
+import jp.co.nemuzuka.service.TodoTagService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 import jp.co.nemuzuka.utils.DateTimeUtils;
@@ -52,6 +55,7 @@ public class TodoServiceImpl implements TodoService {
 	TodoDao todoDao = TodoDao.getInstance();
 	CommentService commentService = CommentServiceImpl.getInstance();
 	MemberService memberService = MemberServiceImpl.getInstance();
+	TodoTagService todoTagService = TodoTagServiceImpl.getInstance();
 	
 	private static TodoServiceImpl impl = new TodoServiceImpl();
 	
@@ -116,6 +120,8 @@ public class TodoServiceImpl implements TodoService {
 			TodoModel model = todoDao.getWithMemberKey(key, memberKey);
 			setForm(form, model);
 		}
+		//TODOタグ一覧を設定
+		form.setTagList(todoTagService.getList(mail));
 		return form;
 	}
 
@@ -188,6 +194,37 @@ public class TodoServiceImpl implements TodoService {
 		//取得した情報に対してプロパティを更新
 		setModel(model, form);
 		todoDao.put(model);
+		
+		//登録されたTODOタグをマスタ登録
+		putTodoTag(form.tag, mail);
+	}
+
+	/**
+	 * TODOタグ登録.
+	 * 引数の情報を元に、TODOタグを登録します。
+	 * @param tag 入力タグ値(カンマ区切りで複数登録)
+	 * @param mail メールアドレス
+	 */
+	private void putTodoTag(String tag, String mail) {
+		
+		if(StringUtils.isEmpty(tag)) {
+			return;
+		}
+		
+		String[] tags = tag.split(",");
+		Set<String> tagSet = new LinkedHashSet<String>();
+		for(String target : tags) {
+			String tagName = StringUtils.trimToEmpty(target);
+			if(StringUtils.isEmpty(tagName)) {
+				continue;
+			}
+			tagSet.add(tagName);
+		}
+		
+		if(tagSet.size() == 0) {
+			return;
+		}
+		todoTagService.put(tagSet.toArray(new String[0]), mail);
 	}
 
 	/* (non-Javadoc)
@@ -303,6 +340,7 @@ public class TodoServiceImpl implements TodoService {
 		form.keyToString = model.getKeyToString();
 		form.todoStatus = model.getStatus().getCode();
 		form.title = model.getTitle();
+		form.tag = StringUtils.defaultString(model.getTag());
 		form.content = model.getContent().getValue();
 		form.period = ConvertUtils.toString(model.getPeriod(), sdf);
 		form.versionNo = ConvertUtils.toString(model.getVersion());
@@ -322,6 +360,7 @@ public class TodoServiceImpl implements TodoService {
 		}
 		model.setStatus(status);
 		model.setTitle(form.title);
+		model.setTag(form.tag);
 		model.setContent(new Text(StringUtils.defaultString(form.content)));
 		model.setPeriod(ConvertUtils.toDate(form.period, sdf));
 		model.setVersion(ConvertUtils.toLong(form.versionNo));

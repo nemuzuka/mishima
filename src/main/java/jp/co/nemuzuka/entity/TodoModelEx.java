@@ -15,6 +15,8 @@
  */
 package jp.co.nemuzuka.entity;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.arnx.jsonic.JSONHint;
 import jp.co.nemuzuka.common.PeriodStatus;
 import jp.co.nemuzuka.model.TodoModel;
@@ -62,6 +64,13 @@ public class TodoModelEx {
 		return "";
 	}
 
+	/**
+	 * @return タグ文字列取得
+	 */
+	public String getTag() {
+		return StringUtils.defaultString(model.getTag());
+	}
+	
 	/**
 	 * @return the todoStatus
 	 */

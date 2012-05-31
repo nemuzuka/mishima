@@ -19,6 +19,8 @@ import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.core.controller.JsonController;
 import jp.co.nemuzuka.core.entity.JsonResult;
 import jp.co.nemuzuka.form.TodoSearchForm;
+import jp.co.nemuzuka.service.TodoTagService;
+import jp.co.nemuzuka.service.impl.TodoTagServiceImpl;
 
 /**
  * TODO検索条件取得Controller.
@@ -26,6 +28,8 @@ import jp.co.nemuzuka.form.TodoSearchForm;
  */
 public class TodoSearchInfoController extends JsonController {
 
+	private TodoTagService todoTagService = TodoTagServiceImpl.getInstance();
+	
 	/* (非 Javadoc)
 	 * @see jp.co.nemuzuka.core.controller.JsonController#execute()
 	 */
@@ -35,6 +39,7 @@ public class TodoSearchInfoController extends JsonController {
 		JsonResult result = new JsonResult();
 		TodoSearchForm form = new TodoSearchForm();
 		form.status = new String[]{TodoStatus.NO_FINISH};
+		form.setTagList(todoTagService.getList(userService.getCurrentUser().getEmail()));
 		result.setResult(form);
 		return result;
 	}

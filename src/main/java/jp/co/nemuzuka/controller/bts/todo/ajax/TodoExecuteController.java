@@ -15,6 +15,7 @@
  */
 package jp.co.nemuzuka.controller.bts.todo.ajax;
 
+import jp.co.nemuzuka.controller.validator.MultiDataValidator;
 import jp.co.nemuzuka.core.annotation.ActionForm;
 import jp.co.nemuzuka.core.annotation.TokenCheck;
 import jp.co.nemuzuka.core.annotation.Validation;
@@ -63,6 +64,7 @@ public class TodoExecuteController extends JsonController {
 		Validators v = new Validators(request);
 		v.add("todoStatus", v.required());
 		v.add("title", v.required(), v.maxlength(128));
+		v.add("tag", v.maxlength(500),new MultiDataValidator(128, ","));
 		v.add("content", v.maxlength(1024));
 		v.add("period", v.dateType("yyyyMMdd"));
 		return v;

@@ -21,6 +21,7 @@ import java.util.List;
 
 import jp.co.nemuzuka.common.TodoStatus;
 import jp.co.nemuzuka.core.entity.LabelValueBean;
+import jp.co.nemuzuka.model.TodoTagModel;
 
 /**
  * TODO登録・更新Form
@@ -42,6 +43,9 @@ public class TodoForm implements Serializable {
 	/** 件名. */
 	public String title;
 	
+	/** タグ. */
+	public String tag;
+	
 	/** 内容. */
 	public String content;
 	
@@ -58,6 +62,22 @@ public class TodoForm implements Serializable {
 		TodoStatus[] statusList = TodoStatus.values();
 		for(TodoStatus target : statusList) {
 			list.add(new LabelValueBean(target.getLabel(), target.getCode()));
+		}
+		return list;
+	}
+	
+	/** TODOタグList. */
+	private List<TodoTagModel> tagList;
+	
+	/**
+	 * 登録済みTODOタグList取得
+	 * ユーザが登録したTODOタグListを全て返却します。
+	 * @return 登録済みTODOタグList
+	 */
+	public List<LabelValueBean> getTagList() {
+		List<LabelValueBean> list = new ArrayList<LabelValueBean>();
+		for(TodoTagModel target : tagList) {
+			list.add(new LabelValueBean(target.getTagName(), target.getKeyToString()));
 		}
 		return list;
 	}
@@ -145,5 +165,26 @@ public class TodoForm implements Serializable {
 	 */
 	public void setVersionNo(String versionNo) {
 		this.versionNo = versionNo;
+	}
+
+	/**
+	 * @return the tag
+	 */
+	public String getTag() {
+		return tag;
+	}
+
+	/**
+	 * @param tag the tag to set
+	 */
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	/**
+	 * @param tagList the tagList to set
+	 */
+	public void setTagList(List<TodoTagModel> tagList) {
+		this.tagList = tagList;
 	}
 }
