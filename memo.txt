@@ -12,6 +12,8 @@ githubから取込→ワークスペース反映
 リモート→fetch
 Pull
 
+githubにタグ打ち
+git tag -a 0.1 -m "Some Message for this tag."
 
 trial版へのモジュールアップロード
 jp.co.nemuzuka.trial.modeをtrueに！
