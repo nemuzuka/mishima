@@ -14,6 +14,8 @@ Pull
 
 githubにタグ打ち
 git tag -a 0.1 -m "Some Message for this tag."
+git push --tags
+
 
 trial版へのモジュールアップロード
 jp.co.nemuzuka.trial.modeをtrueに！
