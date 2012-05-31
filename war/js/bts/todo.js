@@ -12,6 +12,24 @@ $(function(){
 		unBlockLoadingMsg();
 	});
 	
+	$("#todoTagDetailDialog").dialog({
+		modal:true,
+		autoOpen:false,
+		width:750,
+		resizable:false,
+		open:function(event) {
+			openModalDialog();
+		},
+		close:function(event) {
+			closeModelDialog();
+		},
+		show: 'clip',
+        hide: 'clip'
+	});
+	$("#todoTagDetailDialog-cancel").click(function(){
+		$("#todoTagDetailDialog").dialog("close");
+	});
+	
 	initTodoDialog();
 	
 	$("#searchTodoBtn").click(function(){
@@ -21,6 +39,10 @@ $(function(){
 	$("#addTodoBtn").click(function(){
 		openEditTodoDialog("");
 	});
+	
+	$("#adminTagBtn").click(function(){
+		openTodoTagDetailDialog();
+	})
 	
 	initTodo();
 });
@@ -132,8 +154,8 @@ function render(data) {
 	var $thead = $("<thead />").append($("<tr />")
 				.append($("<th />").text("ステータス").attr({width:"80px"}))
 				.append($("<th />").text("件名"))
-				.append($("<th />").text("タグ"))
 				.append($("<th />").text("期限").attr({width:"100px"}))
+				.append($("<th />").text("タグ"))
 				.append($("<th />").text("").attr({width:"50px"}))
 			);
 	$table.append($thead);
@@ -175,8 +197,8 @@ function render(data) {
 		var $tr = $("<tr />");
 		$tr.append($("<td />").append($statusDiv))
 			.append($("<td />").append($a))
-			.append($("<td />").text(tag))
 			.append($("<td />").text(formatDateyyyyMMdd(period)))
+			.append($("<td />").text(tag))
 			.append($("<td />").append($delBtn));
 		$tbody.append($tr)
 	});
@@ -254,4 +276,104 @@ function deleteTodo(name, keyToString, version) {
 			return reSearchAndRender();
 		}
 	);
+}
+
+//TODOタグ管理ダイアログオープン
+function openTodoTagDetailDialog(isOpen) {
+	
+	var open = isOpen;
+	if(open == undefined) {
+		open = true;
+	}
+
+	setAjaxDefault();
+	var task;
+	task = $.ajax({
+		type: "POST",
+		url: "/bts/todo/ajax/todoTagList"
+	});
+	
+	//後処理の登録
+	//
+	task.pipe(
+		function(data) {
+			//共通エラーチェック
+			if(errorCheck(data) == false) {
+				return;
+			}
+			renderTodoTagList(data);
+			if(open == true) {
+				prependDummyText("todoTagDetailDialog");
+				$("#todoTagDetailDialog").dialog("open");
+				removeDummyText("todoTagDetailDialog");
+			}
+		}
+	);
+}
+
+//TODOタグ管理ダイアログ描画
+function renderTodoTagList(data) {
+
+	//tokenの設定
+	$("#token").val(data.token);
+	$("#todo_tag_list").empty();
+
+	var list = data.result;
+	if(list.length == 0) {
+		return;
+	}
+
+	var $table = $("<table />").addClass("table table-bordered result_table");
+	var $tbody = $("<tbody />");
+	$.each(list, function(){
+		
+		var tagName = this.tagName;
+		var keyToString = this.keyToString;
+		var versionNo = this.version;
+
+		var $delBtn = $("<input />").attr({type:"button", value:"削"}).addClass("btn btn-danger btn-mini");
+		$delBtn.click(function(){
+			deleteTodoTag(tagName, keyToString, versionNo);
+		});
+		
+		var $tr = $("<tr />");
+		$tr.append($("<td />").text(tagName))
+			.append($("<td />").append($delBtn).attr({width:"50px"}));
+		$tbody.append($tr)
+	});
+	$table.append($tbody);
+	$("#todo_tag_list").append($table);
+}
+
+//TODOタグ削除
+function deleteTodoTag(tagName, keyToString, versionNo) {
+	if(window.confirm("タグ「" + tagName + "」を削除します。本当によろしいですか？") == false) {
+		return;
+	}
+	var params = {};
+	params["keyString"] = keyToString;
+	params["version"] = versionNo;
+	params["jp.co.nemuzuka.token"] = $("#token").val();
+	
+	setAjaxDefault();
+	var task;
+	task = $.ajax({
+		type: "POST",
+		url: "/bts/todo/ajax/todoTagDelete",
+		data: params
+	});
+	
+	//後処理の登録
+	//
+	task.pipe(
+		function(data) {
+			//共通エラーチェック
+			errorCheck(data);
+			infoCheck(data);
+
+			//1秒後に再描画
+			setTimeout(function(){ openTodoTagDetailDialog(false) }, 1000);
+		}
+	);
+
 }

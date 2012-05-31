@@ -48,6 +48,7 @@
 	<div class="search_ctrl">
 		<input type="button" class="btn btn-primary" id="searchTodoBtn" value="検索" />
 		<input type="button" class="btn" value="新規登録" id="addTodoBtn" />
+		<input type="button" class="btn" value="タグ管理" id="adminTagBtn" />
 	</div>
 	
 	<div id="result_area" class="result">
@@ -58,6 +59,21 @@
 
 </form>
 </div>
+
+<%-- TODOタグ管理ダイアログ --%>
+<div id="todoTagDetailDialog" title="TODOタグ管理" class="dialog-widget">
+<div class="dialog-container form-horizontal dialog-detail" >
+
+	<div class="scroll_area">
+		<div id="todo_tag_list" class="result"></div>
+	</div>
+
+	<div class="detail_close">
+		<input type="button" class="btn" id="todoTagDetailDialog-cancel" value="閉じる" />
+	</div>
+</div>
+</div>
+
 
 <c:import url="/bts/todo/todoDialog.jsp"/>
 
