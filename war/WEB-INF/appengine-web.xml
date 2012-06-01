@@ -17,12 +17,12 @@
 
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
-    <property name="jp.co.nemuzuka.session.refresh.min" value="60"/>
+    <property name="jp.co.nemuzuka.session.refresh.min" value="120"/>
     <property name="jp.co.nemuzuka.default.priority" value="高&#xA;中&#xA;低" />
     <property name="jp.co.nemuzuka.default.status" value="新規&#xA;割り当て済み&#xA;対応中&#xA;差し戻し&#xA;完了&#xA;キャンセル,完了&#xA;キャンセル" />
     <property name="jp.co.nemuzuka.default.kind" value="機能&#xA;バグ&#xA;課題&#xA;要望&#xA;問い合わせ&#xA;メモ&#xA;" />
-    <property name="jp.co.nemuzuka.ticket.mst.refresh.min" value="60"/>
-    <property name="jp.co.nemuzuka.member.map.refresh.min" value="60"/>
+    <property name="jp.co.nemuzuka.ticket.mst.refresh.min" value="120"/>
+    <property name="jp.co.nemuzuka.member.map.refresh.min" value="120"/>
     <property name="jp.co.nemuzuka.dashboard.list.limit" value="5"/>
     <property name="jp.co.nemuzuka.trial.mode" value="false"/>
   </system-properties>
