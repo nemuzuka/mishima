@@ -231,7 +231,7 @@ public class TodoServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(actual.getKeyToString(), is(keyToString));
 		assertThat(actual.getTodoStatus(), is(TodoStatus.finish.getCode()));
 		assertThat(actual.getTitle(), is("新規登録タイトル"));
-		assertThat(actual.getTag(), is("ほげ,ひげ,  はげ ,,さ る"));
+		assertThat(actual.getTag(), is("ほげ,ひげ,はげ,さ る"));
 		assertThat(actual.getContent(), is("詳細情報"));
 		assertThat(actual.getPeriod(), is("20150101"));
 		assertThat(actual.getVersionNo(), is("1"));

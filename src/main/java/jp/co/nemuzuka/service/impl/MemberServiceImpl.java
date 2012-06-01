@@ -155,6 +155,9 @@ public class MemberServiceImpl implements MemberService {
 		memberDao.delete(model.getKey());
 		//一意制約チェック用のModelからも削除する
 		Datastore.deleteUniqueValue(UniqueKey.member.name(), model.getMail());
+
+		//キャッシュ初期化
+		reSetMemberKeyEntity();
 	}
 
 	/* (非 Javadoc)
