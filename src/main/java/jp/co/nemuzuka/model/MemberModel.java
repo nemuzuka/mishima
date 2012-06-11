@@ -55,6 +55,10 @@ public class MemberModel extends AbsModel {
 	@Attribute(unindexed=true)
 	private Text memo;
 	
+	/** タイムゾーン. */
+	@Attribute(unindexed=true)
+	private String timeZone;
+	
 	/**
 	 * 権限Label取得.
 	 * @return 権限Label
@@ -145,6 +149,20 @@ public class MemberModel extends AbsModel {
 	 */
 	public void setMemo(Text memo) {
 		this.memo = memo;
+	}
+
+	/**
+	 * @return the timeZone
+	 */
+	public String getTimeZone() {
+		return timeZone;
+	}
+
+	/**
+	 * @param timeZone the timeZone to set
+	 */
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
 	}
 
 }

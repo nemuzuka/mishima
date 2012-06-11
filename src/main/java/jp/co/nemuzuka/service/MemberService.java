@@ -116,6 +116,14 @@ public interface MemberService {
 	String getKeyString(String mail);
 	
 	/**
+	 * タイムゾーン取得.
+	 * 指定したメールアドレスに合致するMemberModelのタイムゾーンを取得します。
+	 * @param mail メールアドレス
+	 * @return 該当タイムゾーン文字列(存在しない場合、null)
+	 */
+	String getTimeZone(String mail);
+	
+	/**
 	 * Model取得.
 	 * 該当するレコードを取得します。
 	 * @param mail メールアドレス

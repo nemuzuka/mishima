@@ -189,6 +189,11 @@ function openEditDialog(keyToString) {
 			$("#edit_versionNo").val(form.versionNo);
 			$("#edit_keyToString").val(form.keyToString);
 			
+			$.each(form.timeZoneList, function(){
+				$("#edit_timeZone").append($('<option>').attr({ value: this.value }).text(this.label));
+			});
+			$("#edit_timeZone").val(form.timeZone);
+			
 			prependDummyText("memberDialog");
 			$("#memberDialog").dialog("open");
 			removeDummyText("memberDialog");

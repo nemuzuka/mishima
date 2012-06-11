@@ -49,4 +49,9 @@ public class MemberKeyEntity implements Serializable {
 	 */
 	public Map<String, String> keyStringMap = new HashMap<String, String>();
 
+	/**
+	 * メールアドレス-タイムゾーン文字列変換テーブルMap.
+	 * Keyはメールアドレス、valueはそれに紐付くタイムゾーン文字列情報になります。
+	 */
+	public Map<String, String> timeZoneMap = new HashMap<String, String>();
 }

@@ -19,6 +19,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import jp.co.nemuzuka.common.Authority;
 import jp.co.nemuzuka.common.UniqueKey;
@@ -79,6 +80,7 @@ public class MemberServiceImpl implements MemberService {
 		MemberForm form = new MemberForm();
 		form.mail = mail;
 		form.name = nickName;
+		form.timeZone = jp.co.nemuzuka.common.TimeZone.GMT_P_9.getCode();
 		form.authority = authority.name();
 		put(form);
 	}
@@ -237,6 +239,14 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	/* (non-Javadoc)
+	 * @see jp.co.nemuzuka.service.MemberService#getTimeZone(java.lang.String)
+	 */
+	@Override
+	public String getTimeZone(String mail) {
+		return getMemberKeyEntity().timeZoneMap.get(mail);
+	}
+	
+	/* (non-Javadoc)
 	 * @see jp.co.nemuzuka.service.MemberService#getModel(java.lang.String)
 	 */
 	@Override
@@ -288,6 +298,7 @@ public class MemberServiceImpl implements MemberService {
 		for(MemberModel target : list) {
 			entity.map.put(target.getMail(), target.getKey());
 			entity.keyStringMap.put(target.getMail(), target.getKeyToString());
+			entity.timeZoneMap.put(target.getMail(), target.getTimeZone());
 		}
 		
 		//トライアル版でかつ、ダミーユーザが未アクセスの場合、ダミーユーザのKeyを追加
@@ -319,6 +330,7 @@ public class MemberServiceImpl implements MemberService {
 		form.keyToString = model.getKeyToString();
 		form.mail = model.getMail();
 		form.name = model.getName();
+		form.timeZone = model.getTimeZone();
 		form.authority = model.getAuthority().getCode();
 		form.versionNo = ConvertUtils.toString(model.getVersion());
 	}
@@ -342,5 +354,12 @@ public class MemberServiceImpl implements MemberService {
 		} else {
 			model.setAuthority(Authority.normal);
 		}
+		
+		//タイムゾーンの設定
+		String timeZone = form.timeZone;
+		if(StringUtils.isEmpty(timeZone)) {
+			timeZone = jp.co.nemuzuka.common.TimeZone.GMT_P_9.getCode();
+		}
+		model.setTimeZone(TimeZone.getTimeZone(timeZone).getID());
 	}
 }

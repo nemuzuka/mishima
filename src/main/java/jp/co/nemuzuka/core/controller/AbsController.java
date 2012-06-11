@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import jp.co.nemuzuka.core.annotation.ActionForm;
@@ -29,6 +30,7 @@ import jp.co.nemuzuka.core.annotation.SystemManager;
 import jp.co.nemuzuka.core.entity.GlobalTransaction;
 import jp.co.nemuzuka.core.entity.TransactionEntity;
 import jp.co.nemuzuka.core.entity.UserInfo;
+import jp.co.nemuzuka.core.entity.UserTimeZone;
 import jp.co.nemuzuka.core.entity.mock.UserServiceImpl;
 import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.service.ProjectService;
@@ -45,6 +47,7 @@ import org.slim3.controller.Controller;
 import org.slim3.util.BeanUtil;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -108,6 +111,7 @@ public abstract class AbsController extends Controller {
 	 * ログインユーザ情報設定.
 	 * 同時にlogout用のURLを設定します。
 	 * Sessionに、trialユーザを使用すると設定されている場合、ログインユーザでなく、ダミー用のユーザを使用します。
+	 * ユーザに紐付くタイムゾーンをThreadLocalに設定します。
 	 */
 	protected void setUserService() {
 		
@@ -116,6 +120,17 @@ public abstract class AbsController extends Controller {
 			userService = new UserServiceImpl(userService);
 		}
 		
+		//ThreadLocalにタイムゾーンを設定
+		MemberService service = MemberServiceImpl.getInstance();
+		
+		User curentUser = userService.getCurrentUser();
+		if(curentUser != null) {
+			String timeZone = service.getTimeZone(userService.getCurrentUser().getEmail());
+			if(StringUtils.isEmpty(timeZone)) {
+				timeZone = jp.co.nemuzuka.common.TimeZone.GMT_P_9.getCode();
+			}
+			UserTimeZone.timeZone.set(TimeZone.getTimeZone(timeZone).getID());
+		}
 		requestScope("logoutURL", "/logout");
 	}
 	

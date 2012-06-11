@@ -68,6 +68,12 @@
 		</div>
 	</div>
 	<div class="control-group">
+		<label class="control-label" for="edit_timeZone">タイムゾーン</label>
+		<div class="controls">
+			<select class="input-xlarge required-input" id="edit_timeZone"></select>
+		</div>
+	</div>
+	<div class="control-group">
 		<label class="control-label" for="edit_authority">権限</label>
 		<div class="controls">
 			<label class="radio inline"><input type="radio" name="authority" value="admin">管理者</label>

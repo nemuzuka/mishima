@@ -16,6 +16,11 @@
 package jp.co.nemuzuka.form;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.co.nemuzuka.common.Authority;
+import jp.co.nemuzuka.core.entity.LabelValueBean;
 
 /**
  * MemberForm.
@@ -37,11 +42,27 @@ public class MemberForm implements Serializable {
 	/** 氏名. */
 	public String name;
 	
+	/** タイムゾーン. */
+	public String timeZone = jp.co.nemuzuka.common.TimeZone.GMT_P_9.getCode();
+	
 	/** 権限. */
-	public String authority = "normal";
+	public String authority = Authority.normal.getCode();
 
 	/** バージョンNo. */
 	public String versionNo;
+	
+	/**
+	 * タイムゾーンの選択値List取得.
+	 * @return タイムゾーンの選択値List
+	 */
+	public List<LabelValueBean> getTimeZoneList() {
+		List<LabelValueBean> retList = new ArrayList<LabelValueBean>();
+		jp.co.nemuzuka.common.TimeZone[] timeZones = jp.co.nemuzuka.common.TimeZone.values();
+		for(jp.co.nemuzuka.common.TimeZone target : timeZones) {
+			retList.add(new LabelValueBean(target.getCode() + ":" + target.getLabel(), target.getCode()));
+		}
+		return retList;
+	}
 	
 	/**
 	 * @return keyToString
@@ -111,5 +132,19 @@ public class MemberForm implements Serializable {
 	 */
 	public void setVersionNo(String versionNo) {
 		this.versionNo = versionNo;
+	}
+
+	/**
+	 * @return the timeZone
+	 */
+	public String getTimeZone() {
+		return timeZone;
+	}
+
+	/**
+	 * @param timeZone the timeZone to set
+	 */
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
 	}
 }

@@ -23,6 +23,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import jp.co.nemuzuka.core.entity.UserTimeZone;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 /**
@@ -434,7 +437,12 @@ public class DateTimeUtils {
 	 */
 	public static SimpleDateFormat createSdf(String pattern) {
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		sdf.setTimeZone(TimeZone.getTimeZone("JST"));
+		
+		String timeZone = UserTimeZone.timeZone.get();
+		if(StringUtils.isEmpty(timeZone)) {
+			timeZone = jp.co.nemuzuka.common.TimeZone.GMT_P_9.getCode();
+		}
+		sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
 		return sdf;
 	}
 }
