@@ -431,7 +431,8 @@ public class DateTimeUtils {
 
 	/**
 	 * SimpleDateForm取得.
-	 * タイムゾーンをJSTにしたSimpleDateFormatを取得します。
+	 * タイムゾーンをThreadLocalの値にしたSimpleDateFormatを取得します。
+	 * 未設定の場合、JSTを返します。
 	 * @param pattern フォーマットパターン
 	 * @return SimpleDateFormatインスタンス
 	 */
