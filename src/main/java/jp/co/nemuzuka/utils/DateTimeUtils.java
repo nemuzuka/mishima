@@ -101,6 +101,7 @@ public class DateTimeUtils {
 		List<Date> list = getStartEndDate(targetYyyyMM);
 		Date startDate = list.get(0);
 		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeZone(getTimeZone());
 
 		//月初の設定
 		while(true) {
@@ -439,11 +440,19 @@ public class DateTimeUtils {
 	public static SimpleDateFormat createSdf(String pattern) {
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		
+		sdf.setTimeZone(getTimeZone());
+		return sdf;
+	}
+	
+	/**
+	 * タイムゾーン取得.
+	 * @return ThreadLocalに設定されているタイムゾーン
+	 */
+	private static TimeZone getTimeZone() {
 		String timeZone = UserTimeZone.timeZone.get();
 		if(StringUtils.isEmpty(timeZone)) {
 			timeZone = jp.co.nemuzuka.common.TimeZone.GMT_P_9.getCode();
 		}
-		sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
-		return sdf;
+		return TimeZone.getTimeZone(timeZone);
 	}
 }
