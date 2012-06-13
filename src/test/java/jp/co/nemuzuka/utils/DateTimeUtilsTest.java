@@ -195,6 +195,7 @@ public class DateTimeUtilsTest {
 	 * addMonthのテスト.
 	 * @throws ParseException
 	 */
+	@Test
 	public void testAddMonth() throws ParseException {
 		assertThat(DateTimeUtils.addMonth("201201", -1), is("201112"));
 		assertThat(DateTimeUtils.addMonth("201112", -1), is("201111"));

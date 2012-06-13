@@ -57,7 +57,7 @@ public class DateTimeUtils {
 	 * @return index 0:月初のDate index 1:月末のDate
 	 */
 	public static List<Date> getStartEndDate(String targetYyyyMM) {
-		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		SimpleDateFormat sdf = createSdf("yyyyMMdd");
 		sdf.setLenient(false);
 		List<Date> retList = new ArrayList<Date>();
 		try {
@@ -164,7 +164,7 @@ public class DateTimeUtils {
 	 * @return 加算後文字列
 	 */
 	public static String addTime(String targethhmm, int time) {
-		SimpleDateFormat sdf = DateTimeUtils.createSdf("HHmm");
+		SimpleDateFormat sdf = createSdf("HHmm");
 		Date date = null;
 		try {
 			date = sdf.parse(targethhmm);
@@ -187,7 +187,7 @@ public class DateTimeUtils {
 		Date date = CurrentDateUtils.getInstance().getCurrentDate();
 		date = addMonths(date, 1);
 
-		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMM");
+		SimpleDateFormat sdf = createSdf("yyyyMM");
 		return sdf.format(date);
 	}
 
@@ -200,7 +200,7 @@ public class DateTimeUtils {
 	 */
 	public static String addMonth(String targetYyyyMm, int amount) {
 
-		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		SimpleDateFormat sdf = createSdf("yyyyMMdd");
 		Date date;
 		try {
 			date = sdf.parse(targetYyyyMm + "01");
@@ -208,7 +208,7 @@ public class DateTimeUtils {
 			throw new RuntimeException(e);
 		}
 		date = addMonths(date, amount);
-		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat sdf2 = createSdf("yyyyMM");
 		return sdf2.format(date);
 	}
 
@@ -220,7 +220,7 @@ public class DateTimeUtils {
 
 		Date date = CurrentDateUtils.getInstance().getCurrentDate();
 
-		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMM");
+		SimpleDateFormat sdf = createSdf("yyyyMM");
 		return sdf.format(date);
 	}
 
@@ -388,7 +388,7 @@ public class DateTimeUtils {
 			throw new IllegalArgumentException("入力が不正です。");
 		}
 
-		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
+		SimpleDateFormat sdf = createSdf("yyyyMMdd");
 		int val1 = Integer.valueOf(sdf.format(baseDate));
 		int val2 = Integer.valueOf(sdf.format(birthDay));
 
