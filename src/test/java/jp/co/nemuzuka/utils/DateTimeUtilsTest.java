@@ -168,8 +168,8 @@ public class DateTimeUtilsTest {
 	@Test
 	public void testAddWeek() throws ParseException {
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMMdd");
-		assertThat(DateTimeUtils.addWeek(sdf.parse("20111025"), -1).getTime(), is(sdf.parse("20111018").getTime()));
-		assertThat(DateTimeUtils.addWeek(sdf.parse("20111025"), 1).getTime(), is(sdf.parse("20111101").getTime()));
+		assertThat(DateTimeUtils.addWeeks(sdf.parse("20111025"), -1).getTime(), is(sdf.parse("20111018").getTime()));
+		assertThat(DateTimeUtils.addWeeks(sdf.parse("20111025"), 1).getTime(), is(sdf.parse("20111101").getTime()));
 	}
 
 	/**
@@ -191,4 +191,13 @@ public class DateTimeUtilsTest {
 
 	}
 
+	/**
+	 * addMonthのテスト.
+	 * @throws ParseException
+	 */
+	public void testAddMonth() throws ParseException {
+		assertThat(DateTimeUtils.addMonth("201201", -1), is("201112"));
+		assertThat(DateTimeUtils.addMonth("201112", -1), is("201111"));
+	}
+	
 }

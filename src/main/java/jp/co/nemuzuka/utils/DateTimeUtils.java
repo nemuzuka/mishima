@@ -26,7 +26,6 @@ import java.util.TimeZone;
 import jp.co.nemuzuka.core.entity.UserTimeZone;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 
 /**
  * 日付・時刻関連のUtils.
@@ -66,8 +65,8 @@ public class DateTimeUtils {
 			retList.add(startDate);
 
 			//1月追加して、1日戻したものが月末
-			Date endDate = DateUtils.addMonths(startDate, 1);
-			endDate = DateUtils.addDays(endDate, -1);
+			Date endDate = addMonths(startDate, 1);
+			endDate = addDays(endDate, -1);
 			retList.add(endDate);
 
 		} catch (ParseException e) {
@@ -111,7 +110,7 @@ public class DateTimeUtils {
 				break;
 			}
 			//1日前に戻る
-			startDate = DateUtils.addDays(startDate, -1);
+			startDate = addDays(startDate, -1);
 		}
 
 		Date endDate = list.get(1);
@@ -123,7 +122,7 @@ public class DateTimeUtils {
 				break;
 			}
 			//1日進める
-			endDate = DateUtils.addDays(endDate, 1);
+			endDate = addDays(endDate, 1);
 		}
 
 		List<Date> retList = new ArrayList<Date>();
@@ -173,7 +172,7 @@ public class DateTimeUtils {
 			throw new RuntimeException(e);
 		}
 
-		date = DateUtils.addMinutes(date, time);
+		date = addMinutes(date, time);
 		return sdf.format(date);
 	}
 
@@ -186,33 +185,10 @@ public class DateTimeUtils {
 
 		//システム日付から1ヶ月加算
 		Date date = CurrentDateUtils.getInstance().getCurrentDate();
-		date = DateUtils.addMonths(date, 1);
+		date = addMonths(date, 1);
 
 		SimpleDateFormat sdf = DateTimeUtils.createSdf("yyyyMM");
 		return sdf.format(date);
-	}
-
-	/**
-	 * 週加算.
-	 * 引数の対象日より、指定した週を加算します。
-	 * @param targetDate 対象日
-	 * @param amount 移動週(負数の場合、過去に戻る)
-	 * @return 加算後の日付
-	 */
-	public static Date addWeek(Date targetDate, int amount) {
-		//指定分の週を加算
-		return DateUtils.addWeeks(targetDate, amount);
-	}
-
-	/**
-	 * 日加算.
-	 * 引数より指定日数を加算します。
-	 * @param targetDate 対象日
-	 * @param amount 移動日数(負数の場合、過去に戻る)
-	 * @return 加算後の日付
-	 */
-	public static Date addDay(Date targetDate, int amount) {
-		return DateUtils.addDays(targetDate, amount);
 	}
 
 	/**
@@ -231,20 +207,9 @@ public class DateTimeUtils {
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}
-		date = DateUtils.addMonths(date, amount);
-		SimpleDateFormat sdf2 = DateTimeUtils.createSdf("yyyyMM");
+		date = addMonths(date, amount);
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMM");
 		return sdf2.format(date);
-	}
-
-	/**
-	 * 月加算.
-	 * 引数より指定月数を加算します。
-	 * @param date 元日付
-	 * @param amount 移動月数(負数の場合、過去に戻る)
-	 * @return 加算後のDateオブジェクト
-	 */
-	public static Date addMonth(Date date, int amount) {
-		return DateUtils.addMonths(date, amount);
 	}
 
 	/**
@@ -280,7 +245,7 @@ public class DateTimeUtils {
 			if(targetDate.getTime() >= endDate.getTime()) {
 				break;
 			}
-			targetDate = DateUtils.addDays(targetDate, 1);
+			targetDate = addDays(targetDate, 1);
 			days++;
 		}
 		return days;
@@ -342,7 +307,7 @@ public class DateTimeUtils {
 		Date endTargetDate = endDate;
 		while(true) {
 			retList.add(addTargetDate);
-			addTargetDate = DateUtils.addDays(addTargetDate, 1);
+			addTargetDate = addDays(addTargetDate, 1);
 			if(addTargetDate.getTime() > endTargetDate.getTime()) {
 				//月末の日付を超えた場合、ループを抜ける
 				break;
@@ -444,6 +409,69 @@ public class DateTimeUtils {
 		return sdf;
 	}
 	
+    /**
+     * 月加算.
+     * 引数の日付に月を加算します。
+     * @param date 日付
+     * @param amount 増減
+     * @return 引数の日付に月を変更したもの
+     */
+    public static Date addMonths(Date date, int amount) {
+        return add(date, Calendar.MONTH, amount);
+    }
+
+    /**
+     * 日加算.
+     * 引数の日付に日を加算します。
+     * @param date 日付
+     * @param amount 増減
+     * @return　引数の日付に日を変更したもの
+     */
+    public static Date addDays(Date date, int amount) {
+        return add(date, Calendar.DAY_OF_MONTH, amount);
+    }
+
+    /**
+     * 週加算.
+     * 引数の日付に週を加算します。
+     * @param date 日付
+     * @param amount 増減
+     * @return 引数の日付に週を変更したもの
+     */
+    public static Date addWeeks(Date date, int amount) {
+        return add(date, Calendar.WEEK_OF_YEAR, amount);
+    }
+
+	/**
+	 * 分加算.
+	 * 引数の日付に分を加算します。
+	 * @param date 日付
+	 * @param amount 増減
+	 * @return　引数の日付に分を変更したもの
+	 */
+	public static Date addMinutes(Date date, int amount) {
+		return add(date, Calendar.MINUTE, amount);
+	}
+	
+	/**
+	 * 日付加算.
+	 * 対象の日付に対して、タイムゾーンを意識して、日付加算を行います。
+	 * DateUtilsでは、デフォルトのタイムゾーンを使用するので、新しく作成しました。
+	 * @param date 対象日付
+	 * @param calendarField 処理対象
+	 * @param amount 増減
+	 * @return 変更後日付
+	 */
+	private static Date add(Date date, int calendarField, int amount) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date must not be null");
+        }
+        Calendar c = Calendar.getInstance(getTimeZone());
+        c.setTime(date);
+        c.add(calendarField, amount);
+        return c.getTime();
+	}
+
 	/**
 	 * タイムゾーン取得.
 	 * @return ThreadLocalに設定されているタイムゾーン

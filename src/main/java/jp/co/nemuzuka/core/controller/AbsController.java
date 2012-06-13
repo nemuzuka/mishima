@@ -38,11 +38,11 @@ import jp.co.nemuzuka.service.impl.MemberServiceImpl;
 import jp.co.nemuzuka.service.impl.ProjectServiceImpl;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
+import jp.co.nemuzuka.utils.DateTimeUtils;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.slim3.controller.Controller;
 import org.slim3.util.BeanUtil;
 
@@ -369,7 +369,7 @@ public abstract class AbsController extends Controller {
 		//現在時刻に加算分の時刻(分)を加算し、設定する
 		Date date = CurrentDateUtils.getInstance().getCurrentDateTime();
 		int min = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.session.refresh.min", "15"));
-		date = DateUtils.addMinutes(date, min);
+		date = DateTimeUtils.addMinutes(date, min);
 		userInfo.refreshStartTime = date;
 		
 		//ダッシュボードに表示するTODO、Ticketの一覧件数を設定

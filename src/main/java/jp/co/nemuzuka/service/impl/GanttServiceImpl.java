@@ -298,12 +298,12 @@ public class GanttServiceImpl implements GanttService {
 		}
 		//終了日がnullの場合、開始日の1ヶ月後を設定する
 		if(targetEndDate == null) {
-			targetEndDate = DateTimeUtils.addMonth(targetStartDate, 1);
+			targetEndDate = DateTimeUtils.addMonths(targetStartDate, 1);
 		}
 		
 		//日数を算出して、開始日〜終了日までの期間が15日以下の場合、終了日を開始日から15日後に設定
 		if(DateTimeUtils.getDays(targetStartDate, targetEndDate) < 15) {
-			targetEndDate = DateTimeUtils.addDay(targetStartDate, 15);
+			targetEndDate = DateTimeUtils.addDays(targetStartDate, 15);
 		}
 		
 		//Ticketの開始日、期限がnullのものに対して値を設定する

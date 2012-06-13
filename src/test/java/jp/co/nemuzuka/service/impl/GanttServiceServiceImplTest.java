@@ -487,7 +487,7 @@ public class GanttServiceServiceImplTest extends AppEngineTestCase4HRD {
 		assertThat(result.startDate, 
 				is(ConvertUtils.toString(currentDate, sdf)));
 		//ガントチャート終了日がシステム日＋１月であること
-		Date endDate = DateTimeUtils.addMonth(currentDate, 1);
+		Date endDate = DateTimeUtils.addMonths(currentDate, 1);
 		assertThat(result.endDate, 
 				is(ConvertUtils.toString(endDate, sdf)));
 		

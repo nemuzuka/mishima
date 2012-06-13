@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.slim3.memcache.Memcache;
 
 import jp.co.nemuzuka.core.entity.LabelValueBean;
@@ -42,6 +41,7 @@ import jp.co.nemuzuka.service.VersionService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 import jp.co.nemuzuka.utils.DateTimeChecker;
+import jp.co.nemuzuka.utils.DateTimeUtils;
 import jp.co.nemuzuka.utils.LabelValueBeanUtils;
 
 /**
@@ -162,7 +162,7 @@ public class TicketMstServiceImpl implements TicketMstService {
 		//現在時刻に加算分の時刻(分)を加算し、設定する
 		Date date = CurrentDateUtils.getInstance().getCurrentDateTime();
 		int min = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.ticket.mst.refresh.min", "15"));
-		date = DateUtils.addMinutes(date, min);
+		date = DateTimeUtils.addMinutes(date, min);
 		mst.refreshStartTime = date;
 
 		return mst;

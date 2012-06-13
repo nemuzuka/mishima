@@ -35,9 +35,9 @@ import jp.co.nemuzuka.service.MemberService;
 import jp.co.nemuzuka.utils.ConvertUtils;
 import jp.co.nemuzuka.utils.CurrentDateUtils;
 import jp.co.nemuzuka.utils.DateTimeChecker;
+import jp.co.nemuzuka.utils.DateTimeUtils;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.slim3.datastore.Datastore;
 import org.slim3.memcache.Memcache;
 
@@ -313,7 +313,7 @@ public class MemberServiceImpl implements MemberService {
 		//現在時刻に加算分の時刻(分)を加算し、設定する
 		Date date = CurrentDateUtils.getInstance().getCurrentDateTime();
 		int min = ConvertUtils.toInteger(System.getProperty("jp.co.nemuzuka.member.map.refresh.min", "15"));
-		date = DateUtils.addMinutes(date, min);
+		date = DateTimeUtils.addMinutes(date, min);
 		entity.refreshStartTime = date;
 		return entity;
 	}
