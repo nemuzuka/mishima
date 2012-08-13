@@ -2,6 +2,14 @@ pomの依存jarを変更した場合
 mvn eclipse:eclipse -DdownloadSources=true
 をコマンドラインから叩くこと
 
+git add .
+	→変更を追加
+
+git commit -m "コメント"
+	→変更分をコミット
+
+git push origin master
+	→コミットした状態をgithubへpush
 
 
 gitコミット→githubにup
