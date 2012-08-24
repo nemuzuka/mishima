@@ -1,0 +1,92 @@
+@charset "utf-8";
+
+/* テキストを省略せずに表示する */
+.ui-header .ui-title,            /* ヘッダー */
+.ui-footer .ui-title,            /* フッター */
+.ui-btn-inner,                /* ボタン */
+.ui-li-heading,                /* リスト見出し */
+.ui-li .ui-btn-text a.ui-link-inherit,    /* リンクリスト */
+.ui-li-desc                /* リスト詳細 */
+{
+  overflow: visible;
+  white-space: normal;
+}
+
+.duplicate{color:red;}
+.ui-input-datebox input.required-input { background-color: #FFFCEE; }
+.required-input { background-color: #FFFCEE; }
+
+.toast-container
+{
+	position:fixed;
+	text-align: center;
+	background-color: #444;
+	border:2px solid #666;
+	padding:5px;
+	color:#FFF;
+	z-index:10000;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	
+	-webkit-box-shadow: 3px 3px 6px 1px #7a7a7a;
+	-moz-box-shadow: 3px 3px 6px 1px #7a7a7a;
+	box-shadow: 3px 3px 6px 1px #7a7a7a; 
+}
+
+/* 各種付随メッセージ表示用 */
+.label {
+  padding: 2px 4px 3px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #999999;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.label-info {
+  background-color: #3a87ad;
+}
+
+.label-warning {
+  background-color: #f89406;
+}
+
+.label-important {
+  background-color: #b94a48;
+}
+
+/* 詳細情報表示用 */
+.detail .dt{
+  font-weight: bold;
+  border-bottom: solid 1px #cccccc;
+  margin-top: 1em;
+}
+.detail .dd{
+  border: solid 1px #cccccc;
+  padding: 1em;
+  margin-left: 0em;
+  margin-top: 0.5em;
+}
+/* コメント表示用 */
+.comment_table {
+  font-size:86%;
+  width:100%;
+  border-collapse: separate;
+  border-spacing: 3px;
+}
+.comment_table th,
+.comment_table td {
+  font-weight: normal;
+  padding: 5px 10px;
+  text-align: left;
+}
+.comment_table th {
+  white-space: nowrap;
+  border-bottom: 1px solid #3cb371;
+}
+.comment_table td {
+  border-bottom: 1px solid #f08080;
+}

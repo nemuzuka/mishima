@@ -34,7 +34,8 @@
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui-effects.min.js"></script>
-<script type="text/javascript" src="/js/jquery-common.js"></script>
+<script type="text/javascript" src="/js/jquery-common.js?version=1.1"></script>
+<script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
 <script type="text/javascript" src="/js/jquery.toaster.min.js"></script>
 <script type="text/javascript" src="/js/jquery.elastic.js"></script>

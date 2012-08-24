@@ -37,7 +37,7 @@
 
           <li class="divider-vertical"></li>
           <li class="" style="height: 40px;">
-          	<div style="margin-top: 5px;">
+            <div style="margin-top: 5px;">
               <select id="targetProjects">
               <c:forEach var="project" items="${userInfo.projectList}">
                 <option value="${f:h(project.value)}">${f:h(project.label)}</option>

@@ -58,7 +58,36 @@ public class IndexController extends HtmlController {
 					currentUser.getEmail(),
 					Authority.normal);
 		}
+		
+		if(isSmartPhone(request.getHeader("User-Agent")) == true) {
+			return forward("/mobile/bts/");
+		}
 		return forward("/bts/");
 	}
 
+	/**
+	 * スマートフォンからのアクセスであるか.
+	 * @param header User-Agent情報
+	 * @return スマートフォンからのアクセスの場合、true
+	 */
+	private boolean isSmartPhone(String header) {
+
+		if(StringUtils.isEmpty(header)) {
+			return false;
+		}
+
+		boolean ret = false;
+		if(header.indexOf("Android") != -1) {
+			ret = true;
+		} else if(header.indexOf("iPhone") != -1) {
+			ret = true;
+		} else if(header.indexOf("iPad") != -1) {
+			ret = true;
+		} else if(header.indexOf("iPod") != -1) {
+			ret = true;
+		} else if(header.indexOf("Windows Phone") != -1) {
+			ret = true;
+		}
+		return ret;
+	}
 }
