@@ -21,16 +21,16 @@
 	<div class="scroll_area">
 
 		<div class="control-group">
-			<label class="control-label" for="edit_ticket_status">ステータス</label>
+			<label class="control-label" for="edit_ticket_title">件名</label>
 			<div class="controls">
-				<select class="required-input" id="edit_ticket_status"></select>
+				<input type="text" class="input-xxlarge required-input" id="edit_ticket_title">
 			</div>
 		</div>
 	
 		<div class="control-group">
-			<label class="control-label" for="edit_ticket_title">件名</label>
+			<label class="control-label" for="edit_ticket_status">ステータス</label>
 			<div class="controls">
-				<input type="text" class="input-xxlarge required-input" id="edit_ticket_title">
+				<select class="required-input" id="edit_ticket_status"></select>
 			</div>
 		</div>
 	
@@ -161,13 +161,11 @@
 
 	<div class="scroll_area">
 		<div class="dialog-area">
+			<h3 class="title" id="detail_ticket_title"></h3>
+			<span id="detail_ticket_no"></span>
 			<dl>
-				<dt>チケットNo</dt>
-				<dd><div id="detail_ticket_no"></div><input type="hidden" id="detail_ticket_no_val" /></dd>
 				<dt>ステータス</dt>
 				<dd><select id="detail_ticket_status"></select></dd>
-				<dt>件名</dt>
-				<dd><div id="detail_ticket_title"></div></dd>
 				<dt>内容</dt>
 				<dd><div id="detail_ticket_content"></div></dd>
 				<dt>終了条件</dt>
@@ -215,6 +213,7 @@
 				<input type="button" class="btn" id="ticketDetail-add-file" value="ファイル追加" />
 				<input type="hidden" id="detail_ticket_versionNo" />
 				<input type="hidden" id="detail_ticket_keyToString" />
+				<input type="hidden" id="detail_ticket_no_val" />
 			</div>
 		</div>
 
@@ -232,12 +231,10 @@
 <div class="dialog-container form-horizontal dialog-detail" >
 
 	<div class="scroll_area">
+		<h3 class="title" id="detail_ticket_summary_title"></h3>
+		<span id="detail_ticket_summary_no"></span>
 		<div class="dialog-area">
 			<dl>
-				<dt>チケットNo</dt>
-				<dd><div id="detail_ticket_summary_no"></div></dd>
-				<dt>件名</dt>
-				<dd><div id="detail_ticket_summary_title"></div></dd>
 				<dt>内容</dt>
 				<dd><div id="detail_ticket_summary_content"></div></dd>
 				<dt>終了条件</dt>

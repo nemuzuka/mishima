@@ -184,7 +184,7 @@ function writeTicketList(list, $writeList) {
 
 		var $a = $("<a />").attr({href: "#"});
 		$a.on("click", function(){
-			alert("押したね");
+			moveUrl("/mobile/bts/ticket/detail?keyToString=" + keyToString + "&dashbord=true");
 		})
 		
 		var $viewNoSpan = $("<span />").text(viewNo);

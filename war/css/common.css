@@ -14,6 +14,9 @@ h2.title{
 h2.title.small{
   font-size:110%;
 }
+h3.title{
+  color:HotPink;
+}
 
 .disabled{
   display: none;

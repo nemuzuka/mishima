@@ -19,16 +19,16 @@
 <div class="dialog-container form-horizontal" >
 <fieldset>
 	<div class="control-group">
-		<label class="control-label" for="edit_todo_status">ステータス</label>
+		<label class="control-label" for="edit_todo_title">件名</label>
 		<div class="controls">
-			<select class="required-input" id="edit_todo_status"></select>
+			<input type="text" class="input-xxlarge required-input" id="edit_todo_title">
 		</div>
 	</div>
 
 	<div class="control-group">
-		<label class="control-label" for="edit_todo_title">件名</label>
+		<label class="control-label" for="edit_todo_status">ステータス</label>
 		<div class="controls">
-			<input type="text" class="input-xxlarge required-input" id="edit_todo_title">
+			<select class="required-input" id="edit_todo_status"></select>
 		</div>
 	</div>
 
@@ -98,11 +98,10 @@
 
 	<div class="scroll_area">
 		<div class="dialog-area">
+			<h3 class="title" id="detail_todo_title"></h3>
 			<dl class="detail_dl">
 				<dt class="detail_dt">ステータス</dt>
 				<dd><select id="detail_todo_status"></select></dd>
-				<dt>件名</dt>
-				<dd><div id="detail_todo_title"></div></dd>
 				<dt>タグ</dt>
 				<dd><div id="detail_todo_tag"></div></dd>
 				<dt>期限</dt>

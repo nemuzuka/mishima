@@ -25,13 +25,13 @@
 
 <form class="widget">
 	<fieldset data-role="fieldcontain">
-		<label for="todo_status">ステータス</label>
-		<select id="todo_status"></select>
+		<label for="todo_title">件名</label>
+		<input type="text" class="required-input" id="todo_title">
 	</fieldset>
 
 	<fieldset data-role="fieldcontain">
-		<label for="todo_title">件名</label>
-		<input type="text" class="required-input" id="todo_title">
+		<label for="todo_status">ステータス</label>
+		<select id="todo_status"></select>
 	</fieldset>
 
 	<fieldset data-role="fieldcontain">
