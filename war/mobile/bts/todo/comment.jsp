@@ -38,7 +38,7 @@
 
 <nav data-role="navbar">
 <ul>
-	<li><a href="#" id="nav_execute">追加する</a></li>
+	<li><a href="#" id="nav_execute" data-theme="b">追加する</a></li>
 </ul>
 </nav>
 
