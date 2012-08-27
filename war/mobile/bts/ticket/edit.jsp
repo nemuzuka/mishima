@@ -97,8 +97,8 @@
 
 <nav data-role="navbar">
 <ul id="footer_navbar">
-	<li><a href="#" id="nav_back">戻る</a></li>
 	<li><a href="#" id="nav_save" data-theme="b">変更する</a></li>
+	<li><a href="#" id="nav_back">戻る</a></li>
 </ul>
 </nav>
 

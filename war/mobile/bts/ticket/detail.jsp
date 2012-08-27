@@ -71,9 +71,9 @@
 
 <nav data-role="navbar">
 <ul id="footer-navbar">
-	<li><a href="#" id="nav_back">戻る</a></li>
 	<li><a href="#" id="nav_edit">内容変更</a></li>
 	<li><a href="#" id="nav_delete" data-theme="b">削除する</a></li>
+	<li><a href="#" id="nav_back">戻る</a></li>
 </ul>
 </nav>
 
