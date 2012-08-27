@@ -20,9 +20,8 @@
 <meta http-equiv="expires" content="0">
 <title>${param.title}</title>
 
-<link href="/css/m/jquery.mobile-1.1.1.min.css" rel="stylesheet">
+<link href="/css/m/theme/mishima.min.css" rel="stylesheet">
 <link href="/css/m/jquery.mobile.structure-1.1.1.min.css" rel="stylesheet">
-<link href="/css/m/jquery.mobile.theme-1.1.1.min.css" rel="stylesheet">
 <link href="/css/m/jquery.mobile.datebox.min.css" rel="stylesheet">
 <link href="/css/m/common.css" rel="stylesheet">
 
@@ -76,7 +75,7 @@ function hideAdBar(){
 
 </head>
 <body onLoad="hideAdBar()" onOrientationChange="hideAdBar()">
-<div data-role="page" id="main_page">
+<div data-role="page" id="main_page" data-theme="a">
 
 <!-- メニュー -->
 <c:import url="/mobile/menu-m.jsp"/>

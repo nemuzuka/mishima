@@ -24,7 +24,7 @@
 <script type="text/javascript" src="/js/m/bts/todo/detail.js"></script>
 
 <div class="widget">
-	<h3 id="detail_todo_title"></h3>
+	<h3 id="detail_todo_title" class="detail_title"></h3>
 	<dl class="detail">
 		<dt class="dt">ステータス</dt>
 		<dd class="dd"><select id="detail_todo_status"></select></dd>

@@ -12,6 +12,8 @@
   white-space: normal;
 }
 
+.detail_title{color:#ed1e79};
+
 .duplicate{color:red;}
 .ui-input-datebox input.required-input { background-color: #FFFCEE; }
 .required-input { background-color: #FFFCEE; }
@@ -65,8 +67,9 @@
   margin-top: 1em;
 }
 .detail .dd{
-  border: solid 1px #cccccc;
-  padding: 1em;
+  font-size:86%;
+  border: solid 0px #cccccc;
+  padding: 0.5em;
   margin-left: 0em;
   margin-top: 0.5em;
 }
@@ -80,7 +83,7 @@
 .comment_table th,
 .comment_table td {
   font-weight: normal;
-  padding: 5px 10px;
+  padding: 2px 5px;
   text-align: left;
 }
 .comment_table th {

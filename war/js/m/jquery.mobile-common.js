@@ -24,7 +24,7 @@ function viewLoadingMsg() {
 			right: '10px',
 			border: 'none',
 			padding: '5px',
-			backgroundColor: 'red',
+			backgroundColor: '#458B74',
 			'-webkit-border-radius': '10px',
 			'-moz-border-radius': '10px',
 			opacity: 1.0,

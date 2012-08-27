@@ -88,7 +88,9 @@
 
 	<fieldset data-role="fieldcontain">
 		<label for="ticket_parentKey">親チケットNo</label>
-		<span id="ticket_project_id"></span><input type="text" id="ticket_parentKey">
+		<div data-role="controlgroup">
+			<span id="ticket_project_id"></span><input type="text" id="ticket_parentKey" style="width:33%">
+		</div>
 	</fieldset>
 
 </form>

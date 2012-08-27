@@ -24,7 +24,7 @@
 <script type="text/javascript" src="/js/m/bts/ticket/detail.js"></script>
 
 <div class="widget">
-	<h3 id="detail_ticket_title"></h3>
+	<h3 id="detail_ticket_title" class="detail_title"></h3>
 	<h4 id="detail_ticket_no" align="right"></h4>
 	<dl class="detail">
 		<dt class="dt">ステータス</dt>
