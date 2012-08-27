@@ -22,7 +22,7 @@
 
 <link href="/css/m/theme/mishima.min.css" rel="stylesheet">
 <link href="/css/m/jquery.mobile.structure-1.1.1.min.css" rel="stylesheet">
-<link href="/css/m/jquery.mobile.datebox.min.css" rel="stylesheet">
+<link href="/css/m/jqm-datebox.min.css" rel="stylesheet">
 <link href="/css/m/common.css" rel="stylesheet">
 
 <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
@@ -62,7 +62,8 @@ function hideAdBar(){
 </script>
 
 <script type="text/javascript" src="/js/m/jquery.mobile-1.1.1.min.js"></script>
-<script type="text/javascript" src="/js/m/jquery.mobile.datebox.min.js"></script>
+<script type="text/javascript" src="/js/m/jqm-datebox.core.min.js"></script>
+<script type="text/javascript" src="/js/m/jqm-datebox.mode.calbox.js"></script>
 <script type="text/javascript" src="/js/m/jquery.mobile-common.js"></script>
 <script type="text/javascript" src="/js/common.js" ></script>
 <script type="text/javascript" src="/js/dateformat.js" ></script>
