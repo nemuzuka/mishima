@@ -17,7 +17,7 @@
 </c:param>
 
 <c:param name="content">
-<script type="text/javascript" src="/js/m/bts/dashboard.js"></script>
+<script type="text/javascript" src="/js/m/bts/dashboard.js?version=1.1"></script>
 
 <div class="widget">
 <form>

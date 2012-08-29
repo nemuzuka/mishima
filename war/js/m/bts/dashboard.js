@@ -80,7 +80,7 @@ function writeProjectList(list, $writeList) {
 
 		var $a = $("<a />").attr({href: "#"});
 		$a.on("click", function(){
-			moveUrl("/changeProject?projectKey=" + keyToString);
+			moveUrl("/changeProject?projectKey=" + keyToString + "&mobile=true");
 		})
 
 		var $h1 = $("<h1 />").text(projectName);
@@ -167,7 +167,7 @@ function writeTicketList(list, $writeList) {
 		
 		if(index == 0) {
 			var $li = $("<li />").attr({"data-role":"list-divider"});
-			$li.text("未完了チケット(上位" + cnt + "件)");
+			$li.text("未完了担当チケット(上位" + cnt + "件)");
 			$ul.append($li);
 		}
 		

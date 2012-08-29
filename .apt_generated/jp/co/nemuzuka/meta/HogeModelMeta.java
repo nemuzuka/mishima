@@ -1,6 +1,6 @@
 package jp.co.nemuzuka.meta;
 
-//@javax.annotation.Generated(value = { "slim3-gen", "@VERSION@" }, date = "2012-08-13 15:17:58")
+//@javax.annotation.Generated(value = { "slim3-gen", "@VERSION@" }, date = "2012-08-29 12:29:48")
 /** */
 public final class HogeModelMeta extends org.slim3.datastore.ModelMeta<jp.co.nemuzuka.model.HogeModel> {
 

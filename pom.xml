@@ -3,7 +3,7 @@
   <groupId>jp.co.nemuzuka</groupId>
   <artifactId>mishima</artifactId>
   <packaging>war</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.2.2-SNAPSHOT</version>
   <properties>
     <slim3.version>1.0.16</slim3.version>
     <appengine.version>1.7.0</appengine.version>

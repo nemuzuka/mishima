@@ -62,7 +62,7 @@ $(function(){
 
 	$("#targetProjects").on("change", function() {
 		var targetProject = $("#targetProjects").val();
-		moveUrl("/changeProject?projectKey=" + targetProject);
+		moveUrl("/changeProject?projectKey=" + targetProject + "&mobile=true");
 	});
 	$("#targetProjects").val(selectedProject);
 	$("#targetProjects").selectmenu("refresh");

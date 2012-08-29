@@ -40,9 +40,13 @@ public class ChangeProjectController extends HtmlController {
 		
 		//リクエストからデータを取得
 		String projectKey = StringUtils.defaultString(asString("projectKey"), "");
+		String mobile = StringUtils.defaultString(asString("mobile"), "");
 		
 		//選択したプロジェクトに対して権限情報を設定
 		service.setUserInfo(projectKey, userService.getCurrentUser().getEmail(), getUserInfo());
-		return forward("/");
+		if(mobile.equals("true")) {
+			return forward("/mobile/bts/");
+		}
+		return forward("/bts/");
 	}
 }

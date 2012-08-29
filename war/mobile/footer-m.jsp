@@ -21,7 +21,7 @@
 $(function(){
 
 	$(document).on("vclick", "#backPC", function(e){
-		moveUrl("/");
+		moveUrl("/bts/dashboard/");
 	});
 
 	$(document).on("vclick", "#logout", function(e){
