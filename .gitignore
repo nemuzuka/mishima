@@ -1,3 +1,4 @@
 /target
 /.apt_generated
+/war/WEB-INF/classes
 *.class
